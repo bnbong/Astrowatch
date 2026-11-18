@@ -1,0 +1,98 @@
+{
+ "scenario": "R7",
+ "captured_at": "2026-11-18T16:52:31+09:00",
+ "env_overrides": {
+  "CALENDAR_PROVIDER": "local"
+ },
+ "session_id": "c6ba68d40df3",
+ "turns": [
+  {
+   "message": "밤 11시 전에는 들어와야 해",
+   "response": {
+    "session_id": "c6ba68d40df3",
+    "intent": "clarify",
+    "answer": "지금까지 조건: 23:00까지\n어느 지역에서 보실 건가요? 몇 시부터 관측할 수 있나요?",
+    "conditions": {
+     "date_from": null,
+     "date_to": null,
+     "start_minute": null,
+     "region": null,
+     "event_kind": null,
+     "event_query": null,
+     "place_query": null,
+     "end_minute": 1380,
+     "max_distance_km": null,
+     "allow_partly_cloudy": false,
+     "avoid_moon": true,
+     "fixed": []
+    },
+    "needs_clarification": [
+     "region",
+     "start_minute"
+    ],
+    "recommended": [],
+    "excluded": [],
+    "places": [],
+    "replan_count": 0,
+    "replan_limit": 3,
+    "replan_limit_reached": false,
+    "stop_reason": null,
+    "steps": [
+     {
+      "seq": 2,
+      "type": "stage_start",
+      "stage": "analyze",
+      "tool": null,
+      "ok": null,
+      "summary": "요청 분석 시작",
+      "duration_ms": null,
+      "replan_round": null
+     },
+     {
+      "seq": 3,
+      "type": "llm_decision",
+      "stage": "analyze",
+      "tool": null,
+      "ok": null,
+      "summary": "의도 판단: clarify - 관측 계획에서 종료 시각만 제시했고 시작 시각과 지역이 없어 확인이 필요합니다. / 조건 부족(region, start_minute) → 되묻기",
+      "duration_ms": null,
+      "replan_round": null
+     },
+     {
+      "seq": 4,
+      "type": "stage_end",
+      "stage": "analyze",
+      "tool": null,
+      "ok": null,
+      "summary": "의도 clarify · 부족한 조건 region, start_minute",
+      "duration_ms": 1936,
+      "replan_round": null
+     },
+     {
+      "seq": 5,
+      "type": "stage_start",
+      "stage": "respond",
+      "tool": null,
+      "ok": null,
+      "summary": "응답 작성 시작",
+      "duration_ms": null,
+      "replan_round": null
+     },
+     {
+      "seq": 6,
+      "type": "stage_end",
+      "stage": "respond",
+      "tool": null,
+      "ok": null,
+      "summary": "clarify 응답 49자",
+      "duration_ms": 0,
+      "replan_round": null
+     }
+    ],
+    "warnings": [],
+    "safety_note": "야간 관측 시 이동 안전과 방한에 유의하세요."
+   },
+   "elapsed_s": 1.97
+  }
+ ]
+}

@@ -1,0 +1,90 @@
+{
+ "scenario": "R5",
+ "session_id": "dc90729ed225",
+ "turns": [
+  {
+   "message": "안녕, 이거 어떻게 써?",
+   "events": [
+    {
+     "session_id": "dc90729ed225",
+     "seq": 1,
+     "ts": "2026-11-18T07:52:27.582320Z",
+     "type": "session_start",
+     "stage": null,
+     "tool": null,
+     "payload": {
+      "message": "안녕, 이거 어떻게 써?"
+     }
+    },
+    {
+     "session_id": "dc90729ed225",
+     "seq": 2,
+     "ts": "2026-11-18T07:52:27.587320Z",
+     "type": "stage_start",
+     "stage": "analyze",
+     "tool": null,
+     "payload": {}
+    },
+    {
+     "session_id": "dc90729ed225",
+     "seq": 3,
+     "ts": "2026-11-18T07:52:29.864334Z",
+     "type": "llm_decision",
+     "stage": "analyze",
+     "tool": null,
+     "payload": {
+      "decision": "chat",
+      "reason": "인사와 서비스 사용법을 물어보는 잡담성 요청입니다.",
+      "model": "gpt-6-luna"
+     }
+    },
+    {
+     "session_id": "dc90729ed225",
+     "seq": 4,
+     "ts": "2026-11-18T07:52:29.868334Z",
+     "type": "stage_end",
+     "stage": "analyze",
+     "tool": null,
+     "payload": {
+      "duration_ms": 2277,
+      "summary": "의도 chat"
+     }
+    },
+    {
+     "session_id": "dc90729ed225",
+     "seq": 5,
+     "ts": "2026-11-18T07:52:29.873412Z",
+     "type": "stage_start",
+     "stage": "respond",
+     "tool": null,
+     "payload": {}
+    },
+    {
+     "session_id": "dc90729ed225",
+     "seq": 6,
+     "ts": "2026-11-18T07:52:31.853636Z",
+     "type": "stage_end",
+     "stage": "respond",
+     "tool": null,
+     "payload": {
+      "duration_ms": 1975,
+      "summary": "chat 응답 159자"
+     }
+    },
+    {
+     "session_id": "dc90729ed225",
+     "seq": 7,
+     "ts": "2026-11-18T07:52:31.865664Z",
+     "type": "session_end",
+     "stage": null,
+     "tool": null,
+     "payload": {
+      "intent": "chat",
+      "replan_count": 0,
+      "duration_ms": 4284
+     }
+    }
+   ]
+  }
+ ]
+}

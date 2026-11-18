@@ -1,267 +1,340 @@
 {
- "session_id": "c87a80ff585a",
- "intent": "plan",
- "answer": "- **추천:** 수성의 서방 최대이각(20°) — **2026-11-21**, 대전, **충족**\n- **관측 창:** 21:00~00:00+1 (180분) · **맑은 시간:** 180분\n- **달 영향:** 있음 (월령 12.2일)\n- **역산 기준:** 늦어도 **23:30까지** 도착하면 최소 30분 관측 가능합니다.\n- **장소:** 장소는 확인하지 못했습니다.\n- **제외 항목:** 없음\n- **판단 기준:** 관측 창 = 어두운 시간 ∩ 내 시간 ∩ 현상 시간, 최소 30분, 맑음(강수확률 30% 이하)만 맑은 시간으로 셉니다.\n- **근거 Tool:** `search_sky_events` 성공, `get_night_window` 성공, `get_sky_forecast` 성공, `search_observatory` 실패.",
- "conditions": {
-  "date_from": "2026-11-21",
-  "date_to": "2026-11-21",
-  "start_minute": 1260,
-  "region": "대전 근처",
-  "event_kind": null,
-  "event_query": null,
-  "place_query": "천문대",
-  "end_minute": 1440,
-  "max_distance_km": 20.0,
-  "allow_partly_cloudy": false,
-  "avoid_moon": true,
-  "fixed": [
-   "date_from"
-  ]
+ "scenario": "R4",
+ "captured_at": "2026-11-18T16:52:19+09:00",
+ "env_overrides": {
+  "CALENDAR_PROVIDER": "local",
+  "KAKAO_REST_KEY": ""
  },
- "needs_clarification": [],
- "recommended": [
+ "session_id": "4e79d5c0597f",
+ "turns": [
   {
-   "candidate": {
-    "event_id": "20261121-1",
-    "title": "수성의 서방 최대이각(20°)",
-    "kind": "planet",
-    "date": "2026-11-21",
-    "region": "대전",
-    "lat": 36.3504,
-    "lon": 127.3845,
-    "event_minute": 540
+   "message": "토요일 밤 9시부터 대전 근처 천문대에서 보고 싶어, 20km 이내. 자정 전에는 끝내야 해",
+   "response": {
+    "session_id": "4e79d5c0597f",
+    "intent": "plan",
+    "answer": "- 원래 요청 조건: 2026-11-21 토요일, 대전 근처에서 21:00~자정까지 관측하며 천문대는 20km 이내입니다.\n- **1순위 — 수성의 서방 최대이각(20°)**: 2026-11-21, 대전, **충족**.\n- 관측 창은 **21:00~00:00+1**, 맑은 시간은 **180분**, 달 영향은 **있음(월령 12.2일)**입니다.\n- 이날 추천 후보가 하나뿐이므로 다른 날과 비교할 후보는 없습니다.\n- 늦어도 **23:30까지 도착하면 최소 30분 관측 가능**합니다.\n- 판단 기준: 관측 창 = 어두운 시간 ∩ 내 시간 ∩ 현상 시간(천체는 고도 20° 이상인 시간), 최소 30분, 맑음(강수확률 30% 이하)만 맑은 시간으로 셉니다.\n- 근거 도구: `search_sky_events` 성공, `get_calendar` 성공, `get_night_window` 성공, `get_sky_forecast` 성공, `search_observatory` 실패.\n- 제외 항목은 없습니다.\n- **장소는 확인하지 못했습니다.** 천문대 장소 조회가 실패해 20km 이내 여부를 확인할 수 없습니다.",
+    "conditions": {
+     "date_from": "2026-11-21",
+     "date_to": "2026-11-21",
+     "start_minute": 1260,
+     "region": "대전 근처",
+     "event_kind": null,
+     "event_query": null,
+     "place_query": "천문대",
+     "end_minute": 1440,
+     "max_distance_km": 20.0,
+     "allow_partly_cloudy": false,
+     "avoid_moon": true,
+     "fixed": [
+      "date_from"
+     ]
+    },
+    "needs_clarification": [],
+    "recommended": [
+     {
+      "candidate": {
+       "event_id": "20261121-1",
+       "title": "수성의 서방 최대이각(20°)",
+       "kind": "planet",
+       "date": "2026-11-21",
+       "region": "대전",
+       "lat": 36.3504,
+       "lon": 127.3845,
+       "event_minute": 540
+      },
+      "verdict": "fit",
+      "dark_window": {
+       "start": 1129,
+       "end": 1784
+      },
+      "user_window": {
+       "start": 1260,
+       "end": 1440
+      },
+      "event_window": {
+       "start": 1129,
+       "end": 1784
+      },
+      "time_window": {
+       "start": 1260,
+       "end": 1440
+      },
+      "clear_minutes": 180,
+      "worst_sky": "clear",
+      "max_pop": 0,
+      "moon_interferes": true,
+      "lun_age": 12.2,
+      "latest_arrival_minute": 1410,
+      "forecast_source": "kma_short",
+      "reasons": [
+       "어두운 시간 18:49~05:44+1 · 내 시간 21:00~00:00+1 → 관측 창 21:00~00:00+1 (180분)",
+       "달빛(월령 12.2일)이 관측 창에 걸림 - 참고",
+       "맑은 시간 180분"
+      ],
+      "target_alt": null,
+      "target_az": null,
+      "moon_up": [
+       {
+        "start": 0,
+        "end": 188
+       },
+       {
+        "start": 888,
+        "end": 1440
+       },
+       {
+        "start": 1440,
+        "end": 1695
+       }
+      ],
+      "moon_unknown": [],
+      "hourly_sky": [
+       {
+        "hour": 21,
+        "sky": "clear",
+        "pop": 0,
+        "precip": "none"
+       },
+       {
+        "hour": 22,
+        "sky": "clear",
+        "pop": 0,
+        "precip": "none"
+       },
+       {
+        "hour": 23,
+        "sky": "clear",
+        "pop": 0,
+        "precip": "none"
+       }
+      ],
+      "object_window": null
+     }
+    ],
+    "excluded": [],
+    "places": [],
+    "replan_count": 0,
+    "replan_limit": 3,
+    "replan_limit_reached": false,
+    "stop_reason": null,
+    "steps": [
+     {
+      "seq": 2,
+      "type": "stage_start",
+      "stage": "analyze",
+      "tool": null,
+      "ok": null,
+      "summary": "요청 분석 시작",
+      "duration_ms": null,
+      "replan_round": null
+     },
+     {
+      "seq": 3,
+      "type": "llm_decision",
+      "stage": "analyze",
+      "tool": null,
+      "ok": null,
+      "summary": "의도 판단: plan - 토요일 밤 대전 근처 천문대에서 관측할 계획과 거리 및 시간 조건을 제시했습니다.",
+      "duration_ms": null,
+      "replan_round": null
+     },
+     {
+      "seq": 4,
+      "type": "stage_end",
+      "stage": "analyze",
+      "tool": null,
+      "ok": null,
+      "summary": "의도 plan",
+      "duration_ms": 2346,
+      "replan_round": null
+     },
+     {
+      "seq": 5,
+      "type": "stage_start",
+      "stage": "plan",
+      "tool": null,
+      "ok": null,
+      "summary": "작업 계획 시작",
+      "duration_ms": null,
+      "replan_round": null
+     },
+     {
+      "seq": 6,
+      "type": "stage_end",
+      "stage": "plan",
+      "tool": null,
+      "ok": null,
+      "summary": "5단계 계획: 현상 → 내 일정 → 출몰·월령 → 날씨 → 장소 (search_sky_events → get_calendar → get_night_window → get_sky_forecast → search_observatory)",
+      "duration_ms": 0,
+      "replan_round": null
+     },
+     {
+      "seq": 7,
+      "type": "stage_start",
+      "stage": "execute",
+      "tool": null,
+      "ok": null,
+      "summary": "Tool 실행 시작",
+      "duration_ms": null,
+      "replan_round": null
+     },
+     {
+      "seq": 8,
+      "type": "tool_call",
+      "stage": "execute",
+      "tool": "search_sky_events",
+      "ok": null,
+      "summary": "천문현상 조회 호출 (year=2026, month=11)",
+      "duration_ms": null,
+      "replan_round": null
+     },
+     {
+      "seq": 9,
+      "type": "tool_result",
+      "stage": "execute",
+      "tool": "search_sky_events",
+      "ok": true,
+      "summary": "천문현상 조회 성공",
+      "duration_ms": 233,
+      "replan_round": null
+     },
+     {
+      "seq": 10,
+      "type": "tool_call",
+      "stage": "execute",
+      "tool": "get_calendar",
+      "ok": null,
+      "summary": "get_calendar 호출 ()",
+      "duration_ms": null,
+      "replan_round": null
+     },
+     {
+      "seq": 11,
+      "type": "tool_result",
+      "stage": "execute",
+      "tool": "get_calendar",
+      "ok": true,
+      "summary": "get_calendar 성공",
+      "duration_ms": 0,
+      "replan_round": null
+     },
+     {
+      "seq": 12,
+      "type": "tool_call",
+      "stage": "execute",
+      "tool": "get_night_window",
+      "ok": null,
+      "summary": "박명·출몰 조회 호출 (date=2026-11-21)",
+      "duration_ms": null,
+      "replan_round": null
+     },
+     {
+      "seq": 13,
+      "type": "tool_result",
+      "stage": "execute",
+      "tool": "get_night_window",
+      "ok": true,
+      "summary": "박명·출몰 조회 성공",
+      "duration_ms": 796,
+      "replan_round": null
+     },
+     {
+      "seq": 14,
+      "type": "tool_call",
+      "stage": "execute",
+      "tool": "get_sky_forecast",
+      "ok": null,
+      "summary": "날씨 예보 조회 호출 (date=2026-11-21, hours=21~23시)",
+      "duration_ms": null,
+      "replan_round": null
+     },
+     {
+      "seq": 15,
+      "type": "tool_result",
+      "stage": "execute",
+      "tool": "get_sky_forecast",
+      "ok": true,
+      "summary": "날씨 예보 조회 성공",
+      "duration_ms": 1126,
+      "replan_round": null
+     },
+     {
+      "seq": 16,
+      "type": "tool_call",
+      "stage": "execute",
+      "tool": "search_observatory",
+      "ok": null,
+      "summary": "관측지 검색 호출 (query=천문대, radius_km=20.0)",
+      "duration_ms": null,
+      "replan_round": null
+     },
+     {
+      "seq": 17,
+      "type": "tool_result",
+      "stage": "execute",
+      "tool": "search_observatory",
+      "ok": false,
+      "summary": "관측지 검색 실패(AUTH): 카카오 REST 키가 설정되지 않았다",
+      "duration_ms": 0,
+      "replan_round": null
+     },
+     {
+      "seq": 18,
+      "type": "stage_end",
+      "stage": "execute",
+      "tool": null,
+      "ok": null,
+      "summary": "Tool 호출 5회(실패 1) · 캐시 재사용 0회 · 후보 1개",
+      "duration_ms": 2199,
+      "replan_round": null
+     },
+     {
+      "seq": 19,
+      "type": "stage_start",
+      "stage": "judge",
+      "tool": null,
+      "ok": null,
+      "summary": "판정 시작",
+      "duration_ms": null,
+      "replan_round": null
+     },
+     {
+      "seq": 20,
+      "type": "stage_end",
+      "stage": "judge",
+      "tool": null,
+      "ok": null,
+      "summary": "충족 1",
+      "duration_ms": 0,
+      "replan_round": null
+     },
+     {
+      "seq": 21,
+      "type": "stage_start",
+      "stage": "respond",
+      "tool": null,
+      "ok": null,
+      "summary": "응답 작성 시작",
+      "duration_ms": null,
+      "replan_round": null
+     },
+     {
+      "seq": 22,
+      "type": "stage_end",
+      "stage": "respond",
+      "tool": null,
+      "ok": null,
+      "summary": "plan 응답 567자",
+      "duration_ms": 3139,
+      "replan_round": null
+     }
+    ],
+    "warnings": [
+     "카카오 장소 검색 API 키가 설정되지 않았거나 인증에 실패했습니다. 장소 정보는 확인하지 못했습니다."
+    ],
+    "safety_note": "야간 관측 시 이동 안전과 방한에 유의하세요."
    },
-   "verdict": "fit",
-   "dark_window": {
-    "start": 1129,
-    "end": 1784
-   },
-   "user_window": {
-    "start": 1260,
-    "end": 1440
-   },
-   "event_window": {
-    "start": 1129,
-    "end": 1784
-   },
-   "time_window": {
-    "start": 1260,
-    "end": 1440
-   },
-   "clear_minutes": 180,
-   "worst_sky": "clear",
-   "max_pop": 0,
-   "moon_interferes": true,
-   "lun_age": 12.2,
-   "latest_arrival_minute": 1410,
-   "forecast_source": "kma_short",
-   "reasons": [
-    "어두운 시간 18:49~05:44+1 · 내 시간 21:00~00:00+1 → 관측 창 21:00~00:00+1 (180분)",
-    "달빛(월령 12.2일)이 관측 창에 걸림 - 참고",
-    "맑은 시간 180분"
-   ],
-   "target_alt": null,
-   "target_az": null
+   "elapsed_s": 7.76
   }
- ],
- "excluded": [],
- "places": [],
- "replan_count": 0,
- "replan_limit_reached": false,
- "steps": [
-  {
-   "seq": 2,
-   "type": "stage_start",
-   "stage": "analyze",
-   "tool": null,
-   "ok": null,
-   "summary": "요청 분석 시작",
-   "duration_ms": null,
-   "replan_round": null
-  },
-  {
-   "seq": 3,
-   "type": "llm_decision",
-   "stage": "analyze",
-   "tool": null,
-   "ok": null,
-   "summary": "의도 판단: plan - 토요일 밤에 대전 근처 천문대에서 관측할 계획을 요청했습니다.",
-   "duration_ms": null,
-   "replan_round": null
-  },
-  {
-   "seq": 4,
-   "type": "stage_end",
-   "stage": "analyze",
-   "tool": null,
-   "ok": null,
-   "summary": "의도 plan",
-   "duration_ms": 3367,
-   "replan_round": null
-  },
-  {
-   "seq": 5,
-   "type": "stage_start",
-   "stage": "plan",
-   "tool": null,
-   "ok": null,
-   "summary": "작업 계획 시작",
-   "duration_ms": null,
-   "replan_round": null
-  },
-  {
-   "seq": 6,
-   "type": "stage_end",
-   "stage": "plan",
-   "tool": null,
-   "ok": null,
-   "summary": "4단계 계획: 현상 → 출몰·월령 → 날씨 → 장소 (search_sky_events → get_night_window → get_sky_forecast → search_observatory)",
-   "duration_ms": 0,
-   "replan_round": null
-  },
-  {
-   "seq": 7,
-   "type": "stage_start",
-   "stage": "execute",
-   "tool": null,
-   "ok": null,
-   "summary": "Tool 실행 시작",
-   "duration_ms": null,
-   "replan_round": null
-  },
-  {
-   "seq": 8,
-   "type": "tool_call",
-   "stage": "execute",
-   "tool": "search_sky_events",
-   "ok": null,
-   "summary": "천문현상 조회 호출 (year=2026, month=11)",
-   "duration_ms": null,
-   "replan_round": null
-  },
-  {
-   "seq": 9,
-   "type": "tool_result",
-   "stage": "execute",
-   "tool": "search_sky_events",
-   "ok": true,
-   "summary": "천문현상 조회 성공",
-   "duration_ms": 183,
-   "replan_round": null
-  },
-  {
-   "seq": 10,
-   "type": "tool_call",
-   "stage": "execute",
-   "tool": "get_night_window",
-   "ok": null,
-   "summary": "박명·출몰 조회 호출 (date=2026-11-21)",
-   "duration_ms": null,
-   "replan_round": null
-  },
-  {
-   "seq": 11,
-   "type": "tool_result",
-   "stage": "execute",
-   "tool": "get_night_window",
-   "ok": true,
-   "summary": "박명·출몰 조회 성공",
-   "duration_ms": 795,
-   "replan_round": null
-  },
-  {
-   "seq": 12,
-   "type": "tool_call",
-   "stage": "execute",
-   "tool": "get_sky_forecast",
-   "ok": null,
-   "summary": "날씨 예보 조회 호출 (date=2026-11-21, hours=21~23시)",
-   "duration_ms": null,
-   "replan_round": null
-  },
-  {
-   "seq": 13,
-   "type": "tool_result",
-   "stage": "execute",
-   "tool": "get_sky_forecast",
-   "ok": true,
-   "summary": "날씨 예보 조회 성공",
-   "duration_ms": 1171,
-   "replan_round": null
-  },
-  {
-   "seq": 14,
-   "type": "tool_call",
-   "stage": "execute",
-   "tool": "search_observatory",
-   "ok": null,
-   "summary": "관측지 검색 호출 (query=천문대, radius_km=20.0)",
-   "duration_ms": null,
-   "replan_round": null
-  },
-  {
-   "seq": 15,
-   "type": "tool_result",
-   "stage": "execute",
-   "tool": "search_observatory",
-   "ok": false,
-   "summary": "관측지 검색 실패(AUTH): 카카오 REST 키가 설정되지 않았다",
-   "duration_ms": 0,
-   "replan_round": null
-  },
-  {
-   "seq": 16,
-   "type": "stage_end",
-   "stage": "execute",
-   "tool": null,
-   "ok": null,
-   "summary": "Tool 호출 4회(실패 1) · 캐시 재사용 0회 · 후보 1개",
-   "duration_ms": 2151,
-   "replan_round": null
-  },
-  {
-   "seq": 17,
-   "type": "stage_start",
-   "stage": "judge",
-   "tool": null,
-   "ok": null,
-   "summary": "판정 시작",
-   "duration_ms": null,
-   "replan_round": null
-  },
-  {
-   "seq": 18,
-   "type": "stage_end",
-   "stage": "judge",
-   "tool": null,
-   "ok": null,
-   "summary": "충족 1",
-   "duration_ms": 0,
-   "replan_round": null
-  },
-  {
-   "seq": 19,
-   "type": "stage_start",
-   "stage": "respond",
-   "tool": null,
-   "ok": null,
-   "summary": "응답 작성 시작",
-   "duration_ms": null,
-   "replan_round": null
-  },
-  {
-   "seq": 20,
-   "type": "stage_end",
-   "stage": "respond",
-   "tool": null,
-   "ok": null,
-   "summary": "plan 응답 416자",
-   "duration_ms": 2520,
-   "replan_round": null
-  }
- ],
- "warnings": [
-  "카카오 장소 검색 API 키가 설정되지 않았거나 인증에 실패했습니다. 장소 정보는 확인하지 못했습니다."
- ],
- "safety_note": "야간 관측 시 이동 안전과 방한에 유의하세요."
+ ]
 }

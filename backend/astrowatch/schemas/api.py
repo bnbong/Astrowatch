@@ -10,6 +10,9 @@
     GET  /api/logs/{session_id}    → list[LogEventOut]   (seq 순)
     DELETE /api/logs/{session_id}  → 204
     (실행 로그 수정 API 는 두지 않는다 — F3014)
+    GET  /api/sessions             → list[SessionSummaryOut]   (대화 목록, last_at 내림차순)
+    GET  /api/sessions/{id}        → SessionDetailOut          (턴 전체, 화면 복원)
+    DELETE /api/sessions/{id}      → 204                       (turns·sessions 만, run_logs 유지)
 """
 
 from __future__ import annotations
@@ -72,6 +75,37 @@ class ChatResponse(BaseModel):
     steps: list[StepOut] = Field(default_factory=list)
     warnings: list[str] = Field(default_factory=list, description="API 키 누락 · Tool 실패 안내 (상세 오류는 넣지 않는다, NF3002)")
     safety_note: str = "야간 관측 시 이동 안전과 방한에 유의하세요."
+
+
+class SessionSummaryOut(BaseModel):
+    """대화 목록 한 줄 (GET /api/sessions). 실행 로그 세션과 별개로 '대화' 단위."""
+
+    session_id: str
+    title: str = Field(description="첫 사용자 메시지 앞 60자")
+    started_at: datetime
+    last_at: datetime
+    turn_count: int
+    last_intent: str | None = None
+
+
+class TurnOut(BaseModel):
+    """대화 턴 하나 — 화면 복원용. response 는 당시 ChatResponse 그대로."""
+
+    session_id: str
+    seq: int
+    ts: datetime
+    user_message: str
+    response: "ChatResponse"
+
+
+class SessionDetailOut(BaseModel):
+    """GET /api/sessions/{session_id}. turns 는 seq 순. DELETE 는 turns·sessions 만 지우고 run_logs 는 남긴다."""
+
+    session_id: str
+    title: str
+    started_at: datetime
+    last_at: datetime
+    turns: list[TurnOut]
 
 
 class LogSessionOut(BaseModel):

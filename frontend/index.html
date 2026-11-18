@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Noto+Serif+KR:wght@600;700&family=Space+Grotesk:wght@500;600;700&display=swap">
-  <link rel="stylesheet" href="css/style.css?v=3">
+  <link rel="stylesheet" href="css/style.css?v=6">
 </head>
 <body>
 <div class="app">
@@ -16,6 +16,10 @@
     <a class="rail-link" href="index.html" aria-current="page"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg><span>대화</span></a>
     <a class="rail-link" href="plans.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg><span>관측 계획</span><span class="rail-count" id="rail-plan-count" hidden></span></a>
     <a class="rail-link" href="logs.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h7"></path></svg><span>실행 로그</span></a>
+    <section class="convo-box" aria-labelledby="convo-heading">
+      <h2 id="convo-heading" class="convo-heading" tabindex="-1">최근 대화</h2>
+      <ul id="convo-list" class="convo-list"><li class="convo-empty">불러오는 중…</li></ul>
+    </section>
     <div class="rail-card" id="health" aria-live="polite"><div class="rail-card-title">연결 상태</div><div class="muted">확인 중…</div></div>
   </nav>
   <main class="chat-layout">
@@ -24,8 +28,17 @@
         <a class="mobile-brand" href="index.html" aria-label="Astrowatch 홈"><svg width="24" height="24" viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="13" fill="none" stroke="#1B2A4A" stroke-width="1.5" stroke-dasharray="3 4"></circle><circle cx="15" cy="15" r="5.5" fill="#1B2A4A"></circle><circle cx="24" cy="8" r="2" fill="#B8731B"></circle></svg><span class="brand-name">Astrowatch</span></a>
         <h1 class="page-title">관측 계획 짜기</h1>
         <span id="session-label" class="session-chip">새 대화</span>
+        <button type="button" id="convo-toggle" class="btn btn-sm convo-toggle" aria-controls="convo-sheet" aria-expanded="false">대화 목록</button>
         <button type="button" id="new-chat" class="btn btn-sm">새 대화</button>
       </header>
+
+      <section id="convo-sheet" class="convo-sheet" aria-labelledby="convo-heading-m" hidden>
+        <div class="convo-sheet-head">
+          <h2 id="convo-heading-m" class="convo-heading">최근 대화</h2>
+          <button type="button" id="convo-close" class="btn btn-icon" aria-label="대화 목록 닫기"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
+        </div>
+        <ul id="convo-list-m" class="convo-list"></ul>
+      </section>
 
       <div id="cond-strip" class="cond-strip" aria-label="현재 조건"></div>
 
@@ -78,10 +91,10 @@
     <a class="tab" href="logs.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h7"></path></svg><span>로그</span></a>
   </nav>
 </div>
-  <script src="js/api.js?v=3"></script>
-  <script src="js/markdown.js?v=3"></script>
-  <script src="js/ui.js?v=3"></script>
-  <script src="js/timeline.js?v=3"></script>
-  <script src="js/chat.js?v=3"></script>
+  <script src="js/api.js?v=6"></script>
+  <script src="js/markdown.js?v=6"></script>
+  <script src="js/ui.js?v=6"></script>
+  <script src="js/timeline.js?v=6"></script>
+  <script src="js/chat.js?v=6"></script>
 </body>
 </html>

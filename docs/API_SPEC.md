@@ -20,6 +20,9 @@
 | GET | `/api/logs` | — | `LogSessionOut[]` (최근 순) | 200 | F3014 |
 | GET | `/api/logs/{session_id}` | — | `LogEventOut[]` (**seq 순**) | 200 · 404 | F3014 |
 | DELETE | `/api/logs/{session_id}` | — | 본문 없음 | 204 · 404 | F3014 |
+| GET | `/api/sessions` | — | `SessionSummaryOut[]` (최근 순) | 200 | 화면 복원 |
+| GET | `/api/sessions/{session_id}` | — | `SessionDetailOut` (턴 **seq 순**) | 200 · 404 | 화면 복원 |
+| DELETE | `/api/sessions/{session_id}` | — | 본문 없음 (run_logs 유지) | 204 · 404 | 화면 복원 |
 | GET | `/api/tools` | — | Tool 명세 목록 | 200 | F3001 |
 | GET | `/api/graph` | — | `{"ascii": "..."}` | 200 · 503 | 검증 4.2 |
 | GET | `/api/health` | — | `{status, llm_configured, tools}` | 200 | — |
@@ -225,7 +228,35 @@ Content-Type: application/json
 
 ---
 
-## 6. 메타
+## 6. 대화 세션 `/api/sessions` (화면 복원)
+
+`run_turn` 이 응답을 돌려주기 직전에 턴(사용자 메시지 + 당시 `ChatResponse`)을 `turns` 표에 저장한다. 저장 실패는 경고 로그만 남기고 응답에는 영향이 없다. LLM 맥락(`sessions.history_json`)·실행 로그(`run_logs`)와는 별개다.
+
+### `GET /api/sessions` → `SessionSummaryOut[]` (`last_at` 내림차순)
+
+| 필드 | 설명 |
+|---|---|
+| `session_id` | 세션 |
+| `title` | 첫 사용자 메시지 앞 60자 |
+| `started_at` · `last_at` | 첫 · 마지막 턴 시각 (현지 시각) |
+| `turn_count` | 턴 수 |
+| `last_intent` | 마지막 턴 응답의 `intent` (읽지 못하면 `null`) |
+
+### `GET /api/sessions/{session_id}` → `SessionDetailOut`
+
+`{session_id, title, started_at, last_at, turns: TurnOut[]}` — `TurnOut = {session_id, seq, ts, user_message, response: ChatResponse}`, seq 순. 옛 형식이라 `ChatResponse` 로 읽지 못하는 턴은 건너뛴다(서버 경고 로그).
+
+### `DELETE /api/sessions/{session_id}` → 204
+
+해당 세션의 `turns` 행과 `sessions` 행(LLM 맥락)만 지운다. **실행 로그(`run_logs`)는 남는다** — 지우려면 `DELETE /api/logs/{id}`.
+
+| 상태 | 경우 |
+|---|---|
+| 404 | 턴도 세션 행도 없음 `"대화를 찾을 수 없습니다"` (GET 은 턴이 없을 때) |
+
+---
+
+## 7. 메타
 
 | 경로 | 응답 |
 |---|---|

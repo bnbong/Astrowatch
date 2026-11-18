@@ -1,4 +1,4 @@
-// 대화 화면 (F3018): 조건 스트립 · 메시지 송수신 · 추천 카드(밤 타임바) · 계획 저장 · 실행 패널.
+// 대화 화면 (F3018): 조건 스트립 · 메시지 송수신 · 추천 카드(밤 타임바) · 계획 저장 · 실행 패널 · 최근 대화 목록/복원.
 (function () {
   "use strict";
 
@@ -26,6 +26,12 @@
   const $sumTools = document.getElementById("sum-tools");
   const $sumReplan = document.getElementById("sum-replan");
   const $sumLog = document.getElementById("sum-log");
+  const $convoList = document.getElementById("convo-list");     // 레일 (넓은 화면)
+  const $convoListM = document.getElementById("convo-list-m");  // 상단 드롭다운 (모바일)
+  const $convoHeading = document.getElementById("convo-heading");
+  const $convoToggle = document.getElementById("convo-toggle");
+  const $convoSheet = document.getElementById("convo-sheet");
+  const $convoClose = document.getElementById("convo-close");
 
   const KIND = {
     meteor: "유성우", planet: "행성", moon: "달", eclipse: "식", occultation: "엄폐",
@@ -56,6 +62,7 @@
     } else {
       $sumLog.hidden = true;
     }
+    renderConvos(); // 현재 세션 강조 갱신
   }
 
   // ── 조건 스트립 ──
@@ -116,7 +123,9 @@
   }
 
   // ── 말풍선 ──
+  let restoring = false; // 복원 중에는 말풍선마다 부드러운 스크롤을 하지 않고 마지막에 한 번만 내린다
   function scrollToEnd(el) {
+    if (restoring) return;
     el.scrollIntoView({ behavior: "smooth", block: "end" });
   }
   function addUser(text) {
@@ -171,9 +180,20 @@
       '<div class="stat"><div class="stat-k">' + esc(k) + '</div><div class="stat-v ' + (vCls || "") + '">' + vHtml + "</div>" +
       (sub ? '<div class="stat-s">' + esc(sub) + "</div>" : "") + "</div>";
 
-    const win = tw
-      ? stat("관측 창", timeHtml(tw.start) + " – " + timeHtml(tw.end), "is-ink", (tw.end - tw.start) + "분")
-      : stat("관측 창", "—", "is-none", "가능한 시간 창 없음");
+    // 관측 창은 카드의 답이므로 수치 칸이 아니라 헤드라인으로 크게 보여 준다
+    let hero;
+    if (tw) {
+      const chips = ['<span class="hero-chip num">' + esc(durText(tw.end - tw.start)) + "</span>"];
+      if (j.latest_arrival_minute != null) chips.push('<span class="hero-chip">늦어도 <b class="num">' + timeHtml(j.latest_arrival_minute) + "</b> 도착</span>");
+      if (j.verdict === "conditional") chips.push('<span class="hero-chip is-cond">날씨 미확인</span>');
+      hero = '<div class="hero-window' + (j.verdict === "fit" ? " is-fit" : "") + '">' +
+        '<div class="hero-k">' + I.clock(14) + "관측 가능 시각</div>" +
+        '<div class="hero-v num">' + timeHtml(tw.start) + '<span class="hero-dash">–</span>' + timeHtml(tw.end) + "</div>" +
+        '<div class="hero-chips">' + chips.join("") + "</div></div>";
+    } else {
+      hero = '<div class="hero-window is-none"><div class="hero-k">' + I.clock(14) + "관측 가능 시각</div>" +
+        '<div class="hero-v num is-none">—</div><div class="hero-chips"><span class="hero-chip">가능한 시간 창 없음</span></div></div>';
+    }
 
     let clear;
     if (j.clear_minutes == null) {
@@ -196,7 +216,7 @@
       ? stat("늦어도 도착", timeHtml(j.latest_arrival_minute), "", "최소 관측 시간 확보")
       : stat("늦어도 도착", "—", "is-none", "역산할 창 없음");
 
-    return '<div class="stats">' + win + clear + moon + arrive + "</div>";
+    return hero + '<div class="stats stats-3">' + clear + moon + arrive + "</div>";
   }
 
   // 겹치는 계획 안내 (저장 응답의 overlaps)
@@ -440,11 +460,12 @@
     addUser(message);
     $input.value = "";
     setBusy(true);
-    const myGen = generation;
+    const myGen = ++generation; // 진행 중인 복원이 있으면 그 결과는 버린다
     try {
       const res = await window.Api.post("/api/chat", { session_id: getSession(), message });
       if (myGen !== generation) return;
       setSession(res.session_id);
+      noteTurn(res.session_id, message);
       renderConditions(res.conditions, res.needs_clarification);
       renderResponse(res);
       window.Timeline.render($timeline, res.steps);
@@ -469,14 +490,227 @@
     }
   });
 
-  $newChat.addEventListener("click", () => {
+  function startNewChat() {
     generation += 1;
-    setSession(null);
+    confirmingId = null;
+    setSession(null); // 목록 강조도 해제된다
     $messages.innerHTML = "";
     resetPanel();
     renderConditions(null, []);
     addWelcome();
+  }
+  $newChat.addEventListener("click", startNewChat);
+
+  // ── 최근 대화 목록 ──
+  // GET /api/sessions 를 레일과 모바일 드롭다운 두 곳에 같은 HTML 로 그린다. API 가 없거나 실패해도 화면은 유지.
+  let convos = [];
+  let convosLoaded = false;
+  let convosFailed = false;
+  let confirmingId = null; // 인라인 삭제 확인 중인 세션
+  let convoReq = 0;
+  const convoLists = [$convoList, $convoListM].filter(Boolean);
+
+  function pad2(n) { return String(n).padStart(2, "0"); }
+  // 오늘이면 HH:MM, 아니면 M/D
+  function convoTime(value) {
+    if (!value) return "";
+    const d = new Date(value);
+    if (isNaN(d)) return "";
+    const now = new Date();
+    const today = d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth() && d.getDate() === now.getDate();
+    return today ? pad2(d.getHours()) + ":" + pad2(d.getMinutes()) : (d.getMonth() + 1) + "/" + d.getDate();
+  }
+  function convoTitle(s) {
+    const t = String((s && s.title) || "").trim();
+    return t ? t.slice(0, 60) : "제목 없는 대화";
+  }
+
+  function convoItemHtml(s) {
+    const id = String(s.session_id);
+    const cur = id === currentSession;
+    const title = convoTitle(s);
+    const confirming = confirmingId === id;
+    let html = '<li class="convo-item' + (cur ? " is-current" : "") + '"><div class="convo-row">' +
+      '<button type="button" class="convo-open" data-open="' + esc(id) + '"' + (cur ? ' aria-current="true"' : "") + ' title="' + esc(title) + '">' +
+      '<span class="convo-title">' + esc(title) + "</span>" +
+      '<span class="convo-meta"><span class="num">' + esc(convoTime(s.last_at)) + "</span>" +
+      '<span class="convo-turns num">' + esc(s.turn_count || 0) + "턴</span></span></button>" +
+      '<button type="button" class="convo-del" data-del="' + esc(id) + '" aria-label="대화 삭제: ' + esc(title) + '"' +
+      ' aria-expanded="' + (confirming ? "true" : "false") + '">' + I.x(14) + "</button></div>";
+    if (confirming) {
+      html += '<div class="convo-confirm" role="group" aria-label="삭제 확인">' +
+        '<p class="convo-confirm-msg">이 대화를 삭제할까요? 대화만 지워지고 실행 로그는 남습니다.</p>' +
+        '<div class="convo-confirm-actions">' +
+        '<button type="button" class="btn btn-sm btn-danger-fill" data-confirm-del="' + esc(id) + '">삭제</button>' +
+        '<button type="button" class="btn btn-sm" data-cancel-del="' + esc(id) + '">취소</button></div></div>';
+    }
+    return html + "</li>";
+  }
+
+  function renderConvos() {
+    if (!convoLists.length) return;
+    let html;
+    if (convos.length) html = convos.map(convoItemHtml).join("");
+    else if (!convosLoaded) html = '<li class="convo-empty">불러오는 중…</li>';
+    else html = '<li class="convo-empty">' + (convosFailed ? "대화 목록을 불러오지 못했습니다" : "아직 대화가 없습니다") + "</li>";
+    convoLists.forEach((ul) => { ul.innerHTML = html; });
+  }
+
+  async function refreshConvos() {
+    const my = ++convoReq;
+    try {
+      const list = await window.Api.get("/api/sessions");
+      if (my !== convoReq) return;
+      convos = Array.isArray(list) ? list.filter((s) => s && s.session_id) : [];
+      convosFailed = false;
+    } catch (_) {
+      if (my !== convoReq) return;
+      convosFailed = true; // 기존(낙관적) 목록은 그대로 둔다
+    }
+    convosLoaded = true;
+    renderConvos();
+  }
+
+  // 응답을 받으면 목록을 즉시 고친 뒤(새 세션이면 맨 위에 추가) 서버 목록으로 다시 맞춘다.
+  function noteTurn(sessionId, message) {
+    if (!sessionId) return;
+    const now = window.Fmt.toLocalIso(new Date());
+    const i = convos.findIndex((s) => s.session_id === sessionId);
+    const item = i >= 0
+      ? Object.assign({}, convos.splice(i, 1)[0], { last_at: now })
+      : { session_id: sessionId, title: String(message || "").slice(0, 60), started_at: now, last_at: now, turn_count: 0, last_intent: null };
+    item.turn_count = (item.turn_count || 0) + 1;
+    convos.unshift(item);
+    convosLoaded = true;
+    renderConvos();
+    refreshConvos();
+  }
+
+  function findButton(ul, attr, id) {
+    return Array.from(ul.querySelectorAll("button")).find((b) => b.getAttribute(attr) === id) || null;
+  }
+
+  async function deleteConvo(id, btn) {
+    btn.disabled = true;
+    try {
+      await window.Api.del("/api/sessions/" + encodeURIComponent(id));
+    } catch (e) {
+      if (e.status !== 404) { // 404 는 이미 지워진 것으로 본다
+        btn.disabled = false;
+        const box = btn.closest(".convo-confirm");
+        const msg = box && box.querySelector(".convo-confirm-msg");
+        if (msg) msg.textContent = e.message;
+        return;
+      }
+    }
+    const fromRail = !!($convoList && $convoList.contains(btn));
+    confirmingId = null;
+    convos = convos.filter((s) => s.session_id !== id);
+    if (id === currentSession) startNewChat();
+    else renderConvos();
+    if (fromRail && $convoHeading) $convoHeading.focus();
+    refreshConvos();
+  }
+
+  function onConvoClick(ev) {
+    const ul = ev.currentTarget;
+    const b = ev.target.closest("button");
+    if (!b || !ul.contains(b)) return;
+    if (b.hasAttribute("data-open")) {
+      confirmingId = null;
+      setConvoSheet(false);
+      restoreSession(b.getAttribute("data-open"));
+    } else if (b.hasAttribute("data-del")) {
+      const id = b.getAttribute("data-del");
+      confirmingId = confirmingId === id ? null : id;
+      renderConvos();
+      const target = confirmingId ? findButton(ul, "data-confirm-del", id) : findButton(ul, "data-del", id);
+      if (target) target.focus();
+    } else if (b.hasAttribute("data-confirm-del")) {
+      deleteConvo(b.getAttribute("data-confirm-del"), b);
+    } else if (b.hasAttribute("data-cancel-del")) {
+      const id = b.getAttribute("data-cancel-del");
+      confirmingId = null;
+      renderConvos();
+      const target = findButton(ul, "data-del", id);
+      if (target) target.focus();
+    }
+  }
+  convoLists.forEach((ul) => ul.addEventListener("click", onConvoClick));
+
+  // 모바일: 헤더 "대화 목록" 버튼으로 여닫는 상단 드롭다운
+  function setConvoSheet(open) {
+    if (!$convoSheet || !$convoToggle) return;
+    if ($convoSheet.hidden === !open) return;
+    $convoSheet.hidden = !open;
+    $convoToggle.setAttribute("aria-expanded", open ? "true" : "false");
+    if (open) {
+      refreshConvos();
+      const first = $convoSheet.querySelector("button.convo-open") || $convoClose;
+      if (first) first.focus();
+    }
+  }
+  if ($convoToggle) $convoToggle.addEventListener("click", () => setConvoSheet($convoSheet.hidden));
+  if ($convoClose) $convoClose.addEventListener("click", () => { setConvoSheet(false); $convoToggle.focus(); });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && $convoSheet && !$convoSheet.hidden) { setConvoSheet(false); $convoToggle.focus(); }
   });
+
+  // ── 세션 복원 ──
+  // GET /api/sessions/{id} 의 턴을 그대로 다시 그린다. 404 면 안내 후 새 대화. quiet 면 실패를 알리지 않는다(자동 복원).
+  async function restoreSession(id, opts) {
+    const quiet = !!(opts && opts.quiet);
+    if (!id) return false;
+    const myGen = ++generation; // 진행 중인 전송·복원 결과는 버린다
+    let detail;
+    try {
+      detail = await window.Api.get("/api/sessions/" + encodeURIComponent(id));
+    } catch (e) {
+      if (myGen !== generation) return false;
+      if (quiet) { startNewChat(); return false; }
+      if (e.status === 404) {
+        convos = convos.filter((s) => s.session_id !== id);
+        startNewChat();
+        const wrap = addBot("Astrowatch");
+        wrap.appendChild(el("div", "banner banner-cond", I.alert(16) + "<span>이 대화를 찾을 수 없습니다. 삭제되었을 수 있어 새 대화로 시작합니다.</span>"));
+        refreshConvos();
+      } else {
+        const wrap = addBot("Astrowatch");
+        wrap.appendChild(el("div", "banner banner-bad", I.alert(16) + "<span>" + esc(e.message) + "</span>"));
+        scrollToEnd(wrap);
+      }
+      return false;
+    }
+    if (myGen !== generation) return false;
+
+    const turns = (detail && Array.isArray(detail.turns) ? detail.turns.slice() : [])
+      .sort((a, b) => (a.seq || 0) - (b.seq || 0));
+    confirmingId = null;
+    $messages.innerHTML = "";
+    resetPanel();
+    renderConditions(null, []);
+    setSession((detail && detail.session_id) || id);
+    restoring = true;
+    try {
+      if (!turns.length) addWelcome();
+      turns.forEach((t) => {
+        addUser(t.user_message || "");
+        if (t.response) renderResponse(t.response);
+      });
+    } finally {
+      restoring = false;
+    }
+    const last = turns.length ? turns[turns.length - 1].response : null;
+    if (last) {
+      renderConditions(last.conditions, last.needs_clarification);
+      window.Timeline.render($timeline, last.steps);
+      renderEvidence(last);
+      renderSummary(last);
+    }
+    $messages.scrollTop = $messages.scrollHeight;
+    refreshConvos();
+    return true;
+  }
 
   document.querySelectorAll("[data-example]").forEach((b) =>
     b.addEventListener("click", () => {
@@ -490,8 +724,19 @@
       "<p>안녕하세요! 관측하고 싶은 <b>날짜 · 지역 · 현상</b>을 알려 주세요. 예: \"12월 14일 밤 서울에서 쌍둥이자리 유성우 볼 수 있어?\"</p>"));
   }
 
-  setSession(readStoredSession());
+  window.Chat = { restoreSession, refreshConvos, startNewChat };
+
+  // ── 시작: 저장된 세션이 있으면 조용히 복원, 없거나 실패하면 새 대화 ──
   renderConditions(null, []);
   resetPanel();
-  addWelcome();
+  const stored = readStoredSession();
+  if (stored) {
+    renderConvos();
+    $sessionLabel.textContent = "불러오는 중…";
+    restoreSession(stored, { quiet: true });
+  } else {
+    setSession(null);
+    addWelcome();
+  }
+  refreshConvos();
 })();

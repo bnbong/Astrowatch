@@ -10,12 +10,12 @@
 | 표시 | 뜻 | 근거 위치 |
 |---|---|---|
 | **E2E** | 실행 중인 서버에 실제 HTTP 요청 · 실제 LLM · 실제 외부 API (Codex 리뷰, 2026-11-18 15시경) | `output/e2e-review/Sxx.json`, `Sxx-logs.json`, `browser-*.png` |
-| **실측 샘플** | 실제 키로 1회 실행한 응답 저장 | `samples/run_R1.json`, `run_R4_nokakao.json`, `run_andromeda.json`, `run_fact_mars.json` |
-| **mock 샘플** | 실제 LLM · 천문연, 날씨만 `WEATHER_PROVIDER=mock`(전부 흐림) | `samples/run_R2_mock.json`, `run_R3_mock.json` |
+| **실측 샘플** | `backend/scripts/run_scenarios.py` 로 실제 키 · 실제 LLM 실행 (`run_turn` 직접 호출, 2026-11-18 16:51, 캘린더는 `CALENDAR_PROVIDER=local`). 요청 원문 · 응답 · 경과초는 `run_*.json`, 실행 로그는 `logs_*.json` | `samples/run_R1.json`(R1+R6), `run_R6.json`, `run_R4_nokakao.json`(카카오 키 제거), `run_R5.json`, `run_R7.json`, `run_andromeda.json`, `run_fact_mars.json`, `run_invalid_date.json`, `run_unknown_object.json` |
+| **mock 샘플** | 위와 같은 스크립트, 날씨만 `WEATHER_PROVIDER=mock`(전부 흐림) | `samples/run_R2_mock.json`, `run_R3_mock.json` |
 | **자동 테스트** | 키 · 네트워크 없이 `samples/` fixture · 가짜 LLM | `backend/tests/*.py` |
 | **미검증** | 아직 실행 증거 없음 | — |
 
-> ⚠️ E2E 리뷰와 `samples/run_*.json` 은 **6절의 수정 이전** 코드로 실행했다. 수정 후 동작은 자동 테스트로만 확인했고, 실제 E2E 재실행은 3일차 예정(미검증).
+> ⚠️ E2E 리뷰(`output/e2e-review/`)는 **6절의 수정 이전** 코드로 실행했다. `samples/run_*.json` 은 수정 이후 코드로 `run_scenarios.py` 로 다시 캡처했다(서버·브라우저 없이 `run_turn` 직접 호출). 브라우저 E2E 재실행은 3일차 예정(미검증).
 
 **자동 테스트**: 18개 파일 · 233개 · 전부 통과 (`..\.venv\Scripts\python -X utf8 -m pytest`, 2026-11-18). 리뷰 시점은 181개였다(`output/e2e-review/pytest.txt`).
 
@@ -29,7 +29,7 @@
 | 정상 · 실패 호출이 봉투로 반환 | Tool 별 정상 / 키 없음 / 잘못된 입력 / 타임아웃 | `test_exception_becomes_envelope_not_raise` · `test_bad_input_and_unknown_tool` · `test_*_no_key_is_auth*` · `test_timeout_mapping` · `test_radius_over_limit_is_bad_input` | ✅ 자동 테스트 |
 | 기준 날짜 미지정 시 기본값 | 날짜 없이 요청 | 실측 `run_andromeda.json` ("2026-11-18~2026-11-27 범위에서 찾았습니다") · `test_deep_sky_without_date_uses_default_range` | ✅ |
 | 요청 기준 ≠ 조회 기준을 밝힘 | 예보 밖 날짜 · 중기예보 · mock | 실측 `run_R1.json` 사유 "예보 범위 밖(D-3부터 확인 가능)" · `test_kma_mid` note "시간별 예보 아님" · mock note | ✅ |
-| 후보 식별자 → 상세 조회로 이어짐 | 현상 date → 박명 date | `run_R1.json` seq 8→10 · `test_r1_flow` (Tool 순서 고정) | ✅ |
+| 후보 식별자 → 상세 조회로 이어짐 | 현상 date → 박명 date | `run_R1.json` seq 8→12 (사이 seq 10 `get_calendar`) · `test_r1_flow` (Tool 순서 고정) | ✅ |
 | 판단 속성이 비면 판단 안 함 | 박명 빈 값 · 미등록 천체 | `test_blank_twilight_is_no_window` · `test_no_night_window_unjudged` · `test_object_not_found_is_unjudged` · `test_r1_unknown_object_not_recommended` | ✅ 수정 후 (E2E S07 은 수정 전 실패 → 6절 R1) |
 | 보조 Tool 결과 없음 형식 | 반경 안 0건 | `test_no_result` (observatory) | ✅ 자동 테스트 |
 
@@ -45,7 +45,7 @@
 | 앞 결과 → 다음 입력 · 한 Tool 실패에도 진행 | 카카오 키 제거 | E2E S20 · 실측 `run_R4_nokakao.json` · `test_tool_auth_failure_continues` | ✅ |
 | 계산 값과 응답 판단 기준 일치 | 관측 창 · 맑은 시간 | `run_R1.json` 사유 240분 = 답변 22:00~02:00+1 · `test_judge.py` 26건 | ✅ |
 | 확인 못 하는 값은 역산 기준 | 예보 밖 | `run_R1.json` "늦어도 01:30+1 도착" · `test_partial_latest_arrival_skips_cloudy` | ✅ |
-| 재계획 시 이미 받은 결과 재호출 안 함 | 흐림 → 재계획 | `test_replan_reuses_cache` · mock `run_R2_mock.json` "캐시 재사용 1회 / 4회" · E2E S08 (Tool 호출 12개 모두 고유) | ✅ |
+| 재계획 시 이미 받은 결과 재호출 안 함 | 흐림 → 재계획 | `test_replan_reuses_cache` · mock `run_R2_mock.json` "캐시 재사용 1회 / 5회 / 2회" · E2E S08 (Tool 호출 12개 모두 고유) | ✅ |
 | 상한 도달 시 멈춤 + 사유 | 낮 시간 유성우 · mock 흐림 | E2E S08(3회) · mock `run_R3_mock.json` · `test_replan_limit` (`stop_reason=limit_reached`) | ✅ |
 | 후속 요청은 바뀐 조건만 | "장소만 대전으로" · "종료만 23시로" | E2E S14 · S15 · `test_follow_up_keeps_context` | ✅ |
 | 추천 · 보조 정보 · 기준 · 근거 · 제외 사유 | 응답 구성 | `run_R1.json` answer · mock `run_R2_mock.json` 제외 8건 사유 | ✅ |
@@ -105,16 +105,24 @@ F3020 · F3021 · F3022 는 선택하지 않았거나 미구현이라 확인 대
 
 | # | 요청 | 기대 | 실제 | 근거 | 종류 | 차이 |
 |---|---|---|---|---|---|---|
-| R1 | 12/14 서울 22~02시 쌍둥이자리 유성우 | 조건부 충족 · 달 영향 · "D-3부터" | 조건부 충족, 창 240분, 월령 5.5, 늦어도 01:30+1 | `samples/run_R1.json` · E2E S03 | 실측 · E2E | 없음 |
-| R2 | 주말 21~24시 대전, 흐리면 다른 날 | 재계획 + 현상 · 출몰 재사용 | 재계획 3회(날짜 → 현상 → 세종) 후 추천 0. 회차마다 캐시 재사용 | `samples/run_R2_mock.json` | mock | mock 은 모든 날 흐림이라 재계획 후 충족이 불가능 → 상한까지 감. "재계획 후 충족" 경로는 `test_replan_reuses_cache` 로 확인 |
-| R3 | 다음 주 서울 보름달 피해 유성 | 재계획 3회 → 멈춤 + 넓힐지 질문 | 3회(날짜 → 현상 → 인천) 후 "날짜 범위나 지역을 더 넓혀 볼까요?" | `samples/run_R3_mock.json` · E2E S08 | mock · E2E | 없음 (당시 `stop_reason` 필드 없음) |
-| R4 | 토요일 대전 천문대 20km + 카카오 키 없음 | 장소만 실패, 판단은 진행 | 장소 `AUTH`, 경고 1건, 수성 최대이각 충족 | `samples/run_R4_nokakao.json` · E2E S20 | 실측 · E2E | 없음 |
-| R5 | 안녕, 이거 어떻게 써? | Tool 없이 사용법 | chat, Tool 0, 6.58초 | E2E S01 · `test_greeting_no_tools` | E2E | 없음 |
-| R6 | 같은 날 장소만 바꿔 | 날짜 · 시간 유지, 지역만 | 대전으로만 바뀜, 현상 조회 재사용(박명 · 예보만 호출) | E2E S14 · `test_follow_up_keeps_context` | E2E | 기획 문구는 "강원도", 실제 시험은 "대전" |
-| R7 | 밤 11시 전엔 들어와야 해 | Tool 전 되묻기 | clarify, "어느 지역 · 몇 시부터" | E2E S02 · `test_clarify_when_only_end_time` | E2E | 없음 |
+| R1 | 12/14 서울 22~02시 쌍둥이자리 유성우 | 조건부 충족 · 달 영향 · "D-3부터" | 조건부 충족 1, 창 240분, 월령 5.5, 늦어도 01:30+1, Tool 4회(예보 `OUT_OF_RANGE`), 7.4초 | `samples/run_R1.json` 1턴 · `logs_R1.json` · E2E S03 | 실측 · E2E | 없음 |
+| R2 | 주말 21~24시 대전, 흐리면 다른 날 | 재계획 + 현상 · 출몰 재사용 | 재계획 3회(날짜 ±2일 → 다른 현상 → 세종) 후 추천 0 · 제외 8, `stop_reason=limit_reached`, 캐시 재사용 1 → 5 → 2회, Tool 28회, 17.1초 | `samples/run_R2_mock.json` · `logs_R2_mock.json` | mock | mock 은 모든 날 흐림이라 재계획 후 충족이 불가능 → 상한까지 감. "재계획 후 충족" 경로는 `test_replan_reuses_cache` 로 확인 |
+| R3 | 다음 주 서울 보름달 피해 유성 | 재계획 3회 → 멈춤 + 넓힐지 질문 | 3회(날짜 ±2일 → 다른 현상 → 인천) 후 추천 0 · 제외 13, `stop_reason=limit_reached` · `replan_limit_reached=true`, Tool 46회, 24.1초, 마지막 줄 "날짜 범위나 지역을 넓혀 볼까요?" | `samples/run_R3_mock.json` · `logs_R3_mock.json` · E2E S08 | mock · E2E | 없음 |
+| R4 | 토요일 대전 천문대 20km + 카카오 키 없음 | 장소만 실패, 판단은 진행 | 장소 `AUTH`, 경고 1건("카카오 장소 검색 API 키…"), 수성 서방 최대이각 충족(맑은 180분), Tool 5회, 7.8초 | `samples/run_R4_nokakao.json` · E2E S20 | 실측 · E2E | 없음 |
+| R5 | 안녕, 이거 어떻게 써? | Tool 없이 사용법 | chat, Tool 0, 4.3초 | `samples/run_R5.json` · E2E S01 · `test_greeting_no_tools` | 실측 · E2E | 없음 |
+| R6 | 같은 날 장소만 대전으로 바꿔 줘 (R1 세션 2턴) | 날짜 · 시간 유지, 지역만 | 12/14 · 22:00~02:00+1 유지, 지역만 대전, 조건부 충족 1, 현상 조회 재사용(캐시 1회 · 캘린더 · 박명 · 예보만 호출), 6.2초 | `samples/run_R6.json`(= `run_R1.json` 2턴) · E2E S14 · `test_follow_up_keeps_context` | 실측 · E2E | 기획 문구는 "강원도", 시험은 "대전" |
+| R7 | 밤 11시 전에는 들어와야 해 | Tool 전 되묻기 | clarify, "어느 지역 · 몇 시부터", Tool 0, 2.0초 | `samples/run_R7.json` · E2E S02 · `test_clarify_when_only_end_time` | 실측 · E2E | 없음 |
 
-보충 실측: `samples/run_andromeda.json`(날짜 미지정 · 천체 고도 · 달 회피 · 충족 3건), `samples/run_fact_mars.json`(FACT · 행성 최적 시각).
-요청 원문은 `samples/run_*.json` 에 저장되지 않았다 — E2E 파일에는 `message` 가 있다.
+보충 실측 (같은 스크립트, 2026-11-18 16:51)
+
+| 이름 | 요청 | 결과 | 근거 |
+|---|---|---|---|
+| andromeda | 1턴 "안드로메다 은하를 제일 잘 볼 수 있는 날짜를 추천해줘" → 2턴 "대전 유성구 지역에서. 날짜는 아직 미정…" | 1턴 clarify(지역). 2턴 plan · 날짜 미지정 → 2026-11-18~27 탐색 · 천체 고도 20° 창 · 달 회피 · 충족 3건(11/18 · 11/27 · 11/20) · 제외 7, Tool 32회, 20.9초 | `samples/run_andromeda.json` |
+| fact_mars | 오늘 대전에서 화성이 제일 잘 보이는 시간대 | fact · 04:42~05:42, 남중 06:37 고도 68.2°, Tool 2회, 5.2초 | `samples/run_fact_mars.json` |
+| invalid_date | 2026년 2월 30일 서울 21~23시 | clarify "존재하지 않는 날짜", Tool 0, 2.3초 (6절 R2 · P1 수정 확인) | `samples/run_invalid_date.json` |
+| unknown_object | 2026-11-18 서울 21~23시 가짜천체 XYZ-FAKE-999 | plan · 추천 0 · `unjudged` 1 · `lookup_sky_object` `NOT_FOUND` · 비슷한 이름 되묻기, 2.5초 (6절 R1 · P1 수정 확인) | `samples/run_unknown_object.json` |
+
+재캡처: `.venv\Scripts\python -X utf8 backend\scripts\run_scenarios.py [--only R1,R2]` — 시나리오별 기대 체크를 OK/DIFF 로 출력한다 (2026-11-18 실행: 20건 모두 OK).
 
 **대표 요청 1건 전체 로그 · 재계획 사례**: [RUN_LOG_SAMPLE.md](RUN_LOG_SAMPLE.md)
 

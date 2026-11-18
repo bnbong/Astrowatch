@@ -39,6 +39,7 @@
     pin: (s) => svg(s || 16, '<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"></path><circle cx="12" cy="10" r="2.5"></circle>'),
     external: (s) => svg(s || 12, '<path d="M14 4h6v6M20 4 10 14M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"></path>'),
     plus: (s) => svg(s || 16, '<path d="M12 5v14M5 12h14"></path>'),
+    clock: (s) => svg(s || 14, '<circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path>'),
     refresh: (s) => svg(s || 16, '<path d="M21 12a9 9 0 1 1-2.6-6.4L21 8"></path><path d="M21 3v5h-5"></path>'),
   };
 
@@ -100,12 +101,24 @@
   }
 
   // 판정 결과(JudgedCandidate) 하나 → 타임바 HTML. 그릴 것이 없으면 "".
+  // 행(lane) 분리형: 한 트랙에 겹치지 않고 하늘 · 달 · 날씨 · 천체 · 관측 창을 각각 한 줄씩 그린다.
   function nightBar(j) {
     const c = j.candidate || {};
     const dark = clip(j.dark_window);
     const win = j.time_window && j.time_window.end > j.time_window.start ? clip(j.time_window) : null;
-    const moonUp = arr(j.moon_up).map((w) => ({ w, c: clip(w) })).filter((x) => x.c);
-    const moonUnknown = arr(j.moon_unknown).map((w) => ({ w, c: clip(w) })).filter((x) => x.c);
+    const user = j.user_window && j.user_window.end > j.user_window.start ? clip(j.user_window) : null;
+    // 자정에서 쪼개진 인접 구간(…–00:00, 00:00–…)은 하나로 이어 붙인다
+    function mergeAdjacent(list) {
+      const out = [];
+      list.slice().sort((a, b) => a.start - b.start).forEach((w) => {
+        const last = out[out.length - 1];
+        if (last && w.start <= last.end) last.end = Math.max(last.end, w.end);
+        else out.push({ start: w.start, end: w.end });
+      });
+      return out;
+    }
+    const moonUp = mergeAdjacent(arr(j.moon_up)).map((w) => ({ w, c: clip(w) })).filter((x) => x.c);
+    const moonUnknown = mergeAdjacent(arr(j.moon_unknown)).map((w) => ({ w, c: clip(w) })).filter((x) => x.c);
     const obj = clip(j.object_window);
     const hourly = arr(j.hourly_sky)
       .map((h) => ({ h, c: clip({ start: h.hour * 60, end: h.hour * 60 + 60 }) }))
@@ -115,63 +128,80 @@
     if (!dark && !win && !moonUp.length && !obj && !hourly.length) return "";
 
     const label = [];
-    const legend = [];
-    let inner = "";
+    const lanes = [];
+    function lane(name, cls, inner, first) {
+      const html = '<div class="nb-lane ' + cls + '"><span class="nb-lab">' + name + '</span><div class="nb-row">' + inner + "</div></div>";
+      if (first) lanes.unshift(html); else lanes.push(html);
+    }
+
+    // 1. 하늘: 밝은 바탕 위에 어두운 시간
     if (dark) {
-      inner += box("nb-dark", dark);
+      let inner = box("nb-dark", dark);
+      if (dark.width >= 22) inner += '<span class="nb-txt" style="left:' + (dark.left + 1).toFixed(2) + '%">어두움 ' + esc(range(j.dark_window)) + "</span>";
+      lane("하늘", "nb-lane-sky", inner);
       label.push("어두운 시간 " + range(j.dark_window));
-      legend.push('<span><span class="sw sw-dark"></span>어두운 시간 <span class="num">' + esc(range(j.dark_window)) + "</span></span>");
     }
-    moonUp.forEach((x) => { inner += box("nb-moon", x.c); });
-    if (moonUp.length) {
-      label.push("달 떠 있음 " + moonUp.map((x) => range(x.w)).join(", "));
-      legend.push('<span><span class="sw sw-moon"></span>달 떠 있음</span>');
+    // 2. 달
+    if (moonUp.length || moonUnknown.length) {
+      let inner = "";
+      moonUp.forEach((x) => { inner += box("nb-moon", x.c); });
+      moonUnknown.forEach((x) => { inner += box("nb-moon-unknown", x.c); });
+      lane("달", "nb-lane-moon", inner);
+      if (moonUp.length) label.push("달 떠 있음 " + moonUp.map((x) => range(x.w)).join(", "));
+      if (moonUnknown.length) label.push("달 정보 없음 " + moonUnknown.map((x) => range(x.w)).join(", "));
     }
-    moonUnknown.forEach((x) => { inner += box("nb-moon-unknown", x.c); });
-    if (moonUnknown.length) {
-      label.push("달 정보 없음 " + moonUnknown.map((x) => range(x.w)).join(", "));
-      legend.push('<span><span class="sw sw-moon-unknown"></span>달 정보 없음</span>');
-    }
-    if (win) {
-      inner += box("nb-win", win);
-      label.push("관측 창 " + range(j.time_window));
-      legend.push('<span><span class="sw sw-win"></span>내 관측 창 <span class="num">' + esc(range(j.time_window)) + "</span></span>");
-    }
-    if (ev != null) {
-      // 세로선(2px)은 트랙 안에서만: 양 끝에서는 안쪽으로 붙인다
-      const evPct = pct(ev);
-      const evLeft = evPct <= 0 ? "0px" : evPct >= 100 ? "calc(100% - 2px)" : "calc(" + evPct.toFixed(2) + "% - 1px)";
-      inner += '<div class="nb-event" style="left:' + evLeft + '"></div>';
-      const evName = c.kind === "meteor" ? "극대" : "현상 시각";
-      label.push(evName + " " + ml(ev));
-      legend.push('<span><span class="sw sw-event"></span>' + evName + ' <span class="num">' + esc(ml(ev)) + "</span></span>");
-    }
-    hourly.forEach((x) => {
-      inner += '<div class="nb-sky ' + skyClass(x.h) + '" style="left:' + x.c.left.toFixed(2) + "%;width:" + x.c.width.toFixed(2) + '%"></div>';
-    });
+    // 3. 날씨(시간별)
     if (hourly.length) {
+      let inner = "";
+      hourly.forEach((x) => { inner += box("nb-sky " + skyClass(x.h), x.c); });
+      lane("날씨", "nb-lane-weather", inner);
       const counts = {};
       hourly.forEach((x) => {
         const k = x.h.precip && BAD_PRECIP[x.h.precip] ? "강수" : (SKY_TEXT[x.h.sky] || x.h.sky);
         counts[k] = (counts[k] || 0) + 1;
       });
       label.push("시간별 하늘 " + Object.keys(counts).map((k) => k + " " + counts[k] + "시간").join(", "));
-      legend.push('<span><span class="sw sw-sky"><i class="sky-clear"></i><i class="sky-partly"></i><i class="sky-bad"></i><i class="sky-unknown"></i></span>' +
-        "하늘: 맑음 · 구름많음 · 흐림/강수 · 예보 없음</span>");
-    } else {
-      legend.push('<span><span class="sw sky-unknown"></span>예보 없음(D-3부터)</span>');
     }
+    // 4. 천체 고도
     if (obj) {
+      lane("천체", "nb-lane-obj", box("nb-obj", obj));
       label.push("천체 떠 있음(고도 20° 이상) " + range(j.object_window));
-      legend.push('<span><span class="sw sw-obj"></span>천체 떠 있음 <span class="num">' + esc(range(j.object_window)) + "</span></span>");
+    }
+    // 5. 관측 창: 내 시간은 점선, 최종 창은 채움 + 시각
+    if (win || user) {
+      let inner = "";
+      if (user) inner += box("nb-user", user);
+      if (win) {
+        inner += box("nb-win", win);
+        const txt = esc(range(j.time_window));
+        if (win.width >= 24) inner += '<span class="nb-txt nb-txt-win" style="left:' + (win.left + win.width / 2).toFixed(2) + '%">' + txt + "</span>";
+        else if (win.left + win.width < 70) inner += '<span class="nb-txt nb-txt-out" style="left:' + (win.left + win.width).toFixed(2) + '%">' + txt + "</span>";
+        else inner += '<span class="nb-txt nb-txt-out nb-txt-before" style="left:' + win.left.toFixed(2) + '%">' + txt + "</span>";
+      }
+      lane("관측 창", "nb-lane-win", inner, true); // 답이므로 맨 위에, 가장 두껍게
+      if (win) label.push("관측 창 " + range(j.time_window));
+      else label.push("내 시간 " + range(j.user_window));
+    }
+    // 관측 창 구간을 아래 근거 행들에도 연한 세로 띠로 비춰 준다
+    const hl = win ? '<div class="nb-hl" style="--l:' + (win.left / 100).toFixed(4) + ";--w:" + (win.width / 100).toFixed(4) + '"></div>' : "";
+
+    // 극대·현상 시각: 모든 행을 가로지르는 세로선 + 라벨
+    let marker = "";
+    if (ev != null) {
+      const evName = c.kind === "meteor" ? "극대" : "현상";
+      const p = pct(ev);
+      marker = '<div class="nb-marker" style="--p:' + (p / 100).toFixed(4) + '"><span class="nb-marker-lab' + (p > 85 ? " flip" : "") + '">' + evName + " " + esc(ml(ev)) + "</span></div>";
+      label.push(evName + " " + ml(ev));
     }
 
-    return '<div class="nightbar">' +
-      '<div class="nb-ticks" aria-hidden="true">' + TICKS.map((t) => "<span>" + t + "</span>").join("") + "</div>" +
-      (obj ? '<div class="nb-objrow" aria-hidden="true">' + box("nb-obj", obj) + "</div>" : "") +
-      '<div class="nb-track' + (hourly.length ? " has-sky" : "") + '" role="img" aria-label="' +
-      esc("밤 타임바(18:00~06:00): " + label.join(", ")) + '">' + inner + "</div>" +
-      '<div class="nb-legend">' + legend.join("") + "</div></div>";
+    const note = hourly.length
+      ? '<div class="nb-note"><span class="sw sky-clear"></span>맑음 <span class="sw sky-partly"></span>구름많음 <span class="sw sky-bad"></span>흐림·강수 <span class="sw sky-unknown"></span>예보 없음</div>'
+      : '<div class="nb-note">날씨: 예보 범위 밖 (D-3부터 확인 가능)</div>';
+
+    return '<div class="nightbar" role="img" aria-label="' + esc("밤 타임바(18:00~06:00): " + label.join(", ")) + '">' +
+      '<div class="nb-lane nb-lane-ticks" aria-hidden="true"><span class="nb-lab"></span><div class="nb-ticks">' + TICKS.map((t) => "<span>" + t + "</span>").join("") + "</div></div>" +
+      '<div class="nb-lanes" aria-hidden="true">' + hl + lanes.join("") + marker + "</div>" +
+      note + "</div>";
   }
 
   // 계획 서랍용 축소 타임바: 저장된 시작·종료(분)만 그린다.

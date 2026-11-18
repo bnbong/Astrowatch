@@ -1,0 +1,90 @@
+{
+ "scenario": "R7",
+ "session_id": "c6ba68d40df3",
+ "turns": [
+  {
+   "message": "밤 11시 전에는 들어와야 해",
+   "events": [
+    {
+     "session_id": "c6ba68d40df3",
+     "seq": 1,
+     "ts": "2026-11-18T07:52:31.871665Z",
+     "type": "session_start",
+     "stage": null,
+     "tool": null,
+     "payload": {
+      "message": "밤 11시 전에는 들어와야 해"
+     }
+    },
+    {
+     "session_id": "c6ba68d40df3",
+     "seq": 2,
+     "ts": "2026-11-18T07:52:31.876666Z",
+     "type": "stage_start",
+     "stage": "analyze",
+     "tool": null,
+     "payload": {}
+    },
+    {
+     "session_id": "c6ba68d40df3",
+     "seq": 3,
+     "ts": "2026-11-18T07:52:33.811786Z",
+     "type": "llm_decision",
+     "stage": "analyze",
+     "tool": null,
+     "payload": {
+      "decision": "clarify",
+      "reason": "관측 계획에서 종료 시각만 제시했고 시작 시각과 지역이 없어 확인이 필요합니다. / 조건 부족(region, start_minute) → 되묻기",
+      "model": "gpt-6-luna"
+     }
+    },
+    {
+     "session_id": "c6ba68d40df3",
+     "seq": 4,
+     "ts": "2026-11-18T07:52:33.816786Z",
+     "type": "stage_end",
+     "stage": "analyze",
+     "tool": null,
+     "payload": {
+      "duration_ms": 1936,
+      "summary": "의도 clarify · 부족한 조건 region, start_minute"
+     }
+    },
+    {
+     "session_id": "c6ba68d40df3",
+     "seq": 5,
+     "ts": "2026-11-18T07:52:33.820786Z",
+     "type": "stage_start",
+     "stage": "respond",
+     "tool": null,
+     "payload": {}
+    },
+    {
+     "session_id": "c6ba68d40df3",
+     "seq": 6,
+     "ts": "2026-11-18T07:52:33.823786Z",
+     "type": "stage_end",
+     "stage": "respond",
+     "tool": null,
+     "payload": {
+      "duration_ms": 0,
+      "summary": "clarify 응답 49자"
+     }
+    },
+    {
+     "session_id": "c6ba68d40df3",
+     "seq": 7,
+     "ts": "2026-11-18T07:52:33.837288Z",
+     "type": "session_end",
+     "stage": null,
+     "tool": null,
+     "payload": {
+      "intent": "clarify",
+      "replan_count": 0,
+      "duration_ms": 1965
+     }
+    }
+   ]
+  }
+ ]
+}

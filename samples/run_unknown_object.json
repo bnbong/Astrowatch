@@ -1,0 +1,252 @@
+{
+ "scenario": "unknown_object",
+ "captured_at": "2026-11-18T16:53:04+09:00",
+ "env_overrides": {
+  "CALENDAR_PROVIDER": "local"
+ },
+ "session_id": "426a3fe0f4d1",
+ "turns": [
+  {
+   "message": "2026년 11월 18일 서울에서 밤 9시부터 11시까지 가짜천체 XYZ-FAKE-999를 관측하는 계획을 짜줘. 다른 천체는 원하지 않아.",
+   "response": {
+    "session_id": "426a3fe0f4d1",
+    "intent": "plan",
+    "answer": "요청 조건: 2026-11-18 서울 21:00~23:00 XYZ-FAKE-999\n'XYZ-FAKE-999'를 천문현상 목록과 천체 카탈로그에서 찾지 못해 관측 가능 여부를 판단하지 않았습니다.\n좌표를 모르는 천체는 고도와 관측 창을 추정하지 않으므로 추천하지 않았어요.\n근거: get_calendar(성공), lookup_sky_object(실패), search_sky_events(성공)\n천체 이름을 다시 확인해 주세요.\n혹시 다른 이름(예: 'M42', '안드로메다 은하')을 말씀하신가요?",
+    "conditions": {
+     "date_from": "2026-11-18",
+     "date_to": "2026-11-18",
+     "start_minute": 1260,
+     "region": "서울",
+     "event_kind": "other",
+     "event_query": "XYZ-FAKE-999",
+     "place_query": null,
+     "end_minute": 1380,
+     "max_distance_km": null,
+     "allow_partly_cloudy": false,
+     "avoid_moon": true,
+     "fixed": [
+      "date_from",
+      "event_query"
+     ]
+    },
+    "needs_clarification": [],
+    "recommended": [],
+    "excluded": [
+     {
+      "candidate": {
+       "event_id": "target-20261118",
+       "title": "XYZ-FAKE-999",
+       "kind": "other",
+       "date": "2026-11-18",
+       "region": "서울",
+       "lat": 37.5665,
+       "lon": 126.978,
+       "event_minute": null
+      },
+      "verdict": "unjudged",
+      "dark_window": null,
+      "user_window": null,
+      "event_window": null,
+      "time_window": null,
+      "clear_minutes": null,
+      "worst_sky": null,
+      "max_pop": null,
+      "moon_interferes": null,
+      "lun_age": null,
+      "latest_arrival_minute": null,
+      "forecast_source": null,
+      "reasons": [
+       "'XYZ-FAKE-999'를 천문현상 목록과 천체 카탈로그에서 찾지 못해 판단하지 않음"
+      ],
+      "target_alt": null,
+      "target_az": null,
+      "moon_up": [],
+      "moon_unknown": [],
+      "hourly_sky": [],
+      "object_window": null
+     }
+    ],
+    "places": [],
+    "replan_count": 0,
+    "replan_limit": 3,
+    "replan_limit_reached": false,
+    "stop_reason": null,
+    "steps": [
+     {
+      "seq": 2,
+      "type": "stage_start",
+      "stage": "analyze",
+      "tool": null,
+      "ok": null,
+      "summary": "요청 분석 시작",
+      "duration_ms": null,
+      "replan_round": null
+     },
+     {
+      "seq": 3,
+      "type": "llm_decision",
+      "stage": "analyze",
+      "tool": null,
+      "ok": null,
+      "summary": "의도 판단: plan - 지정한 날짜와 서울에서 특정 천체만 관측하는 계획을 요청했습니다.",
+      "duration_ms": null,
+      "replan_round": null
+     },
+     {
+      "seq": 4,
+      "type": "stage_end",
+      "stage": "analyze",
+      "tool": null,
+      "ok": null,
+      "summary": "의도 plan",
+      "duration_ms": 2192,
+      "replan_round": null
+     },
+     {
+      "seq": 5,
+      "type": "stage_start",
+      "stage": "plan",
+      "tool": null,
+      "ok": null,
+      "summary": "작업 계획 시작",
+      "duration_ms": null,
+      "replan_round": null
+     },
+     {
+      "seq": 6,
+      "type": "stage_end",
+      "stage": "plan",
+      "tool": null,
+      "ok": null,
+      "summary": "5단계 계획: 현상 → 천체 고도 → 내 일정 → 출몰·월령 → 날씨 (search_sky_events → lookup_sky_object → get_calendar → get_night_window → get_sky_forecast)",
+      "duration_ms": 0,
+      "replan_round": null
+     },
+     {
+      "seq": 7,
+      "type": "stage_start",
+      "stage": "execute",
+      "tool": null,
+      "ok": null,
+      "summary": "Tool 실행 시작",
+      "duration_ms": null,
+      "replan_round": null
+     },
+     {
+      "seq": 8,
+      "type": "tool_call",
+      "stage": "execute",
+      "tool": "search_sky_events",
+      "ok": null,
+      "summary": "천문현상 조회 호출 (year=2026, month=11, kind=other)",
+      "duration_ms": null,
+      "replan_round": null
+     },
+     {
+      "seq": 9,
+      "type": "tool_result",
+      "stage": "execute",
+      "tool": "search_sky_events",
+      "ok": true,
+      "summary": "천문현상 조회 성공",
+      "duration_ms": 219,
+      "replan_round": null
+     },
+     {
+      "seq": 10,
+      "type": "tool_call",
+      "stage": "execute",
+      "tool": "lookup_sky_object",
+      "ok": null,
+      "summary": "천체 고도 계산 호출 (date=2026-11-18)",
+      "duration_ms": null,
+      "replan_round": null
+     },
+     {
+      "seq": 11,
+      "type": "tool_result",
+      "stage": "execute",
+      "tool": "lookup_sky_object",
+      "ok": false,
+      "summary": "천체 고도 계산 실패(NOT_FOUND): 천체 카탈로그에서 찾지 못함.",
+      "duration_ms": 1,
+      "replan_round": null
+     },
+     {
+      "seq": 12,
+      "type": "tool_call",
+      "stage": "execute",
+      "tool": "get_calendar",
+      "ok": null,
+      "summary": "get_calendar 호출 ()",
+      "duration_ms": null,
+      "replan_round": null
+     },
+     {
+      "seq": 13,
+      "type": "tool_result",
+      "stage": "execute",
+      "tool": "get_calendar",
+      "ok": true,
+      "summary": "get_calendar 성공",
+      "duration_ms": 0,
+      "replan_round": null
+     },
+     {
+      "seq": 14,
+      "type": "stage_end",
+      "stage": "execute",
+      "tool": null,
+      "ok": null,
+      "summary": "Tool 호출 3회(실패 1) · 캐시 재사용 0회 · 후보 1개 · 천체 고도 0/1일 계산",
+      "duration_ms": 243,
+      "replan_round": null
+     },
+     {
+      "seq": 15,
+      "type": "stage_start",
+      "stage": "judge",
+      "tool": null,
+      "ok": null,
+      "summary": "판정 시작",
+      "duration_ms": null,
+      "replan_round": null
+     },
+     {
+      "seq": 16,
+      "type": "stage_end",
+      "stage": "judge",
+      "tool": null,
+      "ok": null,
+      "summary": "판단 안 함 1 · 지목한 대상 미확인 → 재계획하지 않음",
+      "duration_ms": 0,
+      "replan_round": null
+     },
+     {
+      "seq": 17,
+      "type": "stage_start",
+      "stage": "respond",
+      "tool": null,
+      "ok": null,
+      "summary": "응답 작성 시작",
+      "duration_ms": null,
+      "replan_round": null
+     },
+     {
+      "seq": 18,
+      "type": "stage_end",
+      "stage": "respond",
+      "tool": null,
+      "ok": null,
+      "summary": "plan 응답 277자",
+      "duration_ms": 0,
+      "replan_round": null
+     }
+    ],
+    "warnings": [],
+    "safety_note": "야간 관측 시 이동 안전과 방한에 유의하세요."
+   },
+   "elapsed_s": 2.49
+  }
+ ]
+}

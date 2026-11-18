@@ -1,0 +1,72 @@
+"""대화 세션 API — 실제 임시 DB(conftest) 위에서 라우터를 검사한다. run_logs 는 유지돼야 한다."""
+
+from __future__ import annotations
+
+from datetime import datetime, timezone
+
+import pytest
+from fastapi.testclient import TestClient
+
+from astrowatch.events.bus import Event, EventType
+from astrowatch.schemas.api import ChatResponse
+from astrowatch.schemas.domain import Conditions, Intent
+from astrowatch.storage import run_logs, sessions, turns
+
+
+def _resp(sid: str, answer: str) -> ChatResponse:
+    return ChatResponse(session_id=sid, intent=Intent.PLAN, answer=answer, conditions=Conditions(region="서울"))
+
+
+@pytest.fixture
+def client(monkeypatch):
+    from astrowatch.app import main
+
+    monkeypatch.setattr(main, "_load_tools", lambda: None)
+    monkeypatch.setattr(main, "_start_logging_agent", lambda: None)
+    monkeypatch.setattr(main, "_stop_logging_agent", lambda: None)
+    with TestClient(main.create_app(), raise_server_exceptions=False) as c:
+        yield c
+
+
+@pytest.fixture
+def seeded():
+    turns.append_turn("s1", "이번 주말 서울 유성우", _resp("s1", "하나"))
+    turns.append_turn("s1", "강원도로 바꿔줘", _resp("s1", "둘"))
+    sessions.save_session("s1", conditions=Conditions(), memory_summary=None, last_recommended=[], history=[])
+    run_logs.append_event(Event(session_id="s1", type=EventType.SESSION_START, seq=1,
+                                ts=datetime(2026, 11, 18, tzinfo=timezone.utc), payload={"message": "x"}))
+
+
+def test_list_and_detail(client, seeded):
+    res = client.get("/api/sessions")
+    assert res.status_code == 200
+    [s] = res.json()
+    assert s["session_id"] == "s1" and s["turn_count"] == 2
+    assert s["title"] == "이번 주말 서울 유성우" and s["last_intent"] == "plan"
+
+    res = client.get("/api/sessions/s1")
+    assert res.status_code == 200
+    body = res.json()
+    assert [t["seq"] for t in body["turns"]] == [1, 2]
+    assert body["turns"][1]["user_message"] == "강원도로 바꿔줘"
+    assert body["turns"][1]["response"]["answer"] == "둘"
+
+
+def test_detail_404(client):
+    assert client.get("/api/sessions/none").status_code == 404
+    assert client.delete("/api/sessions/none").status_code == 404
+
+
+def test_delete_keeps_run_logs(client, seeded):
+    res = client.delete("/api/sessions/s1")
+    assert res.status_code == 204
+    assert client.get("/api/sessions/s1").status_code == 404
+    assert client.get("/api/sessions").json() == []
+    assert sessions.load_session("s1") is None
+    assert len(run_logs.get_session_events("s1")) == 1  # 실행 로그는 남는다
+    assert client.get("/api/logs/s1").status_code == 200
+
+
+def test_delete_session_row_only(client):
+    sessions.save_session("s2", conditions=Conditions(), memory_summary=None, last_recommended=[], history=[])
+    assert client.delete("/api/sessions/s2").status_code == 204

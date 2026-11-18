@@ -1,0 +1,90 @@
+{
+ "scenario": "invalid_date",
+ "session_id": "2fc3192cb570",
+ "turns": [
+  {
+   "message": "2026년 2월 30일 서울에서 밤 9시부터 11시까지 별을 보고 싶어.",
+   "events": [
+    {
+     "session_id": "2fc3192cb570",
+     "seq": 1,
+     "ts": "2026-11-18T07:53:01.987323Z",
+     "type": "session_start",
+     "stage": null,
+     "tool": null,
+     "payload": {
+      "message": "2026년 2월 30일 서울에서 밤 9시부터 11시까지 별을 보고 싶어."
+     }
+    },
+    {
+     "session_id": "2fc3192cb570",
+     "seq": 2,
+     "ts": "2026-11-18T07:53:01.991373Z",
+     "type": "stage_start",
+     "stage": "analyze",
+     "tool": null,
+     "payload": {}
+    },
+    {
+     "session_id": "2fc3192cb570",
+     "seq": 3,
+     "ts": "2026-11-18T07:53:04.227407Z",
+     "type": "llm_decision",
+     "stage": "analyze",
+     "tool": null,
+     "payload": {
+      "decision": "clarify",
+      "reason": "서울에서 특정 시간대에 별을 관측하려는 계획 요청이지만 날짜가 존재하지 않습니다. / 날짜 오류 → 되묻기",
+      "model": "gpt-6-luna"
+     }
+    },
+    {
+     "session_id": "2fc3192cb570",
+     "seq": 4,
+     "ts": "2026-11-18T07:53:04.232406Z",
+     "type": "stage_end",
+     "stage": "analyze",
+     "tool": null,
+     "payload": {
+      "duration_ms": 2237,
+      "summary": "의도 clarify · 부족한 조건 date_from"
+     }
+    },
+    {
+     "session_id": "2fc3192cb570",
+     "seq": 5,
+     "ts": "2026-11-18T07:53:04.237098Z",
+     "type": "stage_start",
+     "stage": "respond",
+     "tool": null,
+     "payload": {}
+    },
+    {
+     "session_id": "2fc3192cb570",
+     "seq": 6,
+     "ts": "2026-11-18T07:53:04.241106Z",
+     "type": "stage_end",
+     "stage": "respond",
+     "tool": null,
+     "payload": {
+      "duration_ms": 0,
+      "summary": "clarify 응답 72자"
+     }
+    },
+    {
+     "session_id": "2fc3192cb570",
+     "seq": 7,
+     "ts": "2026-11-18T07:53:04.253101Z",
+     "type": "session_end",
+     "stage": null,
+     "tool": null,
+     "payload": {
+      "intent": "clarify",
+      "replan_count": 0,
+      "duration_ms": 2266
+     }
+    }
+   ]
+  }
+ ]
+}

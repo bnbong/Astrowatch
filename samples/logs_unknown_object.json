@@ -1,0 +1,243 @@
+{
+ "scenario": "unknown_object",
+ "session_id": "426a3fe0f4d1",
+ "turns": [
+  {
+   "message": "2026년 11월 18일 서울에서 밤 9시부터 11시까지 가짜천체 XYZ-FAKE-999를 관측하는 계획을 짜줘. 다른 천체는 원하지 않아.",
+   "events": [
+    {
+     "session_id": "426a3fe0f4d1",
+     "seq": 1,
+     "ts": "2026-11-18T07:53:04.259607Z",
+     "type": "session_start",
+     "stage": null,
+     "tool": null,
+     "payload": {
+      "message": "2026년 11월 18일 서울에서 밤 9시부터 11시까지 가짜천체 XYZ-FAKE-999를 관측하는 계획을 짜줘. 다른 천체는 원하지 않아."
+     }
+    },
+    {
+     "session_id": "426a3fe0f4d1",
+     "seq": 2,
+     "ts": "2026-11-18T07:53:04.263528Z",
+     "type": "stage_start",
+     "stage": "analyze",
+     "tool": null,
+     "payload": {}
+    },
+    {
+     "session_id": "426a3fe0f4d1",
+     "seq": 3,
+     "ts": "2026-11-18T07:53:06.454175Z",
+     "type": "llm_decision",
+     "stage": "analyze",
+     "tool": null,
+     "payload": {
+      "decision": "plan",
+      "reason": "지정한 날짜와 서울에서 특정 천체만 관측하는 계획을 요청했습니다.",
+      "model": "gpt-6-luna"
+     }
+    },
+    {
+     "session_id": "426a3fe0f4d1",
+     "seq": 4,
+     "ts": "2026-11-18T07:53:06.458679Z",
+     "type": "stage_end",
+     "stage": "analyze",
+     "tool": null,
+     "payload": {
+      "duration_ms": 2192,
+      "summary": "의도 plan"
+     }
+    },
+    {
+     "session_id": "426a3fe0f4d1",
+     "seq": 5,
+     "ts": "2026-11-18T07:53:06.463693Z",
+     "type": "stage_start",
+     "stage": "plan",
+     "tool": null,
+     "payload": {}
+    },
+    {
+     "session_id": "426a3fe0f4d1",
+     "seq": 6,
+     "ts": "2026-11-18T07:53:06.467692Z",
+     "type": "stage_end",
+     "stage": "plan",
+     "tool": null,
+     "payload": {
+      "duration_ms": 0,
+      "summary": "5단계 계획: 현상 → 천체 고도 → 내 일정 → 출몰·월령 → 날씨 (search_sky_events → lookup_sky_object → get_calendar → get_night_window → get_sky_forecast)"
+     }
+    },
+    {
+     "session_id": "426a3fe0f4d1",
+     "seq": 7,
+     "ts": "2026-11-18T07:53:06.472819Z",
+     "type": "stage_start",
+     "stage": "execute",
+     "tool": null,
+     "payload": {}
+    },
+    {
+     "session_id": "426a3fe0f4d1",
+     "seq": 8,
+     "ts": "2026-11-18T07:53:06.476393Z",
+     "type": "tool_call",
+     "stage": "execute",
+     "tool": "search_sky_events",
+     "payload": {
+      "args": {
+       "year": 2026,
+       "month": 11,
+       "kind": "other"
+      },
+      "reason": "2026-11 XYZ-FAKE-999 날짜·시각 확인"
+     }
+    },
+    {
+     "session_id": "426a3fe0f4d1",
+     "seq": 9,
+     "ts": "2026-11-18T07:53:06.699384Z",
+     "type": "tool_result",
+     "stage": "execute",
+     "tool": "search_sky_events",
+     "payload": {
+      "ok": true,
+      "data": "{\"data\":{\"year\":2026,\"month\":11,\"requested_defaulted\":false,\"events\":[{\"event_id\":\"20261104-1\",\"date\":\"2026-11-04\",\"time\":\"23:00\",\"title\":\"수성의 내합\",\"kind\":\"other\",\"description\":null},{\"event_id\":\"20261129-1\",\"date\":\"2026-11-29\",\"time\":\"23:00\",\"title\":\"금성 최대 빛나는 면적\",\"kind\":\"other\",\"description\":null}]}}",
+      "duration_ms": 219
+     }
+    },
+    {
+     "session_id": "426a3fe0f4d1",
+     "seq": 10,
+     "ts": "2026-11-18T07:53:06.703386Z",
+     "type": "tool_call",
+     "stage": "execute",
+     "tool": "lookup_sky_object",
+     "payload": {
+      "args": {
+       "name": "XYZ-FAKE-999",
+       "date": "2026-11-18",
+       "lat": 37.5665,
+       "lon": 126.978
+      },
+      "reason": "2026-11-18 'XYZ-FAKE-999' 고도 구간"
+     }
+    },
+    {
+     "session_id": "426a3fe0f4d1",
+     "seq": 11,
+     "ts": "2026-11-18T07:53:06.708384Z",
+     "type": "tool_result",
+     "stage": "execute",
+     "tool": "lookup_sky_object",
+     "payload": {
+      "ok": false,
+      "error": {
+       "code": "NOT_FOUND",
+       "message": "천체 카탈로그에서 찾지 못함."
+      },
+      "duration_ms": 1
+     }
+    },
+    {
+     "session_id": "426a3fe0f4d1",
+     "seq": 12,
+     "ts": "2026-11-18T07:53:06.712386Z",
+     "type": "tool_call",
+     "stage": "execute",
+     "tool": "get_calendar",
+     "payload": {
+      "args": {
+       "date_from": "2026-11-18",
+       "date_to": "2026-11-19"
+      },
+      "reason": "기존 일정과 겹치는 관측 시간 확인"
+     }
+    },
+    {
+     "session_id": "426a3fe0f4d1",
+     "seq": 13,
+     "ts": "2026-11-18T07:53:06.717384Z",
+     "type": "tool_result",
+     "stage": "execute",
+     "tool": "get_calendar",
+     "payload": {
+      "ok": true,
+      "data": "{\"data\":{\"provider\":\"local\",\"date_from\":\"2026-11-18\",\"date_to\":\"2026-11-19\",\"events\":[]}}",
+      "duration_ms": 0
+     }
+    },
+    {
+     "session_id": "426a3fe0f4d1",
+     "seq": 14,
+     "ts": "2026-11-18T07:53:06.720531Z",
+     "type": "stage_end",
+     "stage": "execute",
+     "tool": null,
+     "payload": {
+      "duration_ms": 243,
+      "summary": "Tool 호출 3회(실패 1) · 캐시 재사용 0회 · 후보 1개 · 천체 고도 0/1일 계산"
+     }
+    },
+    {
+     "session_id": "426a3fe0f4d1",
+     "seq": 15,
+     "ts": "2026-11-18T07:53:06.724529Z",
+     "type": "stage_start",
+     "stage": "judge",
+     "tool": null,
+     "payload": {}
+    },
+    {
+     "session_id": "426a3fe0f4d1",
+     "seq": 16,
+     "ts": "2026-11-18T07:53:06.728521Z",
+     "type": "stage_end",
+     "stage": "judge",
+     "tool": null,
+     "payload": {
+      "duration_ms": 0,
+      "summary": "판단 안 함 1 · 지목한 대상 미확인 → 재계획하지 않음"
+     }
+    },
+    {
+     "session_id": "426a3fe0f4d1",
+     "seq": 17,
+     "ts": "2026-11-18T07:53:06.732528Z",
+     "type": "stage_start",
+     "stage": "respond",
+     "tool": null,
+     "payload": {}
+    },
+    {
+     "session_id": "426a3fe0f4d1",
+     "seq": 18,
+     "ts": "2026-11-18T07:53:06.735530Z",
+     "type": "stage_end",
+     "stage": "respond",
+     "tool": null,
+     "payload": {
+      "duration_ms": 0,
+      "summary": "plan 응답 277자"
+     }
+    },
+    {
+     "session_id": "426a3fe0f4d1",
+     "seq": 19,
+     "ts": "2026-11-18T07:53:06.747704Z",
+     "type": "session_end",
+     "stage": null,
+     "tool": null,
+     "payload": {
+      "intent": "plan",
+      "replan_count": 0,
+      "duration_ms": 2488
+     }
+    }
+   ]
+  }
+ ]
+}

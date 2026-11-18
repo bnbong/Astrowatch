@@ -16,7 +16,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from astrowatch.app.api import calendar, chat, logs, meta, plans
+from astrowatch.app.api import calendar, chat, logs, meta, plans, sessions
 from astrowatch.app.errors import install_error_handlers
 from astrowatch.config import ROOT_DIR, get_settings
 from astrowatch.storage.db import init_db
@@ -94,7 +94,7 @@ def create_app() -> FastAPI:
             "tools": registry.names(),
         }
 
-    for module in (chat, plans, calendar, logs, meta):
+    for module in (chat, plans, calendar, logs, sessions, meta):
         app.include_router(module.router, prefix="/api")
 
     # 정적 파일은 API 뒤에 마운트해야 /api 경로를 가리지 않는다

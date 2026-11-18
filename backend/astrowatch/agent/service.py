@@ -6,6 +6,7 @@ run_turn 은 어떤 경우에도 ChatResponse 를 돌려준다. 이번 턴의 �
 
 from __future__ import annotations
 
+import logging
 import threading
 from typing import Any
 
@@ -18,6 +19,8 @@ from astrowatch.schemas.api import ChatResponse, StepOut
 from astrowatch.schemas.domain import Conditions, Intent, Verdict
 from astrowatch.tools.base import ErrorCode
 from astrowatch.tools.registry import load_builtin_tools, registry
+
+logger = logging.getLogger("astrowatch.agent.service")
 
 
 def _ensure_tools() -> None:
@@ -159,6 +162,7 @@ def run_turn(session_id: str | None, message: str) -> ChatResponse:
             replan_count = int(state.get("replan_count") or 0)
             response = _to_response(sid, state, collected, lock)
             _persist(session, state, message, response.answer)
+            _record_turn(sid, message, response)
             return response
         except Exception:  # noqa: BLE001 — 어떤 오류도 사용자에게는 일반 안내로
             bus.publish(sid, EventType.ERROR, payload={"message": "실행 중 오류가 발생했습니다"})
@@ -253,3 +257,13 @@ def _persist(session: memory.Session, state: dict[str, Any], message: str, answe
         [*session.history, {"role": "user", "content": message}, {"role": "assistant", "content": answer}]
     )
     memory.save(session)
+
+
+def _record_turn(sid: str, message: str, response: ChatResponse) -> None:
+    """화면 복원용 턴 저장. 실패해도 응답에는 영향을 주지 않는다."""
+    try:
+        from astrowatch.storage.turns import append_turn
+
+        append_turn(sid, message, response)
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("대화 턴 저장 실패(응답은 정상 반환): %s", type(exc).__name__)

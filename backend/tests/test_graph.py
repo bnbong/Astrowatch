@@ -853,3 +853,22 @@ def test_calendar_intent_unsaved_recommendation_asks_save_first(with_calendar_to
     res = run_turn(first.session_id, "이 추천을 캘린더에 넣어 줘")
     assert with_calendar_tool == []
     assert "먼저 '계획으로 저장' 을 누른 뒤" in res.answer and "계획 N번을 캘린더에 넣어 줘" in res.answer
+
+
+def test_run_turn_records_turn(world, llm, monkeypatch):
+    from astrowatch.agent import service
+    from astrowatch.storage import turns
+
+    res = run_turn(None, R1_MSG)
+    detail = turns.get_session_detail(res.session_id)
+    assert detail is not None and len(detail.turns) == 1
+    assert detail.turns[0].user_message == R1_MSG
+    assert detail.turns[0].response.answer == res.answer
+
+    def broken(*_a, **_k):
+        raise RuntimeError("db down")
+
+    monkeypatch.setattr(turns, "append_turn", broken)
+    res2 = run_turn(res.session_id, "같은 날 장소만 강원도로")
+    assert res2.session_id == res.session_id and res2.answer != service.GENERIC_ERROR_ANSWER
+    assert len(turns.get_session_detail(res.session_id).turns) == 1

@@ -1,0 +1,99 @@
+{
+ "scenario": "invalid_date",
+ "captured_at": "2026-11-18T16:53:01+09:00",
+ "env_overrides": {
+  "CALENDAR_PROVIDER": "local"
+ },
+ "session_id": "2fc3192cb570",
+ "turns": [
+  {
+   "message": "2026년 2월 30일 서울에서 밤 9시부터 11시까지 별을 보고 싶어.",
+   "response": {
+    "session_id": "2fc3192cb570",
+    "intent": "clarify",
+    "answer": "지금까지 조건: 서울 21:00~23:00 별\n'2026년 2월 30일' 은 존재하지 않는 날짜입니다. 날짜를 다시 알려 주세요.",
+    "conditions": {
+     "date_from": null,
+     "date_to": null,
+     "start_minute": 1260,
+     "region": "서울",
+     "event_kind": "deep_sky",
+     "event_query": "별",
+     "place_query": null,
+     "end_minute": 1380,
+     "max_distance_km": null,
+     "allow_partly_cloudy": false,
+     "avoid_moon": true,
+     "fixed": [
+      "date_from"
+     ]
+    },
+    "needs_clarification": [
+     "date_from"
+    ],
+    "recommended": [],
+    "excluded": [],
+    "places": [],
+    "replan_count": 0,
+    "replan_limit": 3,
+    "replan_limit_reached": false,
+    "stop_reason": null,
+    "steps": [
+     {
+      "seq": 2,
+      "type": "stage_start",
+      "stage": "analyze",
+      "tool": null,
+      "ok": null,
+      "summary": "요청 분석 시작",
+      "duration_ms": null,
+      "replan_round": null
+     },
+     {
+      "seq": 3,
+      "type": "llm_decision",
+      "stage": "analyze",
+      "tool": null,
+      "ok": null,
+      "summary": "의도 판단: clarify - 서울에서 특정 시간대에 별을 관측하려는 계획 요청이지만 날짜가 존재하지 않습니다. / 날짜 오류 → 되묻기",
+      "duration_ms": null,
+      "replan_round": null
+     },
+     {
+      "seq": 4,
+      "type": "stage_end",
+      "stage": "analyze",
+      "tool": null,
+      "ok": null,
+      "summary": "의도 clarify · 부족한 조건 date_from",
+      "duration_ms": 2237,
+      "replan_round": null
+     },
+     {
+      "seq": 5,
+      "type": "stage_start",
+      "stage": "respond",
+      "tool": null,
+      "ok": null,
+      "summary": "응답 작성 시작",
+      "duration_ms": null,
+      "replan_round": null
+     },
+     {
+      "seq": 6,
+      "type": "stage_end",
+      "stage": "respond",
+      "tool": null,
+      "ok": null,
+      "summary": "clarify 응답 72자",
+      "duration_ms": 0,
+      "replan_round": null
+     }
+    ],
+    "warnings": [],
+    "safety_note": "야간 관측 시 이동 안전과 방한에 유의하세요."
+   },
+   "elapsed_s": 2.27
+  }
+ ]
+}

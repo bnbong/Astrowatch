@@ -52,6 +52,18 @@ CREATE TABLE IF NOT EXISTS sessions (
     updated_at      TEXT    NOT NULL
 );
 
+-- 대화 턴 (화면 복원용): 사용자 메시지와 구조화 응답(ChatResponse JSON)을 턴 단위로 보관.
+-- LLM 맥락은 sessions.history_json(최근 6턴)이 맡고, 이 표는 화면 복원·세션 목록에만 쓴다.
+CREATE TABLE IF NOT EXISTS turns (
+    session_id      TEXT    NOT NULL,
+    seq             INTEGER NOT NULL,
+    ts              TEXT    NOT NULL,
+    user_message    TEXT    NOT NULL,
+    response_json   TEXT    NOT NULL,
+    PRIMARY KEY (session_id, seq)
+);
+CREATE INDEX IF NOT EXISTS idx_turns_ts ON turns(ts);
+
 -- 심화 F3023 로컬 캘린더 구현체
 CREATE TABLE IF NOT EXISTS local_calendar (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
