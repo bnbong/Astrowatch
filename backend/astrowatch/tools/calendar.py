@@ -8,10 +8,16 @@ conflicts_for() 는 제약 적합성 판단(agent)에서 부르는 일반 함수
 from __future__ import annotations
 
 import logging
+import threading
 from datetime import datetime
 
 from astrowatch.clients import http
-from astrowatch.clients.calendar_provider import CalendarProvider, get_provider
+from astrowatch.clients.calendar_provider import (
+    CalendarProvider,
+    EventAlreadyExists,
+    deterministic_event_id,
+    get_provider,
+)
 from astrowatch.schemas.plan import PlanOut
 from astrowatch.tools.base import ErrorCode, ToolKind, ToolResult, fail, ok
 from astrowatch.tools.contracts import (
@@ -26,6 +32,20 @@ from astrowatch.tools.registry import registry
 logger = logging.getLogger("astrowatch.calendar")
 
 MAX_RANGE_DAYS = 92
+
+# plan_id 별 잠금: 같은 계획을 동시에 두 번 등록하지 않게 (보안 강화 18, 단일 프로세스 전제)
+_PLAN_LOCKS: dict[int, threading.Lock] = {}
+_PLAN_LOCKS_GUARD = threading.Lock()
+
+
+def _plan_lock(plan_id: int) -> threading.Lock:
+    with _PLAN_LOCKS_GUARD:
+        lock = _PLAN_LOCKS.get(plan_id)
+        if lock is None:
+            if len(_PLAN_LOCKS) > 1000:
+                _PLAN_LOCKS.clear()
+            lock = _PLAN_LOCKS[plan_id] = threading.Lock()
+        return lock
 
 
 def _provider_fail(e: Exception, provider: str) -> ToolResult[object]:
@@ -96,25 +116,47 @@ def add_plan_to_calendar(args: CalendarAddInput) -> ToolResult[CalendarAddOutput
     if plan is None:
         return fail(ErrorCode.NOT_FOUND, f"계획 #{args.plan_id} 을 찾을 수 없다")
 
+    with _plan_lock(plan.id):
+        return _add_locked(plan.id)
+
+
+def _already(provider_name: str, plan: PlanOut, title: str, event_id: str, html_link: str | None = None,
+             start_dt: datetime | None = None, end_dt: datetime | None = None) -> ToolResult[CalendarAddOutput]:
+    return ok(
+        CalendarAddOutput(
+            provider=provider_name,
+            plan_id=plan.id,
+            event_id=event_id,
+            title=title,
+            start_dt=start_dt or plan.start_dt,
+            end_dt=end_dt or plan.end_dt,
+            html_link=html_link,
+            already_registered=True,
+        ),
+        note="이미 캘린더에 등록된 계획이라 새로 만들지 않았다",
+    )
+
+
+def _add_locked(plan_id: int) -> ToolResult[CalendarAddOutput]:
+    from astrowatch.storage import plans as plan_store
+
+    plan = plan_store.get_plan(plan_id)  # 잠금 안에서 다시 읽는다 (calendar_event_id 재확인)
+    if plan is None:
+        return fail(ErrorCode.NOT_FOUND, f"계획 #{plan_id} 을 찾을 수 없다")
     provider = get_provider()
     title = build_title(plan)
     if plan.calendar_event_id:  # 중복 등록 금지
-        return ok(
-            CalendarAddOutput(
-                provider=provider.name,
-                plan_id=plan.id,
-                event_id=plan.calendar_event_id,
-                title=title,
-                start_dt=plan.start_dt,
-                end_dt=plan.end_dt,
-                html_link=None,
-                already_registered=True,
-            ),
-            note="이미 캘린더에 등록된 계획이라 새로 만들지 않았다",
-        )
+        return _already(provider.name, plan, title, plan.calendar_event_id)
 
+    event_key = deterministic_event_id(plan.id, plan.created_at)
     try:
-        event = provider.add_event(title, plan.start_dt, plan.end_dt, build_description(plan), plan.id)
+        event = provider.add_event(
+            title, plan.start_dt, plan.end_dt, build_description(plan), plan.id, event_key=event_key
+        )
+    except EventAlreadyExists as e:  # 재시도 · 다른 경로로 이미 만들어진 일정
+        plan_store.set_calendar_event_id(plan.id, e.event.event_id)
+        return _already(provider.name, plan, e.event.title, e.event.event_id, e.event.html_link,
+                        e.event.start_dt, e.event.end_dt)
     except _PROVIDER_ERRORS as e:
         logger.warning("캘린더 등록 실패(%s, plan=%s): %s", provider.name, plan.id, type(e).__name__)
         return _provider_fail(e, provider.name)

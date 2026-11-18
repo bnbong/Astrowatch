@@ -74,6 +74,25 @@ cd backend
 | `GOOGLE_TOKEN_FILE` | `secrets/google_token.json` | |
 | `GOOGLE_CALENDAR_ID` | `primary` | |
 | `APP_HOST` / `APP_PORT` | `127.0.0.1` / `8000` | |
+| `APP_ALLOWED_ORIGINS` | — | 추가 허용 출처 (쉼표). 터널 데모용 |
+| `APP_ALLOWED_HOSTS` | — | 추가 허용 Host (쉼표, 포트 제외) |
+| `APP_ACCESS_TOKEN` | — | 설정 시 `/api/*` 에 `X-Astrowatch-Token` 필요 |
+| `CHAT_RATE_PER_MIN` | `12` | `/api/chat` IP 당 분당 요청 수 |
+| `ALLOW_EXTERNAL_PATHS` | `0` | `1` 이면 저장소 밖 절대 경로 허용 |
+
+### 보안 설정
+
+기본값(127.0.0.1 바인딩 · 토큰 없음)은 혼자 쓰는 로컬 실행용이다. LAN · 터널로 열 때는 아래를 함께 설정한다.
+
+- **허용 출처 (CORS · CSRF)**: `http://127.0.0.1:{APP_PORT}` · `http://localhost:{APP_PORT}` · `http://{APP_HOST}:{APP_PORT}`(APP_HOST 가 `0.0.0.0` 이 아닐 때)만 허용한다. 다른 출처에서 온 `POST/PATCH/DELETE` 는 403, 브라우저가 `Sec-Fetch-Site: cross-site` 를 붙인 상태 변경 요청도 403 이다. 모든 상태 변경 요청은 `X-Requested-With: Astrowatch` 헤더가 있어야 하고(프론트 `api.js` 가 항상 붙임), 본문은 `application/json` 만(그 외 415), 256KB 이하(초과 413)만 받는다.
+- **터널 데모 (`APP_ALLOWED_ORIGINS`)**: cloudflared · ngrok 처럼 다른 주소로 접속하면 그 주소를 출처로 추가해야 저장 · 삭제가 된다.
+  예: `APP_ALLOWED_ORIGINS=https://xxxx.trycloudflare.com` (끝의 `/` 는 무시). 그 호스트는 Host 허용 목록에도 자동으로 들어간다.
+  LAN 에서 `APP_HOST=0.0.0.0` 으로 열면 접속할 IP 를 `APP_ALLOWED_HOSTS=192.168.0.10` 과 `APP_ALLOWED_ORIGINS=http://192.168.0.10:8000` 에 적는다. 목록에 없는 Host 헤더는 400 이다.
+- **접근 토큰 (`APP_ACCESS_TOKEN`)**: 터널 · LAN 데모 때는 길고 무작위인 값을 설정한다(예: `python -c "import secrets;print(secrets.token_urlsafe(24))"`). 브라우저는 처음 401 을 받으면 입력 폼을 띄우고 그 탭의 `sessionStorage` 에만 보관한다. `/api/health` 와 정적 화면은 토큰 없이 열린다.
+- **토큰 파일 권한**: `scripts/google_auth.py` 와 토큰 자동 갱신은 `secure_files.write_private` 로 저장한다 — 같은 폴더의 임시 파일(0600)에 쓰고 원자 교체, 부모 폴더가 없으면 0700 으로 만든다. 토큰 파일이 심볼릭 링크면 읽기 · 쓰기를 모두 거부하고, POSIX 에서 그룹/타인 권한이 있으면 경고 후 0600 으로 고친다(Windows 는 권한 조정 생략). `GOOGLE_*` 경로가 `frontend/`(정적 서빙) 아래이거나 일반 파일이 아니면(디렉터리 · 링크 · reparse point) 설정에서 거부된다.
+- **경로 (`ALLOW_EXTERNAL_PATHS`)**: `DB_PATH` · `CHROMA_DIR` · `GOOGLE_*` 의 상대 경로는 저장소 루트 기준이며 루트 밖으로 나가면 거부된다. `..` · 널 문자가 섞인 값도 거부한다. 절대 경로는 `ALLOW_EXTERNAL_PATHS=1` 일 때만 쓰며, 아니면 경고 로그 후 해당 기능이 꺼진다(DB 는 기본 경로로 돌아감).
+- **로그**: 설정된 키 값과 토큰 파일의 `token` · `refresh_token` · `client_secret` 은 로그에서 `***` 로 바뀐다(`astrowatch/redact.py`). 외부 API 예외는 URL 이 담긴 원본 예외 체인을 끊고 다시 던진다.
+- **응답 헤더**: 모든 응답에 `nosniff` · `X-Frame-Options: DENY` · `Referrer-Policy` · `Permissions-Policy`, API 응답엔 `Cache-Control: no-store`, HTML 엔 CSP(`script-src 'self'`) 가 붙는다. `/docs` · `/redoc` 만 Swagger CDN 을 위해 완화된 CSP 를 쓴다.
 
 ## 4. 저장소 구조
 

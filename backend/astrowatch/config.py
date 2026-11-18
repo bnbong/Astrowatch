@@ -6,7 +6,9 @@
 
 from __future__ import annotations
 
+import logging
 import os
+import stat
 import urllib.parse
 from dataclasses import dataclass, field
 from functools import lru_cache
@@ -17,6 +19,8 @@ from dotenv import load_dotenv
 # backend/astrowatch/config.py → 저장소 루트
 ROOT_DIR = Path(__file__).resolve().parents[2]
 load_dotenv(ROOT_DIR / ".env", override=False)
+
+logger = logging.getLogger("astrowatch.config")
 
 
 def _env(name: str, default: str | None = None) -> str | None:
@@ -46,11 +50,76 @@ def _data_go_kr_key() -> str | None:
     return raw
 
 
-def _resolve(path: str | None) -> Path | None:
+def _env_flag(name: str) -> bool:
+    return (_env(name) or "").lower() in ("1", "true", "yes", "on")
+
+
+def _resolve(path: str | None, *, name: str = "path") -> Path | None:
+    """설정 경로를 안전하게 해석한다 (경로 조작 방어).
+
+    - 널 문자 · ``..`` 세그먼트가 섞인 값은 거부한다.
+    - 상대 경로는 ROOT_DIR 기준으로 resolve() 하고, 결과가 ROOT_DIR 안이어야 한다.
+    - 절대 경로는 ALLOW_EXTERNAL_PATHS=1 일 때만 허용한다.
+    거부하면 경고 로그(값은 남기지 않음) 후 None — 해당 기능은 비활성화된다.
+    """
     if not path:
         return None
+    if chr(0) in path:
+        logger.warning("%s: 널 문자가 포함된 경로를 거부함", name)
+        return None
+    parts = path.replace("\\", "/").split("/")
+    if ".." in parts:
+        logger.warning("%s: '..' 이 포함된 경로를 거부함", name)
+        return None
     p = Path(path)
-    return p if p.is_absolute() else ROOT_DIR / p
+    if p.is_absolute() or p.drive or p.root:
+        if not _env_flag("ALLOW_EXTERNAL_PATHS"):
+            logger.warning("%s: 저장소 밖 절대 경로는 ALLOW_EXTERNAL_PATHS=1 일 때만 허용됨", name)
+            return None
+        return p.resolve()
+    resolved = (ROOT_DIR / p).resolve()
+    if not resolved.is_relative_to(ROOT_DIR):  # 심볼릭 링크로 밖을 가리키는 경우
+        logger.warning("%s: 저장소 밖을 가리키는 경로를 거부함", name)
+        return None
+    return resolved
+
+
+FRONTEND_DIR = ROOT_DIR / "frontend"
+_REPARSE_POINT = 0x400  # stat.FILE_ATTRIBUTE_REPARSE_POINT (Windows)
+
+
+def _resolve_secret(path: str | None, *, name: str) -> Path | None:
+    """비밀 파일(GOOGLE_*) 경로. _resolve 규칙 + 정적 서빙 폴더(frontend/) 아래 금지 + 일반 파일만.
+
+    파일이 아직 없으면(토큰 발급 전) 경로는 허용한다. 있으면 심볼릭 링크 · 디렉터리 · reparse point 를 거부한다.
+    """
+    resolved = _resolve(path, name=name)
+    if resolved is None:
+        return None
+    if resolved == FRONTEND_DIR or resolved.is_relative_to(FRONTEND_DIR):
+        logger.warning("%s: 정적 서빙 폴더(frontend/) 아래의 비밀 파일 경로를 거부함", name)
+        return None
+    raw = Path(path or "")
+    candidate = raw if raw.is_absolute() else ROOT_DIR / raw
+    for target in {candidate, resolved}:
+        try:
+            st = os.lstat(target)
+        except FileNotFoundError:
+            continue
+        except OSError:
+            logger.warning("%s: 경로를 확인할 수 없어 거부함", name)
+            return None
+        attrs = getattr(st, "st_file_attributes", 0)
+        if not stat.S_ISREG(st.st_mode) or attrs & _REPARSE_POINT:
+            logger.warning("%s: 일반 파일이 아니어서 거부함(디렉터리·링크·reparse point)", name)
+            return None
+    return resolved
+
+
+def _origins(raw: str | None) -> tuple[str, ...]:
+    if not raw:
+        return ()
+    return tuple(o.strip().rstrip("/") for o in raw.split(",") if o.strip())
 
 
 @dataclass(frozen=True)
@@ -88,8 +157,37 @@ class Settings:
     # 서버
     app_host: str
     app_port: int
+    app_allowed_origins: tuple[str, ...] = ()   # 터널 데모 등 추가 허용 출처
+    app_allowed_hosts: tuple[str, ...] = ()     # Host 헤더 추가 허용 (TrustedHost)
+    app_access_token: str | None = None         # 설정 시 /api/* 에 X-Astrowatch-Token 필요
+    chat_rate_per_min: int = 12                 # /api/chat IP 당 분당 요청 수
 
     root_dir: Path = field(default=ROOT_DIR)
+
+    @property
+    def allowed_origins(self) -> tuple[str, ...]:
+        """CORS · CSRF 가드가 허용하는 출처 목록."""
+        port = self.app_port
+        origins = [f"http://127.0.0.1:{port}", f"http://localhost:{port}"]
+        if self.app_host not in ("0.0.0.0", "::", "", "127.0.0.1", "localhost"):
+            origins.append(f"http://{self.app_host}:{port}")
+        for o in self.app_allowed_origins:
+            if o not in origins:
+                origins.append(o)
+        return tuple(origins)
+
+    @property
+    def allowed_hosts(self) -> tuple[str, ...]:
+        """TrustedHostMiddleware 허용 Host (포트 제외)."""
+        hosts = ["127.0.0.1", "localhost"]
+        if self.app_host not in ("0.0.0.0", "::", ""):
+            hosts.append(self.app_host)
+        for o in self.app_allowed_origins:  # 터널 출처의 호스트도 자동 허용
+            h = urllib.parse.urlsplit(o).hostname
+            if h:
+                hosts.append(h)
+        hosts.extend(self.app_allowed_hosts)
+        return tuple(dict.fromkeys(h.lower() for h in hosts if h))
 
     @property
     def samples_dir(self) -> Path:
@@ -111,14 +209,18 @@ def get_settings() -> Settings:
         max_replans=_env_int("MAX_REPLANS", 3),
         min_obs_minutes=_env_int("MIN_OBS_MINUTES", 30),
         timezone=_env("TIMEZONE", "Asia/Seoul") or "Asia/Seoul",
-        db_path=_resolve(_env("DB_PATH", "data/astrowatch.db")) or ROOT_DIR / "data/astrowatch.db",
-        chroma_dir=_resolve(_env("CHROMA_DIR", "data/chroma")) or ROOT_DIR / "data/chroma",
+        db_path=_resolve(_env("DB_PATH", "data/astrowatch.db"), name="DB_PATH") or ROOT_DIR / "data/astrowatch.db",
+        chroma_dir=_resolve(_env("CHROMA_DIR", "data/chroma"), name="CHROMA_DIR") or ROOT_DIR / "data/chroma",
         calendar_provider=(_env("CALENDAR_PROVIDER", "local") or "local").lower(),
-        google_client_secret_file=_resolve(_env("GOOGLE_CLIENT_SECRET_FILE")),
-        google_token_file=_resolve(_env("GOOGLE_TOKEN_FILE")),
+        google_client_secret_file=_resolve_secret(_env("GOOGLE_CLIENT_SECRET_FILE"), name="GOOGLE_CLIENT_SECRET_FILE"),
+        google_token_file=_resolve_secret(_env("GOOGLE_TOKEN_FILE"), name="GOOGLE_TOKEN_FILE"),
         google_calendar_id=_env("GOOGLE_CALENDAR_ID", "primary") or "primary",
         app_host=_env("APP_HOST", "127.0.0.1") or "127.0.0.1",
         app_port=_env_int("APP_PORT", 8000),
+        app_allowed_origins=_origins(_env("APP_ALLOWED_ORIGINS")),
+        app_allowed_hosts=tuple(h.strip() for h in (_env("APP_ALLOWED_HOSTS") or "").split(",") if h.strip()),
+        app_access_token=_env("APP_ACCESS_TOKEN"),
+        chat_rate_per_min=max(1, _env_int("CHAT_RATE_PER_MIN", 12)),
     )
 
 

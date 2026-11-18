@@ -6,6 +6,7 @@ from types import ModuleType
 
 from fastapi import APIRouter, HTTPException, Response, status
 
+from astrowatch.app.api import DEFAULT_LIMIT, Limit, Offset, PlanId, page
 from astrowatch.schemas.plan import PlanCreate, PlanOut, PlanSaveResult, PlanUpdate
 
 router = APIRouter(prefix="/plans", tags=["plans"])
@@ -22,8 +23,8 @@ def _store() -> ModuleType:
 
 
 @router.get("", response_model=list[PlanOut], summary="계획 목록")
-def list_plans() -> list[PlanOut]:
-    return _store().list_plans()
+def list_plans(limit: Limit = DEFAULT_LIMIT, offset: Offset = 0) -> list[PlanOut]:
+    return page(_store().list_plans(), limit, offset)
 
 
 @router.post("", response_model=PlanSaveResult, status_code=status.HTTP_201_CREATED, summary="계획 저장")
@@ -35,7 +36,7 @@ def create_plan(body: PlanCreate) -> PlanSaveResult:
 
 
 @router.get("/{plan_id}", response_model=PlanOut, summary="계획 상세")
-def get_plan(plan_id: int) -> PlanOut:
+def get_plan(plan_id: PlanId) -> PlanOut:
     plan = _store().get_plan(plan_id)
     if plan is None:
         raise HTTPException(status_code=404, detail=NOT_FOUND)
@@ -43,7 +44,7 @@ def get_plan(plan_id: int) -> PlanOut:
 
 
 @router.patch("/{plan_id}", response_model=PlanOut, summary="계획 수정 (보낸 필드만)")
-def update_plan(plan_id: int, body: PlanUpdate) -> PlanOut:
+def update_plan(plan_id: PlanId, body: PlanUpdate) -> PlanOut:
     try:
         plan = _store().update_plan(plan_id, body)
     except ValueError:
@@ -54,7 +55,7 @@ def update_plan(plan_id: int, body: PlanUpdate) -> PlanOut:
 
 
 @router.delete("/{plan_id}", status_code=status.HTTP_204_NO_CONTENT, summary="계획 삭제")
-def delete_plan(plan_id: int) -> Response:
+def delete_plan(plan_id: PlanId) -> Response:
     if not _store().delete_plan(plan_id):
         raise HTTPException(status_code=404, detail=NOT_FOUND)
     return Response(status_code=status.HTTP_204_NO_CONTENT)

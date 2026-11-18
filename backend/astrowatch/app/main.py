@@ -15,10 +15,13 @@ from typing import Any, AsyncIterator
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from astrowatch.app.api import calendar, chat, logs, meta, plans, sessions
 from astrowatch.app.errors import install_error_handlers
+from astrowatch.app.security import CSRF_HEADER, TOKEN_HEADER, RequestGuardMiddleware, SecurityHeadersMiddleware
 from astrowatch.config import ROOT_DIR, get_settings
+from astrowatch.redact import install_redaction
 from astrowatch.storage.db import init_db
 from astrowatch.tools.registry import registry
 
@@ -60,6 +63,7 @@ def _stop_logging_agent() -> None:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+    install_redaction()  # uvicorn 이 로깅을 구성한 뒤 핸들러에도 붙도록 시작 시 다시 설치
     init_db()
     if not registry.names():  # 재시작(--reload) 시 중복 등록 방지
         _load_tools()
@@ -77,13 +81,20 @@ def create_app() -> FastAPI:
         version="0.1.0",
         lifespan=lifespan,
     )
-    # 개발용 — 모든 출처 허용
+    settings = get_settings()
+    install_redaction()
+    # 미들웨어는 나중에 추가한 것이 바깥쪽이다.
+    # 바깥 → 안: 보안 헤더 → Host 검사 → CORS → 요청 가드(토큰 · CSRF · 크기 · 속도) → 라우터
+    app.add_middleware(RequestGuardMiddleware)
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"],
-        allow_methods=["*"],
-        allow_headers=["*"],
+        allow_origins=list(settings.allowed_origins),
+        allow_methods=["GET", "POST", "PATCH", "DELETE"],
+        allow_headers=["Content-Type", CSRF_HEADER, TOKEN_HEADER],
+        allow_credentials=False,
     )
+    app.add_middleware(TrustedHostMiddleware, allowed_hosts=list(settings.allowed_hosts))
+    app.add_middleware(SecurityHeadersMiddleware)
     install_error_handlers(app)
 
     @app.get("/api/health", tags=["meta"], summary="상태 확인")

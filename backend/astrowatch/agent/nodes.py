@@ -1456,7 +1456,7 @@ def calendar_answer(state: RunState) -> str:
     if data.get("already_registered"):
         return f"계획 {plan_id}번 '{title}'은(는) 이미 캘린더에 등록돼 있어요{when}.{link}"
     provider = {"google": "구글", "local": "로컬"}.get(str(data.get("provider")), "")
-    return f"계획 {plan_id}번 '{title}'을(를) {provider + ' ' if provider else ''}캘린더에 등록했습니다{when}.{link}"
+    return f"계획 {plan_id}번 '{title}'을(를) {provider + ' ' if provider else ''}캘린더에 등록했습니다(실제 캘린더에 생성됨){when}.{link}"
 
 
 def _other_intent_answer(intent: Intent) -> str:

@@ -17,7 +17,7 @@ def client(monkeypatch):
     monkeypatch.setattr(main, "_load_tools", lambda: None)
     monkeypatch.setattr(main, "_start_logging_agent", lambda: None)
     monkeypatch.setattr(main, "_stop_logging_agent", lambda: None)
-    with TestClient(main.create_app(), raise_server_exceptions=False) as c:
+    with TestClient(main.create_app(), raise_server_exceptions=False, headers={"X-Requested-With": "Astrowatch"}) as c:
         yield c
 
 

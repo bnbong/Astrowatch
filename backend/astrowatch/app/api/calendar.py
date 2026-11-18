@@ -11,6 +11,7 @@ from typing import Any
 from fastapi import APIRouter, Query
 from fastapi.responses import JSONResponse
 
+from astrowatch.app.api import PlanId
 from astrowatch.tools.base import ErrorCode, ToolResult, ToolSpec
 
 router = APIRouter(tags=["calendar"])
@@ -48,7 +49,7 @@ def _respond(result: ToolResult[Any]) -> Any:
 
 
 @router.post("/plans/{plan_id}/calendar", summary="계획을 캘린더에 등록 (plan_id 만)")
-def add_plan_to_calendar(plan_id: int) -> Any:
+def add_plan_to_calendar(plan_id: PlanId) -> Any:
     _, add_tool = _tools()
     return _respond(add_tool.invoke({"plan_id": plan_id}))
 

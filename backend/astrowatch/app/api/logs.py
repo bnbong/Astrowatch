@@ -6,6 +6,7 @@ from types import ModuleType
 
 from fastapi import APIRouter, HTTPException, Response, status
 
+from astrowatch.app.api import DEFAULT_LIMIT, Limit, Offset, SessionId, page
 from astrowatch.schemas.api import LogEventOut, LogSessionOut
 
 router = APIRouter(prefix="/logs", tags=["logs"])
@@ -21,20 +22,20 @@ def _store() -> ModuleType:
 
 
 @router.get("", response_model=list[LogSessionOut], summary="세션 목록")
-def list_sessions() -> list[LogSessionOut]:
-    return _store().list_sessions()
+def list_sessions(limit: Limit = DEFAULT_LIMIT, offset: Offset = 0) -> list[LogSessionOut]:
+    return page(_store().list_sessions(), limit, offset)
 
 
 @router.get("/{session_id}", response_model=list[LogEventOut], summary="세션 이벤트 (seq 순)")
-def get_session_events(session_id: str) -> list[LogEventOut]:
+def get_session_events(session_id: SessionId, limit: Limit = DEFAULT_LIMIT, offset: Offset = 0) -> list[LogEventOut]:
     events = _store().get_session_events(session_id)
     if not events:
         raise HTTPException(status_code=404, detail=NOT_FOUND)
-    return sorted(events, key=lambda e: e.seq)
+    return page(sorted(events, key=lambda e: e.seq), limit, offset)
 
 
 @router.delete("/{session_id}", status_code=status.HTTP_204_NO_CONTENT, summary="세션 로그 삭제")
-def delete_session(session_id: str) -> Response:
+def delete_session(session_id: SessionId) -> Response:
     if not _store().delete_session(session_id):
         raise HTTPException(status_code=404, detail=NOT_FOUND)
     return Response(status_code=status.HTTP_204_NO_CONTENT)

@@ -7,7 +7,10 @@ Tool(tools/calendar.py)은 이 Protocol 만 보고, 어떤 구현체인지는 ge
 
 from __future__ import annotations
 
+import base64
+import hashlib
 import logging
+import threading
 from datetime import date, datetime, time, timedelta
 from pathlib import Path
 from typing import Any, Protocol, runtime_checkable
@@ -15,6 +18,7 @@ from zoneinfo import ZoneInfo
 
 from astrowatch.clients.http import AuthError, UpstreamError, UpstreamTimeout
 from astrowatch.config import get_settings
+from astrowatch.secure_files import check_private, write_private
 from astrowatch.tools.contracts import CalendarEvent
 
 logger = logging.getLogger("astrowatch.calendar")
@@ -22,6 +26,25 @@ logger = logging.getLogger("astrowatch.calendar")
 SCOPES = ["https://www.googleapis.com/auth/calendar.events"]  # scripts/google_auth.py 와 같게
 GOOGLE_TIMEOUT = 15
 MAX_PAGES = 10
+_TOKEN_LOCK = threading.Lock()  # 토큰 갱신 · 저장 직렬화 (보안 강화 16)
+
+
+class EventAlreadyExists(Exception):
+    """같은 계획의 일정이 이미 있다 (멱등 등록). event 는 기존 일정."""
+
+    def __init__(self, event: CalendarEvent) -> None:
+        super().__init__("이미 등록된 일정")
+        self.event = event
+
+
+def deterministic_event_id(plan_id: int, created_at: datetime | str) -> str:
+    """Google 이벤트 ID: base32hex 소문자 32자. Google 규칙은 [a-v0-9] 5~1024자.
+
+    같은 계획이면 항상 같은 ID 라서 재시도가 중복 일정을 만들지 않고 409 로 돌아온다.
+    """
+    stamp = created_at.isoformat() if isinstance(created_at, datetime) else str(created_at)
+    digest = hashlib.sha256(f"astrowatch:{plan_id}:{stamp}".encode("utf-8")).digest()
+    return base64.b32hexencode(digest).decode("ascii").lower().rstrip("=")[:32]
 
 
 @runtime_checkable
@@ -33,9 +56,13 @@ class CalendarProvider(Protocol):
         ...
 
     def add_event(
-        self, title: str, start_dt: datetime, end_dt: datetime, description: str | None, plan_id: int | None
+        self, title: str, start_dt: datetime, end_dt: datetime, description: str | None, plan_id: int | None,
+        event_key: str | None = None,
     ) -> CalendarEvent:
-        """일정 1건 등록. html_link 는 공급자가 주면 채운다."""
+        """일정 1건 등록. html_link 는 공급자가 주면 채운다.
+
+        같은 plan_id(또는 event_key) 일정이 이미 있으면 EventAlreadyExists 를 던진다 (멱등).
+        """
         ...
 
 
@@ -81,11 +108,20 @@ class LocalCalendarProvider:
         return [self._to_event(r) for r in rows]
 
     def add_event(
-        self, title: str, start_dt: datetime, end_dt: datetime, description: str | None, plan_id: int | None
+        self, title: str, start_dt: datetime, end_dt: datetime, description: str | None, plan_id: int | None,
+        event_key: str | None = None,
     ) -> CalendarEvent:
         from astrowatch.storage.db import connect
 
         with connect(self._path()) as conn:
+            # plan_id 유니크: 테이블은 그대로 두고 같은 트랜잭션(쓰기 잠금)에서 조회 후 삽입
+            conn.execute("BEGIN IMMEDIATE")
+            if plan_id is not None:
+                existing = conn.execute(
+                    "SELECT * FROM local_calendar WHERE plan_id = ? ORDER BY id LIMIT 1", (plan_id,)
+                ).fetchone()
+                if existing is not None:
+                    raise EventAlreadyExists(self._to_event(existing))
             cur = conn.execute(
                 "INSERT INTO local_calendar (title, start_dt, end_dt, plan_id, created_at) VALUES (?, ?, ?, ?, ?)",
                 (
@@ -121,34 +157,63 @@ class GoogleCalendarProvider:
         self._service: Any = None
 
     # 인증 · 서비스
-    def _credentials(self) -> Any:
-        if not self.token_file or not Path(self.token_file).exists():
-            raise AuthError("Google 토큰 파일 없음")
-        from google.auth.exceptions import GoogleAuthError, RefreshError, TransportError
-        from google.auth.transport.requests import Request
+    def _load_creds(self) -> Any:
+        """토큰 파일을 읽는다. 읽기 전에 심볼릭 링크 거부 · 권한 점검."""
         from google.oauth2.credentials import Credentials
 
+        if not self.token_file or not Path(self.token_file).exists():
+            raise AuthError("Google 토큰 파일 없음")
+        check_private(self.token_file)
         try:
-            creds = Credentials.from_authorized_user_file(str(self.token_file), SCOPES)
-        except (ValueError, OSError) as e:
-            raise AuthError("Google 토큰 파일 형식 오류") from e
+            return Credentials.from_authorized_user_file(str(self.token_file), SCOPES)
+        except (ValueError, OSError):
+            raise AuthError("Google 토큰 파일 형식 오류") from None
+
+    @staticmethod
+    def _newer(a: Any, b: Any) -> bool:
+        """a 가 b 보다 늦게 만료되는 유효 토큰인가."""
+        if not getattr(a, "valid", False):
+            return False
+        if b is None or getattr(b, "expiry", None) is None:
+            return True
+        return a.expiry is not None and a.expiry > b.expiry
+
+    def _credentials(self) -> Any:
+        creds = self._load_creds()
         if creds.valid:
             return creds
-        if creds.expired and creds.refresh_token:
+        if not (creds.expired and creds.refresh_token):
+            raise AuthError("Google 토큰이 유효하지 않음 (재발급 필요)")
+        from google.auth.exceptions import GoogleAuthError, RefreshError, TransportError
+        from google.auth.transport.requests import Request
+
+        # 갱신 · 저장은 프로세스 전역 잠금 안에서 — 동시 요청이 서로의 토큰을 덮어쓰지 않게
+        with _TOKEN_LOCK:
+            latest = self._load_creds()  # 기다리는 동안 다른 스레드가 갱신했을 수 있다
+            if latest.valid:
+                return latest
+            if latest.refresh_token:
+                creds = latest
             try:
                 creds.refresh(Request())
-            except RefreshError as e:
-                raise AuthError("Google 토큰 갱신 거부") from e
-            except TransportError as e:
-                raise UpstreamError("google_calendar", None, "토큰 갱신 중 네트워크 오류") from e
-            except GoogleAuthError as e:
-                raise AuthError("Google 인증 실패") from e
-            try:  # 갱신한 토큰 저장 (실패해도 이번 호출은 진행)
-                Path(self.token_file).write_text(creds.to_json(), encoding="utf-8")
-            except OSError:
-                logger.warning("갱신한 Google 토큰을 저장하지 못함")
+            except RefreshError:
+                raise AuthError("Google 토큰 갱신 거부 (재발급 필요)") from None
+            except TransportError:
+                raise UpstreamError("google_calendar", None, "토큰 갱신 중 네트워크 오류") from None
+            except GoogleAuthError:
+                raise AuthError("Google 인증 실패") from None
+            # 저장 직전 다시 읽어 더 최신 토큰이 있으면 그것을 쓴다 (덮어쓰지 않음)
+            try:
+                on_disk = self._load_creds()
+            except AuthError:
+                on_disk = None
+            if on_disk is not None and self._newer(on_disk, creds):
+                return on_disk
+            try:  # 저장 실패는 경고만 (이번 호출은 진행)
+                write_private(self.token_file, creds.to_json())
+            except OSError as e:
+                logger.warning("갱신한 Google 토큰을 저장하지 못함: %s", type(e).__name__)
             return creds
-        raise AuthError("Google 토큰이 유효하지 않음 (재발급 필요)")
 
     def _svc(self) -> Any:
         if self._service is None:
@@ -230,7 +295,8 @@ class GoogleCalendarProvider:
         return events
 
     def add_event(
-        self, title: str, start_dt: datetime, end_dt: datetime, description: str | None, plan_id: int | None
+        self, title: str, start_dt: datetime, end_dt: datetime, description: str | None, plan_id: int | None,
+        event_key: str | None = None,
     ) -> CalendarEvent:
         body: dict[str, Any] = {
             "summary": title,
@@ -238,10 +304,30 @@ class GoogleCalendarProvider:
             "start": self._to_google_time(start_dt),
             "end": self._to_google_time(end_dt),
         }
+        if event_key:
+            body["id"] = event_key  # 결정적 ID: 재시도 시 409 로 중복 방지
         if plan_id is not None:
             body["extendedProperties"] = {"private": {"astrowatch_plan_id": str(plan_id)}}
-        item = self._execute(self._svc().events().insert(calendarId=self.calendar_id, body=body))
+        try:
+            item = self._execute(self._svc().events().insert(calendarId=self.calendar_id, body=body))
+        except UpstreamError as e:
+            if e.status != 409 or not event_key:
+                raise
+            raise EventAlreadyExists(self._existing(event_key, title, start_dt, end_dt, plan_id)) from None
         return self._to_event(item)
+
+    def _existing(
+        self, event_key: str, title: str, start_dt: datetime, end_dt: datetime, plan_id: int | None
+    ) -> CalendarEvent:
+        """409 뒤 기존 일정 조회. 조회가 안 되면 아는 값으로 채운다."""
+        try:
+            item = self._execute(self._svc().events().get(calendarId=self.calendar_id, eventId=event_key))
+            return self._to_event(item)
+        except Exception as e:  # noqa: BLE001 — 등록 자체는 이미 된 상태
+            logger.info("기존 Google 일정 조회 실패: %s", type(e).__name__)
+            return CalendarEvent(
+                event_id=event_key, title=title, start_dt=start_dt, end_dt=end_dt, source="google", plan_id=plan_id
+            )
 
 
 def get_provider() -> CalendarProvider:

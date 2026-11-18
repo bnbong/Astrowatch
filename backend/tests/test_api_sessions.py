@@ -24,16 +24,16 @@ def client(monkeypatch):
     monkeypatch.setattr(main, "_load_tools", lambda: None)
     monkeypatch.setattr(main, "_start_logging_agent", lambda: None)
     monkeypatch.setattr(main, "_stop_logging_agent", lambda: None)
-    with TestClient(main.create_app(), raise_server_exceptions=False) as c:
+    with TestClient(main.create_app(), raise_server_exceptions=False, headers={"X-Requested-With": "Astrowatch"}) as c:
         yield c
 
 
 @pytest.fixture
 def seeded():
-    turns.append_turn("s1", "이번 주말 서울 유성우", _resp("s1", "하나"))
-    turns.append_turn("s1", "강원도로 바꿔줘", _resp("s1", "둘"))
-    sessions.save_session("s1", conditions=Conditions(), memory_summary=None, last_recommended=[], history=[])
-    run_logs.append_event(Event(session_id="s1", type=EventType.SESSION_START, seq=1,
+    turns.append_turn("sess-001", "이번 주말 서울 유성우", _resp("sess-001", "하나"))
+    turns.append_turn("sess-001", "강원도로 바꿔줘", _resp("sess-001", "둘"))
+    sessions.save_session("sess-001", conditions=Conditions(), memory_summary=None, last_recommended=[], history=[])
+    run_logs.append_event(Event(session_id="sess-001", type=EventType.SESSION_START, seq=1,
                                 ts=datetime(2026, 11, 18, tzinfo=timezone.utc), payload={"message": "x"}))
 
 
@@ -41,10 +41,10 @@ def test_list_and_detail(client, seeded):
     res = client.get("/api/sessions")
     assert res.status_code == 200
     [s] = res.json()
-    assert s["session_id"] == "s1" and s["turn_count"] == 2
+    assert s["session_id"] == "sess-001" and s["turn_count"] == 2
     assert s["title"] == "이번 주말 서울 유성우" and s["last_intent"] == "plan"
 
-    res = client.get("/api/sessions/s1")
+    res = client.get("/api/sessions/sess-001")
     assert res.status_code == 200
     body = res.json()
     assert [t["seq"] for t in body["turns"]] == [1, 2]
@@ -53,20 +53,20 @@ def test_list_and_detail(client, seeded):
 
 
 def test_detail_404(client):
-    assert client.get("/api/sessions/none").status_code == 404
-    assert client.delete("/api/sessions/none").status_code == 404
+    assert client.get("/api/sessions/missing-01").status_code == 404
+    assert client.delete("/api/sessions/missing-01").status_code == 404
 
 
 def test_delete_keeps_run_logs(client, seeded):
-    res = client.delete("/api/sessions/s1")
+    res = client.delete("/api/sessions/sess-001")
     assert res.status_code == 204
-    assert client.get("/api/sessions/s1").status_code == 404
+    assert client.get("/api/sessions/sess-001").status_code == 404
     assert client.get("/api/sessions").json() == []
-    assert sessions.load_session("s1") is None
-    assert len(run_logs.get_session_events("s1")) == 1  # 실행 로그는 남는다
-    assert client.get("/api/logs/s1").status_code == 200
+    assert sessions.load_session("sess-001") is None
+    assert len(run_logs.get_session_events("sess-001")) == 1  # 실행 로그는 남는다
+    assert client.get("/api/logs/sess-001").status_code == 200
 
 
 def test_delete_session_row_only(client):
-    sessions.save_session("s2", conditions=Conditions(), memory_summary=None, last_recommended=[], history=[])
-    assert client.delete("/api/sessions/s2").status_code == 204
+    sessions.save_session("sess-002", conditions=Conditions(), memory_summary=None, last_recommended=[], history=[])
+    assert client.delete("/api/sessions/sess-002").status_code == 204

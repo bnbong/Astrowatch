@@ -59,9 +59,9 @@ class FakePlans:
 class FakeRunLogs:
     def __init__(self) -> None:
         self.events = {
-            "s1": [
-                LogEventOut(session_id="s1", seq=2, ts=NOW, type="stage_start", stage="analyze"),
-                LogEventOut(session_id="s1", seq=1, ts=NOW, type="session_start", payload={"message": "안녕"}),
+            "sess-001": [
+                LogEventOut(session_id="sess-001", seq=2, ts=NOW, type="stage_start", stage="analyze"),
+                LogEventOut(session_id="sess-001", seq=1, ts=NOW, type="session_start", payload={"message": "안녕"}),
             ]
         }
 
@@ -120,7 +120,7 @@ def client(fakes, monkeypatch):
     monkeypatch.setattr(main, "_load_tools", lambda: None)
     monkeypatch.setattr(main, "_start_logging_agent", lambda: None)
     monkeypatch.setattr(main, "_stop_logging_agent", lambda: None)
-    with TestClient(main.create_app(), raise_server_exceptions=False) as c:
+    with TestClient(main.create_app(), raise_server_exceptions=False, headers={"X-Requested-With": "Astrowatch"}) as c:
         yield c
 
 
@@ -278,14 +278,14 @@ def test_plans_validation(client):
 
 def test_logs_list_detail_delete(client):
     sessions = client.get("/api/logs").json()
-    assert [s["session_id"] for s in sessions] == ["s1"]
+    assert [s["session_id"] for s in sessions] == ["sess-001"]
 
-    events = client.get("/api/logs/s1").json()
+    events = client.get("/api/logs/sess-001").json()
     assert [e["seq"] for e in events] == [1, 2]
 
-    assert client.delete("/api/logs/s1").status_code == 204
-    assert client.get("/api/logs/s1").status_code == 404
-    assert client.delete("/api/logs/s1").status_code == 404
+    assert client.delete("/api/logs/sess-001").status_code == 204
+    assert client.get("/api/logs/sess-001").status_code == 404
+    assert client.delete("/api/logs/sess-001").status_code == 404
 
 
 def test_logs_have_no_update_api(client):

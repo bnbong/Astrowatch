@@ -16,6 +16,9 @@ from astrowatch.storage.db import connect, init_db
 
 _initialized: set[Path] = set()
 
+# UPDATE 에 쓸 수 있는 컬럼 — PlanUpdate 필드 + updated_at. f-string SQL 에는 이 집합의 이름만 들어간다.
+UPDATABLE_COLUMNS = frozenset(PlanUpdate.model_fields) | {"updated_at"}
+
 
 def ensure_db(db_path: Path | None = None) -> Path:
     """스키마가 없으면 만든다 (경로별 1회). 저장소 모듈이 공유한다."""
@@ -122,7 +125,10 @@ def update_plan(plan_id: int, data: PlanUpdate, *, db_path: Path | None = None) 
         raise ValueError("end_dt 는 start_dt 보다 뒤여야 한다")
     values = {k: (_iso(v) if isinstance(v, datetime) else v) for k, v in changes.items()}
     values["updated_at"] = _now()
-    cols = ", ".join(f"{k} = ?" for k in values)  # 키는 PlanUpdate 필드명으로 한정
+    unknown = set(values) - UPDATABLE_COLUMNS
+    if unknown:
+        raise ValueError(f"수정할 수 없는 필드: {sorted(unknown)}")
+    cols = ", ".join(f"{k} = ?" for k in values)  # 키는 UPDATABLE_COLUMNS 로 검증됨
     with connect(path) as conn:
         conn.execute(f"UPDATE plans SET {cols} WHERE id = ?", [*values.values(), plan_id])
     return get_plan(plan_id, db_path=path)

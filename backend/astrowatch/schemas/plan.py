@@ -10,18 +10,18 @@ from astrowatch.tools.contracts import EventKind
 
 
 class PlanBase(BaseModel):
-    event_title: str
+    event_title: str = Field(min_length=1, max_length=200)
     event_kind: EventKind = EventKind.OTHER
     start_dt: datetime = Field(description="관측 시작 (현지, naive). 자정 넘김은 end_dt 가 다음 날")
     end_dt: datetime
-    location_label: str
-    lat: float | None = None
-    lon: float | None = None
-    place_id: str | None = Field(default=None, description="카카오 장소 ID. 이름·주소는 저장하지 않는다")
-    place_url: str | None = None
-    target_alt: float | None = None
-    target_az: float | None = None
-    basis: str | None = Field(default=None, description="판정 등급 · 맑은 시간 · 달 영향 요약")
+    location_label: str = Field(min_length=1, max_length=100)
+    lat: float | None = Field(default=None, ge=-90, le=90)
+    lon: float | None = Field(default=None, ge=-180, le=180)
+    place_id: str | None = Field(default=None, max_length=64, description="카카오 장소 ID. 이름·주소는 저장하지 않는다")
+    place_url: str | None = Field(default=None, max_length=500, pattern=r"^https?://")
+    target_alt: float | None = Field(default=None, ge=-90, le=90)
+    target_az: float | None = Field(default=None, ge=0, le=360)
+    basis: str | None = Field(default=None, max_length=2000, description="판정 등급 · 맑은 시간 · 달 영향 요약")
 
     @model_validator(mode="after")
     def _check_order(self) -> "PlanBase":
@@ -37,11 +37,11 @@ class PlanCreate(PlanBase):
 class PlanUpdate(BaseModel):
     """핵심 값 수정. 보낸 필드만 바뀐다."""
 
-    event_title: str | None = None
+    event_title: str | None = Field(default=None, min_length=1, max_length=200)
     start_dt: datetime | None = None
     end_dt: datetime | None = None
-    location_label: str | None = None
-    basis: str | None = None
+    location_label: str | None = Field(default=None, min_length=1, max_length=100)
+    basis: str | None = Field(default=None, max_length=2000)
 
 
 class PlanOut(PlanBase):

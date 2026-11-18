@@ -166,7 +166,7 @@
     if (r) {
       const label = r.already_registered ? "이미 캘린더에 등록됨" : "캘린더에 등록됨" + (r.provider ? " (" + r.provider + ")" : "");
       const link = r.html_link && /^https:\/\//.test(r.html_link)
-        ? '<a href="' + esc(r.html_link) + '" target="_blank" rel="noopener">일정 열기 ' + I.external(12) + "</a>" : "";
+        ? '<a href="' + esc(r.html_link) + '" target="_blank" rel="noopener noreferrer">일정 열기 ' + I.external(12) + "</a>" : "";
       status = '<span class="flag flag-ok">' + I.check(14) + "</span><b>" + esc(label) + "</b>";
       note = link;
     } else if (p.calendar_event_id) {
@@ -202,7 +202,7 @@
       '<dt>시간</dt><dd class="num">' + esc(F.fmtDateTime(p.start_dt) + " – " + F.fmtDateTime(p.end_dt)) + "</dd>" +
       "<dt>장소</dt><dd>" + esc(p.location_label) +
       (p.lat != null && p.lon != null ? ' <small class="muted num">(' + esc(p.lat.toFixed(3)) + ", " + esc(p.lon.toFixed(3)) + ")</small>" : "") +
-      (p.place_url && /^https?:\/\//.test(p.place_url) ? ' · <a href="' + esc(p.place_url) + '" target="_blank" rel="noopener">장소 링크</a>' : "") +
+      (p.place_url && /^https?:\/\//.test(p.place_url) ? ' · <a href="' + esc(p.place_url) + '" target="_blank" rel="noopener noreferrer">장소 링크</a>' : "") +
       "</dd>" +
       '<dt>수정</dt><dd class="num">' + esc(F.fmtDateTime(p.updated_at)) + "</dd>" +
       "</dl>" +
@@ -249,7 +249,7 @@
       }
       err.hidden = true;
       try {
-        const updated = await window.Api.patch("/api/plans/" + p.id, {
+        const updated = await window.Api.patch("/api/plans/" + encodeURIComponent(p.id), {
           event_title: title,
           start_dt: start + ":00",
           end_dt: end + ":00",
@@ -272,7 +272,7 @@
     document.getElementById("confirm-no").addEventListener("click", () => { confirmBox.hidden = true; });
     document.getElementById("confirm-yes").addEventListener("click", async () => {
       try {
-        await window.Api.del("/api/plans/" + p.id);
+        await window.Api.del("/api/plans/" + encodeURIComponent(p.id));
         plans = plans.filter((x) => x.id !== p.id);
         selectedId = null;
         renderList();
@@ -292,7 +292,7 @@
     btn.disabled = true;
     err.hidden = true;
     try {
-      const res = await window.Api.post("/api/plans/" + p.id + "/calendar");
+      const res = await window.Api.post("/api/plans/" + encodeURIComponent(p.id) + "/calendar");
       const d = res.data;
       calResults[p.id] = d;
       plans = plans.map((x) => (x.id === p.id ? Object.assign({}, x, { calendar_event_id: d.event_id }) : x));

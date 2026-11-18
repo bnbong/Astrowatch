@@ -32,7 +32,7 @@
         : '<span class="tl-icon i-tool" title="Tool 응답 성공">' + I.check(11) + "</span>";
     }
     if (meta.kind === "llm") return '<span class="tl-icon i-llm" title="LLM 판단">LLM</span>';
-    return '<span class="tl-icon i-stage' + (s.type === "stage_start" ? " i-stage-start" : "") + '" title="' + meta.label + '"></span>';
+    return '<span class="tl-icon i-stage' + (s.type === "stage_start" ? " i-stage-start" : "") + '" title="' + window.Fmt.escapeHtml(meta.label) + '"></span>';
   }
 
   function render(container, steps) {

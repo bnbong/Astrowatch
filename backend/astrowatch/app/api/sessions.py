@@ -6,6 +6,7 @@ from types import ModuleType
 
 from fastapi import APIRouter, HTTPException, Response, status
 
+from astrowatch.app.api import DEFAULT_LIMIT, Limit, Offset, SessionId, page
 from astrowatch.schemas.api import SessionDetailOut, SessionSummaryOut
 
 router = APIRouter(prefix="/sessions", tags=["sessions"])
@@ -27,12 +28,12 @@ def _sessions() -> ModuleType:
 
 
 @router.get("", response_model=list[SessionSummaryOut], summary="대화 목록 (최근 순)")
-def list_sessions() -> list[SessionSummaryOut]:
-    return _turns().list_sessions()
+def list_sessions(limit: Limit = DEFAULT_LIMIT, offset: Offset = 0) -> list[SessionSummaryOut]:
+    return page(_turns().list_sessions(), limit, offset)
 
 
 @router.get("/{session_id}", response_model=SessionDetailOut, summary="대화 상세 (턴 seq 순)")
-def get_session(session_id: str) -> SessionDetailOut:
+def get_session(session_id: SessionId) -> SessionDetailOut:
     detail = _turns().get_session_detail(session_id)
     if detail is None:
         raise HTTPException(status_code=404, detail=NOT_FOUND)
@@ -40,7 +41,7 @@ def get_session(session_id: str) -> SessionDetailOut:
 
 
 @router.delete("/{session_id}", status_code=status.HTTP_204_NO_CONTENT, summary="대화 삭제 (실행 로그 유지)")
-def delete_session(session_id: str) -> Response:
+def delete_session(session_id: SessionId) -> Response:
     removed_turns = _turns().delete_session_turns(session_id)
     removed_session = _sessions().delete_session(session_id)
     if not removed_turns and not removed_session:

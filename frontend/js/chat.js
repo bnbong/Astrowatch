@@ -355,7 +355,7 @@
       box.innerHTML = "<h4>주변 관측 장소</h4><ul class=\"place-list\">" + res.places.map((p) => {
         const km = (p.distance_m / 1000).toFixed(1);
         const safeUrl = /^https?:\/\//.test(p.url) ? p.url : "#";
-        return '<li><a href="' + esc(safeUrl) + '" target="_blank" rel="noopener">' + esc(p.name) + "</a> · <span class=\"num\">" + esc(km) + " km</span>" +
+        return '<li><a href="' + esc(safeUrl) + '" target="_blank" rel="noopener noreferrer">' + esc(p.name) + "</a> · <span class=\"num\">" + esc(km) + " km</span>" +
           (p.address ? '<br><small class="muted">' + esc(p.address) + "</small>" : "") + "</li>";
       }).join("") + "</ul>";
       aux.appendChild(box);
