@@ -79,16 +79,32 @@ class SecretRedactingFilter(logging.Filter):
                 text = text.replace(secret, MASK)
         return text
 
+    def _scrub_value(self, value: object) -> object:
+        """인자 하나를 치환. 문자열이 아니어도 str() 에 비밀값이 있으면 치환한 문자열로 바꾼다."""
+        if isinstance(value, str):
+            return self._scrub(value)
+        try:
+            text = str(value)
+        except Exception:  # noqa: BLE001
+            return value
+        return self._scrub(text) if any(s in text for s in self._secrets) else value
+
     def filter(self, record: logging.LogRecord) -> bool:
         if not self._secrets:
             return True
-        try:
-            message = record.getMessage()
-        except Exception:  # noqa: BLE001 — 포맷 실패는 원문 유지
-            message = str(record.msg)
-        scrubbed = self._scrub(message)
-        if scrubbed != message or record.args:
-            record.msg, record.args = scrubbed, None
+        # msg 와 args 를 합치지 않고 각각 치환한다 — uvicorn 접근 로그 포맷터는 args 를
+        # 5개 튜플로 풀어 쓰므로 구조(튜플/딕셔너리)를 그대로 유지해야 한다.
+        if isinstance(record.msg, str):
+            record.msg = self._scrub(record.msg)
+        else:
+            record.msg = self._scrub_value(record.msg)
+        if record.args:
+            if isinstance(record.args, dict):
+                record.args = {k: self._scrub_value(v) for k, v in record.args.items()}
+            elif isinstance(record.args, tuple):
+                record.args = tuple(self._scrub_value(v) for v in record.args)
+            else:
+                record.args = self._scrub_value(record.args)
         if record.exc_info and record.exc_info[1] is not None:
             # 트레이스백 텍스트를 미리 만들어 치환해 둔다 (Formatter 는 exc_text 가 있으면 재사용)
             text = logging.Formatter().formatException(record.exc_info)

@@ -621,3 +621,24 @@ def test_timeline_escapes_unknown_type(tmp_path):
     assert out.returncode == 0, out.stderr
     assert "<img" not in out.stdout
     assert "&quot;&gt;&lt;img" in out.stdout
+
+
+def test_redact_keeps_uvicorn_access_args_structure():
+    """uvicorn 접근 로그는 args 5개 튜플을 그대로 풀어 쓴다 — 필터가 구조를 깨면 로그마다 traceback 이 난다(실제 회귀)."""
+    import logging
+
+    from uvicorn.logging import AccessFormatter
+
+    from astrowatch.redact import SecretRedactingFilter
+
+    f = SecretRedactingFilter(["SUPERSECRETKEY"])
+    rec = logging.LogRecord("uvicorn.access", logging.INFO, __file__, 1,
+                            '%s - "%s %s HTTP/%s" %d', ("127.0.0.1:1", "GET", "/api/x?k=SUPERSECRETKEY", "1.1", 200), None)
+    assert f.filter(rec) is True
+    assert isinstance(rec.args, tuple) and len(rec.args) == 5
+    out = AccessFormatter('%(client_addr)s - "%(request_line)s" %(status_code)s').format(rec)
+    assert "SUPERSECRETKEY" not in out and "***" in out and "GET" in out
+
+    rec2 = logging.LogRecord("x", logging.INFO, __file__, 1, "키 %s 값 %d", ("SUPERSECRETKEY", 3), None)
+    f.filter(rec2)
+    assert rec2.getMessage() == "키 *** 값 3"
