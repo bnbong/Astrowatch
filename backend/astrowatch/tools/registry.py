@@ -90,7 +90,7 @@ def load_builtin_tools() -> ToolRegistry:
 
     for mod in ("sky_events", "night_window", "sky_forecast", "observatory"):
         importlib.import_module(f"astrowatch.tools.{mod}")
-    for mod in ("space_docs", "calendar"):  # 심화 — 없으면 건너뜀
+    for mod in ("space_docs", "calendar", "sky_object"):  # 심화 — 없으면 건너뜀
         try:
             importlib.import_module(f"astrowatch.tools.{mod}")
         except ModuleNotFoundError:

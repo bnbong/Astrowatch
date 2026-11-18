@@ -1,0 +1,6 @@
+{
+  "status": 200,
+  "body": {
+    "ascii": "---\nconfig:\n  flowchart:\n    curve: linear\n---\ngraph TD;\n\t__start__([<p>__start__</p>]):::first\n\tanalyze(analyze)\n\tplan(plan)\n\texecute(execute)\n\tjudge(judge)\n\trespond(respond)\n\t__end__([<p>__end__</p>]):::last\n\t__start__ --> analyze;\n\tanalyze -.-> plan;\n\tanalyze -.-> respond;\n\texecute --> judge;\n\tjudge -.-> plan;\n\tjudge -.-> respond;\n\tplan --> execute;\n\trespond --> __end__;\n\tclassDef default fill:#f2f0ff,line-height:1.2\n\tclassDef first fill-opacity:0\n\tclassDef last fill:#bfb6fc\n"
+  }
+}

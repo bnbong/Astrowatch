@@ -1,0 +1,88 @@
+{
+  "id": "S16",
+  "message": "이 추천을 구글 캘린더에 등록해줘.",
+  "status": 200,
+  "seconds": 2.19,
+  "response": {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "intent": "calendar",
+    "answer": "캘린더 등록은 저장한 계획 화면에서 할 수 있어요.",
+    "conditions": {
+      "date_from": "2026-12-14",
+      "date_to": "2026-12-14",
+      "start_minute": 1320,
+      "region": "대전",
+      "event_kind": "meteor",
+      "event_query": "쌍둥이자리 유성우",
+      "place_query": null,
+      "end_minute": 1380,
+      "max_distance_km": null,
+      "allow_partly_cloudy": false,
+      "avoid_moon": true,
+      "fixed": [
+        "date_from",
+        "event_query"
+      ]
+    },
+    "needs_clarification": [],
+    "recommended": [],
+    "excluded": [],
+    "places": [],
+    "replan_count": 0,
+    "replan_limit_reached": false,
+    "steps": [
+      {
+        "seq": 55,
+        "type": "stage_start",
+        "stage": "analyze",
+        "tool": null,
+        "ok": null,
+        "summary": "요청 분석 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 56,
+        "type": "llm_decision",
+        "stage": "analyze",
+        "tool": null,
+        "ok": null,
+        "summary": "의도 판단: calendar - 직전 관측 추천을 구글 캘린더에 등록해 달라고 요청했습니다.",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 57,
+        "type": "stage_end",
+        "stage": "analyze",
+        "tool": null,
+        "ok": null,
+        "summary": "의도 calendar",
+        "duration_ms": 2158,
+        "replan_round": null
+      },
+      {
+        "seq": 58,
+        "type": "stage_start",
+        "stage": "respond",
+        "tool": null,
+        "ok": null,
+        "summary": "응답 작성 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 59,
+        "type": "stage_end",
+        "stage": "respond",
+        "tool": null,
+        "ok": null,
+        "summary": "calendar 응답 28자",
+        "duration_ms": 0,
+        "replan_round": null
+      }
+    ],
+    "warnings": [],
+    "safety_note": "야간 관측 시 이동 안전과 방한에 유의하세요."
+  }
+}

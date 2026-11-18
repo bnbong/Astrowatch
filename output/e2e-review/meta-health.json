@@ -1,0 +1,14 @@
+{
+  "status": 200,
+  "body": {
+    "status": "ok",
+    "llm_configured": true,
+    "tools": [
+      "search_sky_events",
+      "get_night_window",
+      "get_sky_forecast",
+      "search_observatory",
+      "lookup_sky_object"
+    ]
+  }
+}

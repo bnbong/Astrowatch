@@ -1,0 +1,81 @@
+[
+  {
+    "session_id": "review-0c4b7ca634c44dab9f218c980300715d",
+    "seq": 1,
+    "ts": "2026-11-18T05:58:46.320806Z",
+    "type": "session_start",
+    "stage": null,
+    "tool": null,
+    "payload": {
+      "message": "   "
+    }
+  },
+  {
+    "session_id": "review-0c4b7ca634c44dab9f218c980300715d",
+    "seq": 2,
+    "ts": "2026-11-18T05:58:46.325805Z",
+    "type": "stage_start",
+    "stage": "analyze",
+    "tool": null,
+    "payload": {}
+  },
+  {
+    "session_id": "review-0c4b7ca634c44dab9f218c980300715d",
+    "seq": 3,
+    "ts": "2026-11-18T05:58:48.175907Z",
+    "type": "llm_decision",
+    "stage": "analyze",
+    "tool": null,
+    "payload": {
+      "decision": "chat",
+      "reason": "메시지에 요청 내용이 없습니다.",
+      "model": "gpt-6-luna"
+    }
+  },
+  {
+    "session_id": "review-0c4b7ca634c44dab9f218c980300715d",
+    "seq": 4,
+    "ts": "2026-11-18T05:58:48.183938Z",
+    "type": "stage_end",
+    "stage": "analyze",
+    "tool": null,
+    "payload": {
+      "duration_ms": 1854,
+      "summary": "의도 chat"
+    }
+  },
+  {
+    "session_id": "review-0c4b7ca634c44dab9f218c980300715d",
+    "seq": 5,
+    "ts": "2026-11-18T05:58:48.189841Z",
+    "type": "stage_start",
+    "stage": "respond",
+    "tool": null,
+    "payload": {}
+  },
+  {
+    "session_id": "review-0c4b7ca634c44dab9f218c980300715d",
+    "seq": 6,
+    "ts": "2026-11-18T05:58:49.611598Z",
+    "type": "stage_end",
+    "stage": "respond",
+    "tool": null,
+    "payload": {
+      "duration_ms": 1417,
+      "summary": "chat 응답 58자"
+    }
+  },
+  {
+    "session_id": "review-0c4b7ca634c44dab9f218c980300715d",
+    "seq": 7,
+    "ts": "2026-11-18T05:58:49.632737Z",
+    "type": "session_end",
+    "stage": null,
+    "tool": null,
+    "payload": {
+      "intent": "chat",
+      "replan_count": 0,
+      "duration_ms": 3312
+    }
+  }
+]

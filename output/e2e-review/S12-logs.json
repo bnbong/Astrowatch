@@ -1,0 +1,81 @@
+[
+  {
+    "session_id": "review-49fcaff7a58449159fdc901e853bd02e",
+    "seq": 1,
+    "ts": "2026-11-18T05:57:59.022129Z",
+    "type": "session_start",
+    "stage": null,
+    "tool": null,
+    "payload": {
+      "message": "블랙홀의 사건의 지평선이 무엇인지 근거 자료와 함께 설명해줘."
+    }
+  },
+  {
+    "session_id": "review-49fcaff7a58449159fdc901e853bd02e",
+    "seq": 2,
+    "ts": "2026-11-18T05:57:59.027121Z",
+    "type": "stage_start",
+    "stage": "analyze",
+    "tool": null,
+    "payload": {}
+  },
+  {
+    "session_id": "review-49fcaff7a58449159fdc901e853bd02e",
+    "seq": 3,
+    "ts": "2026-11-18T05:58:01.086028Z",
+    "type": "llm_decision",
+    "stage": "analyze",
+    "tool": null,
+    "payload": {
+      "decision": "knowledge",
+      "reason": "블랙홀의 사건의 지평선에 대한 천문학적 배경 설명과 근거 자료를 요청했습니다.",
+      "model": "gpt-6-luna"
+    }
+  },
+  {
+    "session_id": "review-49fcaff7a58449159fdc901e853bd02e",
+    "seq": 4,
+    "ts": "2026-11-18T05:58:01.090033Z",
+    "type": "stage_end",
+    "stage": "analyze",
+    "tool": null,
+    "payload": {
+      "duration_ms": 2060,
+      "summary": "의도 knowledge"
+    }
+  },
+  {
+    "session_id": "review-49fcaff7a58449159fdc901e853bd02e",
+    "seq": 5,
+    "ts": "2026-11-18T05:58:01.095034Z",
+    "type": "stage_start",
+    "stage": "respond",
+    "tool": null,
+    "payload": {}
+  },
+  {
+    "session_id": "review-49fcaff7a58449159fdc901e853bd02e",
+    "seq": 6,
+    "ts": "2026-11-18T05:58:01.099429Z",
+    "type": "stage_end",
+    "stage": "respond",
+    "tool": null,
+    "payload": {
+      "duration_ms": 0,
+      "summary": "knowledge 응답 58자"
+    }
+  },
+  {
+    "session_id": "review-49fcaff7a58449159fdc901e853bd02e",
+    "seq": 7,
+    "ts": "2026-11-18T05:58:01.108944Z",
+    "type": "session_end",
+    "stage": null,
+    "tool": null,
+    "payload": {
+      "intent": "knowledge",
+      "replan_count": 0,
+      "duration_ms": 2087
+    }
+  }
+]

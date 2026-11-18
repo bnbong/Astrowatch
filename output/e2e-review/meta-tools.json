@@ -1,0 +1,235 @@
+{
+  "status": 200,
+  "body": [
+    {
+      "name": "search_sky_events",
+      "kind": "external",
+      "description": "볼 천문현상을 아직 정하지 않았거나, 특정 연·월에 어떤 현상(유성우·행성·달·식 등)이 있는지 찾을 때 쓴다. kind 로 종류를 거를 수 있다. 결과의 date 를 출몰·예보 Tool 입력으로 넘긴다.",
+      "input_schema": {
+        "$defs": {
+          "EventKind": {
+            "enum": [
+              "meteor",
+              "planet",
+              "moon",
+              "eclipse",
+              "occultation",
+              "season",
+              "deep_sky",
+              "other"
+            ],
+            "title": "EventKind",
+            "type": "string"
+          }
+        },
+        "properties": {
+          "year": {
+            "description": "조회 연도. 비우면 오늘 기준",
+            "maximum": 2100,
+            "minimum": 2000,
+            "title": "Year",
+            "type": "integer"
+          },
+          "month": {
+            "description": "조회 월. 비우면 이번 달",
+            "maximum": 12,
+            "minimum": 1,
+            "title": "Month",
+            "type": "integer"
+          },
+          "kind": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/EventKind"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "현상 종류로 거르기. 비우면 전부"
+          }
+        },
+        "required": [
+          "year",
+          "month"
+        ],
+        "title": "SkyEventsInput",
+        "type": "object"
+      },
+      "fixed_args": []
+    },
+    {
+      "name": "get_night_window",
+      "kind": "external",
+      "description": "특정 날짜·위치에서 밤하늘이 완전히 어두운 시간(천문박명 종료~다음 날 새벽 박명 시작)과 월출·월몰·월령(달빛 영향)을 알아야 할 때 쓴다. date 는 관측하는 저녁 날짜.",
+      "input_schema": {
+        "properties": {
+          "date": {
+            "description": "관측 날짜(저녁 기준). 새벽 박명은 다음 날 값을 함께 조회",
+            "format": "date",
+            "title": "Date",
+            "type": "string"
+          },
+          "lat": {
+            "maximum": 90,
+            "minimum": -90,
+            "title": "Lat",
+            "type": "number"
+          },
+          "lon": {
+            "maximum": 180,
+            "minimum": -180,
+            "title": "Lon",
+            "type": "number"
+          }
+        },
+        "required": [
+          "date",
+          "lat",
+          "lon"
+        ],
+        "title": "NightWindowInput",
+        "type": "object"
+      },
+      "fixed_args": []
+    },
+    {
+      "name": "get_sky_forecast",
+      "kind": "external",
+      "description": "관측 후보 날짜의 시간대별 하늘 상태(맑음·구름많음·흐림)·강수확률·강수형태(비·눈)가 필요할 때 쓴다. hours 는 관측 창의 시각(24~29 는 다음 날 0~5시). 약 10일 뒤까지만 예보가 있다. 날씨는 지역 격자 기준이다.",
+      "input_schema": {
+        "properties": {
+          "date": {
+            "format": "date",
+            "title": "Date",
+            "type": "string"
+          },
+          "lat": {
+            "maximum": 90,
+            "minimum": -90,
+            "title": "Lat",
+            "type": "number"
+          },
+          "lon": {
+            "maximum": 180,
+            "minimum": -180,
+            "title": "Lon",
+            "type": "number"
+          },
+          "hours": {
+            "description": "필요한 시각(0~23, 현지). 자정 넘김은 24~29 로 표기(24=다음 날 0시). 비우면 18~29",
+            "items": {
+              "type": "integer"
+            },
+            "title": "Hours",
+            "type": "array"
+          }
+        },
+        "required": [
+          "date",
+          "lat",
+          "lon"
+        ],
+        "title": "SkyForecastInput",
+        "type": "object"
+      },
+      "fixed_args": []
+    },
+    {
+      "name": "search_observatory",
+      "kind": "external",
+      "description": "관측할 장소(천문대·관측지 등)를 위치 주변에서 찾을 때 쓴다. 반경은 최대 20km. 장소의 날씨·하늘 상태는 알려 주지 않는다.",
+      "input_schema": {
+        "properties": {
+          "query": {
+            "default": "천문대",
+            "description": "검색어. 기본 '천문대'",
+            "title": "Query",
+            "type": "string"
+          },
+          "lat": {
+            "maximum": 90,
+            "minimum": -90,
+            "title": "Lat",
+            "type": "number"
+          },
+          "lon": {
+            "maximum": 180,
+            "minimum": -180,
+            "title": "Lon",
+            "type": "number"
+          },
+          "radius_km": {
+            "default": 20,
+            "description": "카카오 상한 20km",
+            "exclusiveMinimum": 0,
+            "maximum": 20,
+            "title": "Radius Km",
+            "type": "number"
+          }
+        },
+        "required": [
+          "lat",
+          "lon"
+        ],
+        "title": "ObservatoryInput",
+        "type": "object"
+      },
+      "fixed_args": []
+    },
+    {
+      "name": "lookup_sky_object",
+      "kind": "local",
+      "description": "사용자가 특정 천체(은하·성운·성단·별·별자리·행성)를 말했을 때 그 천체가 그날 밤 언제 떠 있는지 알아야 할 때 쓴다. 적경·적위로 고도를 계산해 고도 min_alt(기본 20°) 이상인 시간 구간과 남중 시각·고도를 준다. 이름을 못 찾으면 NOT_FOUND(비슷한 이름 제시) — 카탈로그에 없는 천체는 추정하지 않는다.",
+      "input_schema": {
+        "properties": {
+          "name": {
+            "description": "천체 이름 (한국어·영어·메시에 번호. 예: '안드로메다 은하', 'M31', '목성')",
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          },
+          "date": {
+            "description": "관측 날짜(저녁 기준)",
+            "format": "date",
+            "title": "Date",
+            "type": "string"
+          },
+          "lat": {
+            "maximum": 90,
+            "minimum": -90,
+            "title": "Lat",
+            "type": "number"
+          },
+          "lon": {
+            "maximum": 180,
+            "minimum": -180,
+            "title": "Lon",
+            "type": "number"
+          },
+          "min_alt": {
+            "default": 20,
+            "description": "이 고도(도) 이상일 때만 '떠 있다'고 본다",
+            "maximum": 80,
+            "minimum": 0,
+            "title": "Min Alt",
+            "type": "number"
+          }
+        },
+        "required": [
+          "name",
+          "date",
+          "lat",
+          "lon"
+        ],
+        "title": "SkyObjectInput",
+        "type": "object"
+      },
+      "fixed_args": [
+        "lat",
+        "lon"
+      ]
+    }
+  ]
+}

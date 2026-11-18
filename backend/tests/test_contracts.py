@@ -113,7 +113,8 @@ def test_conditions_merge_keeps_unchanged_and_tracks_fixed():
 
 
 def test_conditions_missing_rules():
-    assert Conditions(end_minute=23 * 60).missing_for_plan() == ["region", "date_from", "start_minute"]
+    assert Conditions(end_minute=23 * 60).missing_for_plan() == ["region", "start_minute"]
+    assert Conditions(region="서울").missing_for_plan() == []  # 날짜 없음은 되묻지 않고 기본 범위를 쓴다
     assert Conditions(region="서울", date_from=date(2026, 12, 14)).missing_for_plan() == []
 
 
@@ -141,3 +142,11 @@ def test_db_schema_and_run_logs_immutable(tmp_path):
                 "INSERT INTO plans(event_title, start_dt, end_dt, location_label, created_at, updated_at) "
                 "VALUES ('e', '2026-12-14T23:00', '2026-12-14T22:00', '서울', 't', 't')"
             )
+
+
+def test_find_region_prefers_city_over_province_alias():
+    from astrowatch.data.regions import find_region
+
+    assert find_region("강원도 강릉").name == "강릉"
+    assert find_region("강원 평창군 쪽").name == "평창"
+    assert find_region("경기도 양평").name == "양평"

@@ -1,0 +1,85 @@
+{
+  "id": "S01",
+  "message": "안녕, 이 서비스는 어떻게 써?",
+  "status": 200,
+  "seconds": 6.58,
+  "response": {
+    "session_id": "review-0a5cc2fec0d4443cbe75dfe9a7ccc6f9",
+    "intent": "chat",
+    "answer": "안녕하세요! 보고 싶은 천문현상과 날짜, 관측할 지역·시간을 알려 주세요.  \n예를 들어 “12월 14일 쌍둥이자리 유성우, 서울에서 밤 10시~새벽 2시에 볼 수 있어?”라고 물어보시면 돼요.  \n박명·월령과 날씨를 고려해 관측 가능성을 알려 드리고, 근처 천문대도 찾아 드릴게요.",
+    "conditions": {
+      "date_from": null,
+      "date_to": null,
+      "start_minute": null,
+      "region": null,
+      "event_kind": null,
+      "event_query": null,
+      "place_query": null,
+      "end_minute": null,
+      "max_distance_km": null,
+      "allow_partly_cloudy": false,
+      "avoid_moon": true,
+      "fixed": []
+    },
+    "needs_clarification": [],
+    "recommended": [],
+    "excluded": [],
+    "places": [],
+    "replan_count": 0,
+    "replan_limit_reached": false,
+    "steps": [
+      {
+        "seq": 2,
+        "type": "stage_start",
+        "stage": "analyze",
+        "tool": null,
+        "ok": null,
+        "summary": "요청 분석 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 3,
+        "type": "llm_decision",
+        "stage": "analyze",
+        "tool": null,
+        "ok": null,
+        "summary": "의도 판단: chat - 인사와 서비스 사용법을 물어보는 잡담성 요청입니다.",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 4,
+        "type": "stage_end",
+        "stage": "analyze",
+        "tool": null,
+        "ok": null,
+        "summary": "의도 chat",
+        "duration_ms": 4592,
+        "replan_round": null
+      },
+      {
+        "seq": 5,
+        "type": "stage_start",
+        "stage": "respond",
+        "tool": null,
+        "ok": null,
+        "summary": "응답 작성 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 6,
+        "type": "stage_end",
+        "stage": "respond",
+        "tool": null,
+        "ok": null,
+        "summary": "chat 응답 158자",
+        "duration_ms": 1931,
+        "replan_round": null
+      }
+    ],
+    "warnings": [],
+    "safety_note": "야간 관측 시 이동 안전과 방한에 유의하세요."
+  }
+}

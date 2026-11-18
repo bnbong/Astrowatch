@@ -1,0 +1,5071 @@
+{
+ "source": "https://raw.githubusercontent.com/bnbong/VastHorizon/main/data/items.json",
+ "count": 294,
+ "objects": [
+  {
+   "id": "Q13039",
+   "group": "star",
+   "name_ko": "알페라츠",
+   "name_en": "Alpha Andromedae",
+   "aliases": [
+    "알페라츠",
+    "alphaandromedae",
+    "αand",
+    "hip677"
+   ],
+   "kind": "star",
+   "ra_deg": 2.0969,
+   "dec_deg": 29.0904,
+   "mag": 2.07,
+   "naked_eye": true,
+   "constellation_ko": "안드로메다자리"
+  },
+  {
+   "id": "Q13594",
+   "group": "star",
+   "name_ko": "카시오페이아자리 베타",
+   "name_en": "Beta Cassiopeiae",
+   "aliases": [
+    "카시오페이아자리베타",
+    "betacassiopeiae",
+    "βcas",
+    "hip746"
+   ],
+   "kind": "star",
+   "ra_deg": 2.2945,
+   "dec_deg": 59.1498,
+   "mag": 2.28,
+   "naked_eye": true,
+   "constellation_ko": "카시오페이아자리"
+  },
+  {
+   "id": "Q14251",
+   "group": "star",
+   "name_ko": "안카",
+   "name_en": "Alpha Phoenicis",
+   "aliases": [
+    "안카",
+    "alphaphoenicis",
+    "αphe",
+    "hip2081"
+   ],
+   "kind": "star",
+   "ra_deg": 6.571,
+   "dec_deg": -42.306,
+   "mag": 2.4,
+   "naked_eye": true,
+   "constellation_ko": "봉황자리"
+  },
+  {
+   "id": "Q13108",
+   "group": "star",
+   "name_ko": "쉐다르",
+   "name_en": "Alpha Cassiopeiae",
+   "aliases": [
+    "쉐다르",
+    "alphacassiopeiae",
+    "αcas",
+    "hip3179"
+   ],
+   "kind": "star",
+   "ra_deg": 10.1268,
+   "dec_deg": 56.5373,
+   "mag": 2.24,
+   "naked_eye": true,
+   "constellation_ko": "카시오페이아자리"
+  },
+  {
+   "id": "Q13170",
+   "group": "star",
+   "name_ko": "데네브 카이토스",
+   "name_en": "Beta Ceti",
+   "aliases": [
+    "데네브카이토스",
+    "betaceti",
+    "βcet",
+    "hip3419"
+   ],
+   "kind": "star",
+   "ra_deg": 10.8974,
+   "dec_deg": -17.9866,
+   "mag": 2.04,
+   "naked_eye": true,
+   "constellation_ko": "고래자리"
+  },
+  {
+   "id": "Q13584",
+   "group": "star",
+   "name_ko": "카시오페이아자리 감마",
+   "name_en": "Gamma Cassiopeiae",
+   "aliases": [
+    "카시오페이아자리감마",
+    "gammacassiopeiae",
+    "γcas",
+    "hip4427"
+   ],
+   "kind": "star",
+   "ra_deg": 14.1772,
+   "dec_deg": 60.7167,
+   "mag": 2.15,
+   "naked_eye": true,
+   "constellation_ko": "카시오페이아자리"
+  },
+  {
+   "id": "Q13043",
+   "group": "star",
+   "name_ko": "미라크",
+   "name_en": "Beta Andromedae",
+   "aliases": [
+    "미라크",
+    "betaandromedae",
+    "βand",
+    "hip5447"
+   ],
+   "kind": "star",
+   "ra_deg": 17.433,
+   "dec_deg": 35.6206,
+   "mag": 2.07,
+   "naked_eye": true,
+   "constellation_ko": "안드로메다자리"
+  },
+  {
+   "id": "Q12183",
+   "group": "star",
+   "name_ko": "아케르나르",
+   "name_en": "Achernar",
+   "aliases": [
+    "아케르나르",
+    "achernar",
+    "αeri",
+    "hip7588"
+   ],
+   "kind": "star",
+   "ra_deg": 24.4285,
+   "dec_deg": -57.2368,
+   "mag": 0.45,
+   "naked_eye": true,
+   "constellation_ko": "에리다누스자리"
+  },
+  {
+   "id": "Q66477099",
+   "group": "star",
+   "name_ko": "알마크",
+   "name_en": "Gamma Andromedae",
+   "aliases": [
+    "알마크",
+    "gammaandromedae",
+    "γ1and",
+    "hip9640"
+   ],
+   "kind": "star",
+   "ra_deg": 30.9748,
+   "dec_deg": 42.3297,
+   "mag": 2.1,
+   "naked_eye": true,
+   "constellation_ko": "안드로메다자리"
+  },
+  {
+   "id": "Q13213",
+   "group": "star",
+   "name_ko": "하말",
+   "name_en": "Alpha Arietis",
+   "aliases": [
+    "하말",
+    "alphaarietis",
+    "αari",
+    "hip9884"
+   ],
+   "kind": "star",
+   "ra_deg": 31.7934,
+   "dec_deg": 23.4624,
+   "mag": 2.01,
+   "naked_eye": true,
+   "constellation_ko": "양자리"
+  },
+  {
+   "id": "Q12980",
+   "group": "star",
+   "name_ko": "폴라리스",
+   "name_en": "Polaris",
+   "aliases": [
+    "폴라리스",
+    "polaris",
+    "αumi",
+    "hip11767",
+    "북극성",
+    "northstar"
+   ],
+   "kind": "star",
+   "ra_deg": 37.9545,
+   "dec_deg": 89.2641,
+   "mag": 1.97,
+   "naked_eye": true,
+   "constellation_ko": "작은곰자리"
+  },
+  {
+   "id": "Q13080",
+   "group": "star",
+   "name_ko": "알골",
+   "name_en": "Algol",
+   "aliases": [
+    "알골",
+    "algol",
+    "βper",
+    "hip14576"
+   ],
+   "kind": "star",
+   "ra_deg": 47.0422,
+   "dec_deg": 40.9556,
+   "mag": 2.09,
+   "naked_eye": true,
+   "constellation_ko": "페르세우스자리"
+  },
+  {
+   "id": "Q13790",
+   "group": "star",
+   "name_ko": "미르파크",
+   "name_en": "Alpha Persei",
+   "aliases": [
+    "미르파크",
+    "alphapersei",
+    "αper",
+    "hip15863"
+   ],
+   "kind": "star",
+   "ra_deg": 51.0807,
+   "dec_deg": 49.8612,
+   "mag": 1.79,
+   "naked_eye": true,
+   "constellation_ko": "페르세우스자리"
+  },
+  {
+   "id": "Q88540091",
+   "group": "star",
+   "name_ko": "알데바란",
+   "name_en": "Aldebaran system",
+   "aliases": [
+    "알데바란",
+    "aldebaransystem",
+    "αtau",
+    "hip21421"
+   ],
+   "kind": "star",
+   "ra_deg": 68.9802,
+   "dec_deg": 16.5093,
+   "mag": 0.87,
+   "naked_eye": true,
+   "constellation_ko": "황소자리"
+  },
+  {
+   "id": "Q12126",
+   "group": "star",
+   "name_ko": "리겔",
+   "name_en": "Rigel",
+   "aliases": [
+    "리겔",
+    "rigel",
+    "βori",
+    "hip24436"
+   ],
+   "kind": "star",
+   "ra_deg": 78.6345,
+   "dec_deg": -8.2016,
+   "mag": 0.18,
+   "naked_eye": true,
+   "constellation_ko": "오리온자리"
+  },
+  {
+   "id": "Q12970",
+   "group": "star",
+   "name_ko": "카펠라",
+   "name_en": "Capella",
+   "aliases": [
+    "카펠라",
+    "capella",
+    "αaur",
+    "hip24608"
+   ],
+   "kind": "star",
+   "ra_deg": 79.1723,
+   "dec_deg": 45.998,
+   "mag": 0.08,
+   "naked_eye": true,
+   "constellation_ko": "마차부자리"
+  },
+  {
+   "id": "Q13066",
+   "group": "star",
+   "name_ko": "벨라트릭스",
+   "name_en": "Bellatrix",
+   "aliases": [
+    "벨라트릭스",
+    "bellatrix",
+    "γori",
+    "hip25336"
+   ],
+   "kind": "star",
+   "ra_deg": 81.2828,
+   "dec_deg": 6.3497,
+   "mag": 1.64,
+   "naked_eye": true,
+   "constellation_ko": "오리온자리"
+  },
+  {
+   "id": "Q13508",
+   "group": "star",
+   "name_ko": "엘 나스",
+   "name_en": "Beta Tauri",
+   "aliases": [
+    "엘나스",
+    "betatauri",
+    "βtau",
+    "hip25428"
+   ],
+   "kind": "star",
+   "ra_deg": 81.573,
+   "dec_deg": 28.6075,
+   "mag": 1.65,
+   "naked_eye": true,
+   "constellation_ko": "황소자리"
+  },
+  {
+   "id": "Q680341",
+   "group": "star",
+   "name_ko": "민타카",
+   "name_en": "Mintaka",
+   "aliases": [
+    "민타카",
+    "mintaka",
+    "δori",
+    "hip25930"
+   ],
+   "kind": "star",
+   "ra_deg": 83.0017,
+   "dec_deg": -0.2991,
+   "mag": 2.25,
+   "naked_eye": true,
+   "constellation_ko": "오리온자리"
+  },
+  {
+   "id": "Q13070",
+   "group": "star",
+   "name_ko": "알닐람",
+   "name_en": "Alnilam",
+   "aliases": [
+    "알닐람",
+    "alnilam",
+    "εori",
+    "hip26311"
+   ],
+   "kind": "star",
+   "ra_deg": 84.0534,
+   "dec_deg": -1.2019,
+   "mag": 1.69,
+   "naked_eye": true,
+   "constellation_ko": "오리온자리"
+  },
+  {
+   "id": "Q13076",
+   "group": "star",
+   "name_ko": "알니타크",
+   "name_en": "Alnitak",
+   "aliases": [
+    "알니타크",
+    "alnitak",
+    "ζori",
+    "hip26727"
+   ],
+   "kind": "star",
+   "ra_deg": 85.1897,
+   "dec_deg": -1.9426,
+   "mag": 1.74,
+   "naked_eye": true,
+   "constellation_ko": "오리온자리"
+  },
+  {
+   "id": "Q14028",
+   "group": "star",
+   "name_ko": "오리온자리 카파",
+   "name_en": "Saiph",
+   "aliases": [
+    "오리온자리카파",
+    "saiph",
+    "κori",
+    "hip27366"
+   ],
+   "kind": "star",
+   "ra_deg": 86.9391,
+   "dec_deg": -9.6696,
+   "mag": 2.07,
+   "naked_eye": true,
+   "constellation_ko": "오리온자리"
+  },
+  {
+   "id": "Q12124",
+   "group": "star",
+   "name_ko": "베텔게우스",
+   "name_en": "Betelgeuse",
+   "aliases": [
+    "베텔게우스",
+    "betelgeuse",
+    "αori",
+    "hip27989"
+   ],
+   "kind": "star",
+   "ra_deg": 88.7929,
+   "dec_deg": 7.4071,
+   "mag": 0.45,
+   "naked_eye": true,
+   "constellation_ko": "오리온자리"
+  },
+  {
+   "id": "Q13219",
+   "group": "star",
+   "name_ko": "멘칼리난",
+   "name_en": "Beta Aurigae",
+   "aliases": [
+    "멘칼리난",
+    "betaaurigae",
+    "βaur",
+    "hip28360"
+   ],
+   "kind": "star",
+   "ra_deg": 89.8822,
+   "dec_deg": 44.9474,
+   "mag": 1.9,
+   "naked_eye": true,
+   "constellation_ko": "마차부자리"
+  },
+  {
+   "id": "Q13415",
+   "group": "star",
+   "name_ko": "미르잠",
+   "name_en": "Beta Canis Majoris",
+   "aliases": [
+    "미르잠",
+    "betacanismajoris",
+    "βcma",
+    "hip30324"
+   ],
+   "kind": "star",
+   "ra_deg": 95.6749,
+   "dec_deg": -17.9559,
+   "mag": 1.98,
+   "naked_eye": true,
+   "constellation_ko": "큰개자리"
+  },
+  {
+   "id": "Q12189",
+   "group": "star",
+   "name_ko": "카노푸스",
+   "name_en": "Canopus",
+   "aliases": [
+    "카노푸스",
+    "canopus",
+    "αcar",
+    "hip30438"
+   ],
+   "kind": "star",
+   "ra_deg": 95.988,
+   "dec_deg": -52.6957,
+   "mag": -0.62,
+   "naked_eye": true,
+   "constellation_ko": "용골자리"
+  },
+  {
+   "id": "Q14238",
+   "group": "star",
+   "name_ko": "알레나",
+   "name_en": "Gamma Geminorum",
+   "aliases": [
+    "알레나",
+    "gammageminorum",
+    "γgem",
+    "hip31681"
+   ],
+   "kind": "star",
+   "ra_deg": 99.4279,
+   "dec_deg": 16.3993,
+   "mag": 1.93,
+   "naked_eye": true,
+   "constellation_ko": "쌍둥이자리"
+  },
+  {
+   "id": "Q3409",
+   "group": "star",
+   "name_ko": "시리우스",
+   "name_en": "Sirius",
+   "aliases": [
+    "시리우스",
+    "sirius",
+    "αcma",
+    "hip32349"
+   ],
+   "kind": "star",
+   "ra_deg": 101.2872,
+   "dec_deg": -16.7161,
+   "mag": -1.44,
+   "naked_eye": true,
+   "constellation_ko": "큰개자리"
+  },
+  {
+   "id": "Q13414",
+   "group": "star",
+   "name_ko": "아다라",
+   "name_en": "Adhara",
+   "aliases": [
+    "아다라",
+    "adhara",
+    "εcma",
+    "hip33579"
+   ],
+   "kind": "star",
+   "ra_deg": 104.6565,
+   "dec_deg": -28.9721,
+   "mag": 1.5,
+   "naked_eye": true,
+   "constellation_ko": "큰개자리"
+  },
+  {
+   "id": "Q13411",
+   "group": "star",
+   "name_ko": "웨젠",
+   "name_en": "Delta Canis Majoris",
+   "aliases": [
+    "웨젠",
+    "deltacanismajoris",
+    "δcma",
+    "hip34444"
+   ],
+   "kind": "star",
+   "ra_deg": 107.0979,
+   "dec_deg": -26.3932,
+   "mag": 1.83,
+   "naked_eye": true,
+   "constellation_ko": "큰개자리"
+  },
+  {
+   "id": "Q13416",
+   "group": "star",
+   "name_ko": "알루드라",
+   "name_en": "Eta Canis Majoris",
+   "aliases": [
+    "알루드라",
+    "etacanismajoris",
+    "ηcma",
+    "hip35904"
+   ],
+   "kind": "star",
+   "ra_deg": 111.0238,
+   "dec_deg": -29.3031,
+   "mag": 2.45,
+   "naked_eye": true,
+   "constellation_ko": "큰개자리"
+  },
+  {
+   "id": "Q13029",
+   "group": "star",
+   "name_ko": "카스토르 (항성)",
+   "name_en": "Castor",
+   "aliases": [
+    "카스토르(항성)",
+    "castor",
+    "αgem",
+    "hip36850"
+   ],
+   "kind": "star",
+   "ra_deg": 113.6494,
+   "dec_deg": 31.8883,
+   "mag": 1.58,
+   "naked_eye": true,
+   "constellation_ko": "쌍둥이자리"
+  },
+  {
+   "id": "Q13034",
+   "group": "star",
+   "name_ko": "프로키온",
+   "name_en": "Procyon",
+   "aliases": [
+    "프로키온",
+    "procyon",
+    "αcmi",
+    "hip37279"
+   ],
+   "kind": "star",
+   "ra_deg": 114.8255,
+   "dec_deg": 5.225,
+   "mag": 0.4,
+   "naked_eye": true,
+   "constellation_ko": "작은개자리"
+  },
+  {
+   "id": "Q13028",
+   "group": "star",
+   "name_ko": "폴룩스 (항성)",
+   "name_en": "Pollux",
+   "aliases": [
+    "폴룩스(항성)",
+    "pollux",
+    "βgem",
+    "hip37826"
+   ],
+   "kind": "star",
+   "ra_deg": 116.329,
+   "dec_deg": 28.0262,
+   "mag": 1.16,
+   "naked_eye": true,
+   "constellation_ko": "쌍둥이자리"
+  },
+  {
+   "id": "Q13200",
+   "group": "star",
+   "name_ko": "나오스",
+   "name_en": "Zeta Puppis",
+   "aliases": [
+    "나오스",
+    "zetapuppis",
+    "ζpup",
+    "hip39429"
+   ],
+   "kind": "star",
+   "ra_deg": 120.896,
+   "dec_deg": -40.0031,
+   "mag": 2.21,
+   "naked_eye": true,
+   "constellation_ko": "고물자리"
+  },
+  {
+   "id": "Q14235",
+   "group": "star",
+   "name_ko": "돛자리 감마",
+   "name_en": "Gamma Velorum",
+   "aliases": [
+    "돛자리감마",
+    "gammavelorum",
+    "γ2vel",
+    "hip39953"
+   ],
+   "kind": "star",
+   "ra_deg": 122.3831,
+   "dec_deg": -47.3366,
+   "mag": 1.75,
+   "naked_eye": true,
+   "constellation_ko": "돛자리"
+  },
+  {
+   "id": "Q14256",
+   "group": "star",
+   "name_ko": "아비오르",
+   "name_en": "Avior",
+   "aliases": [
+    "아비오르",
+    "avior",
+    "εcar",
+    "hip41037"
+   ],
+   "kind": "star",
+   "ra_deg": 125.6285,
+   "dec_deg": -59.5095,
+   "mag": 1.86,
+   "naked_eye": true,
+   "constellation_ko": "용골자리"
+  },
+  {
+   "id": "Q1048396",
+   "group": "star",
+   "name_ko": "돛자리 델타",
+   "name_en": "Delta Velorum",
+   "aliases": [
+    "돛자리델타",
+    "deltavelorum",
+    "δvel",
+    "hip42913"
+   ],
+   "kind": "star",
+   "ra_deg": 131.1759,
+   "dec_deg": -54.7088,
+   "mag": 1.93,
+   "naked_eye": true,
+   "constellation_ko": "돛자리"
+  },
+  {
+   "id": "Q14245",
+   "group": "star",
+   "name_ko": "돛자리 람다",
+   "name_en": "Lambda Velorum",
+   "aliases": [
+    "돛자리람다",
+    "lambdavelorum",
+    "λvel",
+    "hip44816"
+   ],
+   "kind": "star",
+   "ra_deg": 136.999,
+   "dec_deg": -43.4326,
+   "mag": 2.23,
+   "naked_eye": true,
+   "constellation_ko": "돛자리"
+  },
+  {
+   "id": "Q13174",
+   "group": "star",
+   "name_ko": "용골자리 베타",
+   "name_en": "Beta Carinae",
+   "aliases": [
+    "용골자리베타",
+    "betacarinae",
+    "βcar",
+    "hip45238"
+   ],
+   "kind": "star",
+   "ra_deg": 138.2999,
+   "dec_deg": -69.7172,
+   "mag": 1.67,
+   "naked_eye": true,
+   "constellation_ko": "용골자리"
+  },
+  {
+   "id": "Q14247",
+   "group": "star",
+   "name_ko": "아스피디스케",
+   "name_en": "Iota Carinae",
+   "aliases": [
+    "아스피디스케",
+    "iotacarinae",
+    "ιcar",
+    "hip45556"
+   ],
+   "kind": "star",
+   "ra_deg": 139.2725,
+   "dec_deg": -59.2752,
+   "mag": 2.21,
+   "naked_eye": true,
+   "constellation_ko": "용골자리"
+  },
+  {
+   "id": "Q14259",
+   "group": "star",
+   "name_ko": "돛자리 카파",
+   "name_en": "Kappa Velorum",
+   "aliases": [
+    "돛자리카파",
+    "kappavelorum",
+    "κvel",
+    "hip45941"
+   ],
+   "kind": "star",
+   "ra_deg": 140.5284,
+   "dec_deg": -55.0107,
+   "mag": 2.47,
+   "naked_eye": true,
+   "constellation_ko": "돛자리"
+  },
+  {
+   "id": "Q13577",
+   "group": "star",
+   "name_ko": "알파드",
+   "name_en": "Alphard",
+   "aliases": [
+    "알파드",
+    "alphard",
+    "αhya",
+    "hip46390"
+   ],
+   "kind": "star",
+   "ra_deg": 141.8968,
+   "dec_deg": -8.6586,
+   "mag": 1.99,
+   "naked_eye": true,
+   "constellation_ko": "바다뱀자리"
+  },
+  {
+   "id": "Q76493786",
+   "group": "star",
+   "name_ko": "레굴루스",
+   "name_en": "Regulus",
+   "aliases": [
+    "레굴루스",
+    "regulus",
+    "αleo",
+    "hip49669"
+   ],
+   "kind": "star",
+   "ra_deg": 152.093,
+   "dec_deg": 11.9672,
+   "mag": 1.36,
+   "naked_eye": true,
+   "constellation_ko": "사자자리"
+  },
+  {
+   "id": "Q66477100",
+   "group": "star",
+   "name_ko": "알기에바",
+   "name_en": "Gamma Leonis",
+   "aliases": [
+    "알기에바",
+    "gammaleonis",
+    "γ1leo",
+    "hip50583"
+   ],
+   "kind": "star",
+   "ra_deg": 154.9931,
+   "dec_deg": 19.8415,
+   "mag": 2.01,
+   "naked_eye": true,
+   "constellation_ko": "사자자리"
+  },
+  {
+   "id": "Q13096",
+   "group": "star",
+   "name_ko": "메라크",
+   "name_en": "Merak",
+   "aliases": [
+    "메라크",
+    "merak",
+    "βuma",
+    "hip53910"
+   ],
+   "kind": "star",
+   "ra_deg": 165.4603,
+   "dec_deg": 56.3824,
+   "mag": 2.34,
+   "naked_eye": true,
+   "constellation_ko": "큰곰자리"
+  },
+  {
+   "id": "Q13084",
+   "group": "star",
+   "name_ko": "두베",
+   "name_en": "Dubhe",
+   "aliases": [
+    "두베",
+    "dubhe",
+    "αuma",
+    "hip54061"
+   ],
+   "kind": "star",
+   "ra_deg": 165.932,
+   "dec_deg": 61.751,
+   "mag": 1.81,
+   "naked_eye": true,
+   "constellation_ko": "큰곰자리"
+  },
+  {
+   "id": "Q13015",
+   "group": "star",
+   "name_ko": "데네볼라",
+   "name_en": "Denebola",
+   "aliases": [
+    "데네볼라",
+    "denebola",
+    "βleo",
+    "hip57632"
+   ],
+   "kind": "star",
+   "ra_deg": 177.2649,
+   "dec_deg": 14.5721,
+   "mag": 2.14,
+   "naked_eye": true,
+   "constellation_ko": "사자자리"
+  },
+  {
+   "id": "Q13099",
+   "group": "star",
+   "name_ko": "페크다",
+   "name_en": "Phecda",
+   "aliases": [
+    "페크다",
+    "phecda",
+    "γuma",
+    "hip58001"
+   ],
+   "kind": "star",
+   "ra_deg": 178.4577,
+   "dec_deg": 53.6948,
+   "mag": 2.41,
+   "naked_eye": true,
+   "constellation_ko": "큰곰자리"
+  },
+  {
+   "id": "Q66476660",
+   "group": "star",
+   "name_ko": "아크룩스",
+   "name_en": "Acrux",
+   "aliases": [
+    "아크룩스",
+    "acrux",
+    "α1cru",
+    "hip60718"
+   ],
+   "kind": "star",
+   "ra_deg": 186.6496,
+   "dec_deg": -63.0991,
+   "mag": 0.77,
+   "naked_eye": true,
+   "constellation_ko": "남십자자리"
+  },
+  {
+   "id": "Q14233",
+   "group": "star",
+   "name_ko": "가크룩스",
+   "name_en": "Gacrux",
+   "aliases": [
+    "가크룩스",
+    "gacrux",
+    "γcru",
+    "hip61084"
+   ],
+   "kind": "star",
+   "ra_deg": 187.7915,
+   "dec_deg": -57.1132,
+   "mag": 1.59,
+   "naked_eye": true,
+   "constellation_ko": "남십자자리"
+  },
+  {
+   "id": "Q14226",
+   "group": "star",
+   "name_ko": "물리파인",
+   "name_en": "Gamma Centauri",
+   "aliases": [
+    "물리파인",
+    "gammacentauri",
+    "γcen",
+    "hip61932"
+   ],
+   "kind": "star",
+   "ra_deg": 190.3793,
+   "dec_deg": -48.9599,
+   "mag": 2.2,
+   "naked_eye": true,
+   "constellation_ko": "센타우루스자리"
+  },
+  {
+   "id": "Q13105",
+   "group": "star",
+   "name_ko": "남십자자리 베타",
+   "name_en": "Mimosa",
+   "aliases": [
+    "남십자자리베타",
+    "mimosa",
+    "βcru",
+    "hip62434"
+   ],
+   "kind": "star",
+   "ra_deg": 191.9303,
+   "dec_deg": -59.6888,
+   "mag": 1.25,
+   "naked_eye": true,
+   "constellation_ko": "남십자자리"
+  },
+  {
+   "id": "Q13091",
+   "group": "star",
+   "name_ko": "알리오스",
+   "name_en": "Alioth",
+   "aliases": [
+    "알리오스",
+    "alioth",
+    "εuma",
+    "hip62956"
+   ],
+   "kind": "star",
+   "ra_deg": 193.5073,
+   "dec_deg": 55.9598,
+   "mag": 1.76,
+   "naked_eye": true,
+   "constellation_ko": "큰곰자리"
+  },
+  {
+   "id": "Q66477109",
+   "group": "star",
+   "name_ko": "미자르",
+   "name_en": "Mizar",
+   "aliases": [
+    "미자르",
+    "mizar",
+    "ζuma",
+    "hip65378"
+   ],
+   "kind": "star",
+   "ra_deg": 200.9814,
+   "dec_deg": 54.9254,
+   "mag": 2.23,
+   "naked_eye": true,
+   "constellation_ko": "큰곰자리"
+  },
+  {
+   "id": "Q13008",
+   "group": "star",
+   "name_ko": "스피카",
+   "name_en": "Spica",
+   "aliases": [
+    "스피카",
+    "spica",
+    "αvir",
+    "hip65474"
+   ],
+   "kind": "star",
+   "ra_deg": 201.2982,
+   "dec_deg": -11.1613,
+   "mag": 0.98,
+   "naked_eye": true,
+   "constellation_ko": "처녀자리"
+  },
+  {
+   "id": "Q14228",
+   "group": "star",
+   "name_ko": "센타우루스자리 엡실론",
+   "name_en": "Epsilon Centauri",
+   "aliases": [
+    "센타우루스자리엡실론",
+    "epsiloncentauri",
+    "εcen",
+    "hip66657"
+   ],
+   "kind": "star",
+   "ra_deg": 204.9719,
+   "dec_deg": -53.4664,
+   "mag": 2.29,
+   "naked_eye": true,
+   "constellation_ko": "센타우루스자리"
+  },
+  {
+   "id": "Q13093",
+   "group": "star",
+   "name_ko": "알카이드",
+   "name_en": "Alkaid",
+   "aliases": [
+    "알카이드",
+    "alkaid",
+    "ηuma",
+    "hip67301"
+   ],
+   "kind": "star",
+   "ra_deg": 206.8852,
+   "dec_deg": 49.3133,
+   "mag": 1.85,
+   "naked_eye": true,
+   "constellation_ko": "큰곰자리"
+  },
+  {
+   "id": "Q13175",
+   "group": "star",
+   "name_ko": "하다르",
+   "name_en": "Beta Centauri",
+   "aliases": [
+    "하다르",
+    "betacentauri",
+    "βcen",
+    "hip68702"
+   ],
+   "kind": "star",
+   "ra_deg": 210.9559,
+   "dec_deg": -60.373,
+   "mag": 0.61,
+   "naked_eye": true,
+   "constellation_ko": "센타우루스자리"
+  },
+  {
+   "id": "Q14225",
+   "group": "star",
+   "name_ko": "멘켄트",
+   "name_en": "Menkent",
+   "aliases": [
+    "멘켄트",
+    "menkent",
+    "θcen",
+    "hip68933"
+   ],
+   "kind": "star",
+   "ra_deg": 211.6706,
+   "dec_deg": -36.37,
+   "mag": 2.06,
+   "naked_eye": true,
+   "constellation_ko": "센타우루스자리"
+  },
+  {
+   "id": "Q12985",
+   "group": "star",
+   "name_ko": "아르크투루스",
+   "name_en": "Arcturus",
+   "aliases": [
+    "아르크투루스",
+    "arcturus",
+    "αboo",
+    "hip69673"
+   ],
+   "kind": "star",
+   "ra_deg": 213.9153,
+   "dec_deg": 19.1824,
+   "mag": -0.05,
+   "naked_eye": true,
+   "constellation_ko": "목동자리"
+  },
+  {
+   "id": "Q14266",
+   "group": "star",
+   "name_ko": "센타우루스자리 프록시마",
+   "name_en": "Proxima Centauri",
+   "aliases": [
+    "센타우루스자리프록시마",
+    "proximacentauri",
+    "hip70890"
+   ],
+   "kind": "star",
+   "ra_deg": 217.42893,
+   "dec_deg": -62.67949,
+   "mag": 11.13,
+   "naked_eye": false,
+   "constellation_ko": null
+  },
+  {
+   "id": "Q14229",
+   "group": "star",
+   "name_ko": "센타우루스자리 에타",
+   "name_en": "Eta Centauri",
+   "aliases": [
+    "센타우루스자리에타",
+    "etacentauri",
+    "ηcen",
+    "hip71352"
+   ],
+   "kind": "star",
+   "ra_deg": 218.8768,
+   "dec_deg": -42.1578,
+   "mag": 2.33,
+   "naked_eye": true,
+   "constellation_ko": "센타우루스자리"
+  },
+  {
+   "id": "Q12176",
+   "group": "star",
+   "name_ko": "센타우루스자리 알파",
+   "name_en": "Alpha Centauri",
+   "aliases": [
+    "센타우루스자리알파",
+    "alphacentauri",
+    "α1cen",
+    "hip71683"
+   ],
+   "kind": "star",
+   "ra_deg": 219.9021,
+   "dec_deg": -60.834,
+   "mag": -0.01,
+   "naked_eye": true,
+   "constellation_ko": "센타우루스자리"
+  },
+  {
+   "id": "Q14230",
+   "group": "star",
+   "name_ko": "이리자리 알파",
+   "name_en": "Alpha Lupi",
+   "aliases": [
+    "이리자리알파",
+    "alphalupi",
+    "αlup",
+    "hip71860"
+   ],
+   "kind": "star",
+   "ra_deg": 220.4823,
+   "dec_deg": -47.3882,
+   "mag": 2.3,
+   "naked_eye": true,
+   "constellation_ko": "이리자리"
+  },
+  {
+   "id": "Q13255",
+   "group": "star",
+   "name_ko": "푸르케리마",
+   "name_en": "Epsilon Boötis",
+   "aliases": [
+    "푸르케리마",
+    "epsilonboötis",
+    "εboo",
+    "hip72105"
+   ],
+   "kind": "star",
+   "ra_deg": 221.2467,
+   "dec_deg": 27.0742,
+   "mag": 2.35,
+   "naked_eye": true,
+   "constellation_ko": "목동자리"
+  },
+  {
+   "id": "Q14059",
+   "group": "star",
+   "name_ko": "코카브",
+   "name_en": "Beta Ursae Minoris",
+   "aliases": [
+    "코카브",
+    "betaursaeminoris",
+    "βumi",
+    "hip72607"
+   ],
+   "kind": "star",
+   "ra_deg": 222.6764,
+   "dec_deg": 74.1555,
+   "mag": 2.07,
+   "naked_eye": true,
+   "constellation_ko": "작은곰자리"
+  },
+  {
+   "id": "Q14046",
+   "group": "star",
+   "name_ko": "알페카",
+   "name_en": "Alphecca",
+   "aliases": [
+    "알페카",
+    "alphecca",
+    "αcrb",
+    "hip76267"
+   ],
+   "kind": "star",
+   "ra_deg": 233.672,
+   "dec_deg": 26.7147,
+   "mag": 2.22,
+   "naked_eye": true,
+   "constellation_ko": "북쪽왕관자리"
+  },
+  {
+   "id": "Q14248",
+   "group": "star",
+   "name_ko": "드슈바",
+   "name_en": "Delta Scorpii",
+   "aliases": [
+    "드슈바",
+    "deltascorpii",
+    "δsco",
+    "hip78401"
+   ],
+   "kind": "star",
+   "ra_deg": 240.0834,
+   "dec_deg": -22.6217,
+   "mag": 2.29,
+   "naked_eye": true,
+   "constellation_ko": "전갈자리"
+  },
+  {
+   "id": "Q12166",
+   "group": "star",
+   "name_ko": "안타레스",
+   "name_en": "Antares",
+   "aliases": [
+    "안타레스",
+    "antares",
+    "αsco",
+    "hip80763"
+   ],
+   "kind": "star",
+   "ra_deg": 247.3519,
+   "dec_deg": -26.432,
+   "mag": 1.06,
+   "naked_eye": true,
+   "constellation_ko": "전갈자리"
+  },
+  {
+   "id": "Q14242",
+   "group": "star",
+   "name_ko": "아트리아",
+   "name_en": "Alpha Trianguli Australis",
+   "aliases": [
+    "아트리아",
+    "alphatrianguliaustralis",
+    "αtra",
+    "hip82273"
+   ],
+   "kind": "star",
+   "ra_deg": 252.1662,
+   "dec_deg": -69.0277,
+   "mag": 1.91,
+   "naked_eye": true,
+   "constellation_ko": "남쪽삼각형자리"
+  },
+  {
+   "id": "Q14249",
+   "group": "star",
+   "name_ko": "전갈자리 엡실론",
+   "name_en": "Epsilon Scorpii",
+   "aliases": [
+    "전갈자리엡실론",
+    "epsilonscorpii",
+    "εsco",
+    "hip82396"
+   ],
+   "kind": "star",
+   "ra_deg": 252.5409,
+   "dec_deg": -34.2932,
+   "mag": 2.29,
+   "naked_eye": true,
+   "constellation_ko": "전갈자리"
+  },
+  {
+   "id": "Q670536",
+   "group": "star",
+   "name_ko": "사빅",
+   "name_en": "Eta Ophiuchi",
+   "aliases": [
+    "사빅",
+    "etaophiuchi",
+    "ηoph",
+    "hip84012"
+   ],
+   "kind": "star",
+   "ra_deg": 257.5945,
+   "dec_deg": -15.7249,
+   "mag": 2.43,
+   "naked_eye": true,
+   "constellation_ko": "뱀주인자리"
+  },
+  {
+   "id": "Q78603928",
+   "group": "star",
+   "name_ko": "전갈자리 람다",
+   "name_en": "Shaula",
+   "aliases": [
+    "전갈자리람다",
+    "shaula",
+    "λsco",
+    "hip85927"
+   ],
+   "kind": "star",
+   "ra_deg": 263.4022,
+   "dec_deg": -37.1038,
+   "mag": 1.62,
+   "naked_eye": true,
+   "constellation_ko": "전갈자리"
+  },
+  {
+   "id": "Q13504",
+   "group": "star",
+   "name_ko": "라스 알하게",
+   "name_en": "Alpha Ophiuchi",
+   "aliases": [
+    "라스알하게",
+    "alphaophiuchi",
+    "αoph",
+    "hip86032"
+   ],
+   "kind": "star",
+   "ra_deg": 263.7336,
+   "dec_deg": 12.56,
+   "mag": 2.08,
+   "naked_eye": true,
+   "constellation_ko": "뱀주인자리"
+  },
+  {
+   "id": "Q14236",
+   "group": "star",
+   "name_ko": "사르가스",
+   "name_en": "Theta Scorpii",
+   "aliases": [
+    "사르가스",
+    "thetascorpii",
+    "θsco",
+    "hip86228"
+   ],
+   "kind": "star",
+   "ra_deg": 264.3297,
+   "dec_deg": -42.9978,
+   "mag": 1.86,
+   "naked_eye": true,
+   "constellation_ko": "전갈자리"
+  },
+  {
+   "id": "Q14253",
+   "group": "star",
+   "name_ko": "기르타브",
+   "name_en": "Kappa Scorpii",
+   "aliases": [
+    "기르타브",
+    "kappascorpii",
+    "κsco",
+    "hip86670"
+   ],
+   "kind": "star",
+   "ra_deg": 265.622,
+   "dec_deg": -39.03,
+   "mag": 2.39,
+   "naked_eye": true,
+   "constellation_ko": "전갈자리"
+  },
+  {
+   "id": "Q14246",
+   "group": "star",
+   "name_ko": "엘타닌",
+   "name_en": "Gamma Draconis",
+   "aliases": [
+    "엘타닌",
+    "gammadraconis",
+    "γdra",
+    "hip87833"
+   ],
+   "kind": "star",
+   "ra_deg": 269.1515,
+   "dec_deg": 51.4889,
+   "mag": 2.24,
+   "naked_eye": true,
+   "constellation_ko": "용자리"
+  },
+  {
+   "id": "Q14268",
+   "group": "star",
+   "name_ko": "바너드별",
+   "name_en": "Barnard's Star",
+   "aliases": [
+    "바너드별",
+    "barnard'sstar",
+    "hip87937"
+   ],
+   "kind": "star",
+   "ra_deg": 269.45208,
+   "dec_deg": 4.69336,
+   "mag": 9.511,
+   "naked_eye": false,
+   "constellation_ko": null
+  },
+  {
+   "id": "Q14034",
+   "group": "star",
+   "name_ko": "카우스 오스트랄리스",
+   "name_en": "Epsilon Sagittarii",
+   "aliases": [
+    "카우스오스트랄리스",
+    "epsilonsagittarii",
+    "εsgr",
+    "hip90185"
+   ],
+   "kind": "star",
+   "ra_deg": 276.043,
+   "dec_deg": -34.3846,
+   "mag": 1.79,
+   "naked_eye": true,
+   "constellation_ko": "궁수자리"
+  },
+  {
+   "id": "Q3427",
+   "group": "star",
+   "name_ko": "베가",
+   "name_en": "Vega",
+   "aliases": [
+    "베가",
+    "vega",
+    "αlyr",
+    "hip91262"
+   ],
+   "kind": "star",
+   "ra_deg": 279.2347,
+   "dec_deg": 38.7837,
+   "mag": 0.03,
+   "naked_eye": true,
+   "constellation_ko": "거문고자리"
+  },
+  {
+   "id": "Q14036",
+   "group": "star",
+   "name_ko": "눈키",
+   "name_en": "Sigma Sagittarii",
+   "aliases": [
+    "눈키",
+    "sigmasagittarii",
+    "σsgr",
+    "hip92855"
+   ],
+   "kind": "star",
+   "ra_deg": 283.8164,
+   "dec_deg": -26.2967,
+   "mag": 2.05,
+   "naked_eye": true,
+   "constellation_ko": "궁수자리"
+  },
+  {
+   "id": "Q12975",
+   "group": "star",
+   "name_ko": "알타이르",
+   "name_en": "Altair",
+   "aliases": [
+    "알타이르",
+    "altair",
+    "αaql",
+    "hip97649"
+   ],
+   "kind": "star",
+   "ra_deg": 297.6958,
+   "dec_deg": 8.8683,
+   "mag": 0.76,
+   "naked_eye": true,
+   "constellation_ko": "독수리자리"
+  },
+  {
+   "id": "Q13327",
+   "group": "star",
+   "name_ko": "사드르",
+   "name_en": "Gamma Cygni",
+   "aliases": [
+    "사드르",
+    "gammacygni",
+    "γcyg",
+    "hip100453"
+   ],
+   "kind": "star",
+   "ra_deg": 305.5571,
+   "dec_deg": 40.2567,
+   "mag": 2.23,
+   "naked_eye": true,
+   "constellation_ko": "고니자리"
+  },
+  {
+   "id": "Q14240",
+   "group": "star",
+   "name_ko": "피콕 (항성)",
+   "name_en": "Peacock",
+   "aliases": [
+    "피콕(항성)",
+    "peacock",
+    "αpav",
+    "hip100751"
+   ],
+   "kind": "star",
+   "ra_deg": 306.4119,
+   "dec_deg": -56.7351,
+   "mag": 1.94,
+   "naked_eye": true,
+   "constellation_ko": "공작자리"
+  },
+  {
+   "id": "Q12179",
+   "group": "star",
+   "name_ko": "데네브",
+   "name_en": "Deneb",
+   "aliases": [
+    "데네브",
+    "deneb",
+    "αcyg",
+    "hip102098"
+   ],
+   "kind": "star",
+   "ra_deg": 310.358,
+   "dec_deg": 45.2803,
+   "mag": 1.25,
+   "naked_eye": true,
+   "constellation_ko": "고니자리"
+  },
+  {
+   "id": "Q13328",
+   "group": "star",
+   "name_ko": "백조자리 엡실론",
+   "name_en": "Epsilon Cygni",
+   "aliases": [
+    "백조자리엡실론",
+    "epsiloncygni",
+    "εcyg",
+    "hip102488"
+   ],
+   "kind": "star",
+   "ra_deg": 311.5528,
+   "dec_deg": 33.9703,
+   "mag": 2.48,
+   "naked_eye": true,
+   "constellation_ko": "고니자리"
+  },
+  {
+   "id": "Q13259",
+   "group": "star",
+   "name_ko": "알데라민",
+   "name_en": "Alpha Cephei",
+   "aliases": [
+    "알데라민",
+    "alphacephei",
+    "αcep",
+    "hip105199"
+   ],
+   "kind": "star",
+   "ra_deg": 319.6449,
+   "dec_deg": 62.5856,
+   "mag": 2.45,
+   "naked_eye": true,
+   "constellation_ko": "세페우스자리"
+  },
+  {
+   "id": "Q14255",
+   "group": "star",
+   "name_ko": "에니프",
+   "name_en": "Epsilon Pegasi",
+   "aliases": [
+    "에니프",
+    "epsilonpegasi",
+    "εpeg",
+    "hip107315"
+   ],
+   "kind": "star",
+   "ra_deg": 326.0465,
+   "dec_deg": 9.875,
+   "mag": 2.38,
+   "naked_eye": true,
+   "constellation_ko": "페가수스자리"
+  },
+  {
+   "id": "Q854042",
+   "group": "star",
+   "name_ko": "두루미자리 알파",
+   "name_en": "Alpha Gruis",
+   "aliases": [
+    "두루미자리알파",
+    "alphagruis",
+    "αgru",
+    "hip109268"
+   ],
+   "kind": "star",
+   "ra_deg": 332.0583,
+   "dec_deg": -46.961,
+   "mag": 1.73,
+   "naked_eye": true,
+   "constellation_ko": "두루미자리"
+  },
+  {
+   "id": "Q14244",
+   "group": "star",
+   "name_ko": "두루미자리 베타",
+   "name_en": "Beta Gruis",
+   "aliases": [
+    "두루미자리베타",
+    "betagruis",
+    "βgru",
+    "hip112122"
+   ],
+   "kind": "star",
+   "ra_deg": 340.6669,
+   "dec_deg": -46.8846,
+   "mag": 2.07,
+   "naked_eye": true,
+   "constellation_ko": "두루미자리"
+  },
+  {
+   "id": "Q13169",
+   "group": "star",
+   "name_ko": "포말하우트",
+   "name_en": "Fomalhaut",
+   "aliases": [
+    "포말하우트",
+    "fomalhaut",
+    "αpsa",
+    "hip113368"
+   ],
+   "kind": "star",
+   "ra_deg": 344.4127,
+   "dec_deg": -29.6222,
+   "mag": 1.17,
+   "naked_eye": true,
+   "constellation_ko": "남쪽물고기자리"
+  },
+  {
+   "id": "Q14258",
+   "group": "star",
+   "name_ko": "페가수스자리 베타",
+   "name_en": "Beta Pegasi",
+   "aliases": [
+    "페가수스자리베타",
+    "betapegasi",
+    "βpeg",
+    "hip113881"
+   ],
+   "kind": "star",
+   "ra_deg": 345.9436,
+   "dec_deg": 28.0828,
+   "mag": 2.44,
+   "naked_eye": true,
+   "constellation_ko": "페가수스자리"
+  },
+  {
+   "id": "Q14262",
+   "group": "star",
+   "name_ko": "페가수스자리 알파",
+   "name_en": "Alpha Pegasi",
+   "aliases": [
+    "페가수스자리알파",
+    "alphapegasi",
+    "αpeg",
+    "hip113963"
+   ],
+   "kind": "star",
+   "ra_deg": 346.1902,
+   "dec_deg": 15.2053,
+   "mag": 2.49,
+   "naked_eye": true,
+   "constellation_ko": "페가수스자리"
+  },
+  {
+   "id": "M1",
+   "group": "messier",
+   "name_ko": "게 성운",
+   "name_en": "Crab Nebula",
+   "aliases": [
+    "게성운",
+    "crabnebula",
+    "m1",
+    "메시에1",
+    "messier1"
+   ],
+   "kind": "nebula",
+   "ra_deg": 83.63308,
+   "dec_deg": 22.0145,
+   "mag": 8.4,
+   "naked_eye": false,
+   "constellation_ko": "황소자리"
+  },
+  {
+   "id": "M2",
+   "group": "messier",
+   "name_ko": "메시에 2",
+   "name_en": "Messier 2",
+   "aliases": [
+    "메시에2",
+    "messier2",
+    "m2"
+   ],
+   "kind": "cluster",
+   "ra_deg": 323.36258,
+   "dec_deg": -0.82325,
+   "mag": 6.25,
+   "naked_eye": false,
+   "constellation_ko": "물병자리"
+  },
+  {
+   "id": "M3",
+   "group": "messier",
+   "name_ko": "메시에 3",
+   "name_en": "Messier 3",
+   "aliases": [
+    "메시에3",
+    "messier3",
+    "m3"
+   ],
+   "kind": "cluster",
+   "ra_deg": 205.54842,
+   "dec_deg": 28.37728,
+   "mag": 6.39,
+   "naked_eye": false,
+   "constellation_ko": "사냥개자리"
+  },
+  {
+   "id": "M4",
+   "group": "messier",
+   "name_ko": "메시에 4",
+   "name_en": "Messier 4",
+   "aliases": [
+    "메시에4",
+    "messier4",
+    "m4"
+   ],
+   "kind": "cluster",
+   "ra_deg": 245.89675,
+   "dec_deg": -26.52575,
+   "mag": 5.6,
+   "naked_eye": true,
+   "constellation_ko": "전갈자리"
+  },
+  {
+   "id": "M5",
+   "group": "messier",
+   "name_ko": "메시에 5",
+   "name_en": "Messier 5",
+   "aliases": [
+    "메시에5",
+    "messier5",
+    "m5"
+   ],
+   "kind": "cluster",
+   "ra_deg": 229.63842,
+   "dec_deg": 2.08103,
+   "mag": 5.95,
+   "naked_eye": true,
+   "constellation_ko": "뱀자리"
+  },
+  {
+   "id": "M6",
+   "group": "messier",
+   "name_ko": "나비 성단",
+   "name_en": "Butterfly Cluster",
+   "aliases": [
+    "나비성단",
+    "butterflycluster",
+    "m6",
+    "메시에6",
+    "messier6"
+   ],
+   "kind": "cluster",
+   "ra_deg": 265.0833,
+   "dec_deg": -32.2533,
+   "mag": 4.2,
+   "naked_eye": true,
+   "constellation_ko": "전갈자리"
+  },
+  {
+   "id": "M7",
+   "group": "messier",
+   "name_ko": "프톨레마이오스 성단",
+   "name_en": "Messier 7",
+   "aliases": [
+    "프톨레마이오스성단",
+    "messier7",
+    "m7",
+    "메시에7"
+   ],
+   "kind": "cluster",
+   "ra_deg": 268.4625,
+   "dec_deg": -34.7933,
+   "mag": 3.3,
+   "naked_eye": true,
+   "constellation_ko": "전갈자리"
+  },
+  {
+   "id": "M8",
+   "group": "messier",
+   "name_ko": "석호 성운",
+   "name_en": "Lagoon Nebula",
+   "aliases": [
+    "석호성운",
+    "lagoonnebula",
+    "m8",
+    "메시에8",
+    "messier8"
+   ],
+   "kind": "nebula",
+   "ra_deg": 270.9042,
+   "dec_deg": -24.3867,
+   "mag": 6.0,
+   "naked_eye": true,
+   "constellation_ko": "궁수자리"
+  },
+  {
+   "id": "M9",
+   "group": "messier",
+   "name_ko": "메시에 9",
+   "name_en": "Messier 9",
+   "aliases": [
+    "메시에9",
+    "messier9",
+    "m9"
+   ],
+   "kind": "cluster",
+   "ra_deg": 259.79908,
+   "dec_deg": -18.51625,
+   "mag": 8.42,
+   "naked_eye": false,
+   "constellation_ko": "땅꾼자리"
+  },
+  {
+   "id": "M10",
+   "group": "messier",
+   "name_ko": "메시에 10",
+   "name_en": "Messier 10",
+   "aliases": [
+    "메시에10",
+    "messier10",
+    "m10"
+   ],
+   "kind": "cluster",
+   "ra_deg": 254.28771,
+   "dec_deg": -4.10031,
+   "mag": 4.98,
+   "naked_eye": true,
+   "constellation_ko": "땅꾼자리"
+  },
+  {
+   "id": "M11",
+   "group": "messier",
+   "name_ko": "야생오리 성단",
+   "name_en": "Wild Duck Cluster",
+   "aliases": [
+    "야생오리성단",
+    "wildduckcluster",
+    "m11",
+    "메시에11",
+    "messier11"
+   ],
+   "kind": "cluster",
+   "ra_deg": 282.7708,
+   "dec_deg": -6.27,
+   "mag": 5.8,
+   "naked_eye": true,
+   "constellation_ko": "방패자리"
+  },
+  {
+   "id": "M12",
+   "group": "messier",
+   "name_ko": "메시에 12",
+   "name_en": "Messier 12",
+   "aliases": [
+    "메시에12",
+    "messier12",
+    "m12"
+   ],
+   "kind": "cluster",
+   "ra_deg": 251.80908,
+   "dec_deg": -1.94853,
+   "mag": 6.07,
+   "naked_eye": false,
+   "constellation_ko": "땅꾼자리"
+  },
+  {
+   "id": "M13",
+   "group": "messier",
+   "name_ko": "허큘리스 대성단",
+   "name_en": "Messier 13",
+   "aliases": [
+    "허큘리스대성단",
+    "messier13",
+    "m13",
+    "메시에13",
+    "헤라클레스대성단"
+   ],
+   "kind": "cluster",
+   "ra_deg": 250.42347,
+   "dec_deg": 36.46132,
+   "mag": 5.8,
+   "naked_eye": true,
+   "constellation_ko": "허큘리스자리"
+  },
+  {
+   "id": "M14",
+   "group": "messier",
+   "name_ko": "메시에 14",
+   "name_en": "Messier 14",
+   "aliases": [
+    "메시에14",
+    "messier14",
+    "m14"
+   ],
+   "kind": "cluster",
+   "ra_deg": 264.40062,
+   "dec_deg": -3.24592,
+   "mag": 5.73,
+   "naked_eye": true,
+   "constellation_ko": "땅꾼자리"
+  },
+  {
+   "id": "M15",
+   "group": "messier",
+   "name_ko": "메시에 15",
+   "name_en": "Messier 15",
+   "aliases": [
+    "메시에15",
+    "messier15",
+    "m15"
+   ],
+   "kind": "cluster",
+   "ra_deg": 322.49304,
+   "dec_deg": 12.167,
+   "mag": 6.2,
+   "naked_eye": false,
+   "constellation_ko": "페가수스자리"
+  },
+  {
+   "id": "M16",
+   "group": "messier",
+   "name_ko": "수리 성운",
+   "name_en": "Eagle Nebula",
+   "aliases": [
+    "수리성운",
+    "eaglenebula",
+    "m16",
+    "메시에16",
+    "messier16"
+   ],
+   "kind": "cluster",
+   "ra_deg": 274.7,
+   "dec_deg": -13.8067,
+   "mag": 6.0,
+   "naked_eye": true,
+   "constellation_ko": "뱀자리"
+  },
+  {
+   "id": "M17",
+   "group": "messier",
+   "name_ko": "오메가 성운",
+   "name_en": "Omega Nebula",
+   "aliases": [
+    "오메가성운",
+    "omeganebula",
+    "m17",
+    "메시에17",
+    "messier17"
+   ],
+   "kind": "nebula",
+   "ra_deg": 275.1958,
+   "dec_deg": -16.1717,
+   "mag": 6.0,
+   "naked_eye": true,
+   "constellation_ko": "궁수자리"
+  },
+  {
+   "id": "M18",
+   "group": "messier",
+   "name_ko": "메시에 18",
+   "name_en": "Messier 18",
+   "aliases": [
+    "메시에18",
+    "messier18",
+    "m18"
+   ],
+   "kind": "cluster",
+   "ra_deg": 274.9917,
+   "dec_deg": -17.1017,
+   "mag": 6.9,
+   "naked_eye": false,
+   "constellation_ko": "궁수자리"
+  },
+  {
+   "id": "M19",
+   "group": "messier",
+   "name_ko": "메시에 19",
+   "name_en": "Messier 19",
+   "aliases": [
+    "메시에19",
+    "messier19",
+    "m19"
+   ],
+   "kind": "cluster",
+   "ra_deg": 255.65704,
+   "dec_deg": -26.26794,
+   "mag": 5.57,
+   "naked_eye": true,
+   "constellation_ko": "땅꾼자리"
+  },
+  {
+   "id": "M20",
+   "group": "messier",
+   "name_ko": "삼렬 성운",
+   "name_en": "Trifid Nebula",
+   "aliases": [
+    "삼렬성운",
+    "trifidnebula",
+    "m20",
+    "메시에20",
+    "messier20"
+   ],
+   "kind": "nebula",
+   "ra_deg": 270.675,
+   "dec_deg": -22.9717,
+   "mag": 6.3,
+   "naked_eye": false,
+   "constellation_ko": "궁수자리"
+  },
+  {
+   "id": "M21",
+   "group": "messier",
+   "name_ko": "메시에 21",
+   "name_en": "Messier 21",
+   "aliases": [
+    "메시에21",
+    "messier21",
+    "m21"
+   ],
+   "kind": "cluster",
+   "ra_deg": 271.0542,
+   "dec_deg": -22.49,
+   "mag": 5.9,
+   "naked_eye": true,
+   "constellation_ko": "궁수자리"
+  },
+  {
+   "id": "M22",
+   "group": "messier",
+   "name_ko": "메시에 22",
+   "name_en": "Messier 22",
+   "aliases": [
+    "메시에22",
+    "messier22",
+    "m22"
+   ],
+   "kind": "cluster",
+   "ra_deg": 279.09975,
+   "dec_deg": -23.90475,
+   "mag": 6.17,
+   "naked_eye": false,
+   "constellation_ko": "궁수자리"
+  },
+  {
+   "id": "M23",
+   "group": "messier",
+   "name_ko": "메시에 23",
+   "name_en": "Messier 23",
+   "aliases": [
+    "메시에23",
+    "messier23",
+    "m23"
+   ],
+   "kind": "cluster",
+   "ra_deg": 269.2667,
+   "dec_deg": -18.985,
+   "mag": 5.5,
+   "naked_eye": true,
+   "constellation_ko": "궁수자리"
+  },
+  {
+   "id": "M24",
+   "group": "messier",
+   "name_ko": "메시에 24",
+   "name_en": "Sagittarius Star Cloud",
+   "aliases": [
+    "메시에24",
+    "sagittariusstarcloud",
+    "m24",
+    "messier24"
+   ],
+   "kind": "cluster",
+   "ra_deg": 274.2,
+   "dec_deg": -18.55,
+   "mag": 4.6,
+   "naked_eye": true,
+   "constellation_ko": "궁수자리"
+  },
+  {
+   "id": "M25",
+   "group": "messier",
+   "name_ko": "메시에 25",
+   "name_en": "Messier 25",
+   "aliases": [
+    "메시에25",
+    "messier25",
+    "m25"
+   ],
+   "kind": "cluster",
+   "ra_deg": 277.9458,
+   "dec_deg": -19.1167,
+   "mag": 4.6,
+   "naked_eye": true,
+   "constellation_ko": "궁수자리"
+  },
+  {
+   "id": "M26",
+   "group": "messier",
+   "name_ko": "메시에 26",
+   "name_en": "Messier 26",
+   "aliases": [
+    "메시에26",
+    "messier26",
+    "m26"
+   ],
+   "kind": "cluster",
+   "ra_deg": 281.325,
+   "dec_deg": -9.3833,
+   "mag": 8.87,
+   "naked_eye": false,
+   "constellation_ko": "방패자리"
+  },
+  {
+   "id": "M27",
+   "group": "messier",
+   "name_ko": "아령 성운",
+   "name_en": "Dumbbell Nebula",
+   "aliases": [
+    "아령성운",
+    "dumbbellnebula",
+    "m27",
+    "메시에27",
+    "messier27"
+   ],
+   "kind": "nebula",
+   "ra_deg": 299.90151,
+   "dec_deg": 22.7212,
+   "mag": 14.089,
+   "naked_eye": false,
+   "constellation_ko": "여우자리"
+  },
+  {
+   "id": "M28",
+   "group": "messier",
+   "name_ko": "메시에 28",
+   "name_en": "Messier 28",
+   "aliases": [
+    "메시에28",
+    "messier28",
+    "m28"
+   ],
+   "kind": "cluster",
+   "ra_deg": 276.13704,
+   "dec_deg": -24.86983,
+   "mag": 6.8,
+   "naked_eye": false,
+   "constellation_ko": "궁수자리"
+  },
+  {
+   "id": "M29",
+   "group": "messier",
+   "name_ko": "메시에 29",
+   "name_en": "Messier 29",
+   "aliases": [
+    "메시에29",
+    "messier29",
+    "m29"
+   ],
+   "kind": "cluster",
+   "ra_deg": 305.9833,
+   "dec_deg": 38.5233,
+   "mag": 6.6,
+   "naked_eye": false,
+   "constellation_ko": "백조자리"
+  },
+  {
+   "id": "M30",
+   "group": "messier",
+   "name_ko": "메시에 30",
+   "name_en": "Messier 30",
+   "aliases": [
+    "메시에30",
+    "messier30",
+    "m30"
+   ],
+   "kind": "cluster",
+   "ra_deg": 325.09217,
+   "dec_deg": -23.17986,
+   "mag": 7.1,
+   "naked_eye": false,
+   "constellation_ko": "염소자리"
+  },
+  {
+   "id": "M31",
+   "group": "messier",
+   "name_ko": "안드로메다 은하",
+   "name_en": "Andromeda Galaxy",
+   "aliases": [
+    "안드로메다은하",
+    "andromedagalaxy",
+    "m31",
+    "메시에31",
+    "messier31",
+    "안드로메다",
+    "안드로메다대은하"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 10.68471,
+   "dec_deg": 41.26875,
+   "mag": 3.44,
+   "naked_eye": true,
+   "constellation_ko": "안드로메다자리"
+  },
+  {
+   "id": "M32",
+   "group": "messier",
+   "name_ko": "메시에 32",
+   "name_en": "Messier 32",
+   "aliases": [
+    "메시에32",
+    "messier32",
+    "m32"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 10.67427,
+   "dec_deg": 40.86517,
+   "mag": 8.08,
+   "naked_eye": false,
+   "constellation_ko": "안드로메다자리"
+  },
+  {
+   "id": "M33",
+   "group": "messier",
+   "name_ko": "삼각형자리 은하",
+   "name_en": "Triangulum Galaxy",
+   "aliases": [
+    "삼각형자리은하",
+    "triangulumgalaxy",
+    "m33",
+    "메시에33",
+    "messier33"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 23.46207,
+   "dec_deg": 30.66018,
+   "mag": 5.72,
+   "naked_eye": true,
+   "constellation_ko": "삼각형자리"
+  },
+  {
+   "id": "M34",
+   "group": "messier",
+   "name_ko": "메시에 34",
+   "name_en": "Messier 34",
+   "aliases": [
+    "메시에34",
+    "messier34",
+    "m34"
+   ],
+   "kind": "cluster",
+   "ra_deg": 40.5208,
+   "dec_deg": 42.76167,
+   "mag": 5.2,
+   "naked_eye": true,
+   "constellation_ko": "페르세우스자리"
+  },
+  {
+   "id": "M35",
+   "group": "messier",
+   "name_ko": "메시에 35",
+   "name_en": "Messier 35",
+   "aliases": [
+    "메시에35",
+    "messier35",
+    "m35"
+   ],
+   "kind": "cluster",
+   "ra_deg": 92.225,
+   "dec_deg": 24.3333,
+   "mag": 5.1,
+   "naked_eye": true,
+   "constellation_ko": "쌍둥이자리"
+  },
+  {
+   "id": "M36",
+   "group": "messier",
+   "name_ko": "메시에 36",
+   "name_en": "Messier 36",
+   "aliases": [
+    "메시에36",
+    "messier36",
+    "m36"
+   ],
+   "kind": "cluster",
+   "ra_deg": 84.075,
+   "dec_deg": 34.14,
+   "mag": 6.0,
+   "naked_eye": true,
+   "constellation_ko": "마차부자리"
+  },
+  {
+   "id": "M37",
+   "group": "messier",
+   "name_ko": "메시에 37",
+   "name_en": "Messier 37",
+   "aliases": [
+    "메시에37",
+    "messier37",
+    "m37"
+   ],
+   "kind": "cluster",
+   "ra_deg": 88.075,
+   "dec_deg": 32.5533,
+   "mag": 5.6,
+   "naked_eye": true,
+   "constellation_ko": "마차부자리"
+  },
+  {
+   "id": "M38",
+   "group": "messier",
+   "name_ko": "메시에 38",
+   "name_en": "Messier 38",
+   "aliases": [
+    "메시에38",
+    "messier38",
+    "m38"
+   ],
+   "kind": "cluster",
+   "ra_deg": 82.1792,
+   "dec_deg": 35.855,
+   "mag": 6.4,
+   "naked_eye": false,
+   "constellation_ko": "마차부자리"
+  },
+  {
+   "id": "M39",
+   "group": "messier",
+   "name_ko": "메시에 39",
+   "name_en": "Messier 39",
+   "aliases": [
+    "메시에39",
+    "messier39",
+    "m39"
+   ],
+   "kind": "cluster",
+   "ra_deg": 322.95,
+   "dec_deg": 48.4333,
+   "mag": 4.6,
+   "naked_eye": true,
+   "constellation_ko": "백조자리"
+  },
+  {
+   "id": "M40",
+   "group": "messier",
+   "name_ko": "메시에 40",
+   "name_en": "Messier 40",
+   "aliases": [
+    "메시에40",
+    "messier40",
+    "m40"
+   ],
+   "kind": "star",
+   "ra_deg": 185.55221,
+   "dec_deg": 58.08294,
+   "mag": 8.4,
+   "naked_eye": false,
+   "constellation_ko": "큰곰자리"
+  },
+  {
+   "id": "M41",
+   "group": "messier",
+   "name_ko": "메시에 41",
+   "name_en": "Messier 41",
+   "aliases": [
+    "메시에41",
+    "messier41",
+    "m41"
+   ],
+   "kind": "cluster",
+   "ra_deg": 101.5042,
+   "dec_deg": -20.7567,
+   "mag": 4.5,
+   "naked_eye": true,
+   "constellation_ko": "큰개자리"
+  },
+  {
+   "id": "M42",
+   "group": "messier",
+   "name_ko": "오리온 성운",
+   "name_en": "Orion Nebula",
+   "aliases": [
+    "오리온성운",
+    "orionnebula",
+    "m42",
+    "메시에42",
+    "messier42",
+    "오리온대성운"
+   ],
+   "kind": "nebula",
+   "ra_deg": 83.81042,
+   "dec_deg": -5.375,
+   "mag": 4.0,
+   "naked_eye": true,
+   "constellation_ko": "오리온자리"
+  },
+  {
+   "id": "M43",
+   "group": "messier",
+   "name_ko": "드 모이란 성운",
+   "name_en": "Messier 43",
+   "aliases": [
+    "드모이란성운",
+    "messier43",
+    "m43",
+    "메시에43"
+   ],
+   "kind": "nebula",
+   "ra_deg": 83.8792,
+   "dec_deg": -5.27,
+   "mag": 9.0,
+   "naked_eye": false,
+   "constellation_ko": "오리온자리"
+  },
+  {
+   "id": "M44",
+   "group": "messier",
+   "name_ko": "프레세페 성단",
+   "name_en": "Beehive Cluster",
+   "aliases": [
+    "프레세페성단",
+    "beehivecluster",
+    "m44",
+    "메시에44",
+    "messier44"
+   ],
+   "kind": "cluster",
+   "ra_deg": 130.1,
+   "dec_deg": 19.6667,
+   "mag": 3.1,
+   "naked_eye": true,
+   "constellation_ko": "게자리"
+  },
+  {
+   "id": "M45",
+   "group": "messier",
+   "name_ko": "플레이아데스 성단",
+   "name_en": "Pleiades",
+   "aliases": [
+    "플레이아데스성단",
+    "pleiades",
+    "m45",
+    "메시에45",
+    "messier45",
+    "좀생이별",
+    "좀생이",
+    "묘성"
+   ],
+   "kind": "cluster",
+   "ra_deg": 56.75,
+   "dec_deg": 24.1167,
+   "mag": 1.6,
+   "naked_eye": true,
+   "constellation_ko": "황소자리"
+  },
+  {
+   "id": "M46",
+   "group": "messier",
+   "name_ko": "메시에 46",
+   "name_en": "Messier 46",
+   "aliases": [
+    "메시에46",
+    "messier46",
+    "m46"
+   ],
+   "kind": "cluster",
+   "ra_deg": 115.4417,
+   "dec_deg": -14.81,
+   "mag": 6.1,
+   "naked_eye": false,
+   "constellation_ko": "고물자리"
+  },
+  {
+   "id": "M47",
+   "group": "messier",
+   "name_ko": "메시에 47",
+   "name_en": "Messier 47",
+   "aliases": [
+    "메시에47",
+    "messier47",
+    "m47"
+   ],
+   "kind": "cluster",
+   "ra_deg": 114.1458,
+   "dec_deg": -14.4833,
+   "mag": 4.4,
+   "naked_eye": true,
+   "constellation_ko": "고물자리"
+  },
+  {
+   "id": "M48",
+   "group": "messier",
+   "name_ko": "메시에 48",
+   "name_en": "Messier 48",
+   "aliases": [
+    "메시에48",
+    "messier48",
+    "m48"
+   ],
+   "kind": "cluster",
+   "ra_deg": 123.429,
+   "dec_deg": -5.75,
+   "mag": 5.8,
+   "naked_eye": true,
+   "constellation_ko": "바다뱀자리"
+  },
+  {
+   "id": "M49",
+   "group": "messier",
+   "name_ko": "메시에 49",
+   "name_en": "Messier 49",
+   "aliases": [
+    "메시에49",
+    "messier49",
+    "m49"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 187.44499,
+   "dec_deg": 8.00041,
+   "mag": 12.17,
+   "naked_eye": false,
+   "constellation_ko": "처녀자리"
+  },
+  {
+   "id": "M50",
+   "group": "messier",
+   "name_ko": "메시에 50",
+   "name_en": "Messier 50",
+   "aliases": [
+    "메시에50",
+    "messier50",
+    "m50"
+   ],
+   "kind": "cluster",
+   "ra_deg": 105.6979,
+   "dec_deg": -8.33778,
+   "mag": 5.9,
+   "naked_eye": true,
+   "constellation_ko": "외뿔소자리"
+  },
+  {
+   "id": "M51",
+   "group": "messier",
+   "name_ko": "소용돌이 은하",
+   "name_en": "Whirlpool Galaxy",
+   "aliases": [
+    "소용돌이은하",
+    "whirlpoolgalaxy",
+    "m51",
+    "메시에51",
+    "messier51"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 202.46957,
+   "dec_deg": 47.19526,
+   "mag": 8.36,
+   "naked_eye": false,
+   "constellation_ko": "사냥개자리"
+  },
+  {
+   "id": "M52",
+   "group": "messier",
+   "name_ko": "메시에 52",
+   "name_en": null,
+   "aliases": [
+    "메시에52",
+    "m52",
+    "messier52"
+   ],
+   "kind": "cluster",
+   "ra_deg": 351.2,
+   "dec_deg": 61.5933,
+   "mag": 7.3,
+   "naked_eye": false,
+   "constellation_ko": "카시오페이아자리"
+  },
+  {
+   "id": "M53",
+   "group": "messier",
+   "name_ko": "메시에 53",
+   "name_en": "Messier 53",
+   "aliases": [
+    "메시에53",
+    "messier53",
+    "m53"
+   ],
+   "kind": "cluster",
+   "ra_deg": 198.23021,
+   "dec_deg": 18.16817,
+   "mag": 7.79,
+   "naked_eye": false,
+   "constellation_ko": "머리털자리"
+  },
+  {
+   "id": "M54",
+   "group": "messier",
+   "name_ko": "메시에 54",
+   "name_en": "Messier 54",
+   "aliases": [
+    "메시에54",
+    "messier54",
+    "m54"
+   ],
+   "kind": "cluster",
+   "ra_deg": 283.76387,
+   "dec_deg": -30.47986,
+   "mag": 7.6,
+   "naked_eye": false,
+   "constellation_ko": "궁수자리"
+  },
+  {
+   "id": "M55",
+   "group": "messier",
+   "name_ko": "메시에 55",
+   "name_en": "Messier 55",
+   "aliases": [
+    "메시에55",
+    "messier55",
+    "m55"
+   ],
+   "kind": "cluster",
+   "ra_deg": 294.99879,
+   "dec_deg": -30.96475,
+   "mag": 6.49,
+   "naked_eye": false,
+   "constellation_ko": "궁수자리"
+  },
+  {
+   "id": "M56",
+   "group": "messier",
+   "name_ko": "메시에 56",
+   "name_en": "Messier 56",
+   "aliases": [
+    "메시에56",
+    "messier56",
+    "m56"
+   ],
+   "kind": "cluster",
+   "ra_deg": 289.14821,
+   "dec_deg": 30.18347,
+   "mag": 8.27,
+   "naked_eye": false,
+   "constellation_ko": "거문고자리"
+  },
+  {
+   "id": "M57",
+   "group": "messier",
+   "name_ko": "고리 성운",
+   "name_en": "Ring Nebula",
+   "aliases": [
+    "고리성운",
+    "ringnebula",
+    "m57",
+    "메시에57",
+    "messier57"
+   ],
+   "kind": "nebula",
+   "ra_deg": 283.39624,
+   "dec_deg": 33.02913,
+   "mag": 15.769,
+   "naked_eye": false,
+   "constellation_ko": "거문고자리"
+  },
+  {
+   "id": "M58",
+   "group": "messier",
+   "name_ko": "메시에 58",
+   "name_en": "Messier 58",
+   "aliases": [
+    "메시에58",
+    "messier58",
+    "m58"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 189.43165,
+   "dec_deg": 11.81809,
+   "mag": 9.66,
+   "naked_eye": false,
+   "constellation_ko": "처녀자리"
+  },
+  {
+   "id": "M59",
+   "group": "messier",
+   "name_ko": "메시에 59",
+   "name_en": "Messier 59",
+   "aliases": [
+    "메시에59",
+    "messier59",
+    "m59"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 190.50967,
+   "dec_deg": 11.64693,
+   "mag": 9.6,
+   "naked_eye": false,
+   "constellation_ko": "처녀자리"
+  },
+  {
+   "id": "M60",
+   "group": "messier",
+   "name_ko": "메시에 60",
+   "name_en": "Messier 60",
+   "aliases": [
+    "메시에60",
+    "messier60",
+    "m60"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 190.91667,
+   "dec_deg": 11.55278,
+   "mag": 8.8,
+   "naked_eye": false,
+   "constellation_ko": "처녀자리"
+  },
+  {
+   "id": "M61",
+   "group": "messier",
+   "name_ko": "메시에 61",
+   "name_en": "Messier 61",
+   "aliases": [
+    "메시에61",
+    "messier61",
+    "m61"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 185.47886,
+   "dec_deg": 4.47377,
+   "mag": 9.65,
+   "naked_eye": false,
+   "constellation_ko": "처녀자리"
+  },
+  {
+   "id": "M62",
+   "group": "messier",
+   "name_ko": "메시에 62",
+   "name_en": "Messier 62",
+   "aliases": [
+    "메시에62",
+    "messier62",
+    "m62"
+   ],
+   "kind": "cluster",
+   "ra_deg": 255.3025,
+   "dec_deg": -30.11236,
+   "mag": 7.39,
+   "naked_eye": false,
+   "constellation_ko": "땅꾼자리"
+  },
+  {
+   "id": "M63",
+   "group": "messier",
+   "name_ko": "해바라기 은하",
+   "name_en": "Sunflower Galaxy",
+   "aliases": [
+    "해바라기은하",
+    "sunflowergalaxy",
+    "m63",
+    "메시에63",
+    "messier63"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 198.95531,
+   "dec_deg": 42.02937,
+   "mag": 8.59,
+   "naked_eye": false,
+   "constellation_ko": "사냥개자리"
+  },
+  {
+   "id": "M64",
+   "group": "messier",
+   "name_ko": "검은 눈 은하",
+   "name_en": "Black Eye Galaxy",
+   "aliases": [
+    "검은눈은하",
+    "blackeyegalaxy",
+    "m64",
+    "메시에64",
+    "messier64"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 194.18207,
+   "dec_deg": 21.68266,
+   "mag": 8.52,
+   "naked_eye": false,
+   "constellation_ko": "머리털자리"
+  },
+  {
+   "id": "M65",
+   "group": "messier",
+   "name_ko": "메시에 65",
+   "name_en": "Messier 65",
+   "aliases": [
+    "메시에65",
+    "messier65",
+    "m65"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 169.73315,
+   "dec_deg": 13.09221,
+   "mag": 9.3,
+   "naked_eye": false,
+   "constellation_ko": "사자자리"
+  },
+  {
+   "id": "M66",
+   "group": "messier",
+   "name_ko": "메시에 66",
+   "name_en": "Messier 66",
+   "aliases": [
+    "메시에66",
+    "messier66",
+    "m66"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 170.06261,
+   "dec_deg": 12.99129,
+   "mag": 8.92,
+   "naked_eye": false,
+   "constellation_ko": "사자자리"
+  },
+  {
+   "id": "M67",
+   "group": "messier",
+   "name_ko": "메시에 67",
+   "name_en": "Messier 67",
+   "aliases": [
+    "메시에67",
+    "messier67",
+    "m67"
+   ],
+   "kind": "cluster",
+   "ra_deg": 132.825,
+   "dec_deg": 11.8,
+   "mag": 6.9,
+   "naked_eye": false,
+   "constellation_ko": "게자리"
+  },
+  {
+   "id": "M68",
+   "group": "messier",
+   "name_ko": "메시에 68",
+   "name_en": "Messier 68",
+   "aliases": [
+    "메시에68",
+    "messier68",
+    "m68"
+   ],
+   "kind": "cluster",
+   "ra_deg": 189.86658,
+   "dec_deg": -26.74406,
+   "mag": 7.96,
+   "naked_eye": false,
+   "constellation_ko": "바다뱀자리"
+  },
+  {
+   "id": "M69",
+   "group": "messier",
+   "name_ko": "메시에 69",
+   "name_en": "Messier 69",
+   "aliases": [
+    "메시에69",
+    "messier69",
+    "m69"
+   ],
+   "kind": "cluster",
+   "ra_deg": 277.84625,
+   "dec_deg": -32.34808,
+   "mag": 8.31,
+   "naked_eye": false,
+   "constellation_ko": "궁수자리"
+  },
+  {
+   "id": "M70",
+   "group": "messier",
+   "name_ko": "메시에 70",
+   "name_en": "Messier 70",
+   "aliases": [
+    "메시에70",
+    "messier70",
+    "m70"
+   ],
+   "kind": "cluster",
+   "ra_deg": 280.80317,
+   "dec_deg": -32.29211,
+   "mag": 9.06,
+   "naked_eye": false,
+   "constellation_ko": "궁수자리"
+  },
+  {
+   "id": "M71",
+   "group": "messier",
+   "name_ko": "메시에 71",
+   "name_en": "Messier 71",
+   "aliases": [
+    "메시에71",
+    "messier71",
+    "m71"
+   ],
+   "kind": "cluster",
+   "ra_deg": 298.44371,
+   "dec_deg": 18.77919,
+   "mag": 6.1,
+   "naked_eye": false,
+   "constellation_ko": "화살자리"
+  },
+  {
+   "id": "M72",
+   "group": "messier",
+   "name_ko": "메시에 72",
+   "name_en": "Messier 72",
+   "aliases": [
+    "메시에72",
+    "messier72",
+    "m72"
+   ],
+   "kind": "cluster",
+   "ra_deg": 313.36542,
+   "dec_deg": -12.53731,
+   "mag": 8.96,
+   "naked_eye": false,
+   "constellation_ko": "물병자리"
+  },
+  {
+   "id": "M73",
+   "group": "messier",
+   "name_ko": "메시에 73",
+   "name_en": "Messier 73",
+   "aliases": [
+    "메시에73",
+    "messier73",
+    "m73"
+   ],
+   "kind": "cluster",
+   "ra_deg": 314.75,
+   "dec_deg": -12.633,
+   "mag": 8.9,
+   "naked_eye": false,
+   "constellation_ko": "물병자리"
+  },
+  {
+   "id": "M74",
+   "group": "messier",
+   "name_ko": "메시에 74",
+   "name_en": "Messier 74",
+   "aliases": [
+    "메시에74",
+    "messier74",
+    "m74"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 24.17392,
+   "dec_deg": 15.78346,
+   "mag": 9.46,
+   "naked_eye": false,
+   "constellation_ko": "물고기자리"
+  },
+  {
+   "id": "M75",
+   "group": "messier",
+   "name_ko": "메시에 75",
+   "name_en": "Messier 75",
+   "aliases": [
+    "메시에75",
+    "messier75",
+    "m75"
+   ],
+   "kind": "cluster",
+   "ra_deg": 301.52017,
+   "dec_deg": -21.92226,
+   "mag": 8.26,
+   "naked_eye": false,
+   "constellation_ko": "궁수자리"
+  },
+  {
+   "id": "M76",
+   "group": "messier",
+   "name_ko": "작은아령성운",
+   "name_en": "Little Dumbbell Nebula",
+   "aliases": [
+    "작은아령성운",
+    "littledumbbellnebula",
+    "m76",
+    "메시에76",
+    "messier76"
+   ],
+   "kind": "nebula",
+   "ra_deg": 25.58192,
+   "dec_deg": 51.57543,
+   "mag": 17.48,
+   "naked_eye": false,
+   "constellation_ko": "페르세우스자리"
+  },
+  {
+   "id": "M77",
+   "group": "messier",
+   "name_ko": "고래자리 A",
+   "name_en": "Messier 77",
+   "aliases": [
+    "고래자리a",
+    "messier77",
+    "m77",
+    "메시에77"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 40.66988,
+   "dec_deg": -0.01329,
+   "mag": 8.87,
+   "naked_eye": false,
+   "constellation_ko": "고래자리"
+  },
+  {
+   "id": "M78",
+   "group": "messier",
+   "name_ko": "메시에 78",
+   "name_en": "Messier 78",
+   "aliases": [
+    "메시에78",
+    "messier78",
+    "m78"
+   ],
+   "kind": "nebula",
+   "ra_deg": 86.69083,
+   "dec_deg": 0.07917,
+   "mag": 8.3,
+   "naked_eye": false,
+   "constellation_ko": "오리온자리"
+  },
+  {
+   "id": "M79",
+   "group": "messier",
+   "name_ko": "메시에 79",
+   "name_en": "Messier 79",
+   "aliases": [
+    "메시에79",
+    "messier79",
+    "m79"
+   ],
+   "kind": "cluster",
+   "ra_deg": 81.04412,
+   "dec_deg": -24.52425,
+   "mag": 8.16,
+   "naked_eye": false,
+   "constellation_ko": "토끼자리"
+  },
+  {
+   "id": "M80",
+   "group": "messier",
+   "name_ko": "메시에 80",
+   "name_en": "Messier 80",
+   "aliases": [
+    "메시에80",
+    "messier80",
+    "m80"
+   ],
+   "kind": "cluster",
+   "ra_deg": 244.26004,
+   "dec_deg": -22.97608,
+   "mag": 7.33,
+   "naked_eye": false,
+   "constellation_ko": "전갈자리"
+  },
+  {
+   "id": "M81",
+   "group": "messier",
+   "name_ko": "보데 은하",
+   "name_en": "Messier 81",
+   "aliases": [
+    "보데은하",
+    "messier81",
+    "m81",
+    "메시에81"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 148.88822,
+   "dec_deg": 69.0653,
+   "mag": 6.94,
+   "naked_eye": false,
+   "constellation_ko": "큰곰자리"
+  },
+  {
+   "id": "M82",
+   "group": "messier",
+   "name_ko": "시가 은하",
+   "name_en": "Messier 82",
+   "aliases": [
+    "시가은하",
+    "messier82",
+    "m82",
+    "메시에82"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 148.96846,
+   "dec_deg": 69.6797,
+   "mag": 8.41,
+   "naked_eye": false,
+   "constellation_ko": "큰곰자리"
+  },
+  {
+   "id": "M83",
+   "group": "messier",
+   "name_ko": "남쪽바람개비 은하",
+   "name_en": "Messier 83",
+   "aliases": [
+    "남쪽바람개비은하",
+    "messier83",
+    "m83",
+    "메시에83"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 204.25383,
+   "dec_deg": -29.86576,
+   "mag": 7.52,
+   "naked_eye": false,
+   "constellation_ko": "바다뱀자리"
+  },
+  {
+   "id": "M84",
+   "group": "messier",
+   "name_ko": "메시에 84",
+   "name_en": "Messier 84",
+   "aliases": [
+    "메시에84",
+    "messier84",
+    "m84"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 186.25,
+   "dec_deg": 12.867,
+   "mag": 10.49,
+   "naked_eye": false,
+   "constellation_ko": "처녀자리"
+  },
+  {
+   "id": "M85",
+   "group": "messier",
+   "name_ko": "메시에 85",
+   "name_en": "Messier 85",
+   "aliases": [
+    "메시에85",
+    "messier85",
+    "m85"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 186.35022,
+   "dec_deg": 18.19108,
+   "mag": 9.1,
+   "naked_eye": false,
+   "constellation_ko": "머리털자리"
+  },
+  {
+   "id": "M86",
+   "group": "messier",
+   "name_ko": "메시에 86",
+   "name_en": "Messier 86",
+   "aliases": [
+    "메시에86",
+    "messier86",
+    "m86"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 186.54923,
+   "dec_deg": 12.9,
+   "mag": 8.9,
+   "naked_eye": false,
+   "constellation_ko": "처녀자리"
+  },
+  {
+   "id": "M87",
+   "group": "messier",
+   "name_ko": "처녀자리 A 은하",
+   "name_en": "Messier 87",
+   "aliases": [
+    "처녀자리a은하",
+    "messier87",
+    "m87",
+    "메시에87"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 187.70593,
+   "dec_deg": 12.39112,
+   "mag": 8.63,
+   "naked_eye": false,
+   "constellation_ko": "처녀자리"
+  },
+  {
+   "id": "M88",
+   "group": "messier",
+   "name_ko": "메시에 88",
+   "name_en": "Messier 88",
+   "aliases": [
+    "메시에88",
+    "messier88",
+    "m88"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 187.99673,
+   "dec_deg": 14.42041,
+   "mag": 13.18,
+   "naked_eye": false,
+   "constellation_ko": "머리털자리"
+  },
+  {
+   "id": "M89",
+   "group": "messier",
+   "name_ko": "메시에 89",
+   "name_en": "Messier 89",
+   "aliases": [
+    "메시에89",
+    "messier89",
+    "m89"
+   ],
+   "kind": "dso",
+   "ra_deg": 188.9159,
+   "dec_deg": 12.5563,
+   "mag": 9.75,
+   "naked_eye": false,
+   "constellation_ko": "처녀자리"
+  },
+  {
+   "id": "M90",
+   "group": "messier",
+   "name_ko": "메시에 90",
+   "name_en": "Messier 90",
+   "aliases": [
+    "메시에90",
+    "messier90",
+    "m90"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 189.20746,
+   "dec_deg": 13.16287,
+   "mag": 9.54,
+   "naked_eye": false,
+   "constellation_ko": "처녀자리"
+  },
+  {
+   "id": "M91",
+   "group": "messier",
+   "name_ko": "메시에 91",
+   "name_en": "Messier 91",
+   "aliases": [
+    "메시에91",
+    "messier91",
+    "m91"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 188.86013,
+   "dec_deg": 14.49632,
+   "mag": 13.57,
+   "naked_eye": false,
+   "constellation_ko": "머리털자리"
+  },
+  {
+   "id": "M92",
+   "group": "messier",
+   "name_ko": "메시에 92",
+   "name_en": "Messier 92",
+   "aliases": [
+    "메시에92",
+    "messier92",
+    "m92"
+   ],
+   "kind": "cluster",
+   "ra_deg": 259.28072,
+   "dec_deg": 43.13584,
+   "mag": 6.52,
+   "naked_eye": false,
+   "constellation_ko": "허큘리스자리"
+  },
+  {
+   "id": "M93",
+   "group": "messier",
+   "name_ko": "메시에 93",
+   "name_en": "Messier 93",
+   "aliases": [
+    "메시에93",
+    "messier93",
+    "m93"
+   ],
+   "kind": "cluster",
+   "ra_deg": 116.125,
+   "dec_deg": -23.8567,
+   "mag": 6.2,
+   "naked_eye": false,
+   "constellation_ko": "고물자리"
+  },
+  {
+   "id": "M94",
+   "group": "messier",
+   "name_ko": "메시에 94",
+   "name_en": "Messier 94",
+   "aliases": [
+    "메시에94",
+    "messier94",
+    "m94"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 192.72145,
+   "dec_deg": 41.12015,
+   "mag": 8.24,
+   "naked_eye": false,
+   "constellation_ko": "사냥개자리"
+  },
+  {
+   "id": "M95",
+   "group": "messier",
+   "name_ko": "메시에 95",
+   "name_en": "Messier 95",
+   "aliases": [
+    "메시에95",
+    "messier95",
+    "m95"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 160.99055,
+   "dec_deg": 11.70361,
+   "mag": 9.73,
+   "naked_eye": false,
+   "constellation_ko": "사자자리"
+  },
+  {
+   "id": "M96",
+   "group": "messier",
+   "name_ko": "메시에 96",
+   "name_en": "Messier 96",
+   "aliases": [
+    "메시에96",
+    "messier96",
+    "m96"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 161.6906,
+   "dec_deg": 11.81994,
+   "mag": 9.25,
+   "naked_eye": false,
+   "constellation_ko": "사자자리"
+  },
+  {
+   "id": "M97",
+   "group": "messier",
+   "name_ko": "올빼미 성운",
+   "name_en": "Owl Nebula",
+   "aliases": [
+    "올빼미성운",
+    "owlnebula",
+    "m97",
+    "메시에97",
+    "messier97"
+   ],
+   "kind": "nebula",
+   "ra_deg": 168.6988,
+   "dec_deg": 55.01902,
+   "mag": 15.777,
+   "naked_eye": false,
+   "constellation_ko": "큰곰자리"
+  },
+  {
+   "id": "M98",
+   "group": "messier",
+   "name_ko": "메시에 98",
+   "name_en": "Messier 98",
+   "aliases": [
+    "메시에98",
+    "messier98",
+    "m98"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 183.45122,
+   "dec_deg": 14.90047,
+   "mag": 10.14,
+   "naked_eye": false,
+   "constellation_ko": "머리털자리"
+  },
+  {
+   "id": "M99",
+   "group": "messier",
+   "name_ko": "머리털 바람개비 은하",
+   "name_en": "Messier 99",
+   "aliases": [
+    "머리털바람개비은하",
+    "messier99",
+    "m99",
+    "메시에99"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 184.70677,
+   "dec_deg": 14.41649,
+   "mag": 9.87,
+   "naked_eye": false,
+   "constellation_ko": "머리털자리"
+  },
+  {
+   "id": "M100",
+   "group": "messier",
+   "name_ko": "메시에 100",
+   "name_en": "Messier 100",
+   "aliases": [
+    "메시에100",
+    "messier100",
+    "m100"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 185.72888,
+   "dec_deg": 15.8223,
+   "mag": 9.35,
+   "naked_eye": false,
+   "constellation_ko": "머리털자리"
+  },
+  {
+   "id": "M101",
+   "group": "messier",
+   "name_ko": "바람개비 은하",
+   "name_en": "Pinwheel Galaxy",
+   "aliases": [
+    "바람개비은하",
+    "pinwheelgalaxy",
+    "m101",
+    "메시에101",
+    "messier101"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 210.80243,
+   "dec_deg": 54.34875,
+   "mag": 7.86,
+   "naked_eye": false,
+   "constellation_ko": "큰곰자리"
+  },
+  {
+   "id": "M102",
+   "group": "messier",
+   "name_ko": "메시에 102",
+   "name_en": "Messier 102",
+   "aliases": [
+    "메시에102",
+    "messier102",
+    "m102"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 226.62317,
+   "dec_deg": 55.76331,
+   "mag": 9.89,
+   "naked_eye": false,
+   "constellation_ko": "용자리"
+  },
+  {
+   "id": "M103",
+   "group": "messier",
+   "name_ko": "메시에 103",
+   "name_en": "Messier 103",
+   "aliases": [
+    "메시에103",
+    "messier103",
+    "m103"
+   ],
+   "kind": "cluster",
+   "ra_deg": 23.3458,
+   "dec_deg": 60.65,
+   "mag": 7.4,
+   "naked_eye": false,
+   "constellation_ko": "카시오페이아자리"
+  },
+  {
+   "id": "M104",
+   "group": "messier",
+   "name_ko": "솜브레로 은하",
+   "name_en": "Sombrero Galaxy",
+   "aliases": [
+    "솜브레로은하",
+    "sombrerogalaxy",
+    "m104",
+    "메시에104",
+    "messier104"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 189.99763,
+   "dec_deg": -11.617,
+   "mag": 8.0,
+   "naked_eye": false,
+   "constellation_ko": "처녀자리"
+  },
+  {
+   "id": "M105",
+   "group": "messier",
+   "name_ko": "메시에 105",
+   "name_en": "Messier 105",
+   "aliases": [
+    "메시에105",
+    "messier105",
+    "m105"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 161.95667,
+   "dec_deg": 12.58163,
+   "mag": 9.76,
+   "naked_eye": false,
+   "constellation_ko": "사자자리"
+  },
+  {
+   "id": "M106",
+   "group": "messier",
+   "name_ko": "메시에 106",
+   "name_en": "Messier 106",
+   "aliases": [
+    "메시에106",
+    "messier106",
+    "m106"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 184.74008,
+   "dec_deg": 47.30372,
+   "mag": 8.41,
+   "naked_eye": false,
+   "constellation_ko": "사냥개자리"
+  },
+  {
+   "id": "M107",
+   "group": "messier",
+   "name_ko": "메시에 107",
+   "name_en": "Messier 107",
+   "aliases": [
+    "메시에107",
+    "messier107",
+    "m107"
+   ],
+   "kind": "cluster",
+   "ra_deg": 248.13275,
+   "dec_deg": -13.05378,
+   "mag": 8.85,
+   "naked_eye": false,
+   "constellation_ko": "땅꾼자리"
+  },
+  {
+   "id": "M108",
+   "group": "messier",
+   "name_ko": "메시에 108",
+   "name_en": "Messier 108",
+   "aliases": [
+    "메시에108",
+    "messier108",
+    "m108"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 167.87903,
+   "dec_deg": 55.67412,
+   "mag": 9.9,
+   "naked_eye": false,
+   "constellation_ko": "큰곰자리"
+  },
+  {
+   "id": "M109",
+   "group": "messier",
+   "name_ko": "메시에 109",
+   "name_en": "Messier 109",
+   "aliases": [
+    "메시에109",
+    "messier109",
+    "m109"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 179.39993,
+   "dec_deg": 53.37452,
+   "mag": 9.8,
+   "naked_eye": false,
+   "constellation_ko": "큰곰자리"
+  },
+  {
+   "id": "M110",
+   "group": "messier",
+   "name_ko": "메시에 110",
+   "name_en": "Messier 110",
+   "aliases": [
+    "메시에110",
+    "messier110",
+    "m110"
+   ],
+   "kind": "galaxy",
+   "ra_deg": 10.09189,
+   "dec_deg": 41.68542,
+   "mag": 8.07,
+   "naked_eye": false,
+   "constellation_ko": "안드로메다자리"
+  },
+  {
+   "id": "Q321",
+   "group": "milky_way",
+   "name_ko": "우리 은하",
+   "name_en": "Milky Way",
+   "aliases": [
+    "우리은하",
+    "milkyway",
+    "은하수"
+   ],
+   "kind": "milky_way",
+   "ra_deg": 266.41501,
+   "dec_deg": -29.00611,
+   "mag": null,
+   "naked_eye": true,
+   "constellation_ko": null
+  },
+  {
+   "id": "Q237284",
+   "group": "milky_way",
+   "name_ko": "궁수자리 A*",
+   "name_en": "Sagittarius A*",
+   "aliases": [
+    "궁수자리a*",
+    "sagittariusa*"
+   ],
+   "kind": "milky_way",
+   "ra_deg": 266.41682,
+   "dec_deg": -29.00782,
+   "mag": null,
+   "naked_eye": false,
+   "constellation_ko": "궁수자리"
+  },
+  {
+   "id": "Q9256",
+   "group": "constellation",
+   "name_ko": "안드로메다자리",
+   "name_en": "Andromeda",
+   "aliases": [
+    "안드로메다자리",
+    "andromeda"
+   ],
+   "kind": "constellation",
+   "ra_deg": 10.0,
+   "dec_deg": 37.0,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "안드로메다자리"
+  },
+  {
+   "id": "Q10481",
+   "group": "constellation",
+   "name_ko": "공기펌프자리",
+   "name_en": "Antlia",
+   "aliases": [
+    "공기펌프자리",
+    "antlia"
+   ],
+   "kind": "constellation",
+   "ra_deg": 154.1067,
+   "dec_deg": -32.4836,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "공기펌프자리"
+  },
+  {
+   "id": "Q10506",
+   "group": "constellation",
+   "name_ko": "극락조자리",
+   "name_en": "Apus",
+   "aliases": [
+    "극락조자리",
+    "apus"
+   ],
+   "kind": "constellation",
+   "ra_deg": 242.0,
+   "dec_deg": -75.0,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "극락조자리"
+  },
+  {
+   "id": "Q10576",
+   "group": "constellation",
+   "name_ko": "물병자리",
+   "name_en": "Aquarius",
+   "aliases": [
+    "물병자리",
+    "aquarius"
+   ],
+   "kind": "constellation",
+   "ra_deg": 335.0,
+   "dec_deg": -11.0,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "물병자리"
+  },
+  {
+   "id": "Q10586",
+   "group": "constellation",
+   "name_ko": "독수리자리",
+   "name_en": "Aquila",
+   "aliases": [
+    "독수리자리",
+    "aquila"
+   ],
+   "kind": "constellation",
+   "ra_deg": 295.0054,
+   "dec_deg": 3.4109,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "독수리자리"
+  },
+  {
+   "id": "Q9253",
+   "group": "constellation",
+   "name_ko": "제단자리",
+   "name_en": "Ara",
+   "aliases": [
+    "제단자리",
+    "ara"
+   ],
+   "kind": "constellation",
+   "ra_deg": 260.6214,
+   "dec_deg": -56.5883,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "제단자리"
+  },
+  {
+   "id": "Q10584",
+   "group": "constellation",
+   "name_ko": "양자리",
+   "name_en": "Aries",
+   "aliases": [
+    "양자리",
+    "aries"
+   ],
+   "kind": "constellation",
+   "ra_deg": 39.5412,
+   "dec_deg": 20.7923,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "양자리"
+  },
+  {
+   "id": "Q10476",
+   "group": "constellation",
+   "name_ko": "마차부자리",
+   "name_en": "Auriga",
+   "aliases": [
+    "마차부자리",
+    "auriga"
+   ],
+   "kind": "constellation",
+   "ra_deg": 91.0,
+   "dec_deg": 42.0,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "마차부자리"
+  },
+  {
+   "id": "Q8667",
+   "group": "constellation",
+   "name_ko": "목동자리",
+   "name_en": "Boötes",
+   "aliases": [
+    "목동자리",
+    "boötes",
+    "bootes"
+   ],
+   "kind": "constellation",
+   "ra_deg": 220.0,
+   "dec_deg": 31.0,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "목동자리"
+  },
+  {
+   "id": "Q10488",
+   "group": "constellation",
+   "name_ko": "조각칼자리",
+   "name_en": "Caelum",
+   "aliases": [
+    "조각칼자리",
+    "caelum"
+   ],
+   "kind": "constellation",
+   "ra_deg": 70.5687,
+   "dec_deg": -37.8817,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "조각칼자리"
+  },
+  {
+   "id": "Q8832",
+   "group": "constellation",
+   "name_ko": "기린자리",
+   "name_en": "Camelopardalis",
+   "aliases": [
+    "기린자리",
+    "camelopardalis"
+   ],
+   "kind": "constellation",
+   "ra_deg": 80.0,
+   "dec_deg": 70.0,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "기린자리"
+  },
+  {
+   "id": "Q8849",
+   "group": "constellation",
+   "name_ko": "게자리",
+   "name_en": "Cancer",
+   "aliases": [
+    "게자리",
+    "cancer"
+   ],
+   "kind": "constellation",
+   "ra_deg": 129.7392,
+   "dec_deg": 19.8058,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "게자리"
+  },
+  {
+   "id": "Q10452",
+   "group": "constellation",
+   "name_ko": "사냥개자리",
+   "name_en": "Canes Venatici",
+   "aliases": [
+    "사냥개자리",
+    "canesvenatici"
+   ],
+   "kind": "constellation",
+   "ra_deg": 196.7402,
+   "dec_deg": 40.1018,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "사냥개자리"
+  },
+  {
+   "id": "Q10538",
+   "group": "constellation",
+   "name_ko": "큰개자리",
+   "name_en": "Canis Major",
+   "aliases": [
+    "큰개자리",
+    "canismajor",
+    "canismaior"
+   ],
+   "kind": "constellation",
+   "ra_deg": 102.4362,
+   "dec_deg": -22.1403,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "큰개자리"
+  },
+  {
+   "id": "Q9305",
+   "group": "constellation",
+   "name_ko": "작은개자리",
+   "name_en": "Canis Minor",
+   "aliases": [
+    "작은개자리",
+    "canisminor"
+   ],
+   "kind": "constellation",
+   "ra_deg": 114.7929,
+   "dec_deg": 6.4272,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "작은개자리"
+  },
+  {
+   "id": "Q10535",
+   "group": "constellation",
+   "name_ko": "염소자리",
+   "name_en": "Capricornus",
+   "aliases": [
+    "염소자리",
+    "capricornus"
+   ],
+   "kind": "constellation",
+   "ra_deg": 315.732,
+   "dec_deg": -18.0232,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "염소자리"
+  },
+  {
+   "id": "Q10470",
+   "group": "constellation",
+   "name_ko": "용골자리",
+   "name_en": "Carina",
+   "aliases": [
+    "용골자리",
+    "carina"
+   ],
+   "kind": "constellation",
+   "ra_deg": 130.4248,
+   "dec_deg": -63.2193,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "용골자리"
+  },
+  {
+   "id": "Q10464",
+   "group": "constellation",
+   "name_ko": "카시오페이아자리",
+   "name_en": "Cassiopeia",
+   "aliases": [
+    "카시오페이아자리",
+    "cassiopeia"
+   ],
+   "kind": "constellation",
+   "ra_deg": 19.7889,
+   "dec_deg": 62.184,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "카시오페이아자리"
+  },
+  {
+   "id": "Q8844",
+   "group": "constellation",
+   "name_ko": "센타우루스자리",
+   "name_en": "Centaurus",
+   "aliases": [
+    "센타우루스자리",
+    "centaurus"
+   ],
+   "kind": "constellation",
+   "ra_deg": 196.0,
+   "dec_deg": -47.0,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "센타우루스자리"
+  },
+  {
+   "id": "Q10468",
+   "group": "constellation",
+   "name_ko": "세페우스자리",
+   "name_en": "Cepheus",
+   "aliases": [
+    "세페우스자리",
+    "cepheus"
+   ],
+   "kind": "constellation",
+   "ra_deg": 342.0,
+   "dec_deg": 73.0,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "세페우스자리"
+  },
+  {
+   "id": "Q8839",
+   "group": "constellation",
+   "name_ko": "고래자리",
+   "name_en": "Cetus",
+   "aliases": [
+    "고래자리",
+    "cetus"
+   ],
+   "kind": "constellation",
+   "ra_deg": 25.0,
+   "dec_deg": -7.0,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "고래자리"
+  },
+  {
+   "id": "Q10457",
+   "group": "constellation",
+   "name_ko": "카멜레온자리",
+   "name_en": "Chamaeleon",
+   "aliases": [
+    "카멜레온자리",
+    "chamaeleon"
+   ],
+   "kind": "constellation",
+   "ra_deg": 160.0,
+   "dec_deg": -79.0,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "카멜레온자리"
+  },
+  {
+   "id": "Q10508",
+   "group": "constellation",
+   "name_ko": "컴퍼스자리",
+   "name_en": "Circinus",
+   "aliases": [
+    "컴퍼스자리",
+    "circinus"
+   ],
+   "kind": "constellation",
+   "ra_deg": 218.635,
+   "dec_deg": -63.0304,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "컴퍼스자리"
+  },
+  {
+   "id": "Q10425",
+   "group": "constellation",
+   "name_ko": "비둘기자리",
+   "name_en": "Columba",
+   "aliases": [
+    "비둘기자리",
+    "columba"
+   ],
+   "kind": "constellation",
+   "ra_deg": 87.9392,
+   "dec_deg": -35.0944,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "비둘기자리"
+  },
+  {
+   "id": "Q9285",
+   "group": "constellation",
+   "name_ko": "머리털자리",
+   "name_en": "Coma Berenices",
+   "aliases": [
+    "머리털자리",
+    "comaberenices"
+   ],
+   "kind": "constellation",
+   "ra_deg": 191.8167,
+   "dec_deg": 23.3057,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "머리털자리"
+  },
+  {
+   "id": "Q10413",
+   "group": "constellation",
+   "name_ko": "남쪽왕관자리",
+   "name_en": "Corona Australis",
+   "aliases": [
+    "남쪽왕관자리",
+    "coronaaustralis"
+   ],
+   "kind": "constellation",
+   "ra_deg": 279.6976,
+   "dec_deg": -41.1475,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "남쪽왕관자리"
+  },
+  {
+   "id": "Q10406",
+   "group": "constellation",
+   "name_ko": "북쪽왕관자리",
+   "name_en": "Corona Borealis",
+   "aliases": [
+    "북쪽왕관자리",
+    "coronaborealis"
+   ],
+   "kind": "constellation",
+   "ra_deg": 237.6479,
+   "dec_deg": 32.6249,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "북쪽왕관자리"
+  },
+  {
+   "id": "Q10517",
+   "group": "constellation",
+   "name_ko": "까마귀자리",
+   "name_en": "Corvus",
+   "aliases": [
+    "까마귀자리",
+    "corvus"
+   ],
+   "kind": "constellation",
+   "ra_deg": 186.6291,
+   "dec_deg": -18.4366,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "까마귀자리"
+  },
+  {
+   "id": "Q9282",
+   "group": "constellation",
+   "name_ko": "컵자리",
+   "name_en": "Crater",
+   "aliases": [
+    "컵자리",
+    "crater"
+   ],
+   "kind": "constellation",
+   "ra_deg": 170.9371,
+   "dec_deg": -15.929,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "컵자리"
+  },
+  {
+   "id": "Q10542",
+   "group": "constellation",
+   "name_ko": "남십자자리",
+   "name_en": "Crux",
+   "aliases": [
+    "남십자자리",
+    "crux"
+   ],
+   "kind": "constellation",
+   "ra_deg": 186.7479,
+   "dec_deg": -60.1864,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "남십자자리"
+  },
+  {
+   "id": "Q8921",
+   "group": "constellation",
+   "name_ko": "백조자리",
+   "name_en": "Cygnus",
+   "aliases": [
+    "백조자리",
+    "cygnus"
+   ],
+   "kind": "constellation",
+   "ra_deg": 308.8196,
+   "dec_deg": 44.5451,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "백조자리"
+  },
+  {
+   "id": "Q9302",
+   "group": "constellation",
+   "name_ko": "돌고래자리",
+   "name_en": "Delphinus",
+   "aliases": [
+    "돌고래자리",
+    "delphinus"
+   ],
+   "kind": "constellation",
+   "ra_deg": 310.4037,
+   "dec_deg": 11.671,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "돌고래자리"
+  },
+  {
+   "id": "Q8837",
+   "group": "constellation",
+   "name_ko": "황새치자리",
+   "name_en": "Dorado",
+   "aliases": [
+    "황새치자리",
+    "dorado"
+   ],
+   "kind": "constellation",
+   "ra_deg": 78.628,
+   "dec_deg": -59.3871,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "황새치자리"
+  },
+  {
+   "id": "Q8675",
+   "group": "constellation",
+   "name_ko": "용자리",
+   "name_en": "Draco",
+   "aliases": [
+    "용자리",
+    "draco"
+   ],
+   "kind": "constellation",
+   "ra_deg": 227.1607,
+   "dec_deg": 67.0066,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "용자리"
+  },
+  {
+   "id": "Q10438",
+   "group": "constellation",
+   "name_ko": "조랑말자리",
+   "name_en": "Equuleus",
+   "aliases": [
+    "조랑말자리",
+    "equuleus"
+   ],
+   "kind": "constellation",
+   "ra_deg": 317.8145,
+   "dec_deg": 7.7582,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "조랑말자리"
+  },
+  {
+   "id": "Q10433",
+   "group": "constellation",
+   "name_ko": "에리다누스자리",
+   "name_en": "Eridanus",
+   "aliases": [
+    "에리다누스자리",
+    "eridanus"
+   ],
+   "kind": "constellation",
+   "ra_deg": 50.0,
+   "dec_deg": -28.0,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "에리다누스자리"
+  },
+  {
+   "id": "Q8913",
+   "group": "constellation",
+   "name_ko": "화로자리",
+   "name_en": "Fornax",
+   "aliases": [
+    "화로자리",
+    "fornax"
+   ],
+   "kind": "constellation",
+   "ra_deg": 41.9698,
+   "dec_deg": -31.6346,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "화로자리"
+  },
+  {
+   "id": "Q8923",
+   "group": "constellation",
+   "name_ko": "쌍둥이자리",
+   "name_en": "Gemini",
+   "aliases": [
+    "쌍둥이자리",
+    "gemini"
+   ],
+   "kind": "constellation",
+   "ra_deg": 106.0592,
+   "dec_deg": 22.6002,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "쌍둥이자리"
+  },
+  {
+   "id": "Q10563",
+   "group": "constellation",
+   "name_ko": "두루미자리",
+   "name_en": "Grus",
+   "aliases": [
+    "두루미자리",
+    "grus"
+   ],
+   "kind": "constellation",
+   "ra_deg": 336.8483,
+   "dec_deg": -46.3518,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "두루미자리"
+  },
+  {
+   "id": "Q10448",
+   "group": "constellation",
+   "name_ko": "허큘리스자리",
+   "name_en": "Hercules",
+   "aliases": [
+    "허큘리스자리",
+    "hercules"
+   ],
+   "kind": "constellation",
+   "ra_deg": 261.0,
+   "dec_deg": 27.0,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "허큘리스자리"
+  },
+  {
+   "id": "Q10574",
+   "group": "constellation",
+   "name_ko": "시계자리",
+   "name_en": "Horologium",
+   "aliases": [
+    "시계자리",
+    "horologium"
+   ],
+   "kind": "constellation",
+   "ra_deg": 49.1394,
+   "dec_deg": -53.3363,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "시계자리"
+  },
+  {
+   "id": "Q10578",
+   "group": "constellation",
+   "name_ko": "바다뱀자리",
+   "name_en": "Hydra",
+   "aliases": [
+    "바다뱀자리",
+    "hydra"
+   ],
+   "kind": "constellation",
+   "ra_deg": 174.0,
+   "dec_deg": -14.0,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "바다뱀자리"
+  },
+  {
+   "id": "Q10416",
+   "group": "constellation",
+   "name_ko": "물뱀자리",
+   "name_en": "Hydrus",
+   "aliases": [
+    "물뱀자리",
+    "hydrus"
+   ],
+   "kind": "constellation",
+   "ra_deg": 35.1637,
+   "dec_deg": -69.9564,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "물뱀자리"
+  },
+  {
+   "id": "Q10450",
+   "group": "constellation",
+   "name_ko": "인디언자리",
+   "name_en": "Indus",
+   "aliases": [
+    "인디언자리",
+    "indus"
+   ],
+   "kind": "constellation",
+   "ra_deg": 320.0,
+   "dec_deg": -63.0,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "인디언자리"
+  },
+  {
+   "id": "Q10430",
+   "group": "constellation",
+   "name_ko": "도마뱀자리",
+   "name_en": "Lacerta",
+   "aliases": [
+    "도마뱀자리",
+    "lacerta"
+   ],
+   "kind": "constellation",
+   "ra_deg": 336.921,
+   "dec_deg": 46.0418,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "도마뱀자리"
+  },
+  {
+   "id": "Q8853",
+   "group": "constellation",
+   "name_ko": "사자자리",
+   "name_en": "Leo",
+   "aliases": [
+    "사자자리",
+    "leo"
+   ],
+   "kind": "constellation",
+   "ra_deg": 160.0,
+   "dec_deg": 13.0,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "사자자리"
+  },
+  {
+   "id": "Q10403",
+   "group": "constellation",
+   "name_ko": "작은사자자리",
+   "name_en": "Leo Minor",
+   "aliases": [
+    "작은사자자리",
+    "leominor"
+   ],
+   "kind": "constellation",
+   "ra_deg": 153.6801,
+   "dec_deg": 32.1346,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "작은사자자리"
+  },
+  {
+   "id": "Q10446",
+   "group": "constellation",
+   "name_ko": "토끼자리",
+   "name_en": "Lepus",
+   "aliases": [
+    "토끼자리",
+    "lepus"
+   ],
+   "kind": "constellation",
+   "ra_deg": 83.4875,
+   "dec_deg": -19.0463,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "토끼자리"
+  },
+  {
+   "id": "Q10580",
+   "group": "constellation",
+   "name_ko": "천칭자리",
+   "name_en": "Libra",
+   "aliases": [
+    "천칭자리",
+    "libra"
+   ],
+   "kind": "constellation",
+   "ra_deg": 227.9901,
+   "dec_deg": -15.2346,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "천칭자리"
+  },
+  {
+   "id": "Q10571",
+   "group": "constellation",
+   "name_ko": "이리자리",
+   "name_en": "Lupus",
+   "aliases": [
+    "이리자리",
+    "lupus"
+   ],
+   "kind": "constellation",
+   "ra_deg": 228.3015,
+   "dec_deg": -42.7089,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "이리자리"
+  },
+  {
+   "id": "Q10443",
+   "group": "constellation",
+   "name_ko": "살쾡이자리",
+   "name_en": "Lynx",
+   "aliases": [
+    "살쾡이자리",
+    "lynx"
+   ],
+   "kind": "constellation",
+   "ra_deg": 119.8833,
+   "dec_deg": 47.4666,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "살쾡이자리"
+  },
+  {
+   "id": "Q10484",
+   "group": "constellation",
+   "name_ko": "거문고자리",
+   "name_en": "Lyra",
+   "aliases": [
+    "거문고자리",
+    "lyra"
+   ],
+   "kind": "constellation",
+   "ra_deg": 282.7933,
+   "dec_deg": 36.6893,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "거문고자리"
+  },
+  {
+   "id": "Q9289",
+   "group": "constellation",
+   "name_ko": "테이블산자리",
+   "name_en": "Mensa",
+   "aliases": [
+    "테이블산자리",
+    "mensa"
+   ],
+   "kind": "constellation",
+   "ra_deg": 81.2238,
+   "dec_deg": -77.5041,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "테이블산자리"
+  },
+  {
+   "id": "Q10492",
+   "group": "constellation",
+   "name_ko": "현미경자리",
+   "name_en": "Microscopium",
+   "aliases": [
+    "현미경자리",
+    "microscopium"
+   ],
+   "kind": "constellation",
+   "ra_deg": 314.4701,
+   "dec_deg": -36.2748,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "현미경자리"
+  },
+  {
+   "id": "Q10428",
+   "group": "constellation",
+   "name_ko": "외뿔소자리",
+   "name_en": "Monoceros",
+   "aliases": [
+    "외뿔소자리",
+    "monoceros"
+   ],
+   "kind": "constellation",
+   "ra_deg": 105.0,
+   "dec_deg": 0.0,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "외뿔소자리"
+  },
+  {
+   "id": "Q10435",
+   "group": "constellation",
+   "name_ko": "파리자리",
+   "name_en": "Musca",
+   "aliases": [
+    "파리자리",
+    "musca"
+   ],
+   "kind": "constellation",
+   "ra_deg": 188.8192,
+   "dec_deg": -70.161,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "파리자리"
+  },
+  {
+   "id": "Q10582",
+   "group": "constellation",
+   "name_ko": "직각자자리",
+   "name_en": "Norma",
+   "aliases": [
+    "직각자자리",
+    "norma"
+   ],
+   "kind": "constellation",
+   "ra_deg": 238.5457,
+   "dec_deg": -51.3515,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "직각자자리"
+  },
+  {
+   "id": "Q10503",
+   "group": "constellation",
+   "name_ko": "팔분의자리",
+   "name_en": "Octans",
+   "aliases": [
+    "팔분의자리",
+    "octans"
+   ],
+   "kind": "constellation",
+   "ra_deg": 330.0,
+   "dec_deg": -83.0,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "팔분의자리"
+  },
+  {
+   "id": "Q8906",
+   "group": "constellation",
+   "name_ko": "땅꾼자리",
+   "name_en": "Ophiuchus",
+   "aliases": [
+    "땅꾼자리",
+    "ophiuchus"
+   ],
+   "kind": "constellation",
+   "ra_deg": 261.0,
+   "dec_deg": -7.0,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "땅꾼자리"
+  },
+  {
+   "id": "Q8860",
+   "group": "constellation",
+   "name_ko": "오리온자리",
+   "name_en": "Orion",
+   "aliases": [
+    "오리온자리",
+    "orion"
+   ],
+   "kind": "constellation",
+   "ra_deg": 83.0,
+   "dec_deg": 6.0,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "오리온자리"
+  },
+  {
+   "id": "Q10515",
+   "group": "constellation",
+   "name_ko": "공작자리",
+   "name_en": "Pavo",
+   "aliases": [
+    "공작자리",
+    "pavo"
+   ],
+   "kind": "constellation",
+   "ra_deg": 294.1765,
+   "dec_deg": -65.7815,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "공작자리"
+  },
+  {
+   "id": "Q8864",
+   "group": "constellation",
+   "name_ko": "페가수스자리",
+   "name_en": "Pegasus",
+   "aliases": [
+    "페가수스자리",
+    "pegasus"
+   ],
+   "kind": "constellation",
+   "ra_deg": 341.0,
+   "dec_deg": 19.0,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "페가수스자리"
+  },
+  {
+   "id": "Q10511",
+   "group": "constellation",
+   "name_ko": "페르세우스자리",
+   "name_en": "Perseus",
+   "aliases": [
+    "페르세우스자리",
+    "perseus"
+   ],
+   "kind": "constellation",
+   "ra_deg": 47.6241,
+   "dec_deg": 45.0132,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "페르세우스자리"
+  },
+  {
+   "id": "Q10441",
+   "group": "constellation",
+   "name_ko": "봉황자리",
+   "name_en": "Phoenix",
+   "aliases": [
+    "봉황자리",
+    "phoenix"
+   ],
+   "kind": "constellation",
+   "ra_deg": 13.9784,
+   "dec_deg": -48.5762,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "봉황자리"
+  },
+  {
+   "id": "Q10486",
+   "group": "constellation",
+   "name_ko": "화가자리",
+   "name_en": "Pictor",
+   "aliases": [
+    "화가자리",
+    "pictor"
+   ],
+   "kind": "constellation",
+   "ra_deg": 85.6144,
+   "dec_deg": -53.4741,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "화가자리"
+  },
+  {
+   "id": "Q8679",
+   "group": "constellation",
+   "name_ko": "물고기자리",
+   "name_en": "Pisces",
+   "aliases": [
+    "물고기자리",
+    "pisces"
+   ],
+   "kind": "constellation",
+   "ra_deg": 7.0,
+   "dec_deg": 14.0,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "물고기자리"
+  },
+  {
+   "id": "Q10409",
+   "group": "constellation",
+   "name_ko": "남쪽물고기자리",
+   "name_en": "Piscis Austrinus",
+   "aliases": [
+    "남쪽물고기자리",
+    "piscisaustrinus"
+   ],
+   "kind": "constellation",
+   "ra_deg": 334.2676,
+   "dec_deg": -30.6422,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "남쪽물고기자리"
+  },
+  {
+   "id": "Q9251",
+   "group": "constellation",
+   "name_ko": "고물자리",
+   "name_en": "Puppis",
+   "aliases": [
+    "고물자리",
+    "puppis"
+   ],
+   "kind": "constellation",
+   "ra_deg": 109.0,
+   "dec_deg": -31.0,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "고물자리"
+  },
+  {
+   "id": "Q10473",
+   "group": "constellation",
+   "name_ko": "나침반자리",
+   "name_en": "Pyxis",
+   "aliases": [
+    "나침반자리",
+    "pyxis"
+   ],
+   "kind": "constellation",
+   "ra_deg": 134.2911,
+   "dec_deg": -27.3516,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "나침반자리"
+  },
+  {
+   "id": "Q10498",
+   "group": "constellation",
+   "name_ko": "그물자리",
+   "name_en": "Reticulum",
+   "aliases": [
+    "그물자리",
+    "reticulum"
+   ],
+   "kind": "constellation",
+   "ra_deg": 58.8186,
+   "dec_deg": -59.9975,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "그물자리"
+  },
+  {
+   "id": "Q10513",
+   "group": "constellation",
+   "name_ko": "화살자리",
+   "name_en": "Sagitta",
+   "aliases": [
+    "화살자리",
+    "sagitta"
+   ],
+   "kind": "constellation",
+   "ra_deg": 294.763,
+   "dec_deg": 18.8614,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "화살자리"
+  },
+  {
+   "id": "Q8866",
+   "group": "constellation",
+   "name_ko": "궁수자리",
+   "name_en": "Sagittarius",
+   "aliases": [
+    "궁수자리",
+    "sagittarius"
+   ],
+   "kind": "constellation",
+   "ra_deg": 286.4847,
+   "dec_deg": -28.4769,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "궁수자리"
+  },
+  {
+   "id": "Q8865",
+   "group": "constellation",
+   "name_ko": "전갈자리",
+   "name_en": "Scorpius",
+   "aliases": [
+    "전갈자리",
+    "scorpius"
+   ],
+   "kind": "constellation",
+   "ra_deg": 254.0,
+   "dec_deg": -32.0,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "전갈자리"
+  },
+  {
+   "id": "Q9286",
+   "group": "constellation",
+   "name_ko": "조각가자리",
+   "name_en": "Sculptor",
+   "aliases": [
+    "조각가자리",
+    "sculptor"
+   ],
+   "kind": "constellation",
+   "ra_deg": 6.5699,
+   "dec_deg": -32.0884,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "조각가자리"
+  },
+  {
+   "id": "Q10529",
+   "group": "constellation",
+   "name_ko": "방패자리",
+   "name_en": "Scutum",
+   "aliases": [
+    "방패자리",
+    "scutum"
+   ],
+   "kind": "constellation",
+   "ra_deg": 280.0964,
+   "dec_deg": -9.8886,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "방패자리"
+  },
+  {
+   "id": "Q8910",
+   "group": "constellation",
+   "name_ko": "뱀자리",
+   "name_en": "Serpens",
+   "aliases": [
+    "뱀자리",
+    "serpens"
+   ],
+   "kind": "constellation",
+   "ra_deg": 256.0,
+   "dec_deg": 5.0,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "뱀자리"
+  },
+  {
+   "id": "Q10525",
+   "group": "constellation",
+   "name_ko": "육분의자리",
+   "name_en": "Sextans",
+   "aliases": [
+    "육분의자리",
+    "sextans"
+   ],
+   "kind": "constellation",
+   "ra_deg": 154.0731,
+   "dec_deg": -2.6147,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "육분의자리"
+  },
+  {
+   "id": "Q10570",
+   "group": "constellation",
+   "name_ko": "황소자리",
+   "name_en": "Taurus",
+   "aliases": [
+    "황소자리",
+    "taurus"
+   ],
+   "kind": "constellation",
+   "ra_deg": 70.0,
+   "dec_deg": 15.0,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "황소자리"
+  },
+  {
+   "id": "Q10546",
+   "group": "constellation",
+   "name_ko": "망원경자리",
+   "name_en": "Telescopium",
+   "aliases": [
+    "망원경자리",
+    "telescopium"
+   ],
+   "kind": "constellation",
+   "ra_deg": 289.8839,
+   "dec_deg": -51.0369,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "망원경자리"
+  },
+  {
+   "id": "Q10565",
+   "group": "constellation",
+   "name_ko": "삼각형자리",
+   "name_en": "Triangulum",
+   "aliases": [
+    "삼각형자리",
+    "triangulum"
+   ],
+   "kind": "constellation",
+   "ra_deg": 32.7664,
+   "dec_deg": 31.4761,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "삼각형자리"
+  },
+  {
+   "id": "Q10422",
+   "group": "constellation",
+   "name_ko": "남쪽삼각형자리",
+   "name_en": "Triangulum Australe",
+   "aliases": [
+    "남쪽삼각형자리",
+    "triangulumaustrale"
+   ],
+   "kind": "constellation",
+   "ra_deg": 241.2372,
+   "dec_deg": -65.388,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "남쪽삼각형자리"
+  },
+  {
+   "id": "Q10567",
+   "group": "constellation",
+   "name_ko": "큰부리새자리",
+   "name_en": "Tucana",
+   "aliases": [
+    "큰부리새자리",
+    "tucana"
+   ],
+   "kind": "constellation",
+   "ra_deg": 356.66,
+   "dec_deg": -65.83,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "큰부리새자리"
+  },
+  {
+   "id": "Q8918",
+   "group": "constellation",
+   "name_ko": "큰곰자리",
+   "name_en": "Ursa Major",
+   "aliases": [
+    "큰곰자리",
+    "ursamajor",
+    "ursamaior"
+   ],
+   "kind": "constellation",
+   "ra_deg": 169.6902,
+   "dec_deg": 50.7212,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "큰곰자리"
+  },
+  {
+   "id": "Q10478",
+   "group": "constellation",
+   "name_ko": "작은곰자리",
+   "name_en": "Ursa Minor",
+   "aliases": [
+    "작은곰자리",
+    "ursaminor"
+   ],
+   "kind": "constellation",
+   "ra_deg": 220.0,
+   "dec_deg": 78.0,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "작은곰자리"
+  },
+  {
+   "id": "Q10521",
+   "group": "constellation",
+   "name_ko": "돛자리",
+   "name_en": "Vela",
+   "aliases": [
+    "돛자리",
+    "vela"
+   ],
+   "kind": "constellation",
+   "ra_deg": 143.6591,
+   "dec_deg": -47.1672,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "돛자리"
+  },
+  {
+   "id": "Q8842",
+   "group": "constellation",
+   "name_ko": "처녀자리",
+   "name_en": "Virgo",
+   "aliases": [
+    "처녀자리",
+    "virgo"
+   ],
+   "kind": "constellation",
+   "ra_deg": 202.0,
+   "dec_deg": -4.0,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "처녀자리"
+  },
+  {
+   "id": "Q10437",
+   "group": "constellation",
+   "name_ko": "날치자리",
+   "name_en": "Volans",
+   "aliases": [
+    "날치자리",
+    "volans"
+   ],
+   "kind": "constellation",
+   "ra_deg": 116.9327,
+   "dec_deg": -69.8012,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "날치자리"
+  },
+  {
+   "id": "Q10519",
+   "group": "constellation",
+   "name_ko": "여우자리",
+   "name_en": "Vulpecula",
+   "aliases": [
+    "여우자리",
+    "vulpecula"
+   ],
+   "kind": "constellation",
+   "ra_deg": 303.4696,
+   "dec_deg": 24.4427,
+   "mag": null,
+   "naked_eye": null,
+   "constellation_ko": "여우자리"
+  }
+ ]
+}

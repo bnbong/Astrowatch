@@ -1,0 +1,1212 @@
+{
+ "session_id": "6492e448ae84",
+ "intent": "plan",
+ "answer": "- 요청 조건: 2026-11-21~22, 대전, 21:00~00:00+1에 사자자리 유성우 관측을 원하셨고, 구름이 많으면 다른 날을 고려하셨습니다.\n- 재계획 1회차: 같은 현상의 날짜 범위를 ±2일로 넓혀 2026-11-19~24를 탐색했습니다.\n- 재계획 2회차: 후보가 없어 사자자리 유성우 지정을 풀고 같은 기간의 다른 현상을 탐색했습니다.\n- 재계획 3회차: 후보가 없어 지역을 대전에서 세종으로 바꾸어 탐색했습니다. 실제 탐색 조건은 2026-11-19~24, 세종, 21:00~00:00+1입니다.\n- 추천 항목: 추천 가능한 항목이 없습니다.\n- 사자자리 유성우는 2026-11-19 세종에서 관측 창이 02:45+1~02:45+1(0분)으로, 최소 관측 시간에 미달했습니다.\n- 역산 기준: 해당 사항이 없습니다.\n- 관측 창은 어두운 시간 ∩ 내 시간 ∩ 현상 시간이며, 최소 30분이 필요합니다. 강수확률 30% 이하인 시간만 맑은 시간으로 셉니다.\n- 근거 도구: `search_sky_events`, `get_night_window`, `get_sky_forecast` 모두 성공했습니다.\n- 제외 항목: 사자자리 유성우(관측 창 0분), 수성의 서방 최대이각(맑은 시간 0분·달빛 영향), 일반 관측 및 달 관련 현상(맑은 시간 0분·달빛 영향).\n- 장소 조회 결과는 없습니다.\n- 날짜 범위나 지역을 더 넓혀 볼까요?\n- (검증용 모의 예보)",
+ "conditions": {
+  "date_from": "2026-11-21",
+  "date_to": "2026-11-22",
+  "start_minute": 1260,
+  "region": "대전",
+  "event_kind": "meteor",
+  "event_query": "사자자리 유성우",
+  "place_query": null,
+  "end_minute": 1440,
+  "max_distance_km": null,
+  "allow_partly_cloudy": false,
+  "avoid_moon": true,
+  "fixed": []
+ },
+ "needs_clarification": [],
+ "recommended": [],
+ "excluded": [
+  {
+   "candidate": {
+    "event_id": "20261118-1",
+    "title": "사자자리 유성우 극대기(ZHR=15) (IMO 기준) (극대 11/18 전후)",
+    "kind": "meteor",
+    "date": "2026-11-19",
+    "region": "세종",
+    "lat": 36.48,
+    "lon": 127.289,
+    "event_minute": 1965
+   },
+   "verdict": "unfit",
+   "dark_window": {
+    "start": 1130,
+    "end": 1783
+   },
+   "user_window": {
+    "start": 1260,
+    "end": 1440
+   },
+   "event_window": {
+    "start": 1605,
+    "end": 2159
+   },
+   "time_window": {
+    "start": 1605,
+    "end": 1605
+   },
+   "clear_minutes": null,
+   "worst_sky": null,
+   "max_pop": null,
+   "moon_interferes": null,
+   "lun_age": 10.2,
+   "latest_arrival_minute": null,
+   "forecast_source": null,
+   "reasons": [
+    "어두운 시간 18:50~05:43+1 · 내 시간 21:00~00:00+1 → 관측 창 02:45+1~02:45+1 (0분)",
+    "관측 창 0분이 최소 30분보다 짧음"
+   ],
+   "target_alt": null,
+   "target_az": null
+  },
+  {
+   "candidate": {
+    "event_id": "20261118-1",
+    "title": "사자자리 유성우 극대기(ZHR=15) (IMO 기준) (극대 11/18 전후)",
+    "kind": "meteor",
+    "date": "2026-11-20",
+    "region": "세종",
+    "lat": 36.48,
+    "lon": 127.289,
+    "event_minute": 1965
+   },
+   "verdict": "unfit",
+   "dark_window": {
+    "start": 1129,
+    "end": 1784
+   },
+   "user_window": {
+    "start": 1260,
+    "end": 1440
+   },
+   "event_window": {
+    "start": 1605,
+    "end": 2159
+   },
+   "time_window": {
+    "start": 1605,
+    "end": 1605
+   },
+   "clear_minutes": null,
+   "worst_sky": null,
+   "max_pop": null,
+   "moon_interferes": null,
+   "lun_age": 11.2,
+   "latest_arrival_minute": null,
+   "forecast_source": null,
+   "reasons": [
+    "어두운 시간 18:49~05:44+1 · 내 시간 21:00~00:00+1 → 관측 창 02:45+1~02:45+1 (0분)",
+    "관측 창 0분이 최소 30분보다 짧음"
+   ],
+   "target_alt": null,
+   "target_az": null
+  },
+  {
+   "candidate": {
+    "event_id": "20261121-1",
+    "title": "수성의 서방 최대이각(20°)",
+    "kind": "planet",
+    "date": "2026-11-20",
+    "region": "세종",
+    "lat": 36.48,
+    "lon": 127.289,
+    "event_minute": 1980
+   },
+   "verdict": "unfit",
+   "dark_window": {
+    "start": 1129,
+    "end": 1784
+   },
+   "user_window": {
+    "start": 1260,
+    "end": 1440
+   },
+   "event_window": {
+    "start": 1129,
+    "end": 1784
+   },
+   "time_window": {
+    "start": 1260,
+    "end": 1440
+   },
+   "clear_minutes": 0,
+   "worst_sky": "cloudy",
+   "max_pop": 80,
+   "moon_interferes": true,
+   "lun_age": 11.2,
+   "latest_arrival_minute": null,
+   "forecast_source": "mock",
+   "reasons": [
+    "어두운 시간 18:49~05:44+1 · 내 시간 21:00~00:00+1 → 관측 창 21:00~00:00+1 (180분)",
+    "달빛(월령 11.2일)이 관측 창에 걸림 - 참고",
+    "맑은 시간 0분 - 최소 30분 미달"
+   ],
+   "target_alt": null,
+   "target_az": null
+  },
+  {
+   "candidate": {
+    "event_id": "general-20261121",
+    "title": "일반 관측(별·은하수)",
+    "kind": "other",
+    "date": "2026-11-21",
+    "region": "세종",
+    "lat": 36.48,
+    "lon": 127.289,
+    "event_minute": null
+   },
+   "verdict": "unfit",
+   "dark_window": {
+    "start": 1129,
+    "end": 1785
+   },
+   "user_window": {
+    "start": 1260,
+    "end": 1440
+   },
+   "event_window": {
+    "start": 1129,
+    "end": 1785
+   },
+   "time_window": {
+    "start": 1260,
+    "end": 1440
+   },
+   "clear_minutes": 0,
+   "worst_sky": "cloudy",
+   "max_pop": 80,
+   "moon_interferes": true,
+   "lun_age": 12.2,
+   "latest_arrival_minute": null,
+   "forecast_source": "mock",
+   "reasons": [
+    "어두운 시간 18:49~05:45+1 · 내 시간 21:00~00:00+1 → 관측 창 21:00~00:00+1 (180분)",
+    "달빛(월령 12.2일)이 관측 창에 걸림 - 참고",
+    "맑은 시간 0분 - 최소 30분 미달"
+   ],
+   "target_alt": null,
+   "target_az": null
+  },
+  {
+   "candidate": {
+    "event_id": "general-20261122",
+    "title": "일반 관측(별·은하수)",
+    "kind": "other",
+    "date": "2026-11-22",
+    "region": "세종",
+    "lat": 36.48,
+    "lon": 127.289,
+    "event_minute": null
+   },
+   "verdict": "unfit",
+   "dark_window": {
+    "start": 1129,
+    "end": 1786
+   },
+   "user_window": {
+    "start": 1260,
+    "end": 1440
+   },
+   "event_window": {
+    "start": 1129,
+    "end": 1786
+   },
+   "time_window": {
+    "start": 1260,
+    "end": 1440
+   },
+   "clear_minutes": 0,
+   "worst_sky": "cloudy",
+   "max_pop": 80,
+   "moon_interferes": true,
+   "lun_age": 13.2,
+   "latest_arrival_minute": null,
+   "forecast_source": "mock",
+   "reasons": [
+    "어두운 시간 18:49~05:46+1 · 내 시간 21:00~00:00+1 → 관측 창 21:00~00:00+1 (180분)",
+    "달빛(월령 13.2일)이 관측 창에 걸림 - 참고",
+    "맑은 시간 0분 - 최소 30분 미달"
+   ],
+   "target_alt": null,
+   "target_az": null
+  },
+  {
+   "candidate": {
+    "event_id": "general-20261123",
+    "title": "일반 관측(별·은하수)",
+    "kind": "other",
+    "date": "2026-11-23",
+    "region": "세종",
+    "lat": 36.48,
+    "lon": 127.289,
+    "event_minute": null
+   },
+   "verdict": "unfit",
+   "dark_window": {
+    "start": 1128,
+    "end": 1786
+   },
+   "user_window": {
+    "start": 1260,
+    "end": 1440
+   },
+   "event_window": {
+    "start": 1128,
+    "end": 1786
+   },
+   "time_window": {
+    "start": 1260,
+    "end": 1440
+   },
+   "clear_minutes": 0,
+   "worst_sky": "cloudy",
+   "max_pop": 80,
+   "moon_interferes": true,
+   "lun_age": 14.2,
+   "latest_arrival_minute": null,
+   "forecast_source": "mock",
+   "reasons": [
+    "어두운 시간 18:48~05:46+1 · 내 시간 21:00~00:00+1 → 관측 창 21:00~00:00+1 (180분)",
+    "달빛(월령 14.2일)이 관측 창에 걸림 - 참고",
+    "맑은 시간 0분 - 최소 30분 미달"
+   ],
+   "target_alt": null,
+   "target_az": null
+  },
+  {
+   "candidate": {
+    "event_id": "20261124-1",
+    "title": "달과 플레이아데스 성단의 근접(0.9°)",
+    "kind": "moon",
+    "date": "2026-11-24",
+    "region": "세종",
+    "lat": 36.48,
+    "lon": 127.289,
+    "event_minute": 1218
+   },
+   "verdict": "unfit",
+   "dark_window": {
+    "start": 1128,
+    "end": 1787
+   },
+   "user_window": {
+    "start": 1260,
+    "end": 1440
+   },
+   "event_window": {
+    "start": 1128,
+    "end": 1787
+   },
+   "time_window": {
+    "start": 1260,
+    "end": 1440
+   },
+   "clear_minutes": 0,
+   "worst_sky": "cloudy",
+   "max_pop": 80,
+   "moon_interferes": true,
+   "lun_age": 15.2,
+   "latest_arrival_minute": null,
+   "forecast_source": "mock",
+   "reasons": [
+    "어두운 시간 18:48~05:47+1 · 내 시간 21:00~00:00+1 → 관측 창 21:00~00:00+1 (180분)",
+    "달빛(월령 15.2일)이 관측 창에 걸림 - 참고",
+    "맑은 시간 0분 - 최소 30분 미달"
+   ],
+   "target_alt": null,
+   "target_az": null
+  },
+  {
+   "candidate": {
+    "event_id": "20261124-2",
+    "title": "망",
+    "kind": "moon",
+    "date": "2026-11-24",
+    "region": "세종",
+    "lat": 36.48,
+    "lon": 127.289,
+    "event_minute": 1433
+   },
+   "verdict": "unfit",
+   "dark_window": {
+    "start": 1128,
+    "end": 1787
+   },
+   "user_window": {
+    "start": 1260,
+    "end": 1440
+   },
+   "event_window": {
+    "start": 1128,
+    "end": 1787
+   },
+   "time_window": {
+    "start": 1260,
+    "end": 1440
+   },
+   "clear_minutes": 0,
+   "worst_sky": "cloudy",
+   "max_pop": 80,
+   "moon_interferes": true,
+   "lun_age": 15.2,
+   "latest_arrival_minute": null,
+   "forecast_source": "mock",
+   "reasons": [
+    "어두운 시간 18:48~05:47+1 · 내 시간 21:00~00:00+1 → 관측 창 21:00~00:00+1 (180분)",
+    "달빛(월령 15.2일)이 관측 창에 걸림 - 참고",
+    "맑은 시간 0분 - 최소 30분 미달"
+   ],
+   "target_alt": null,
+   "target_az": null
+  }
+ ],
+ "places": [],
+ "replan_count": 3,
+ "replan_limit_reached": true,
+ "steps": [
+  {
+   "seq": 2,
+   "type": "stage_start",
+   "stage": "analyze",
+   "tool": null,
+   "ok": null,
+   "summary": "요청 분석 시작",
+   "duration_ms": null,
+   "replan_round": null
+  },
+  {
+   "seq": 3,
+   "type": "llm_decision",
+   "stage": "analyze",
+   "tool": null,
+   "ok": null,
+   "summary": "의도 판단: plan - 이번 주말 대전에서 사자자리 유성우를 볼 계획을 원하며, 구름이 많으면 날짜를 바꿀 수 있다고 했습니다.",
+   "duration_ms": null,
+   "replan_round": null
+  },
+  {
+   "seq": 4,
+   "type": "stage_end",
+   "stage": "analyze",
+   "tool": null,
+   "ok": null,
+   "summary": "의도 plan",
+   "duration_ms": 3988,
+   "replan_round": null
+  },
+  {
+   "seq": 5,
+   "type": "stage_start",
+   "stage": "plan",
+   "tool": null,
+   "ok": null,
+   "summary": "작업 계획 시작",
+   "duration_ms": null,
+   "replan_round": null
+  },
+  {
+   "seq": 6,
+   "type": "stage_end",
+   "stage": "plan",
+   "tool": null,
+   "ok": null,
+   "summary": "3단계 계획: 현상 → 출몰·월령 → 날씨 (search_sky_events → get_night_window → get_sky_forecast)",
+   "duration_ms": 0,
+   "replan_round": null
+  },
+  {
+   "seq": 7,
+   "type": "stage_start",
+   "stage": "execute",
+   "tool": null,
+   "ok": null,
+   "summary": "Tool 실행 시작",
+   "duration_ms": null,
+   "replan_round": null
+  },
+  {
+   "seq": 8,
+   "type": "tool_call",
+   "stage": "execute",
+   "tool": "search_sky_events",
+   "ok": null,
+   "summary": "천문현상 조회 호출 (year=2026, month=11, kind=meteor)",
+   "duration_ms": null,
+   "replan_round": null
+  },
+  {
+   "seq": 9,
+   "type": "tool_result",
+   "stage": "execute",
+   "tool": "search_sky_events",
+   "ok": true,
+   "summary": "천문현상 조회 성공",
+   "duration_ms": 207,
+   "replan_round": null
+  },
+  {
+   "seq": 10,
+   "type": "stage_end",
+   "stage": "execute",
+   "tool": null,
+   "ok": null,
+   "summary": "Tool 호출 1회(실패 0) · 캐시 재사용 0회 · 후보 0개",
+   "duration_ms": 208,
+   "replan_round": null
+  },
+  {
+   "seq": 11,
+   "type": "stage_start",
+   "stage": "judge",
+   "tool": null,
+   "ok": null,
+   "summary": "판정 시작",
+   "duration_ms": null,
+   "replan_round": null
+  },
+  {
+   "seq": 12,
+   "type": "replan",
+   "stage": "judge",
+   "tool": null,
+   "ok": null,
+   "summary": "재계획 1회차: 충족·조건부 충족 후보 0개 → 같은 현상 다른 날짜(±2일): 날짜 범위를 2026-11-19~2026-11-24 로 넓힘",
+   "duration_ms": null,
+   "replan_round": 1
+  },
+  {
+   "seq": 13,
+   "type": "stage_end",
+   "stage": "judge",
+   "tool": null,
+   "ok": null,
+   "summary": "후보 0개 · 재계획 1회차(같은 현상 다른 날짜(±2일))",
+   "duration_ms": 0,
+   "replan_round": 1
+  },
+  {
+   "seq": 14,
+   "type": "stage_start",
+   "stage": "plan",
+   "tool": null,
+   "ok": null,
+   "summary": "작업 계획 시작",
+   "duration_ms": null,
+   "replan_round": 1
+  },
+  {
+   "seq": 15,
+   "type": "stage_end",
+   "stage": "plan",
+   "tool": null,
+   "ok": null,
+   "summary": "[재계획 1회차] 3단계 계획: 현상 → 출몰·월령 → 날씨 (search_sky_events → get_night_window → get_sky_forecast)",
+   "duration_ms": 0,
+   "replan_round": 1
+  },
+  {
+   "seq": 16,
+   "type": "stage_start",
+   "stage": "execute",
+   "tool": null,
+   "ok": null,
+   "summary": "Tool 실행 시작",
+   "duration_ms": null,
+   "replan_round": 1
+  },
+  {
+   "seq": 17,
+   "type": "tool_call",
+   "stage": "execute",
+   "tool": "get_night_window",
+   "ok": null,
+   "summary": "박명·출몰 조회 호출 (date=2026-11-19)",
+   "duration_ms": null,
+   "replan_round": 1
+  },
+  {
+   "seq": 18,
+   "type": "tool_result",
+   "stage": "execute",
+   "tool": "get_night_window",
+   "ok": true,
+   "summary": "박명·출몰 조회 성공",
+   "duration_ms": 872,
+   "replan_round": 1
+  },
+  {
+   "seq": 19,
+   "type": "tool_call",
+   "stage": "execute",
+   "tool": "get_night_window",
+   "ok": null,
+   "summary": "박명·출몰 조회 호출 (date=2026-11-20)",
+   "duration_ms": null,
+   "replan_round": 1
+  },
+  {
+   "seq": 20,
+   "type": "tool_result",
+   "stage": "execute",
+   "tool": "get_night_window",
+   "ok": true,
+   "summary": "박명·출몰 조회 성공",
+   "duration_ms": 779,
+   "replan_round": 1
+  },
+  {
+   "seq": 21,
+   "type": "tool_call",
+   "stage": "execute",
+   "tool": "get_sky_forecast",
+   "ok": null,
+   "summary": "날씨 예보 조회 호출 (date=2026-11-19, hours=21~23시)",
+   "duration_ms": null,
+   "replan_round": 1
+  },
+  {
+   "seq": 22,
+   "type": "tool_result",
+   "stage": "execute",
+   "tool": "get_sky_forecast",
+   "ok": true,
+   "summary": "날씨 예보 조회 성공 - mock 공급자 — 실제 예보가 아니다",
+   "duration_ms": 0,
+   "replan_round": 1
+  },
+  {
+   "seq": 23,
+   "type": "tool_call",
+   "stage": "execute",
+   "tool": "get_sky_forecast",
+   "ok": null,
+   "summary": "날씨 예보 조회 호출 (date=2026-11-20, hours=21~23시)",
+   "duration_ms": null,
+   "replan_round": 1
+  },
+  {
+   "seq": 24,
+   "type": "tool_result",
+   "stage": "execute",
+   "tool": "get_sky_forecast",
+   "ok": true,
+   "summary": "날씨 예보 조회 성공 - mock 공급자 — 실제 예보가 아니다",
+   "duration_ms": 0,
+   "replan_round": 1
+  },
+  {
+   "seq": 25,
+   "type": "stage_end",
+   "stage": "execute",
+   "tool": null,
+   "ok": null,
+   "summary": "Tool 호출 4회(실패 0) · 캐시 재사용 1회 · 후보 2개",
+   "duration_ms": 1652,
+   "replan_round": 1
+  },
+  {
+   "seq": 26,
+   "type": "stage_start",
+   "stage": "judge",
+   "tool": null,
+   "ok": null,
+   "summary": "판정 시작",
+   "duration_ms": null,
+   "replan_round": 1
+  },
+  {
+   "seq": 27,
+   "type": "replan",
+   "stage": "judge",
+   "tool": null,
+   "ok": null,
+   "summary": "재계획 2회차: 충족·조건부 충족 후보 0개 (관측 창 0분이 최소 30분보다 짧음) → 같은 기간 다른 현상: '사자자리 유성우' 지정을 풀고 같은 기간의 다른 현상 탐색",
+   "duration_ms": null,
+   "replan_round": 2
+  },
+  {
+   "seq": 28,
+   "type": "stage_end",
+   "stage": "judge",
+   "tool": null,
+   "ok": null,
+   "summary": "불충족 2 · 재계획 2회차(같은 기간 다른 현상)",
+   "duration_ms": 0,
+   "replan_round": 2
+  },
+  {
+   "seq": 29,
+   "type": "stage_start",
+   "stage": "plan",
+   "tool": null,
+   "ok": null,
+   "summary": "작업 계획 시작",
+   "duration_ms": null,
+   "replan_round": 2
+  },
+  {
+   "seq": 30,
+   "type": "stage_end",
+   "stage": "plan",
+   "tool": null,
+   "ok": null,
+   "summary": "[재계획 2회차] 3단계 계획: 현상 → 출몰·월령 → 날씨 (search_sky_events → get_night_window → get_sky_forecast)",
+   "duration_ms": 0,
+   "replan_round": 2
+  },
+  {
+   "seq": 31,
+   "type": "stage_start",
+   "stage": "execute",
+   "tool": null,
+   "ok": null,
+   "summary": "Tool 실행 시작",
+   "duration_ms": null,
+   "replan_round": 2
+  },
+  {
+   "seq": 32,
+   "type": "tool_call",
+   "stage": "execute",
+   "tool": "search_sky_events",
+   "ok": null,
+   "summary": "천문현상 조회 호출 (year=2026, month=11)",
+   "duration_ms": null,
+   "replan_round": 2
+  },
+  {
+   "seq": 33,
+   "type": "tool_result",
+   "stage": "execute",
+   "tool": "search_sky_events",
+   "ok": true,
+   "summary": "천문현상 조회 성공",
+   "duration_ms": 256,
+   "replan_round": 2
+  },
+  {
+   "seq": 34,
+   "type": "tool_call",
+   "stage": "execute",
+   "tool": "get_night_window",
+   "ok": null,
+   "summary": "박명·출몰 조회 호출 (date=2026-11-21)",
+   "duration_ms": null,
+   "replan_round": 2
+  },
+  {
+   "seq": 35,
+   "type": "tool_result",
+   "stage": "execute",
+   "tool": "get_night_window",
+   "ok": true,
+   "summary": "박명·출몰 조회 성공",
+   "duration_ms": 1020,
+   "replan_round": 2
+  },
+  {
+   "seq": 36,
+   "type": "tool_call",
+   "stage": "execute",
+   "tool": "get_night_window",
+   "ok": null,
+   "summary": "박명·출몰 조회 호출 (date=2026-11-22)",
+   "duration_ms": null,
+   "replan_round": 2
+  },
+  {
+   "seq": 37,
+   "type": "tool_result",
+   "stage": "execute",
+   "tool": "get_night_window",
+   "ok": true,
+   "summary": "박명·출몰 조회 성공",
+   "duration_ms": 741,
+   "replan_round": 2
+  },
+  {
+   "seq": 38,
+   "type": "tool_call",
+   "stage": "execute",
+   "tool": "get_night_window",
+   "ok": null,
+   "summary": "박명·출몰 조회 호출 (date=2026-11-23)",
+   "duration_ms": null,
+   "replan_round": 2
+  },
+  {
+   "seq": 39,
+   "type": "tool_result",
+   "stage": "execute",
+   "tool": "get_night_window",
+   "ok": true,
+   "summary": "박명·출몰 조회 성공",
+   "duration_ms": 836,
+   "replan_round": 2
+  },
+  {
+   "seq": 40,
+   "type": "tool_call",
+   "stage": "execute",
+   "tool": "get_night_window",
+   "ok": null,
+   "summary": "박명·출몰 조회 호출 (date=2026-11-24)",
+   "duration_ms": null,
+   "replan_round": 2
+  },
+  {
+   "seq": 41,
+   "type": "tool_result",
+   "stage": "execute",
+   "tool": "get_night_window",
+   "ok": true,
+   "summary": "박명·출몰 조회 성공",
+   "duration_ms": 809,
+   "replan_round": 2
+  },
+  {
+   "seq": 42,
+   "type": "tool_call",
+   "stage": "execute",
+   "tool": "get_sky_forecast",
+   "ok": null,
+   "summary": "날씨 예보 조회 호출 (date=2026-11-21, hours=21~23시)",
+   "duration_ms": null,
+   "replan_round": 2
+  },
+  {
+   "seq": 43,
+   "type": "tool_result",
+   "stage": "execute",
+   "tool": "get_sky_forecast",
+   "ok": true,
+   "summary": "날씨 예보 조회 성공 - mock 공급자 — 실제 예보가 아니다",
+   "duration_ms": 0,
+   "replan_round": 2
+  },
+  {
+   "seq": 44,
+   "type": "tool_call",
+   "stage": "execute",
+   "tool": "get_sky_forecast",
+   "ok": null,
+   "summary": "날씨 예보 조회 호출 (date=2026-11-22, hours=21~23시)",
+   "duration_ms": null,
+   "replan_round": 2
+  },
+  {
+   "seq": 45,
+   "type": "tool_result",
+   "stage": "execute",
+   "tool": "get_sky_forecast",
+   "ok": true,
+   "summary": "날씨 예보 조회 성공 - mock 공급자 — 실제 예보가 아니다",
+   "duration_ms": 0,
+   "replan_round": 2
+  },
+  {
+   "seq": 46,
+   "type": "tool_call",
+   "stage": "execute",
+   "tool": "get_sky_forecast",
+   "ok": null,
+   "summary": "날씨 예보 조회 호출 (date=2026-11-23, hours=21~23시)",
+   "duration_ms": null,
+   "replan_round": 2
+  },
+  {
+   "seq": 47,
+   "type": "tool_result",
+   "stage": "execute",
+   "tool": "get_sky_forecast",
+   "ok": true,
+   "summary": "날씨 예보 조회 성공 - mock 공급자 — 실제 예보가 아니다",
+   "duration_ms": 0,
+   "replan_round": 2
+  },
+  {
+   "seq": 48,
+   "type": "tool_call",
+   "stage": "execute",
+   "tool": "get_sky_forecast",
+   "ok": null,
+   "summary": "날씨 예보 조회 호출 (date=2026-11-24, hours=21~23시)",
+   "duration_ms": null,
+   "replan_round": 2
+  },
+  {
+   "seq": 49,
+   "type": "tool_result",
+   "stage": "execute",
+   "tool": "get_sky_forecast",
+   "ok": true,
+   "summary": "날씨 예보 조회 성공 - mock 공급자 — 실제 예보가 아니다",
+   "duration_ms": 0,
+   "replan_round": 2
+  },
+  {
+   "seq": 50,
+   "type": "stage_end",
+   "stage": "execute",
+   "tool": null,
+   "ok": null,
+   "summary": "Tool 호출 9회(실패 0) · 캐시 재사용 4회 · 후보 8개",
+   "duration_ms": 3665,
+   "replan_round": 2
+  },
+  {
+   "seq": 51,
+   "type": "stage_start",
+   "stage": "judge",
+   "tool": null,
+   "ok": null,
+   "summary": "판정 시작",
+   "duration_ms": null,
+   "replan_round": 2
+  },
+  {
+   "seq": 52,
+   "type": "replan",
+   "stage": "judge",
+   "tool": null,
+   "ok": null,
+   "summary": "재계획 3회차: 충족·조건부 충족 후보 0개 (관측 창 0분이 최소 30분보다 짧음) → 인접 지역: 지역을 대전 → 세종 로 바꿈",
+   "duration_ms": null,
+   "replan_round": 3
+  },
+  {
+   "seq": 53,
+   "type": "stage_end",
+   "stage": "judge",
+   "tool": null,
+   "ok": null,
+   "summary": "불충족 8 · 재계획 3회차(인접 지역)",
+   "duration_ms": 0,
+   "replan_round": 3
+  },
+  {
+   "seq": 54,
+   "type": "stage_start",
+   "stage": "plan",
+   "tool": null,
+   "ok": null,
+   "summary": "작업 계획 시작",
+   "duration_ms": null,
+   "replan_round": 3
+  },
+  {
+   "seq": 55,
+   "type": "stage_end",
+   "stage": "plan",
+   "tool": null,
+   "ok": null,
+   "summary": "[재계획 3회차] 3단계 계획: 현상 → 출몰·월령 → 날씨 (search_sky_events → get_night_window → get_sky_forecast)",
+   "duration_ms": 0,
+   "replan_round": 3
+  },
+  {
+   "seq": 56,
+   "type": "stage_start",
+   "stage": "execute",
+   "tool": null,
+   "ok": null,
+   "summary": "Tool 실행 시작",
+   "duration_ms": null,
+   "replan_round": 3
+  },
+  {
+   "seq": 57,
+   "type": "tool_call",
+   "stage": "execute",
+   "tool": "get_night_window",
+   "ok": null,
+   "summary": "박명·출몰 조회 호출 (date=2026-11-19)",
+   "duration_ms": null,
+   "replan_round": 3
+  },
+  {
+   "seq": 58,
+   "type": "tool_result",
+   "stage": "execute",
+   "tool": "get_night_window",
+   "ok": true,
+   "summary": "박명·출몰 조회 성공",
+   "duration_ms": 955,
+   "replan_round": 3
+  },
+  {
+   "seq": 59,
+   "type": "tool_call",
+   "stage": "execute",
+   "tool": "get_night_window",
+   "ok": null,
+   "summary": "박명·출몰 조회 호출 (date=2026-11-20)",
+   "duration_ms": null,
+   "replan_round": 3
+  },
+  {
+   "seq": 60,
+   "type": "tool_result",
+   "stage": "execute",
+   "tool": "get_night_window",
+   "ok": true,
+   "summary": "박명·출몰 조회 성공",
+   "duration_ms": 1001,
+   "replan_round": 3
+  },
+  {
+   "seq": 61,
+   "type": "tool_call",
+   "stage": "execute",
+   "tool": "get_night_window",
+   "ok": null,
+   "summary": "박명·출몰 조회 호출 (date=2026-11-21)",
+   "duration_ms": null,
+   "replan_round": 3
+  },
+  {
+   "seq": 62,
+   "type": "tool_result",
+   "stage": "execute",
+   "tool": "get_night_window",
+   "ok": true,
+   "summary": "박명·출몰 조회 성공",
+   "duration_ms": 1016,
+   "replan_round": 3
+  },
+  {
+   "seq": 63,
+   "type": "tool_call",
+   "stage": "execute",
+   "tool": "get_night_window",
+   "ok": null,
+   "summary": "박명·출몰 조회 호출 (date=2026-11-22)",
+   "duration_ms": null,
+   "replan_round": 3
+  },
+  {
+   "seq": 64,
+   "type": "tool_result",
+   "stage": "execute",
+   "tool": "get_night_window",
+   "ok": true,
+   "summary": "박명·출몰 조회 성공",
+   "duration_ms": 841,
+   "replan_round": 3
+  },
+  {
+   "seq": 65,
+   "type": "tool_call",
+   "stage": "execute",
+   "tool": "get_night_window",
+   "ok": null,
+   "summary": "박명·출몰 조회 호출 (date=2026-11-23)",
+   "duration_ms": null,
+   "replan_round": 3
+  },
+  {
+   "seq": 66,
+   "type": "tool_result",
+   "stage": "execute",
+   "tool": "get_night_window",
+   "ok": true,
+   "summary": "박명·출몰 조회 성공",
+   "duration_ms": 768,
+   "replan_round": 3
+  },
+  {
+   "seq": 67,
+   "type": "tool_call",
+   "stage": "execute",
+   "tool": "get_night_window",
+   "ok": null,
+   "summary": "박명·출몰 조회 호출 (date=2026-11-24)",
+   "duration_ms": null,
+   "replan_round": 3
+  },
+  {
+   "seq": 68,
+   "type": "tool_result",
+   "stage": "execute",
+   "tool": "get_night_window",
+   "ok": true,
+   "summary": "박명·출몰 조회 성공",
+   "duration_ms": 1016,
+   "replan_round": 3
+  },
+  {
+   "seq": 69,
+   "type": "tool_call",
+   "stage": "execute",
+   "tool": "get_sky_forecast",
+   "ok": null,
+   "summary": "날씨 예보 조회 호출 (date=2026-11-19, hours=21~23시)",
+   "duration_ms": null,
+   "replan_round": 3
+  },
+  {
+   "seq": 70,
+   "type": "tool_result",
+   "stage": "execute",
+   "tool": "get_sky_forecast",
+   "ok": true,
+   "summary": "날씨 예보 조회 성공 - mock 공급자 — 실제 예보가 아니다",
+   "duration_ms": 0,
+   "replan_round": 3
+  },
+  {
+   "seq": 71,
+   "type": "tool_call",
+   "stage": "execute",
+   "tool": "get_sky_forecast",
+   "ok": null,
+   "summary": "날씨 예보 조회 호출 (date=2026-11-20, hours=21~23시)",
+   "duration_ms": null,
+   "replan_round": 3
+  },
+  {
+   "seq": 72,
+   "type": "tool_result",
+   "stage": "execute",
+   "tool": "get_sky_forecast",
+   "ok": true,
+   "summary": "날씨 예보 조회 성공 - mock 공급자 — 실제 예보가 아니다",
+   "duration_ms": 0,
+   "replan_round": 3
+  },
+  {
+   "seq": 73,
+   "type": "tool_call",
+   "stage": "execute",
+   "tool": "get_sky_forecast",
+   "ok": null,
+   "summary": "날씨 예보 조회 호출 (date=2026-11-21, hours=21~23시)",
+   "duration_ms": null,
+   "replan_round": 3
+  },
+  {
+   "seq": 74,
+   "type": "tool_result",
+   "stage": "execute",
+   "tool": "get_sky_forecast",
+   "ok": true,
+   "summary": "날씨 예보 조회 성공 - mock 공급자 — 실제 예보가 아니다",
+   "duration_ms": 0,
+   "replan_round": 3
+  },
+  {
+   "seq": 75,
+   "type": "tool_call",
+   "stage": "execute",
+   "tool": "get_sky_forecast",
+   "ok": null,
+   "summary": "날씨 예보 조회 호출 (date=2026-11-22, hours=21~23시)",
+   "duration_ms": null,
+   "replan_round": 3
+  },
+  {
+   "seq": 76,
+   "type": "tool_result",
+   "stage": "execute",
+   "tool": "get_sky_forecast",
+   "ok": true,
+   "summary": "날씨 예보 조회 성공 - mock 공급자 — 실제 예보가 아니다",
+   "duration_ms": 0,
+   "replan_round": 3
+  },
+  {
+   "seq": 77,
+   "type": "tool_call",
+   "stage": "execute",
+   "tool": "get_sky_forecast",
+   "ok": null,
+   "summary": "날씨 예보 조회 호출 (date=2026-11-23, hours=21~23시)",
+   "duration_ms": null,
+   "replan_round": 3
+  },
+  {
+   "seq": 78,
+   "type": "tool_result",
+   "stage": "execute",
+   "tool": "get_sky_forecast",
+   "ok": true,
+   "summary": "날씨 예보 조회 성공 - mock 공급자 — 실제 예보가 아니다",
+   "duration_ms": 0,
+   "replan_round": 3
+  },
+  {
+   "seq": 79,
+   "type": "tool_call",
+   "stage": "execute",
+   "tool": "get_sky_forecast",
+   "ok": null,
+   "summary": "날씨 예보 조회 호출 (date=2026-11-24, hours=21~23시)",
+   "duration_ms": null,
+   "replan_round": 3
+  },
+  {
+   "seq": 80,
+   "type": "tool_result",
+   "stage": "execute",
+   "tool": "get_sky_forecast",
+   "ok": true,
+   "summary": "날씨 예보 조회 성공 - mock 공급자 — 실제 예보가 아니다",
+   "duration_ms": 0,
+   "replan_round": 3
+  },
+  {
+   "seq": 81,
+   "type": "stage_end",
+   "stage": "execute",
+   "tool": null,
+   "ok": null,
+   "summary": "Tool 호출 12회(실패 0) · 캐시 재사용 1회 · 후보 8개",
+   "duration_ms": 5601,
+   "replan_round": 3
+  },
+  {
+   "seq": 82,
+   "type": "stage_start",
+   "stage": "judge",
+   "tool": null,
+   "ok": null,
+   "summary": "판정 시작",
+   "duration_ms": null,
+   "replan_round": 3
+  },
+  {
+   "seq": 83,
+   "type": "stage_end",
+   "stage": "judge",
+   "tool": null,
+   "ok": null,
+   "summary": "불충족 8 · 재계획 상한/대안 소진",
+   "duration_ms": 0,
+   "replan_round": 3
+  },
+  {
+   "seq": 84,
+   "type": "stage_start",
+   "stage": "respond",
+   "tool": null,
+   "ok": null,
+   "summary": "응답 작성 시작",
+   "duration_ms": null,
+   "replan_round": 3
+  },
+  {
+   "seq": 85,
+   "type": "stage_end",
+   "stage": "respond",
+   "tool": null,
+   "ok": null,
+   "summary": "plan 응답 713자",
+   "duration_ms": 5063,
+   "replan_round": 3
+  }
+ ],
+ "warnings": [],
+ "safety_note": "야간 관측 시 이동 안전과 방한에 유의하세요."
+}

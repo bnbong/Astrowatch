@@ -17,7 +17,9 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any
 
-from pydantic import BaseModel, Field
+from typing import Literal
+
+from pydantic import BaseModel, Field, field_validator
 
 from astrowatch.schemas.domain import Conditions, Intent, JudgedCandidate
 from astrowatch.tools.contracts import Place
@@ -26,6 +28,14 @@ from astrowatch.tools.contracts import Place
 class ChatRequest(BaseModel):
     session_id: str | None = Field(default=None, description="비우면 새 세션을 만든다")
     message: str = Field(min_length=1, max_length=2000)
+
+    @field_validator("message")
+    @classmethod
+    def _strip_message(cls, v: str) -> str:
+        v = v.strip()
+        if not v:
+            raise ValueError("메시지가 비어 있습니다")
+        return v
 
 
 class StepOut(BaseModel):
@@ -51,7 +61,14 @@ class ChatResponse(BaseModel):
     excluded: list[JudgedCandidate] = Field(default_factory=list, description="제외 후보 + 사유")
     places: list[Place] = Field(default_factory=list)
     replan_count: int = 0
-    replan_limit_reached: bool = False
+    replan_limit: int = Field(default=3, description="설정된 재계획 상한 (MAX_REPLANS)")
+    replan_limit_reached: bool = Field(default=False, description="replan_count 가 상한에 실제로 도달한 경우에만 true")
+    stop_reason: Literal["limit_reached", "no_alternative", "target_unobservable", "fixed_constraints", "fatal_error"] | None = Field(
+        default=None,
+        description="추천 0개로 끝났을 때 왜 더 찾지 않았는지. limit_reached=상한 도달, no_alternative=전략 소진, "
+                    "target_unobservable=대상이 그 지역에서 물리적으로 관측 불가, fixed_constraints=사용자가 고정한 조건 때문에 대안 없음, "
+                    "fatal_error=키 누락 등 재시도해도 같은 실패",
+    )
     steps: list[StepOut] = Field(default_factory=list)
     warnings: list[str] = Field(default_factory=list, description="API 키 누락 · Tool 실패 안내 (상세 오류는 넣지 않는다, NF3002)")
     safety_note: str = "야간 관측 시 이동 안전과 방한에 유의하세요."

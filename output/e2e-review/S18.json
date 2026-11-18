@@ -1,0 +1,85 @@
+{
+  "id": "S18",
+  "message": "   ",
+  "status": 200,
+  "seconds": 3.31,
+  "response": {
+    "session_id": "review-0c4b7ca634c44dab9f218c980300715d",
+    "intent": "chat",
+    "answer": "안녕하세요! 날짜와 지역, 관측하려는 시간이나 천문현상을 알려 주시면 관측 가능 여부를 확인해 드릴게요.",
+    "conditions": {
+      "date_from": null,
+      "date_to": null,
+      "start_minute": null,
+      "region": null,
+      "event_kind": null,
+      "event_query": null,
+      "place_query": null,
+      "end_minute": null,
+      "max_distance_km": null,
+      "allow_partly_cloudy": false,
+      "avoid_moon": true,
+      "fixed": []
+    },
+    "needs_clarification": [],
+    "recommended": [],
+    "excluded": [],
+    "places": [],
+    "replan_count": 0,
+    "replan_limit_reached": false,
+    "steps": [
+      {
+        "seq": 2,
+        "type": "stage_start",
+        "stage": "analyze",
+        "tool": null,
+        "ok": null,
+        "summary": "요청 분석 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 3,
+        "type": "llm_decision",
+        "stage": "analyze",
+        "tool": null,
+        "ok": null,
+        "summary": "의도 판단: chat - 메시지에 요청 내용이 없습니다.",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 4,
+        "type": "stage_end",
+        "stage": "analyze",
+        "tool": null,
+        "ok": null,
+        "summary": "의도 chat",
+        "duration_ms": 1854,
+        "replan_round": null
+      },
+      {
+        "seq": 5,
+        "type": "stage_start",
+        "stage": "respond",
+        "tool": null,
+        "ok": null,
+        "summary": "응답 작성 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 6,
+        "type": "stage_end",
+        "stage": "respond",
+        "tool": null,
+        "ok": null,
+        "summary": "chat 응답 58자",
+        "duration_ms": 1417,
+        "replan_round": null
+      }
+    ],
+    "warnings": [],
+    "safety_note": "야간 관측 시 이동 안전과 방한에 유의하세요."
+  }
+}

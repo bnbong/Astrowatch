@@ -1,0 +1,22 @@
+{
+  "id": "S17",
+  "message": "",
+  "status": 422,
+  "seconds": 0.02,
+  "response": {
+    "detail": [
+      {
+        "type": "string_too_short",
+        "loc": [
+          "body",
+          "message"
+        ],
+        "msg": "String should have at least 1 character",
+        "input": "",
+        "ctx": {
+          "min_length": 1
+        }
+      }
+    ]
+  }
+}

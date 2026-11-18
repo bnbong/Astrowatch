@@ -75,10 +75,12 @@ def find_region(text: str | None) -> Region | None:
     for suffix in ("에서", "근처", "근교", "쪽", "에", "으로", "로", "시", "도", "군"):
         if key.endswith(suffix) and key[: -len(suffix)] in _INDEX:
             return _INDEX[key[: -len(suffix)]]
-    for name, region in _INDEX.items():
-        if name in key:
-            return region
-    return None
+    # 부분 일치: '강원도 강릉' 처럼 도와 시가 함께 오면 시(정식 이름) 를 우선하고, 그다음 긴 이름을 우선한다
+    hits = [(name, region) for name, region in _INDEX.items() if name in key]
+    if not hits:
+        return None
+    hits.sort(key=lambda nr: (nr[0] == nr[1].name, len(nr[0])), reverse=True)
+    return hits[0][1]
 
 
 def nearby_regions(region: Region, limit: int = 3) -> list[Region]:
@@ -86,6 +88,11 @@ def nearby_regions(region: Region, limit: int = 3) -> list[Region]:
     others = [r for r in REGIONS if r.name != region.name]
     others.sort(key=lambda r: haversine_km(region.lat, region.lon, r.lat, r.lon))
     return others[:limit]
+
+
+def nearest_region(lat: float, lon: float) -> Region:
+    """위경도에서 가장 가까운 지역 — 중기예보 구역코드를 고를 때 쓴다."""
+    return min(REGIONS, key=lambda r: haversine_km(lat, lon, r.lat, r.lon))
 
 
 def haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:

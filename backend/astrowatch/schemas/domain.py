@@ -53,12 +53,14 @@ class Conditions(BaseModel):
     fixed: list[str] = Field(default_factory=list, description="예: ['date_from', 'event_query']")
 
     def missing_for_plan(self) -> list[str]:
-        """계획 수립에 꼭 필요한데 비어 있는 조건. 비어 있으면 되묻는다 (R7)."""
+        """계획 수립에 꼭 필요한데 비어 있는 조건. 비어 있으면 되묻는다 (R7).
+
+        날짜는 필수가 아니다 — "보기 좋은 날짜 추천해 줘" 가 성립해야 하므로, 비어 있으면
+        실행 흐름이 기본 범위(오늘부터 예보 한도까지)를 넣고 그 사실을 응답에 밝힌다 (F3002 기본값·추정 표시).
+        """
         missing = []
         if self.region is None:
             missing.append("region")
-        if self.date_from is None:
-            missing.append("date_from")
         if self.start_minute is None and self.end_minute is not None:
             missing.append("start_minute")  # 끝만 있고 시작이 없으면 계산 시작점이 없다
         return missing
@@ -134,3 +136,17 @@ class JudgedCandidate(BaseModel):
     reasons: list[str] = Field(default_factory=list, description="판정 근거 · 제외 사유 (사용자에게 그대로 보임)")
     target_alt: float | None = None
     target_az: float | None = None
+    # 화면의 '밤 타임바'용 — 판정에 쓴 구간을 그대로 노출한다 (값을 새로 만들지 않는다)
+    moon_up: list[Window] = Field(default_factory=list, description="달이 지평선 위에 있는 구간(분). 월출·월몰 정보가 없으면 비움")
+    moon_unknown: list[Window] = Field(default_factory=list, description="월출·월몰 정보가 없어 달 여부를 모르는 구간")
+    hourly_sky: list["HourSky"] = Field(default_factory=list, description="판정에 쓴 시간별 하늘 상태(어두운 창 ∩ 내 창 범위)")
+    object_window: Window | None = Field(default=None, description="천체 고도 20° 이상 구간(카탈로그 천체일 때)")
+
+
+class HourSky(BaseModel):
+    """밤 타임바 한 칸. hour 는 저녁 기준 날짜 00:00 부터의 시(24+ 는 다음 날)."""
+
+    hour: int = Field(ge=0, le=35)
+    sky: SkyCondition
+    pop: int | None = None
+    precip: str | None = Field(default=None, description="none|rain|snow|sleet|shower, 모르면 None")

@@ -22,3 +22,7 @@ data/cache/
 Thumbs.db
 .vscode/
 .idea/
+
+# 리뷰 도구 임시 의존성 · 작업 산출물
+tmp/
+output/**/*.db

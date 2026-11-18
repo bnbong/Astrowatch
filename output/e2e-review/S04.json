@@ -1,0 +1,187 @@
+{
+  "id": "S04",
+  "message": "2026년 11월 18일 서울에서 화성은 언제 가장 잘 보여?",
+  "status": 200,
+  "seconds": 4.98,
+  "response": {
+    "session_id": "review-26745db21d894d66b4d7608c4b67625a",
+    "intent": "fact",
+    "answer": "화성은 서울에서 **11월 19일 새벽 4:45~5:45**에 가장 잘 보입니다. 남중은 **06:39**, 고도 **66.9°**, 방향은 **남쪽**이며 남중은 어두운 시간이 끝난 뒤입니다.\n\n고도 20° 이상인 시간은 **11월 19일 01:40~11:50**이고, 어두운 시간은 **11월 18일 18:50~11월 19일 05:45**입니다. 날씨(구름)는 별도로 확인해야 합니다.",
+    "conditions": {
+      "date_from": "2026-11-18",
+      "date_to": "2026-11-18",
+      "start_minute": null,
+      "region": "서울",
+      "event_kind": "other",
+      "event_query": "화성",
+      "place_query": null,
+      "end_minute": null,
+      "max_distance_km": null,
+      "allow_partly_cloudy": false,
+      "avoid_moon": true,
+      "fixed": [
+        "date_from"
+      ]
+    },
+    "needs_clarification": [],
+    "recommended": [],
+    "excluded": [],
+    "places": [],
+    "replan_count": 0,
+    "replan_limit_reached": false,
+    "steps": [
+      {
+        "seq": 2,
+        "type": "stage_start",
+        "stage": "analyze",
+        "tool": null,
+        "ok": null,
+        "summary": "요청 분석 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 3,
+        "type": "llm_decision",
+        "stage": "analyze",
+        "tool": null,
+        "ok": null,
+        "summary": "의도 판단: fact - 특정 천체인 화성이 서울에서 특정 날짜에 가장 잘 보이는 시간대를 묻고 있습니다. / fact_kind=object_visibility(LLM)",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 4,
+        "type": "stage_end",
+        "stage": "analyze",
+        "tool": null,
+        "ok": null,
+        "summary": "의도 fact",
+        "duration_ms": 2038,
+        "replan_round": null
+      },
+      {
+        "seq": 5,
+        "type": "stage_start",
+        "stage": "plan",
+        "tool": null,
+        "ok": null,
+        "summary": "작업 계획 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 6,
+        "type": "stage_end",
+        "stage": "plan",
+        "tool": null,
+        "ok": null,
+        "summary": "2단계 계획: 사실 조회(object_visibility): lookup_sky_object + get_night_window",
+        "duration_ms": 0,
+        "replan_round": null
+      },
+      {
+        "seq": 7,
+        "type": "stage_start",
+        "stage": "execute",
+        "tool": null,
+        "ok": null,
+        "summary": "Tool 실행 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 8,
+        "type": "tool_call",
+        "stage": "execute",
+        "tool": "lookup_sky_object",
+        "ok": null,
+        "summary": "천체 고도 계산 호출 (date=2026-11-18)",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 9,
+        "type": "tool_result",
+        "stage": "execute",
+        "tool": "lookup_sky_object",
+        "ok": true,
+        "summary": "천체 고도 계산 성공 - 행성 위치는 저정밀 궤도 요소로 계산(오차 수 분각)",
+        "duration_ms": 3,
+        "replan_round": null
+      },
+      {
+        "seq": 10,
+        "type": "tool_call",
+        "stage": "execute",
+        "tool": "get_night_window",
+        "ok": null,
+        "summary": "박명·출몰 조회 호출 (date=2026-11-18)",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 11,
+        "type": "tool_result",
+        "stage": "execute",
+        "tool": "get_night_window",
+        "ok": true,
+        "summary": "박명·출몰 조회 성공",
+        "duration_ms": 809,
+        "replan_round": null
+      },
+      {
+        "seq": 12,
+        "type": "stage_end",
+        "stage": "execute",
+        "tool": null,
+        "ok": null,
+        "summary": "Tool 호출 2회(실패 0) · 캐시 재사용 0회 · 후보 0개",
+        "duration_ms": 826,
+        "replan_round": null
+      },
+      {
+        "seq": 13,
+        "type": "stage_start",
+        "stage": "judge",
+        "tool": null,
+        "ok": null,
+        "summary": "판정 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 14,
+        "type": "stage_end",
+        "stage": "judge",
+        "tool": null,
+        "ok": null,
+        "summary": "판정 생략 (계획 요청 아님)",
+        "duration_ms": 0,
+        "replan_round": null
+      },
+      {
+        "seq": 15,
+        "type": "stage_start",
+        "stage": "respond",
+        "tool": null,
+        "ok": null,
+        "summary": "응답 작성 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 16,
+        "type": "stage_end",
+        "stage": "respond",
+        "tool": null,
+        "ok": null,
+        "summary": "fact 응답 217자",
+        "duration_ms": 2052,
+        "replan_round": null
+      }
+    ],
+    "warnings": [],
+    "safety_note": "야간 관측 시 이동 안전과 방한에 유의하세요."
+  }
+}

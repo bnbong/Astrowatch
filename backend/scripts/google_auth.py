@@ -43,11 +43,16 @@ def main() -> int:
     token_path.write_text(creds.to_json(), encoding="utf-8")
     print("토큰 저장:", token_path)
 
-    from googleapiclient.discovery import build
+    # 연결 확인은 토큰 권한(calendar.events) 안에서 되는 '일정 1건 조회'로 한다.
+    # calendars().get 은 더 넓은 권한이 필요해 403 이 난다.
+    try:
+        from googleapiclient.discovery import build
 
-    svc = build("calendar", "v3", credentials=creds, cache_discovery=False)
-    cal = svc.calendars().get(calendarId=s.google_calendar_id).execute()
-    print("캘린더 연결 확인:", cal.get("summary"), "/", cal.get("timeZone"))
+        svc = build("calendar", "v3", credentials=creds, cache_discovery=False)
+        resp = svc.events().list(calendarId=s.google_calendar_id, maxResults=1, singleEvents=True).execute()
+        print("캘린더 연결 확인: OK (캘린더 ID:", s.google_calendar_id, "/ 일정 조회 가능, 시간대:", resp.get("timeZone"), ")")
+    except Exception as e:  # noqa: BLE001 — 토큰은 이미 저장됐으므로 확인 실패는 안내만
+        print("토큰은 저장됐지만 연결 확인에 실패:", type(e).__name__, "- CALENDAR_PROVIDER=google 로 실행해 보세요")
     return 0
 
 

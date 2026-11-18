@@ -62,7 +62,9 @@ sequenceDiagram
   end
   A-->>U: 추천 + 근거 + 역산 기준
   A--)L: 이벤트 (단계·Tool·LLM 판단)
-  U->>A: "이걸로 저장하고 캘린더에 넣어 줘"
+  U->>U: 추천 카드 "계획으로 저장" 클릭 (저장은 Tool 이 아니라 화면·API)
+  U->>A: "계획 1번을 캘린더에 넣어 줘"
+  A->>T: add_plan_to_calendar(plan_id=1)
 ```
 
 ---
@@ -82,7 +84,14 @@ sequenceDiagram
 | 7 | Google Calendar (심화) | 일정 조회·등록 | 캘린더 | OAuth | JSON | 본인 계정 |
 
 > ⚠️ Open-Meteo는 **이 네트워크에서 차단**(타임아웃)되어 백업에서 뺐다.
-> ⚠️ 일 호출 한도는 활용신청 승인 화면 값을 README에 옮긴다 (개발계정 통상 1만 회).
+**호출 한도 (2026-11-18 사용자 확인값)**
+
+| 출처 | 한도 | 비고 |
+|---|---|---|
+| data.go.kr 5개 서비스 | 엔드포인트당 **일 10,000회** | 개발계정 |
+| 카카오 키워드 장소 검색 | **일 100,000회** | 11/18 기준 3회 사용 |
+| SSAFY GMS (`gpt-6-luna`) | **총 30,000 크레딧**, 1회 호출 1크레딧 | **11/20(금)까지만 사용 가능** → 검증 캡처·로그 샘플은 금요일 안에 |
+| OpenWeatherMap 무료 | 분당 60회, 월 100만 회 | 공개값 |
 
 ---
 
@@ -147,9 +156,27 @@ flowchart LR
 
 상한 `MAX_REPLANS=3`. 받은 결과는 `(tool, 날짜, 지역)` 키로 상태에 보관해 다시 부르지 않는다.
 
+**종료 사유 `stop_reason`** — 추천 0개로 끝났을 때만 응답에 싣는다 (`agent/replan.py`)
+
+| 값 | 뜻 |
+|---|---|
+| `limit_reached` | 재계획이 상한(3회)에 실제 도달 |
+| `no_alternative` | 상한 전에 적용할 전략 소진 |
+| `fixed_constraints` | 사용자가 고정한 조건 때문에 적용할 전략 없음 |
+| `target_unobservable` | 대상이 그 지역에서 고도 20° 이상 안 뜸 (날짜·지역을 바꿔도 같음) |
+| `fatal_error` | 키 누락·인증 실패 (재시도해도 같음) |
+
 ### 5-5. 대화 맥락 (F3010)
 
 보관: 조건 객체, 직전 추천 요약, 확정 후보 ID. **Tool 원본 응답은 보관하지 않는다.**
+
+### 5-6. 날짜 검증
+
+| 상황 | 처리 |
+|---|---|
+| 날짜 없음 | 오늘~+9일 기본 범위로 찾고 응답에 밝힌다 |
+| 존재하지 않는 날짜(2월 30일)·뒤집힌 범위 | 외부 조회 없이 되묻는다. 이전 날짜를 조용히 쓰지 않는다 |
+| 자정 넘김 한 밤 | LLM 이 한 밤(`single_night`)이라고 했을 때만 저녁 날짜 하나로 접는다 |
 
 ---
 
@@ -159,11 +186,12 @@ flowchart LR
 
 | Tool | 구분 | 언제 쓰나 | 입력 | 출력 핵심 | 실패 코드 |
 |---|---|---|---|---|---|
-| `search_sky_events` | 외부 | 볼 현상을 정하지 않았거나 기간 안의 현상을 찾을 때 | `year, month, kind?` (기본: 이번 달+다음 달) | `event_id, date, time?, title, kind` | `NO_RESULT, AUTH, UPSTREAM` |
-| `get_night_window` | 외부 | 특정 날짜·지역의 어두운 시간과 달 영향 | `date, lat, lon` | 일몰, 천문박명 종료·시작, 월출·몰, `lunAge` | `NO_WINDOW, AUTH, UPSTREAM` |
-| `get_sky_forecast` | 외부 | 후보 시간대의 구름·비 | `date, lat, lon, hours` | 시간별 `sky, pop`, `source`, `base_time` | `OUT_OF_RANGE, AUTH, UPSTREAM` |
-| `search_observatory` | 외부 | 관측 장소를 찾을 때 | `query, lat, lon, radius_km ≤ 20` | 이름·주소·링크·거리·`place_id` | `NO_RESULT, AUTH` |
-| `search_space_docs` | 로컬 (F3022) | 현상·천체 배경 지식 | `query` | 근거 문단 + 출처 | `NO_INDEX` |
+| `search_sky_events` | 외부 | 볼 현상을 정하지 않았거나 기간 안의 현상을 찾을 때 | `year, month, kind?` (연·월 필수. 날짜가 없으면 실행 흐름이 오늘~+9일 기본 범위를 넣고 응답에 밝힘) | `event_id, date, time?, title, kind` | `NO_RESULT, AUTH, UPSTREAM, TIMEOUT` |
+| `get_night_window` | 외부 | 특정 날짜·지역의 어두운 시간과 달 영향 | `date, lat, lon` | 일몰, 천문박명 종료·시작, 월출·몰(당일·다음 날), `lunAge` | `NO_WINDOW, AUTH, UPSTREAM, TIMEOUT` |
+| `get_sky_forecast` | 외부 | 후보 시간대의 구름·비 | `date, lat, lon, hours` | 시간별 `sky, pop, precip`, `source`, `base_time` | `OUT_OF_RANGE, AUTH, UPSTREAM, TIMEOUT` |
+| `search_observatory` | 외부 | 관측 장소를 찾을 때 | `query, lat, lon, radius_km ≤ 20` | 이름·주소·링크·거리·`place_id` | `NO_RESULT, BAD_INPUT, AUTH, UPSTREAM, TIMEOUT` |
+| `lookup_sky_object` | 로컬 | 사용자가 특정 천체(은하·성운·성단·별·별자리·행성)를 말해 그날 밤 언제 떠 있는지 알아야 할 때 | `name, date, lat, lon, min_alt=20` | 천체 정보, 고도 20° 이상 구간, 남중 시각·고도, `never_rises` | `NOT_FOUND`(유사 이름 3개 동봉) |
+| `search_space_docs` | 로컬 (F3022, **미구현**) | 현상·천체 배경 지식 | `query` | 근거 문단 + 출처 | `NO_INDEX` |
 | `get_calendar` / `add_plan_to_calendar` | 로컬→Google (F3023) | 내 일정 겹침 / 계획 등록 | `date_from, date_to` / **`plan_id`만** | 일정 목록 / 등록 결과 | `AUTH, NOT_FOUND` |
 
 **Tool 사이 데이터 흐름**
@@ -181,6 +209,8 @@ flowchart LR
 ```
 
 **Tool이 아닌 것(실행 흐름이 직접)**: 지역명 → 위경도·기상청 격자 변환(로컬 `regions` 표), 단기예보 `base_time` 계산, 창 계산, 계획 저장.
+
+**천체 카탈로그 (`data/sky_objects.json`, 294개)**: VastHorizon 항목 데이터에서 변환(메시에 110 · 밝은 별 94 · 별자리 88 · 우리 은하 2). 행성은 `astro/planets.py`(ephemeris.js 이식)로 그날 좌표를 계산한다 — JPL Horizons 대조 결과 적경·적위 0.03° 이내. 천문현상 API에 없는 대상("안드로메다 은하", "목성")은 이 카탈로그로 후보를 만들고 **고도 20° 이상인 시간만 관측 창**으로 쓴다. 카탈로그에 없으면 고도를 추정하지 않고 그 사실을 밝힌다.
 
 **설계 규칙**
 
@@ -206,14 +236,14 @@ flowchart LR
 | `basis` | 판정 등급, 맑은 시간, 달 영향 요약 |
 | `calendar_event_id` | 심화 |
 
-같은 날짜에 시간이 겹치면 **저장은 하고** `overlaps: [plan_id…]`를 함께 돌려준다.
+같은 날짜에 시간이 겹치면 **저장은 하고** `overlaps: [겹치는 계획…]`(계획 전체)을 함께 돌려준다. 겹침 조회와 삽입은 한 트랜잭션에서 한다.
 
 **실행 로그 `run_logs`** · 수정 API 없음
 
 | 필드 | 값 |
 |---|---|
 | `session_id, seq, ts` | 세션 단위, 발생 순서 |
-| `type` | `stage_start / stage_end / tool_call / tool_result / llm_decision / replan` |
+| `type` | `session_start / session_end / stage_start / stage_end / tool_call / tool_result / llm_decision / replan / error` (9종) |
 | `payload` | JSON. `tool_result`에는 `duration_ms`, `llm_decision`에는 판단과 이유 |
 
 ---
@@ -255,7 +285,7 @@ astrowatch/
 │  ├─ agent/memory.py        세션 맥락
 │  ├─ tools/registry.py      공통 응답 · 등록
 │  ├─ tools/{sky_events,night_window,sky_forecast,observatory}.py
-│  ├─ tools/{space_docs,calendar}.py   심화
+│  ├─ tools/{sky_object,calendar}.py   로컬 Tool (천체 카탈로그 · 캘린더 F3023) — space_docs(F3022)는 미구현
 │  ├─ clients/               data.go.kr · 카카오 · Google 얇은 클라이언트
 │  ├─ events/bus.py          EventBus
 │  ├─ logging_agent/         구독 · SQLite 저장
@@ -275,7 +305,9 @@ astrowatch/
 |---|---|---|---|
 | LLM 연결 방식 | `config.toml` `[llm]`, `vasthorizon/llm.py` | GMS base_url · `gpt-6-luna` · `text-embedding-3-small` | 설정값만 복사 |
 | 박명 교차 검증 | `web/js/tonight.js` `sunAltDeg`, `crossing` | 출몰 API 결과 검증용 | 참고만 |
-| 고도·방위 공식 | `web/js/astro.js` `altAz`, `localSiderealDeg` | 복사점 고도 (덤) | Python 20줄 |
+| 고도·방위 공식 | `web/js/astro.js` `altAz`, `localSiderealDeg` | 천체 고도 구간·남중 (`astro/altaz.py`) | ✅ 이식 완료 |
+| 행성 위치 | `web/js/ephemeris.js` | 행성 적경·적위 (`astro/planets.py`) | ✅ 이식 완료, Horizons 대조 |
+| 천체 카탈로그 | `data/items.json` | `scripts/build_sky_objects.py` → `data/sky_objects.json` | ✅ 변환 완료 |
 | 하늘 가리키기 | `web/js/pointer.js` (테스트 있음), `pointerview.js` | 자이로 → 목표 안내 (덤) | 목표를 계획의 alt/az로 축소 |
 | 행성·달 위치 | `web/js/ephemeris.js` | 행성 현상 방향 (덤) | 프론트에서만 |
 | 문서 RAG | `vasthorizon/store/chroma.py`, `rag/`, Chroma 색인 | 심화 F3022 | 컬렉션 재사용, 검색 함수만 Tool로 감쌈 |
@@ -289,7 +321,7 @@ astrowatch/
 
 원칙: **사람 손이 필요한 일은 1일차에 전부. 에이전트 작업은 fixture 기반으로 키 없이 재현.**
 
-### 1일차 · 11/18(수) · 윈도우 PC
+### 1일차 · 11/18(수) · 윈도우 PC · ✅ 완료
 
 | 시간 | 사람 | 에이전트 (병렬) |
 |---|---|---|

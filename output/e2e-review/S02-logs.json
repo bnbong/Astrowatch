@@ -1,0 +1,81 @@
+[
+  {
+    "session_id": "review-110e6611d3794522874377f6e3e38257",
+    "seq": 1,
+    "ts": "2026-11-18T05:57:19.779288Z",
+    "type": "session_start",
+    "stage": null,
+    "tool": null,
+    "payload": {
+      "message": "밤 11시 전에는 집에 돌아와야 해. 별 관측 계획을 짜줘."
+    }
+  },
+  {
+    "session_id": "review-110e6611d3794522874377f6e3e38257",
+    "seq": 2,
+    "ts": "2026-11-18T05:57:19.802050Z",
+    "type": "stage_start",
+    "stage": "analyze",
+    "tool": null,
+    "payload": {}
+  },
+  {
+    "session_id": "review-110e6611d3794522874377f6e3e38257",
+    "seq": 3,
+    "ts": "2026-11-18T05:57:24.686152Z",
+    "type": "llm_decision",
+    "stage": "analyze",
+    "tool": null,
+    "payload": {
+      "decision": "clarify",
+      "reason": "별 관측 계획을 원하지만 관측할 지역이 없고, 귀가 마감 시각만 제시되어 시작 시각을 정하려면 지역을 먼저 확인해야 합니다. / 조건 부족(region, start_minute) → 되묻기",
+      "model": "gpt-6-luna"
+    }
+  },
+  {
+    "session_id": "review-110e6611d3794522874377f6e3e38257",
+    "seq": 4,
+    "ts": "2026-11-18T05:57:24.693129Z",
+    "type": "stage_end",
+    "stage": "analyze",
+    "tool": null,
+    "payload": {
+      "duration_ms": 4874,
+      "summary": "의도 clarify · 부족한 조건 region, start_minute"
+    }
+  },
+  {
+    "session_id": "review-110e6611d3794522874377f6e3e38257",
+    "seq": 5,
+    "ts": "2026-11-18T05:57:24.698160Z",
+    "type": "stage_start",
+    "stage": "respond",
+    "tool": null,
+    "payload": {}
+  },
+  {
+    "session_id": "review-110e6611d3794522874377f6e3e38257",
+    "seq": 6,
+    "ts": "2026-11-18T05:57:24.702160Z",
+    "type": "stage_end",
+    "stage": "respond",
+    "tool": null,
+    "payload": {
+      "duration_ms": 0,
+      "summary": "clarify 응답 58자"
+    }
+  },
+  {
+    "session_id": "review-110e6611d3794522874377f6e3e38257",
+    "seq": 7,
+    "ts": "2026-11-18T05:57:24.710906Z",
+    "type": "session_end",
+    "stage": null,
+    "tool": null,
+    "payload": {
+      "intent": "clarify",
+      "replan_count": 0,
+      "duration_ms": 4933
+    }
+  }
+]

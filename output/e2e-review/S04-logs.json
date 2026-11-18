@@ -1,0 +1,204 @@
+[
+  {
+    "session_id": "review-26745db21d894d66b4d7608c4b67625a",
+    "seq": 1,
+    "ts": "2026-11-18T05:57:26.364447Z",
+    "type": "session_start",
+    "stage": null,
+    "tool": null,
+    "payload": {
+      "message": "2026년 11월 18일 서울에서 화성은 언제 가장 잘 보여?"
+    }
+  },
+  {
+    "session_id": "review-26745db21d894d66b4d7608c4b67625a",
+    "seq": 2,
+    "ts": "2026-11-18T05:57:26.368235Z",
+    "type": "stage_start",
+    "stage": "analyze",
+    "tool": null,
+    "payload": {}
+  },
+  {
+    "session_id": "review-26745db21d894d66b4d7608c4b67625a",
+    "seq": 3,
+    "ts": "2026-11-18T05:57:28.403927Z",
+    "type": "llm_decision",
+    "stage": "analyze",
+    "tool": null,
+    "payload": {
+      "decision": "fact",
+      "reason": "특정 천체인 화성이 서울에서 특정 날짜에 가장 잘 보이는 시간대를 묻고 있습니다. / fact_kind=object_visibility(LLM)",
+      "model": "gpt-6-luna"
+    }
+  },
+  {
+    "session_id": "review-26745db21d894d66b4d7608c4b67625a",
+    "seq": 4,
+    "ts": "2026-11-18T05:57:28.410445Z",
+    "type": "stage_end",
+    "stage": "analyze",
+    "tool": null,
+    "payload": {
+      "duration_ms": 2038,
+      "summary": "의도 fact"
+    }
+  },
+  {
+    "session_id": "review-26745db21d894d66b4d7608c4b67625a",
+    "seq": 5,
+    "ts": "2026-11-18T05:57:28.414443Z",
+    "type": "stage_start",
+    "stage": "plan",
+    "tool": null,
+    "payload": {}
+  },
+  {
+    "session_id": "review-26745db21d894d66b4d7608c4b67625a",
+    "seq": 6,
+    "ts": "2026-11-18T05:57:28.418240Z",
+    "type": "stage_end",
+    "stage": "plan",
+    "tool": null,
+    "payload": {
+      "duration_ms": 0,
+      "summary": "2단계 계획: 사실 조회(object_visibility): lookup_sky_object + get_night_window"
+    }
+  },
+  {
+    "session_id": "review-26745db21d894d66b4d7608c4b67625a",
+    "seq": 7,
+    "ts": "2026-11-18T05:57:28.422241Z",
+    "type": "stage_start",
+    "stage": "execute",
+    "tool": null,
+    "payload": {}
+  },
+  {
+    "session_id": "review-26745db21d894d66b4d7608c4b67625a",
+    "seq": 8,
+    "ts": "2026-11-18T05:57:28.425329Z",
+    "type": "tool_call",
+    "stage": "execute",
+    "tool": "lookup_sky_object",
+    "payload": {
+      "args": {
+        "name": "화성",
+        "date": "2026-11-18",
+        "lat": 37.5665,
+        "lon": 126.978
+      },
+      "reason": "화성 고도·남중 계산"
+    }
+  },
+  {
+    "session_id": "review-26745db21d894d66b4d7608c4b67625a",
+    "seq": 9,
+    "ts": "2026-11-18T05:57:28.431499Z",
+    "type": "tool_result",
+    "stage": "execute",
+    "tool": "lookup_sky_object",
+    "payload": {
+      "ok": true,
+      "note": "행성 위치는 저정밀 궤도 요소로 계산(오차 수 분각)",
+      "data": "{\"data\":{\"object\":{\"id\":\"mars\",\"name_ko\":\"화성\",\"name_en\":\"Mars\",\"kind\":\"planet\",\"ra_deg\":149.6,\"dec_deg\":14.5051,\"mag\":0.5,\"naked_eye\":true,\"constellation_ko\":null},\"date\":\"2026-11-18\",\"min_alt\":20.0,\"visible_windows\":[{\"start\":1540,\"end\":2150}],\"transit_minute\":1839,\"transit_alt\":66.9,\"transit_az\":180.2,\"never_rises\":false}}",
+      "duration_ms": 3
+    }
+  },
+  {
+    "session_id": "review-26745db21d894d66b4d7608c4b67625a",
+    "seq": 10,
+    "ts": "2026-11-18T05:57:28.434499Z",
+    "type": "tool_call",
+    "stage": "execute",
+    "tool": "get_night_window",
+    "payload": {
+      "args": {
+        "date": "2026-11-18",
+        "lat": 37.5665,
+        "lon": 126.978
+      },
+      "reason": "어두운 시간(천문박명) — 천체가 잘 보이는 시간대를 고르는 기준"
+    }
+  },
+  {
+    "session_id": "review-26745db21d894d66b4d7608c4b67625a",
+    "seq": 11,
+    "ts": "2026-11-18T05:57:29.247451Z",
+    "type": "tool_result",
+    "stage": "execute",
+    "tool": "get_night_window",
+    "payload": {
+      "ok": true,
+      "data": "{\"data\":{\"date\":\"2026-11-18\",\"sunset\":\"17:19\",\"astro_dusk_end\":\"18:50\",\"astro_dawn_start\":\"05:45\",\"sunrise_next\":\"07:16\",\"moonrise\":\"13:34\",\"moonset\":\"00:01\",\"moonrise_next\":\"13:58\",\"moonset_next\":\"01:03\",\"lun_age\":9.2,\"dark_minutes\":655}}",
+      "duration_ms": 809
+    }
+  },
+  {
+    "session_id": "review-26745db21d894d66b4d7608c4b67625a",
+    "seq": 12,
+    "ts": "2026-11-18T05:57:29.251461Z",
+    "type": "stage_end",
+    "stage": "execute",
+    "tool": null,
+    "payload": {
+      "duration_ms": 826,
+      "summary": "Tool 호출 2회(실패 0) · 캐시 재사용 0회 · 후보 0개"
+    }
+  },
+  {
+    "session_id": "review-26745db21d894d66b4d7608c4b67625a",
+    "seq": 13,
+    "ts": "2026-11-18T05:57:29.255966Z",
+    "type": "stage_start",
+    "stage": "judge",
+    "tool": null,
+    "payload": {}
+  },
+  {
+    "session_id": "review-26745db21d894d66b4d7608c4b67625a",
+    "seq": 14,
+    "ts": "2026-11-18T05:57:29.259979Z",
+    "type": "stage_end",
+    "stage": "judge",
+    "tool": null,
+    "payload": {
+      "duration_ms": 0,
+      "summary": "판정 생략 (계획 요청 아님)"
+    }
+  },
+  {
+    "session_id": "review-26745db21d894d66b4d7608c4b67625a",
+    "seq": 15,
+    "ts": "2026-11-18T05:57:29.263976Z",
+    "type": "stage_start",
+    "stage": "respond",
+    "tool": null,
+    "payload": {}
+  },
+  {
+    "session_id": "review-26745db21d894d66b4d7608c4b67625a",
+    "seq": 16,
+    "ts": "2026-11-18T05:57:31.320312Z",
+    "type": "stage_end",
+    "stage": "respond",
+    "tool": null,
+    "payload": {
+      "duration_ms": 2052,
+      "summary": "fact 응답 217자"
+    }
+  },
+  {
+    "session_id": "review-26745db21d894d66b4d7608c4b67625a",
+    "seq": 17,
+    "ts": "2026-11-18T05:57:31.330280Z",
+    "type": "session_end",
+    "stage": null,
+    "tool": null,
+    "payload": {
+      "intent": "fact",
+      "replan_count": 0,
+      "duration_ms": 4966
+    }
+  }
+]

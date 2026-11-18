@@ -56,6 +56,9 @@ class EventBus:
         self._subs: list[Subscriber] = []
         self._seq: dict[str, int] = {}
         self._lock = threading.Lock()
+        # 서버 재시작 뒤 같은 세션이 이어질 때 seq 가 1부터 다시 시작하지 않도록,
+        # 저장소가 마지막 seq 를 알려 주는 훅. 버스는 저장소를 모른다 — 구독자(로깅 Agent)가 꽂는다.
+        self.seq_seed: Callable[[str], int] | None = None
 
     # ── 구독 ──
     def subscribe(self, fn: Subscriber) -> Callable[[], None]:
@@ -89,6 +92,11 @@ class EventBus:
         payload: dict[str, Any] | None = None,
     ) -> Event:
         with self._lock:
+            if session_id not in self._seq and self.seq_seed is not None:
+                try:
+                    self._seq[session_id] = int(self.seq_seed(session_id) or 0)
+                except Exception:  # noqa: BLE001 — 시드 실패는 0부터 시작할 뿐, 발행을 막지 않는다
+                    self._seq[session_id] = 0
             seq = self._seq.get(session_id, 0) + 1
             self._seq[session_id] = seq
             subs = list(self._subs)

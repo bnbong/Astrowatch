@@ -1,0 +1,734 @@
+[
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 1,
+    "ts": "2026-11-18T05:57:24.741945Z",
+    "type": "session_start",
+    "stage": null,
+    "tool": null,
+    "payload": {
+      "message": "2026년 12월 14일 서울에서 밤 10시부터 다음 날 새벽 2시까지 쌍둥이자리 유성우 관측 계획을 짜줘."
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 2,
+    "ts": "2026-11-18T05:57:24.746538Z",
+    "type": "stage_start",
+    "stage": "analyze",
+    "tool": null,
+    "payload": {}
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 3,
+    "ts": "2026-11-18T05:57:27.211087Z",
+    "type": "llm_decision",
+    "stage": "analyze",
+    "tool": null,
+    "payload": {
+      "decision": "plan",
+      "reason": "서울에서 특정 날짜와 시간대에 쌍둥이자리 유성우를 관측할 계획을 요청했습니다.",
+      "model": "gpt-6-luna"
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 4,
+    "ts": "2026-11-18T05:57:27.215085Z",
+    "type": "stage_end",
+    "stage": "analyze",
+    "tool": null,
+    "payload": {
+      "duration_ms": 2465,
+      "summary": "의도 plan"
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 5,
+    "ts": "2026-11-18T05:57:27.219304Z",
+    "type": "stage_start",
+    "stage": "plan",
+    "tool": null,
+    "payload": {}
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 6,
+    "ts": "2026-11-18T05:57:27.222415Z",
+    "type": "stage_end",
+    "stage": "plan",
+    "tool": null,
+    "payload": {
+      "duration_ms": 0,
+      "summary": "3단계 계획: 현상 → 출몰·월령 → 날씨 (search_sky_events → get_night_window → get_sky_forecast)"
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 7,
+    "ts": "2026-11-18T05:57:27.226415Z",
+    "type": "stage_start",
+    "stage": "execute",
+    "tool": null,
+    "payload": {}
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 8,
+    "ts": "2026-11-18T05:57:27.230427Z",
+    "type": "tool_call",
+    "stage": "execute",
+    "tool": "search_sky_events",
+    "payload": {
+      "args": {
+        "year": 2026,
+        "month": 12,
+        "kind": "meteor"
+      },
+      "reason": "2026-12 쌍둥이자리 유성우 날짜·시각 확인"
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 9,
+    "ts": "2026-11-18T05:57:27.428649Z",
+    "type": "tool_result",
+    "stage": "execute",
+    "tool": "search_sky_events",
+    "payload": {
+      "ok": true,
+      "data": "{\"data\":{\"year\":2026,\"month\":12,\"requested_defaulted\":false,\"events\":[{\"event_id\":\"20261214-1\",\"date\":\"2026-12-14\",\"time\":\"23:00\",\"title\":\"쌍둥이자리 유성우 극대기(ZHR=150) (IMO 기준)\",\"kind\":\"meteor\",\"description\":null},{\"event_id\":\"20261223-1\",\"date\":\"2026-12-23\",\"time\":\"07:00\",\"title\":\"작은곰자리 유성우 극대기(ZHR=10) (IMO 기준)\",\"kind\":\"meteor\",\"description\":null}]}}",
+      "duration_ms": 194
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 10,
+    "ts": "2026-11-18T05:57:27.432797Z",
+    "type": "tool_call",
+    "stage": "execute",
+    "tool": "get_night_window",
+    "payload": {
+      "args": {
+        "date": "2026-12-14",
+        "lat": 37.5665,
+        "lon": 126.978
+      },
+      "reason": "2026-12-14 후보의 어두운 시간·월령"
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 11,
+    "ts": "2026-11-18T05:57:28.223636Z",
+    "type": "tool_result",
+    "stage": "execute",
+    "tool": "get_night_window",
+    "payload": {
+      "ok": true,
+      "data": "{\"data\":{\"date\":\"2026-12-14\",\"sunset\":\"17:14\",\"astro_dusk_end\":\"18:48\",\"astro_dawn_start\":\"06:05\",\"sunrise_next\":\"07:39\",\"moonrise\":\"11:11\",\"moonset\":\"21:52\",\"moonrise_next\":\"11:36\",\"moonset_next\":\"22:52\",\"lun_age\":5.5,\"dark_minutes\":677}}",
+      "duration_ms": 787
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 12,
+    "ts": "2026-11-18T05:57:28.228795Z",
+    "type": "tool_call",
+    "stage": "execute",
+    "tool": "get_sky_forecast",
+    "payload": {
+      "args": {
+        "date": "2026-12-14",
+        "lat": 37.5665,
+        "lon": 126.978,
+        "hours": [
+          22,
+          23,
+          24,
+          25
+        ]
+      },
+      "reason": "2026-12-14 관측 창 시각의 하늘 상태"
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 13,
+    "ts": "2026-11-18T05:57:28.231794Z",
+    "type": "tool_result",
+    "stage": "execute",
+    "tool": "get_sky_forecast",
+    "payload": {
+      "ok": false,
+      "error": {
+        "code": "OUT_OF_RANGE",
+        "message": "예보 범위 밖: 가장 늦은 예보일 2026-11-28"
+      },
+      "duration_ms": 0
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 14,
+    "ts": "2026-11-18T05:57:28.234794Z",
+    "type": "stage_end",
+    "stage": "execute",
+    "tool": null,
+    "payload": {
+      "duration_ms": 1004,
+      "summary": "Tool 호출 3회(실패 1) · 캐시 재사용 0회 · 후보 1개"
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 15,
+    "ts": "2026-11-18T05:57:28.238311Z",
+    "type": "stage_start",
+    "stage": "judge",
+    "tool": null,
+    "payload": {}
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 16,
+    "ts": "2026-11-18T05:57:28.242338Z",
+    "type": "stage_end",
+    "stage": "judge",
+    "tool": null,
+    "payload": {
+      "duration_ms": 0,
+      "summary": "조건부 충족 1"
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 17,
+    "ts": "2026-11-18T05:57:28.246347Z",
+    "type": "stage_start",
+    "stage": "respond",
+    "tool": null,
+    "payload": {}
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 18,
+    "ts": "2026-11-18T05:57:30.849146Z",
+    "type": "stage_end",
+    "stage": "respond",
+    "tool": null,
+    "payload": {
+      "duration_ms": 2599,
+      "summary": "plan 응답 479자"
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 19,
+    "ts": "2026-11-18T05:57:30.858201Z",
+    "type": "session_end",
+    "stage": null,
+    "tool": null,
+    "payload": {
+      "intent": "plan",
+      "replan_count": 0,
+      "duration_ms": 6117
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 20,
+    "ts": "2026-11-18T05:58:31.529307Z",
+    "type": "session_start",
+    "stage": null,
+    "tool": null,
+    "payload": {
+      "message": "같은 날 같은 시간에 장소만 대전으로 바꿔줘."
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 21,
+    "ts": "2026-11-18T05:58:31.534594Z",
+    "type": "stage_start",
+    "stage": "analyze",
+    "tool": null,
+    "payload": {}
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 22,
+    "ts": "2026-11-18T05:58:33.671545Z",
+    "type": "llm_decision",
+    "stage": "analyze",
+    "tool": null,
+    "payload": {
+      "decision": "plan",
+      "reason": "직전 관측 계획에서 장소만 대전으로 바꾸어 달라는 후속 수정입니다.",
+      "model": "gpt-6-luna"
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 23,
+    "ts": "2026-11-18T05:58:33.679429Z",
+    "type": "stage_end",
+    "stage": "analyze",
+    "tool": null,
+    "payload": {
+      "duration_ms": 2140,
+      "summary": "의도 plan"
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 24,
+    "ts": "2026-11-18T05:58:33.684427Z",
+    "type": "stage_start",
+    "stage": "plan",
+    "tool": null,
+    "payload": {}
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 25,
+    "ts": "2026-11-18T05:58:33.687939Z",
+    "type": "stage_end",
+    "stage": "plan",
+    "tool": null,
+    "payload": {
+      "duration_ms": 0,
+      "summary": "3단계 계획: 현상 → 출몰·월령 → 날씨 (search_sky_events → get_night_window → get_sky_forecast)"
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 26,
+    "ts": "2026-11-18T05:58:33.690939Z",
+    "type": "stage_start",
+    "stage": "execute",
+    "tool": null,
+    "payload": {}
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 27,
+    "ts": "2026-11-18T05:58:33.695948Z",
+    "type": "tool_call",
+    "stage": "execute",
+    "tool": "get_night_window",
+    "payload": {
+      "args": {
+        "date": "2026-12-14",
+        "lat": 36.3504,
+        "lon": 127.3845
+      },
+      "reason": "2026-12-14 후보의 어두운 시간·월령"
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 28,
+    "ts": "2026-11-18T05:58:34.450950Z",
+    "type": "tool_result",
+    "stage": "execute",
+    "tool": "get_night_window",
+    "payload": {
+      "ok": true,
+      "data": "{\"data\":{\"date\":\"2026-12-14\",\"sunset\":\"17:16\",\"astro_dusk_end\":\"18:48\",\"astro_dawn_start\":\"06:02\",\"sunrise_next\":\"07:34\",\"moonrise\":\"11:07\",\"moonset\":\"21:52\",\"moonrise_next\":\"11:33\",\"moonset_next\":\"22:51\",\"lun_age\":5.5,\"dark_minutes\":674}}",
+      "duration_ms": 750
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 29,
+    "ts": "2026-11-18T05:58:34.454946Z",
+    "type": "tool_call",
+    "stage": "execute",
+    "tool": "get_sky_forecast",
+    "payload": {
+      "args": {
+        "date": "2026-12-14",
+        "lat": 36.3504,
+        "lon": 127.3845,
+        "hours": [
+          22,
+          23,
+          24,
+          25
+        ]
+      },
+      "reason": "2026-12-14 관측 창 시각의 하늘 상태"
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 30,
+    "ts": "2026-11-18T05:58:34.459306Z",
+    "type": "tool_result",
+    "stage": "execute",
+    "tool": "get_sky_forecast",
+    "payload": {
+      "ok": false,
+      "error": {
+        "code": "OUT_OF_RANGE",
+        "message": "예보 범위 밖: 가장 늦은 예보일 2026-11-28"
+      },
+      "duration_ms": 0
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 31,
+    "ts": "2026-11-18T05:58:34.463307Z",
+    "type": "stage_end",
+    "stage": "execute",
+    "tool": null,
+    "payload": {
+      "duration_ms": 767,
+      "summary": "Tool 호출 2회(실패 1) · 캐시 재사용 1회 · 후보 1개"
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 32,
+    "ts": "2026-11-18T05:58:34.466917Z",
+    "type": "stage_start",
+    "stage": "judge",
+    "tool": null,
+    "payload": {}
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 33,
+    "ts": "2026-11-18T05:58:34.470066Z",
+    "type": "stage_end",
+    "stage": "judge",
+    "tool": null,
+    "payload": {
+      "duration_ms": 0,
+      "summary": "조건부 충족 1"
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 34,
+    "ts": "2026-11-18T05:58:34.474562Z",
+    "type": "stage_start",
+    "stage": "respond",
+    "tool": null,
+    "payload": {}
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 35,
+    "ts": "2026-11-18T05:58:37.784185Z",
+    "type": "stage_end",
+    "stage": "respond",
+    "tool": null,
+    "payload": {
+      "duration_ms": 3305,
+      "summary": "plan 응답 542자"
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 36,
+    "ts": "2026-11-18T05:58:37.801548Z",
+    "type": "session_end",
+    "stage": null,
+    "tool": null,
+    "payload": {
+      "intent": "plan",
+      "replan_count": 0,
+      "duration_ms": 6271
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 37,
+    "ts": "2026-11-18T05:58:37.824776Z",
+    "type": "session_start",
+    "stage": null,
+    "tool": null,
+    "payload": {
+      "message": "방금 조건에서 종료 시각만 밤 11시로 바꿔줘."
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 38,
+    "ts": "2026-11-18T05:58:37.830334Z",
+    "type": "stage_start",
+    "stage": "analyze",
+    "tool": null,
+    "payload": {}
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 39,
+    "ts": "2026-11-18T05:58:40.000040Z",
+    "type": "llm_decision",
+    "stage": "analyze",
+    "tool": null,
+    "payload": {
+      "decision": "plan",
+      "reason": "관측 계획의 종료 시각은 밤 11시로 변경됐지만 시작 시각이 정해지지 않아 확인이 필요합니다.",
+      "model": "gpt-6-luna"
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 40,
+    "ts": "2026-11-18T05:58:40.007843Z",
+    "type": "stage_end",
+    "stage": "analyze",
+    "tool": null,
+    "payload": {
+      "duration_ms": 2173,
+      "summary": "의도 plan"
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 41,
+    "ts": "2026-11-18T05:58:40.012841Z",
+    "type": "stage_start",
+    "stage": "plan",
+    "tool": null,
+    "payload": {}
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 42,
+    "ts": "2026-11-18T05:58:40.015840Z",
+    "type": "stage_end",
+    "stage": "plan",
+    "tool": null,
+    "payload": {
+      "duration_ms": 0,
+      "summary": "3단계 계획: 현상 → 출몰·월령 → 날씨 (search_sky_events → get_night_window → get_sky_forecast)"
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 43,
+    "ts": "2026-11-18T05:58:40.021357Z",
+    "type": "stage_start",
+    "stage": "execute",
+    "tool": null,
+    "payload": {}
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 44,
+    "ts": "2026-11-18T05:58:40.024357Z",
+    "type": "tool_call",
+    "stage": "execute",
+    "tool": "get_night_window",
+    "payload": {
+      "args": {
+        "date": "2026-12-14",
+        "lat": 36.3504,
+        "lon": 127.3845
+      },
+      "reason": "2026-12-14 후보의 어두운 시간·월령"
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 45,
+    "ts": "2026-11-18T05:58:40.876918Z",
+    "type": "tool_result",
+    "stage": "execute",
+    "tool": "get_night_window",
+    "payload": {
+      "ok": true,
+      "data": "{\"data\":{\"date\":\"2026-12-14\",\"sunset\":\"17:16\",\"astro_dusk_end\":\"18:48\",\"astro_dawn_start\":\"06:02\",\"sunrise_next\":\"07:34\",\"moonrise\":\"11:07\",\"moonset\":\"21:52\",\"moonrise_next\":\"11:33\",\"moonset_next\":\"22:51\",\"lun_age\":5.5,\"dark_minutes\":674}}",
+      "duration_ms": 848
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 46,
+    "ts": "2026-11-18T05:58:40.881934Z",
+    "type": "tool_call",
+    "stage": "execute",
+    "tool": "get_sky_forecast",
+    "payload": {
+      "args": {
+        "date": "2026-12-14",
+        "lat": 36.3504,
+        "lon": 127.3845,
+        "hours": [
+          22
+        ]
+      },
+      "reason": "2026-12-14 관측 창 시각의 하늘 상태"
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 47,
+    "ts": "2026-11-18T05:58:40.885821Z",
+    "type": "tool_result",
+    "stage": "execute",
+    "tool": "get_sky_forecast",
+    "payload": {
+      "ok": false,
+      "error": {
+        "code": "OUT_OF_RANGE",
+        "message": "예보 범위 밖: 가장 늦은 예보일 2026-11-28"
+      },
+      "duration_ms": 0
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 48,
+    "ts": "2026-11-18T05:58:40.889825Z",
+    "type": "stage_end",
+    "stage": "execute",
+    "tool": null,
+    "payload": {
+      "duration_ms": 864,
+      "summary": "Tool 호출 2회(실패 1) · 캐시 재사용 1회 · 후보 1개"
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 49,
+    "ts": "2026-11-18T05:58:40.893827Z",
+    "type": "stage_start",
+    "stage": "judge",
+    "tool": null,
+    "payload": {}
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 50,
+    "ts": "2026-11-18T05:58:40.896843Z",
+    "type": "stage_end",
+    "stage": "judge",
+    "tool": null,
+    "payload": {
+      "duration_ms": 0,
+      "summary": "조건부 충족 1"
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 51,
+    "ts": "2026-11-18T05:58:40.900846Z",
+    "type": "stage_start",
+    "stage": "respond",
+    "tool": null,
+    "payload": {}
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 52,
+    "ts": "2026-11-18T05:58:44.052714Z",
+    "type": "stage_end",
+    "stage": "respond",
+    "tool": null,
+    "payload": {
+      "duration_ms": 3148,
+      "summary": "plan 응답 480자"
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 53,
+    "ts": "2026-11-18T05:58:44.061904Z",
+    "type": "session_end",
+    "stage": null,
+    "tool": null,
+    "payload": {
+      "intent": "plan",
+      "replan_count": 0,
+      "duration_ms": 6236
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 54,
+    "ts": "2026-11-18T05:58:44.090471Z",
+    "type": "session_start",
+    "stage": null,
+    "tool": null,
+    "payload": {
+      "message": "이 추천을 구글 캘린더에 등록해줘."
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 55,
+    "ts": "2026-11-18T05:58:44.094468Z",
+    "type": "stage_start",
+    "stage": "analyze",
+    "tool": null,
+    "payload": {}
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 56,
+    "ts": "2026-11-18T05:58:46.254043Z",
+    "type": "llm_decision",
+    "stage": "analyze",
+    "tool": null,
+    "payload": {
+      "decision": "calendar",
+      "reason": "직전 관측 추천을 구글 캘린더에 등록해 달라고 요청했습니다.",
+      "model": "gpt-6-luna"
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 57,
+    "ts": "2026-11-18T05:58:46.258606Z",
+    "type": "stage_end",
+    "stage": "analyze",
+    "tool": null,
+    "payload": {
+      "duration_ms": 2158,
+      "summary": "의도 calendar"
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 58,
+    "ts": "2026-11-18T05:58:46.262606Z",
+    "type": "stage_start",
+    "stage": "respond",
+    "tool": null,
+    "payload": {}
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 59,
+    "ts": "2026-11-18T05:58:46.266108Z",
+    "type": "stage_end",
+    "stage": "respond",
+    "tool": null,
+    "payload": {
+      "duration_ms": 0,
+      "summary": "calendar 응답 28자"
+    }
+  },
+  {
+    "session_id": "review-2bdbafea7c314856b5424164617b6802",
+    "seq": 60,
+    "ts": "2026-11-18T05:58:46.274110Z",
+    "type": "session_end",
+    "stage": null,
+    "tool": null,
+    "payload": {
+      "intent": "calendar",
+      "replan_count": 0,
+      "duration_ms": 2184
+    }
+  }
+]

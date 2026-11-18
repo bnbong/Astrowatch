@@ -1,0 +1,425 @@
+{
+  "id": "S10",
+  "message": "2030년 12월 14일 서울에서 밤 10시부터 다음 날 새벽 2시까지 유성우 관측 계획을 짜줘. 날짜는 고정이야.",
+  "status": 200,
+  "seconds": 8.94,
+  "response": {
+    "session_id": "review-7ff875636b0e411c9df545293432e557",
+    "intent": "plan",
+    "answer": "- 원래 요청 조건: 2030년 12월 14일~15일, 서울, 밤 10시~다음 날 새벽 2시, 유성우 관측입니다.\n- 재계획 1회차에는 요청한 날짜와 시간은 유지하고 ‘유성우’ 지정을 풀어 같은 기간의 다른 현상을 탐색했습니다.\n- **1순위 — 일반 관측(별·은하수)**: 2030년 12월 14일, 서울, **조건부 충족**. 관측 창 22:00~02:00+1, 맑은 시간 미확인, 달 영향 미확인(월령 정보 없음).\n- 다음 후보도 일반 관측(별·은하수)으로, 2030년 12월 15일 서울입니다. **조건부 충족**이며 관측 창 22:00~02:00+1, 맑은 시간 미확인, 달 영향 미확인(월령 정보 없음)입니다.\n- 두 날짜 모두 관측 창은 240분이고 맑은 시간·달 영향 자료가 없어 비교할 수 없습니다.\n- 늦어도 **01:30+1까지 도착하면 최소 30분 관측 가능**합니다.\n- 날씨는 관측일 D-3부터 예보로 확인 가능하며, 현재 날짜 기준 예보 범위 밖입니다.\n- 판단 기준: 관측 창 = 어두운 시간 ∩ 내 시간 ∩ 현상 시간(천체는 고도 20° 이상인 시간), 최소 30분, 맑음(강수확률 30% 이하)만 맑은 시간으로 셉니다.\n- 근거 도구: `search_sky_events` 실패, `get_night_window` 성공, `get_sky_forecast` 실패.\n- 제외 항목은 없습니다.\n- 장소 정보는 별도로 조회되지 않았습니다.",
+    "conditions": {
+      "date_from": "2030-12-14",
+      "date_to": "2030-12-15",
+      "start_minute": 1320,
+      "region": "서울",
+      "event_kind": "meteor",
+      "event_query": null,
+      "place_query": null,
+      "end_minute": 1560,
+      "max_distance_km": null,
+      "allow_partly_cloudy": false,
+      "avoid_moon": true,
+      "fixed": [
+        "date_from",
+        "date_to"
+      ]
+    },
+    "needs_clarification": [],
+    "recommended": [
+      {
+        "candidate": {
+          "event_id": "general-20301214",
+          "title": "일반 관측(별·은하수)",
+          "kind": "other",
+          "date": "2030-12-14",
+          "region": "서울",
+          "lat": 37.5665,
+          "lon": 126.978,
+          "event_minute": null
+        },
+        "verdict": "conditional",
+        "dark_window": {
+          "start": 1128,
+          "end": 1805
+        },
+        "user_window": {
+          "start": 1320,
+          "end": 1560
+        },
+        "event_window": {
+          "start": 1128,
+          "end": 1805
+        },
+        "time_window": {
+          "start": 1320,
+          "end": 1560
+        },
+        "clear_minutes": null,
+        "worst_sky": null,
+        "max_pop": null,
+        "moon_interferes": null,
+        "lun_age": null,
+        "latest_arrival_minute": 1530,
+        "forecast_source": null,
+        "reasons": [
+          "어두운 시간 18:48~06:05+1 · 내 시간 22:00~02:00+1 → 관측 창 22:00~02:00+1 (240분)",
+          "월령 정보 없음 - 달빛 영향 미확인",
+          "예보 범위 밖(D-3부터 확인 가능) - 날씨 미판단"
+        ],
+        "target_alt": null,
+        "target_az": null
+      },
+      {
+        "candidate": {
+          "event_id": "general-20301215",
+          "title": "일반 관측(별·은하수)",
+          "kind": "other",
+          "date": "2030-12-15",
+          "region": "서울",
+          "lat": 37.5665,
+          "lon": 126.978,
+          "event_minute": null
+        },
+        "verdict": "conditional",
+        "dark_window": {
+          "start": 1129,
+          "end": 1806
+        },
+        "user_window": {
+          "start": 1320,
+          "end": 1560
+        },
+        "event_window": {
+          "start": 1129,
+          "end": 1806
+        },
+        "time_window": {
+          "start": 1320,
+          "end": 1560
+        },
+        "clear_minutes": null,
+        "worst_sky": null,
+        "max_pop": null,
+        "moon_interferes": null,
+        "lun_age": null,
+        "latest_arrival_minute": 1530,
+        "forecast_source": null,
+        "reasons": [
+          "어두운 시간 18:49~06:06+1 · 내 시간 22:00~02:00+1 → 관측 창 22:00~02:00+1 (240분)",
+          "월령 정보 없음 - 달빛 영향 미확인",
+          "예보 범위 밖(D-3부터 확인 가능) - 날씨 미판단"
+        ],
+        "target_alt": null,
+        "target_az": null
+      }
+    ],
+    "excluded": [],
+    "places": [],
+    "replan_count": 1,
+    "replan_limit_reached": false,
+    "steps": [
+      {
+        "seq": 2,
+        "type": "stage_start",
+        "stage": "analyze",
+        "tool": null,
+        "ok": null,
+        "summary": "요청 분석 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 3,
+        "type": "llm_decision",
+        "stage": "analyze",
+        "tool": null,
+        "ok": null,
+        "summary": "의도 판단: plan - 서울에서 특정 시간대에 유성우를 관측할 계획을 요청했고, 날짜를 고정한다고 명시했습니다.",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 4,
+        "type": "stage_end",
+        "stage": "analyze",
+        "tool": null,
+        "ok": null,
+        "summary": "의도 plan",
+        "duration_ms": 2270,
+        "replan_round": null
+      },
+      {
+        "seq": 5,
+        "type": "stage_start",
+        "stage": "plan",
+        "tool": null,
+        "ok": null,
+        "summary": "작업 계획 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 6,
+        "type": "stage_end",
+        "stage": "plan",
+        "tool": null,
+        "ok": null,
+        "summary": "3단계 계획: 현상 → 출몰·월령 → 날씨 (search_sky_events → get_night_window → get_sky_forecast)",
+        "duration_ms": 0,
+        "replan_round": null
+      },
+      {
+        "seq": 7,
+        "type": "stage_start",
+        "stage": "execute",
+        "tool": null,
+        "ok": null,
+        "summary": "Tool 실행 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 8,
+        "type": "tool_call",
+        "stage": "execute",
+        "tool": "search_sky_events",
+        "ok": null,
+        "summary": "천문현상 조회 호출 (year=2030, month=12, kind=meteor)",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 9,
+        "type": "tool_result",
+        "stage": "execute",
+        "tool": "search_sky_events",
+        "ok": false,
+        "summary": "천문현상 조회 실패(NO_RESULT): 2030년 12월 천문현상 (meteor) 없음",
+        "duration_ms": 296,
+        "replan_round": null
+      },
+      {
+        "seq": 10,
+        "type": "stage_end",
+        "stage": "execute",
+        "tool": null,
+        "ok": null,
+        "summary": "Tool 호출 1회(실패 1) · 캐시 재사용 0회 · 후보 0개",
+        "duration_ms": 306,
+        "replan_round": null
+      },
+      {
+        "seq": 11,
+        "type": "stage_start",
+        "stage": "judge",
+        "tool": null,
+        "ok": null,
+        "summary": "판정 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 12,
+        "type": "replan",
+        "stage": "judge",
+        "tool": null,
+        "ok": null,
+        "summary": "재계획 1회차: 충족·조건부 충족 후보 0개 → 같은 기간 다른 현상: 'meteor' 지정을 풀고 같은 기간의 다른 현상 탐색",
+        "duration_ms": null,
+        "replan_round": 1
+      },
+      {
+        "seq": 13,
+        "type": "stage_end",
+        "stage": "judge",
+        "tool": null,
+        "ok": null,
+        "summary": "후보 0개 · 재계획 1회차(같은 기간 다른 현상)",
+        "duration_ms": 3,
+        "replan_round": 1
+      },
+      {
+        "seq": 14,
+        "type": "stage_start",
+        "stage": "plan",
+        "tool": null,
+        "ok": null,
+        "summary": "작업 계획 시작",
+        "duration_ms": null,
+        "replan_round": 1
+      },
+      {
+        "seq": 15,
+        "type": "stage_end",
+        "stage": "plan",
+        "tool": null,
+        "ok": null,
+        "summary": "[재계획 1회차] 3단계 계획: 현상 → 출몰·월령 → 날씨 (search_sky_events → get_night_window → get_sky_forecast)",
+        "duration_ms": 0,
+        "replan_round": 1
+      },
+      {
+        "seq": 16,
+        "type": "stage_start",
+        "stage": "execute",
+        "tool": null,
+        "ok": null,
+        "summary": "Tool 실행 시작",
+        "duration_ms": null,
+        "replan_round": 1
+      },
+      {
+        "seq": 17,
+        "type": "tool_call",
+        "stage": "execute",
+        "tool": "search_sky_events",
+        "ok": null,
+        "summary": "천문현상 조회 호출 (year=2030, month=12)",
+        "duration_ms": null,
+        "replan_round": 1
+      },
+      {
+        "seq": 18,
+        "type": "tool_result",
+        "stage": "execute",
+        "tool": "search_sky_events",
+        "ok": false,
+        "summary": "천문현상 조회 실패(NO_RESULT): 2030년 12월 천문현상 없음",
+        "duration_ms": 332,
+        "replan_round": 1
+      },
+      {
+        "seq": 19,
+        "type": "tool_call",
+        "stage": "execute",
+        "tool": "get_night_window",
+        "ok": null,
+        "summary": "박명·출몰 조회 호출 (date=2030-12-14)",
+        "duration_ms": null,
+        "replan_round": 1
+      },
+      {
+        "seq": 20,
+        "type": "tool_result",
+        "stage": "execute",
+        "tool": "get_night_window",
+        "ok": true,
+        "summary": "박명·출몰 조회 성공 - 월령 조회 실패 — 달빛 영향은 월출·월몰 시각으로만 판단한다",
+        "duration_ms": 921,
+        "replan_round": 1
+      },
+      {
+        "seq": 21,
+        "type": "tool_call",
+        "stage": "execute",
+        "tool": "get_night_window",
+        "ok": null,
+        "summary": "박명·출몰 조회 호출 (date=2030-12-15)",
+        "duration_ms": null,
+        "replan_round": 1
+      },
+      {
+        "seq": 22,
+        "type": "tool_result",
+        "stage": "execute",
+        "tool": "get_night_window",
+        "ok": true,
+        "summary": "박명·출몰 조회 성공 - 월령 조회 실패 — 달빛 영향은 월출·월몰 시각으로만 판단한다",
+        "duration_ms": 784,
+        "replan_round": 1
+      },
+      {
+        "seq": 23,
+        "type": "tool_call",
+        "stage": "execute",
+        "tool": "get_sky_forecast",
+        "ok": null,
+        "summary": "날씨 예보 조회 호출 (date=2030-12-14, hours=22~25시)",
+        "duration_ms": null,
+        "replan_round": 1
+      },
+      {
+        "seq": 24,
+        "type": "tool_result",
+        "stage": "execute",
+        "tool": "get_sky_forecast",
+        "ok": false,
+        "summary": "날씨 예보 조회 실패(OUT_OF_RANGE): 예보 범위 밖: 가장 늦은 예보일 2026-11-28",
+        "duration_ms": 0,
+        "replan_round": 1
+      },
+      {
+        "seq": 25,
+        "type": "tool_call",
+        "stage": "execute",
+        "tool": "get_sky_forecast",
+        "ok": null,
+        "summary": "날씨 예보 조회 호출 (date=2030-12-15, hours=22~25시)",
+        "duration_ms": null,
+        "replan_round": 1
+      },
+      {
+        "seq": 26,
+        "type": "tool_result",
+        "stage": "execute",
+        "tool": "get_sky_forecast",
+        "ok": false,
+        "summary": "날씨 예보 조회 실패(OUT_OF_RANGE): 예보 범위 밖: 가장 늦은 예보일 2026-11-28",
+        "duration_ms": 0,
+        "replan_round": 1
+      },
+      {
+        "seq": 27,
+        "type": "stage_end",
+        "stage": "execute",
+        "tool": null,
+        "ok": null,
+        "summary": "Tool 호출 5회(실패 3) · 캐시 재사용 0회 · 후보 2개",
+        "duration_ms": 2082,
+        "replan_round": 1
+      },
+      {
+        "seq": 28,
+        "type": "stage_start",
+        "stage": "judge",
+        "tool": null,
+        "ok": null,
+        "summary": "판정 시작",
+        "duration_ms": null,
+        "replan_round": 1
+      },
+      {
+        "seq": 29,
+        "type": "stage_end",
+        "stage": "judge",
+        "tool": null,
+        "ok": null,
+        "summary": "조건부 충족 2",
+        "duration_ms": 0,
+        "replan_round": 1
+      },
+      {
+        "seq": 30,
+        "type": "stage_start",
+        "stage": "respond",
+        "tool": null,
+        "ok": null,
+        "summary": "응답 작성 시작",
+        "duration_ms": null,
+        "replan_round": 1
+      },
+      {
+        "seq": 31,
+        "type": "stage_end",
+        "stage": "respond",
+        "tool": null,
+        "ok": null,
+        "summary": "plan 응답 708자",
+        "duration_ms": 4182,
+        "replan_round": 1
+      }
+    ],
+    "warnings": [],
+    "safety_note": "야간 관측 시 이동 안전과 방한에 유의하세요."
+  }
+}
