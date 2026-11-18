@@ -1,0 +1,24 @@
+# 비밀
+.env
+secrets/
+*.pem
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+
+# 데이터 · 로컬 저장소
+data/*.db
+data/*.db-journal
+data/chroma/
+data/cache/
+
+# OS · 편집기
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
