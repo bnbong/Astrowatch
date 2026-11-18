@@ -54,22 +54,26 @@
 
 ```mermaid
 flowchart LR
-  subgraph FE[프론트엔드 · HTML/JS]
-    C[대화 + 실행 패널] --- P[계획 관리] --- L[실행 로그]
+  subgraph FE["프론트엔드 · HTML/JS"]
+    C["대화 + 실행 패널"] --- P["계획 관리"] --- L["실행 로그"]
   end
-  subgraph BE[백엔드 · FastAPI]
-    API[/api/chat · plans · logs · calendar]
-    subgraph AG[메인 Agent · LangGraph]
+  subgraph BE["백엔드 · FastAPI"]
+    API["API: chat · plans · logs · sessions · calendar"]
+    subgraph AG["메인 Agent · LangGraph"]
       A[analyze] --> PL[plan] --> E[execute] --> J[judge] --> R[respond]
       J -->|재계획| PL
     end
-    REG[Tool 레지스트리]
+    REG["Tool 레지스트리"]
     BUS((EventBus))
-    LOG[로깅 Agent<br/>LLM 없음]
-    DB[(SQLite<br/>plans · run_logs · sessions)]
+    LOG["로깅 Agent (LLM 없음)"]
+    DB[("SQLite: plans · run_logs · sessions · turns")]
   end
-  subgraph EXT[외부]
-    K1[천문연 3종] ; K2[기상청 2종] ; K3[카카오 로컬] ; K4[Google Calendar] ; LLM[GMS gpt-6-luna]
+  subgraph EXT["외부"]
+    K1["천문연 3종"]
+    K2["기상청 2종"]
+    K3["카카오 로컬"]
+    K4["Google Calendar"]
+    LLM["GMS gpt-6-luna"]
   end
   FE <--> API --> AG
   E --> REG --> K1 & K2 & K3 & K4
