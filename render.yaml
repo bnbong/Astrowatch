@@ -1,0 +1,45 @@
+# Render Blueprint: Astrowatch 를 무료 웹 서비스 하나로 배포한다.
+# 대시보드에서 "New > Blueprint" 로 이 저장소를 고르면 아래 설정대로 서비스가 만들어진다.
+# 비밀 값(API 키, 접근 토큰)은 sync: false 로 두어 대시보드에서 직접 넣는다. 저장소에는 넣지 않는다.
+services:
+  - type: web
+    name: astrowatch
+    runtime: python
+    plan: free
+    region: singapore
+    branch: master
+    rootDir: .
+    # 의존성 설치 뒤 커밋된 data/space_docs.json 으로 RAG 색인을 빌드 시점에 만든다 (모델 80MB 1회 다운로드).
+    buildCommand: pip install -r requirements.txt && python backend/scripts/build_space_docs.py
+    # Render 는 PORT 를 준다. 프록시 뒤이므로 X-Forwarded-* 를 믿어 속도 제한이 실제 클라이언트 IP 기준이 되게 한다.
+    startCommand: cd backend && python -m uvicorn astrowatch.app.main:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips="*"
+    healthCheckPath: /api/health
+    autoDeployTrigger: commit
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.10
+      - key: APP_HOST
+        value: 0.0.0.0
+      # RENDER_EXTERNAL_URL 은 Render 가 자동으로 주입하며 config 가 허용 출처/Host 에 넣는다. 커스텀 도메인을 쓰면 APP_PUBLIC_URL 에 적는다.
+      - key: APP_PUBLIC_URL
+        value: ""
+      - key: APP_ACCESS_TOKEN
+        generateValue: true          # 무작위 토큰 자동 생성. 화면 첫 접속 때 입력한다 (대시보드 Environment 에서 확인)
+      - key: CALENDAR_PROVIDER
+        value: local                 # Google 토큰 파일은 배포본에 없다
+      - key: WEATHER_PROVIDER
+        value: kma
+      - key: EMBEDDING_PROVIDER
+        value: local
+      - key: LLM_PROVIDER
+        value: anthropic
+      - key: CHAT_RATE_PER_MIN
+        value: "6"
+      - key: GMS_KEY
+        sync: false                  # 대시보드에서 입력. 없으면 LLM 없이 템플릿 답변
+      - key: DATA_GO_KR_KEY
+        sync: false
+      - key: KAKAO_REST_KEY
+        sync: false
+      - key: OPENWEATHER_KEY
+        sync: false

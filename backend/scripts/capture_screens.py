@@ -76,6 +76,32 @@ def limit_scene(page: Page, mock_base: str) -> None:
     print("  shot 08_timeline_replan_marker.png")
 
 
+KNOWLEDGE = "안드로메다 은하는 어떤 천체야? 우리 은하와 어떤 관계야?"
+
+
+def knowledge_scene(page: Page, base: str) -> None:
+    """배경 지식 질문 (F3022): search_space_docs 1회 호출과 출처 줄이 보이는 답변."""
+    page.goto(f"{base}/", wait_until="networkidle")
+    page.locator("#new-chat").click()
+    send(page, KNOWLEDGE, timeout_ms=120_000)
+    page.locator("#messages .msg-bot").last.scroll_into_view_if_needed()
+    page.wait_for_timeout(300)
+    shot(page, "25_knowledge_rag_sources.png")
+
+
+def audit_scene(page: Page, base: str) -> None:
+    """로그 화면의 로깅 Agent 판정 패널 (F3020). make_anomalies.py --db 로 만든 demo 세션이 있어야 한다."""
+    page.goto(f"{base}/logs.html", wait_until="networkidle")
+    page.locator(".session-card").first.wait_for(timeout=15_000)
+    card = page.locator(".session-card", has_text="재계획 과다")
+    if not card.count():
+        print("  demo-audit 세션이 없습니다: backend/scripts/make_anomalies.py --db 를 먼저 실행하세요")
+        return
+    card.first.click()
+    page.wait_for_timeout(1200)
+    shot(page, "24_logs_audit_panel.png")
+
+
 def chat_session(page: Page, base: str) -> None:
     page.goto(f"{base}/", wait_until="networkidle")
     page.locator("#new-chat").click()
@@ -97,7 +123,7 @@ def chat_session(page: Page, base: str) -> None:
     send(page, R6)
     shot(page, "06_followup_context_kept.png")
 
-    # 재계획 (실제 예보 기준 — 재계획 구분선이 타임라인에 보인다)
+    # 재계획 (실제 예보 기준: 재계획 구분선이 타임라인에 보인다)
     page.locator("#new-chat").click()
     send(page, R3, timeout_ms=180_000)
     shot(page, "07_replan_and_stop_reason.png")
@@ -196,6 +222,53 @@ def mobile(browser, base: str) -> None:
     ctx.close()
 
 
+POINTER_AT = "2026-11-20T21:00:00%2B09:00"   # 시각을 고정해 같은 화면이 나오게
+
+
+def _pointer_plan_id(base: str) -> int | None:
+    """가리킬 천체가 있는 첫 계획 (없으면 None → key 로 연다)."""
+    import json
+    import urllib.request
+
+    try:
+        with urllib.request.urlopen(f"{base}/api/plans", timeout=5) as r:
+            plans = json.loads(r.read().decode("utf-8"))
+    except Exception:  # noqa: BLE001
+        return None
+    for plan in plans:
+        if plan.get("target_object") and plan.get("event_kind") == "meteor":
+            return int(plan["id"])
+    return next((int(x["id"]) for x in plans if x.get("target_object")), None)
+
+
+def pointer(browser, base: str) -> None:
+    """하늘 가리키기: 데스크톱 시뮬레이션(안드로메다 은하) 과 모바일(계획의 유성우 복사점)."""
+    ctx = browser.new_context(bypass_csp=True, viewport={"width": 1400, "height": 900})
+    p = ctx.new_page()
+    p.goto(f"{base}/pointer.html?key=%EC%95%88%EB%93%9C%EB%A1%9C%EB%A9%94%EB%8B%A4%20%EC%9D%80%ED%95%98"
+           f"&at={POINTER_AT}&az=20&alt=48", wait_until="networkidle")
+    p.locator("#pt-t-alt").filter(has_text="고도").wait_for(timeout=10_000)
+    # 방향키로도 돌아가는지 (시뮬레이션): 오른쪽으로 4°
+    p.locator("#pt-stage").focus()
+    p.keyboard.press("ArrowRight")
+    p.keyboard.press("ArrowRight")
+    p.evaluate("document.activeElement && document.activeElement.blur()")   # 초점 테두리가 잠김처럼 보이지 않게
+    p.wait_for_timeout(400)
+    shot(p, "22_pointer_desktop_sim.png")
+    ctx.close()
+
+    ctx = browser.new_context(bypass_csp=True, viewport={"width": 390, "height": 844}, device_scale_factor=2,
+                              is_mobile=True, has_touch=True)
+    p = ctx.new_page()
+    pid = _pointer_plan_id(base)
+    target = f"plan_id={pid}" if pid else "key=geminids"
+    p.goto(f"{base}/pointer.html?{target}&at={POINTER_AT}&sim=1&az=110&alt=10", wait_until="networkidle")
+    p.locator("#pt-t-alt").filter(has_text="고도").wait_for(timeout=10_000)
+    p.wait_for_timeout(400)
+    shot(p, "23_pointer_mobile.png")
+    ctx.close()
+
+
 def demo_video(browser, base: str) -> Path | None:
     """데모 흐름을 녹화한다: 질문 → 추천 카드 → 저장 → 후속 질문 → 계획 → 로그."""
     tmp = DEMO / "_rec"
@@ -250,7 +323,7 @@ def main() -> int:
     ap.add_argument("--nollm", default="http://127.0.0.1:8002")
     ap.add_argument("--mock", default="", help="WEATHER_PROVIDER=mock 서버 주소 — 상한 도달(limit_reached) 장면용")
     ap.add_argument("--no-video", action="store_true")
-    ap.add_argument("--only", default="", help="chat,plans,fail,mobile,video,limit 중 쉼표 구분")
+    ap.add_argument("--only", default="", help="chat,plans,fail,mobile,pointer,video,limit 중 쉼표 구분")
     a = ap.parse_args()
     only = {s.strip() for s in a.only.split(",") if s.strip()}
     SHOTS.mkdir(parents=True, exist_ok=True)
@@ -284,12 +357,18 @@ def main() -> int:
                 print("[limit scene · mock weather]"); limit_scene(page, a.mock)
             else:
                 print("mock 서버가 응답하지 않습니다:", a.mock)
+        if not only or "audit" in only:
+            print("[audit scene]"); audit_scene(page, a.base)
+        if not only or "knowledge" in only:
+            print("[knowledge scene]"); knowledge_scene(page, a.base)
         if not only or "fail" in only:
             print("[failure scenes]")
             failure_scenes(ctx, a.nokakao if alive(a.nokakao) else None, a.nollm if alive(a.nollm) else None)
         ctx.close()
         if not only or "mobile" in only:
             print("[mobile]"); mobile(browser, a.base)
+        if not only or "pointer" in only:
+            print("[pointer]"); pointer(browser, a.base)
         if not a.no_video and (not only or "video" in only):
             print("[video]"); out = demo_video(browser, a.base); print("  video:", out)
         browser.close()

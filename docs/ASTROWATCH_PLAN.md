@@ -10,6 +10,7 @@
 | 구현 방식 | Fable 오케스트레이션 → Opus 구현 → Codex 리뷰 |
 | 이전 프로젝트 | [VastHorizon](https://github.com/bnbong/VastHorizon) (우주 RAG 지식 서비스) 코드/색인 재사용 |
 | 심화 선택 | F3023 캘린더 > F3022 RAG > (덤) 자이로 가리키기 |
+| 최종 범위 (11-20 오후) | 심화 F3020, F3021, F3022, F3023 모두 구현 + 하늘 가리키기(명세 외). 11절 "3일차 오후 범위 확장" |
 
 ---
 
@@ -191,7 +192,7 @@ flowchart LR
 | `get_sky_forecast` | 외부 | 후보 시간대의 구름/비 | `date, lat, lon, hours` | 시간별 `sky, pop, precip`, `source`, `base_time` | `OUT_OF_RANGE, AUTH, UPSTREAM, TIMEOUT` |
 | `search_observatory` | 외부 | 관측 장소를 찾을 때 | `query, lat, lon, radius_km ≤ 20` | 이름/주소/링크/거리/`place_id` | `NO_RESULT, BAD_INPUT, AUTH, UPSTREAM, TIMEOUT` |
 | `lookup_sky_object` | 로컬 | 사용자가 특정 천체(은하/성운/성단/별/별자리/행성)를 말해 그날 밤 언제 떠 있는지 알아야 할 때 | `name, date, lat, lon, min_alt=20` | 천체 정보, 고도 20° 이상 구간, 남중 시각/고도, `never_rises` | `NOT_FOUND`(유사 이름 3개 동봉) |
-| `search_space_docs` | 로컬 (F3022, **미구현**) | 현상/천체 배경 지식 | `query` | 근거 문단 + 출처 | `NO_INDEX` |
+| `search_space_docs` | 로컬 (F3022, 기획 시 미구현 → 11-20 오후 구현) | 현상/천체 배경 지식 | `query, k?` | 근거 문단 + 제목, 출처 URL | `NO_INDEX, INDEX_MISMATCH, NO_RESULT` |
 | `get_calendar` / `add_plan_to_calendar` | 로컬→Google (F3023) | 내 일정 겹침 / 계획 등록 | `date_from, date_to` / **`plan_id`만** | 일정 목록 / 등록 결과 | `AUTH, NOT_FOUND` |
 
 **Tool 사이 데이터 흐름**
@@ -278,21 +279,24 @@ flowchart LR
 astrowatch/
 ├─ backend/
 │  ├─ app/main.py            FastAPI 진입
-│  ├─ app/api/               chat, plans, logs 라우터 (Pydantic 모델)
-│  ├─ agent/graph.py         LangGraph 5노드
+│  ├─ app/api/               chat, plans, logs, sessions, calendar, sky, meta 라우터 (Pydantic 모델)
+│  ├─ agent/graph.py         LangGraph: planner_worker(기본) / classic 5노드
+│  ├─ agent/{planner,worker,verify}.py   F3021 Planner/Worker, 턴 안 검증 (11-20 오후)
 │  ├─ agent/state.py         State, 조건 객체
 │  ├─ agent/judge.py         창 계산, 판정, 재계획 (순수 함수)
 │  ├─ agent/memory.py        세션 맥락
 │  ├─ tools/registry.py      공통 응답, 등록
 │  ├─ tools/{sky_events,night_window,sky_forecast,observatory}.py
-│  ├─ tools/{sky_object,calendar}.py   로컬 Tool (천체 카탈로그, 캘린더 F3023): space_docs(F3022)는 미구현
+│  ├─ tools/{sky_object,calendar,space_docs}.py   로컬 Tool (천체 카탈로그, 캘린더 F3023, 배경 지식 F3022)
+│  ├─ rag/                   F3022 수집, 청크, 색인, 검색 (Chroma)
+│  ├─ astro/targets.py       하늘 가리키기 대상 (명세 외)
 │  ├─ clients/               data.go.kr, 카카오, Google 얇은 클라이언트
 │  ├─ events/bus.py          EventBus
-│  ├─ logging_agent/         구독, SQLite 저장
-│  ├─ storage/               plans, run_logs
+│  ├─ logging_agent/         구독, SQLite 저장, audit.py(F3020 규칙 판정), diagnosis.py(이상일 때 LLM 진단)
+│  ├─ storage/               plans, run_logs, run_audits, sessions, turns
 │  ├─ data/regions.py        지역 표 (이름, 별칭, lat/lon, nx/ny)
 │  └─ tests/                 samples/ fixture 기반, 키 없이 실행
-├─ frontend/                 대화, 계획 관리, 실행 타임라인 (HTML/JS)
+├─ frontend/                 대화, 계획 관리, 실행 로그, 하늘 가리키기(pointer.html) (HTML/JS)
 ├─ samples/                  API 원본 응답 (키 제거)
 └─ docs/                     기획안, Agent 설계, Tool 정의서, API 명세, 검증 결과
 ```
@@ -355,9 +359,21 @@ astrowatch/
 | 문서 7종 마무리, FastAPI `/docs` 캡처, 로그 샘플 | ✅ 스크린샷 21장, 데모 영상, 로그 샘플, 문서 최종 갱신 |
 | (추가) Codex HTTP 재검증 | ✅ 11건 FIXED 9, PARTIAL 2 → 답변 문장 2건 수정 |
 | 셀프 체크리스트, NF3001~3007 점검, push | ⏳ 체크리스트 제공 대기 |
-| 남으면 F3022 → 자이로 | ❌ 미구현 |
+| 남으면 F3022 → 자이로 | ❌ 오전 기준 미구현 → 오후에 구현 (아래 "3일차 오후 범위 확장") |
 
 **자를 순서**: 자이로 → 화면 꾸미기 → F3022 → Google 연동(로컬 구현체만). F3020/F3021 미선택.
+
+### 3일차 오후 범위 확장 (2026-11-20)
+
+오전에 필수와 F3023 을 마친 뒤 남은 시간으로 범위를 넓혔다. 위 표와 자를 순서는 오전 기준 기록으로 그대로 둔다.
+
+| 항목 | 결과 | 근거 |
+|---|---|---|
+| F3020 로깅 Agent 이상 징후 판정 | ✅ 규칙 3종 + 판정 불가, 이상일 때만 LLM 진단 | `samples/audit_samples.json`, 화면 24 |
+| F3021 Planner/Worker 분리 | ✅ 기본 구조로 전환, classic 은 비교용으로 유지 | `samples/structure_compare.json`, AGENT_DESIGN 8-2 |
+| F3022 RAG 검색 Tool | ✅ 위키백과 321건, 청크 724개, `search_space_docs` | `samples/run_knowledge.json`, 화면 25 |
+| 하늘 가리키기 (명세 외, 기획의 "자이로") | ✅ 휴대폰 방향 센서 + 위치, 데스크톱 시뮬레이션 | `frontend/pointer.html`, 화면 22, 23 |
+| 결과 | 테스트 442건 수집, 440 통과, 2 건너뜀. API 21개, Tool 8개, 화면 4개, 스크린샷 25장 | [VERIFICATION](VERIFICATION.md) |
 
 ---
 

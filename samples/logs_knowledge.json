@@ -1,0 +1,254 @@
+{
+ "scenario": "knowledge",
+ "session_id": "21646d01c8d5",
+ "turns": [
+  {
+   "message": "안드로메다 은하는 어떤 천체야? 우리 은하와 어떤 관계야?",
+   "events": [
+    {
+     "session_id": "21646d01c8d5",
+     "seq": 1,
+     "ts": "2026-11-20T03:23:23.863008Z",
+     "type": "session_start",
+     "stage": null,
+     "tool": null,
+     "payload": {
+      "message": "안드로메다 은하는 어떤 천체야? 우리 은하와 어떤 관계야?"
+     }
+    },
+    {
+     "session_id": "21646d01c8d5",
+     "seq": 2,
+     "ts": "2026-11-20T03:23:23.886178Z",
+     "type": "stage_start",
+     "stage": "analyze",
+     "tool": null,
+     "payload": {}
+    },
+    {
+     "session_id": "21646d01c8d5",
+     "seq": 3,
+     "ts": "2026-11-20T03:23:28.639013Z",
+     "type": "llm_decision",
+     "stage": "analyze",
+     "tool": null,
+     "payload": {
+      "decision": "knowledge",
+      "reason": "안드로메다 은하의 정의와 우리 은하와의 관계를 묻는 배경지식 질문이라 문서 검색으로 답한다.",
+      "model": "claude-haiku-5-5"
+     }
+    },
+    {
+     "session_id": "21646d01c8d5",
+     "seq": 4,
+     "ts": "2026-11-20T03:23:28.642523Z",
+     "type": "stage_end",
+     "stage": "analyze",
+     "tool": null,
+     "payload": {
+      "duration_ms": 4752,
+      "summary": "의도 knowledge"
+     }
+    },
+    {
+     "session_id": "21646d01c8d5",
+     "seq": 5,
+     "ts": "2026-11-20T03:23:28.646523Z",
+     "type": "stage_start",
+     "stage": "plan",
+     "tool": null,
+     "payload": {}
+    },
+    {
+     "session_id": "21646d01c8d5",
+     "seq": 6,
+     "ts": "2026-11-20T03:23:28.650522Z",
+     "type": "planner_tasks",
+     "stage": "plan",
+     "tool": null,
+     "payload": {
+      "round": 0,
+      "tasks": [
+       {
+        "task_id": "r0-t1",
+        "tool": "search_space_docs",
+        "args": {
+         "query": "안드로메다 은하는 어떤 천체야? 우리 은하와 어떤 관계야?"
+        },
+        "fixed_args": [],
+        "purpose": "배경 지식 문서 검색 (외부 API 로 확인할 수 없는 정의/원리/역사)",
+        "depends_on": []
+       }
+      ],
+      "reason": "배경 지식 검색(search_space_docs)",
+      "trigger": "user"
+     }
+    },
+    {
+     "session_id": "21646d01c8d5",
+     "seq": 7,
+     "ts": "2026-11-20T03:23:28.654522Z",
+     "type": "stage_end",
+     "stage": "plan",
+     "tool": null,
+     "payload": {
+      "duration_ms": 3,
+      "summary": "[Planner] 1단계 계획: 배경 지식 검색(search_space_docs)",
+      "planned_tools": [
+       "search_space_docs"
+      ],
+      "trigger": "user",
+      "round": 0
+     }
+    },
+    {
+     "session_id": "21646d01c8d5",
+     "seq": 8,
+     "ts": "2026-11-20T03:23:28.657534Z",
+     "type": "stage_start",
+     "stage": "execute",
+     "tool": null,
+     "payload": {}
+    },
+    {
+     "session_id": "21646d01c8d5",
+     "seq": 9,
+     "ts": "2026-11-20T03:23:28.661435Z",
+     "type": "tool_call",
+     "stage": "execute",
+     "tool": "search_space_docs",
+     "payload": {
+      "args": {
+       "query": "안드로메다 은하는 어떤 천체야? 우리 은하와 어떤 관계야?"
+      },
+      "reason": "배경 지식 문서 검색 (외부 API 로 확인할 수 없는 정의/원리/역사)",
+      "task_id": "r0-t1"
+     }
+    },
+    {
+     "session_id": "21646d01c8d5",
+     "seq": 10,
+     "ts": "2026-11-20T03:23:29.596627Z",
+     "type": "tool_result",
+     "stage": "execute",
+     "tool": "search_space_docs",
+     "payload": {
+      "ok": true,
+      "note": "출처: 한국어 위키백과 (CC BY-SA 4.0), 문서 앞부분 발췌",
+      "data": "{\"data\":{\"hits\":[{\"title\":\"안드로메다 은하\",\"source_url\":\"https://ko.wikipedia.org/wiki/%EC%95%88%EB%93%9C%EB%A1%9C%EB%A9%94%EB%8B%A4_%EC%9D%80%ED%95%98\",\"snippet\":\"가설에 힘을 실어주고 있으며 이미 학계에서는 안드로메다 은하가 막대나선은하로 분류되어야 한다는 제안이 정설로 받아들여지고 있는 것으로 보인다. 2025년에 출간된 논문에 따르면 늙은 항성들의 분포가 막대 구조의 면모를 보이지 않으며 막대에서 확인되는 S자형 먼지 차폐 구조가 발견되지 않았다고 한다. 하지만, 이것이 안드로메다 은하가 막대나선은하라는 주장에 반론이 되지는 못하며 논문 내에서도 안드로메다 은하의 팽대부에서는 정상나선은하에서는 볼 수 없는 비 원형 구조가 확인되는데 이는 M32p와의 충돌로 인해 가스 원반이 심하게 교란되어 중심 1Kpc의 뜨거운 핵 부분을 제외한 안드로메다 은하의 막대 구조가 심하게 교란된 결과인 것으로 설명될 수 있다고 언급하였다.…\",\"score\":0.987,\"chunk_id\":\"151:7\",\"license\":\"CC BY-SA 4.0\",\"section\":\"2025년 논문에서 제시한 형태\",\"name_match\":true},{\"title\":\"우리 은하\",\"source_url\":\"https://ko.wikipedia.org/wiki/%EC%9A%B0%EB%A6%AC_%EC%9D%80%ED%95%98\",\"snippet\":\"고정관념을 송두리째 뒤엎는 것으로서 우리 은하와 안드로메다 은하는 크기와 무게가 비슷한 대형 쌍둥이 은하일 가능성이 큰 것으로 예상된다. 우리 은하는 막대 나선 은하에 속하며, 허블의 은하 분류에 따르면 Sbc형(중심에 막대가 존재하고 나선팔이 느슨히 감긴 형태)이다. 이전에는 안드로메다 은하와 같은 모양의 정상 나선 은하로 간주되었으나, 1990년대부터 과학자들에 의해 막대 나선 은하일 가능성이 제기되었으며 2005년의 스퍼처 적외선 망원경을 이용한 조사 결과, 중심핵으로부터 지름 27,000광년 길이의 막대 구조가 존재한다는 것이 확인되었다.…\",\"score\":0.759,\"chunk_id\":\"231:7\",\"license\":\"CC BY-SA 4.0\",\"section\":\"형태\",\"name_match\":true},{\"title\":\"은하\",\"source_url\":\"https://ko.wikipedia.org/wiki/%EC%9D%80%ED%95%98\",\"snippet\":\"묶여 회전하는 천체로, 이것을 내부에서 보고 있기 때문에 하늘에서 띠 모양으로 보이는 것이라는 설을 태양계에 대한 관측에서 유추하였다. 은하수의 실제 모습과 태양이 은하수 내에 어디에 위치하는 지를 알아내려는 시도는 윌리엄 허셜에 의해 처음으로 이루어졌다. 1788년 허셜은 밤하늘의 각 방향에 존재하는 별들의 수를 세어, 어두운 별은 먼 거리에 있다는 가정을 바탕으로 별들의 분포를 구하려고 시도했다. 그 결과, 항성은 은하수에 가까울수록 많이 분포해있다는 것을 발견했고, 태양은 은하의 중심부분에 위치한다고 결론을 내렸다. 1920년에는 네덜란드의 야코뷔스 캅테인이 허셜의 방법에 따라 더 정교하게 관찰하였고, 우리 은하의 직경은 약 15kpc이며, 허셜과 마찬가지로 태양은 거의 중심에 있다고 주장하였다.…\",\"score\":0.748,\"chunk_id\":\"18:8\",\"license\":\"CC BY-SA 4.0\",\"section\":\"은하수 (우리 은하)\",\"name_match\":true}],\"index\":{\"provider\":\"local\",\"model\":\"all-MiniLM-L6-v2\",\"chunks\":724,\"docs\":321,\"built_at\":\"2026-11-20T02:52:24+00:00\"}}}",
+      "duration_ms": 945,
+      "task_id": "r0-t1"
+     }
+    },
+    {
+     "session_id": "21646d01c8d5",
+     "seq": 11,
+     "ts": "2026-11-20T03:23:29.614981Z",
+     "type": "worker_result",
+     "stage": "execute",
+     "tool": "search_space_docs",
+     "payload": {
+      "task_id": "r0-t1",
+      "tool": "search_space_docs",
+      "args_used": {
+       "query": "안드로메다 은하는 어떤 천체야? 우리 은하와 어떤 관계야?"
+      },
+      "args_changed": [],
+      "ok": true,
+      "error_code": null,
+      "attempts": 1,
+      "from_cache": false,
+      "duration_ms": 954,
+      "decision": null,
+      "replan_request": null
+     }
+    },
+    {
+     "session_id": "21646d01c8d5",
+     "seq": 12,
+     "ts": "2026-11-20T03:23:29.616147Z",
+     "type": "stage_end",
+     "stage": "execute",
+     "tool": null,
+     "payload": {
+      "duration_ms": 958,
+      "summary": "[Worker] 작업 1개, Tool 호출 1회(실패 0), 캐시 재사용 0회, 후보 0개"
+     }
+    },
+    {
+     "session_id": "21646d01c8d5",
+     "seq": 13,
+     "ts": "2026-11-20T03:23:29.616147Z",
+     "type": "stage_start",
+     "stage": "judge",
+     "tool": null,
+     "payload": {}
+    },
+    {
+     "session_id": "21646d01c8d5",
+     "seq": 14,
+     "ts": "2026-11-20T03:23:29.636277Z",
+     "type": "stage_end",
+     "stage": "judge",
+     "tool": null,
+     "payload": {
+      "duration_ms": 0,
+      "summary": "판정 생략 (계획 요청 아님)"
+     }
+    },
+    {
+     "session_id": "21646d01c8d5",
+     "seq": 15,
+     "ts": "2026-11-20T03:23:29.642291Z",
+     "type": "stage_start",
+     "stage": "respond",
+     "tool": null,
+     "payload": {}
+    },
+    {
+     "session_id": "21646d01c8d5",
+     "seq": 16,
+     "ts": "2026-11-20T03:23:35.065253Z",
+     "type": "stage_end",
+     "stage": "respond",
+     "tool": null,
+     "payload": {
+      "duration_ms": 5419,
+      "summary": "knowledge 응답 888자"
+     }
+    },
+    {
+     "session_id": "21646d01c8d5",
+     "seq": 17,
+     "ts": "2026-11-20T03:23:35.080952Z",
+     "type": "session_end",
+     "stage": null,
+     "tool": null,
+     "payload": {
+      "intent": "knowledge",
+      "replan_count": 0,
+      "duration_ms": 11221
+     }
+    },
+    {
+     "session_id": "21646d01c8d5",
+     "seq": 18,
+     "ts": "2026-11-20T03:23:35.089225Z",
+     "type": "audit_result",
+     "stage": "audit",
+     "tool": null,
+     "payload": {
+      "session_id": "21646d01c8d5",
+      "seq_from": 1,
+      "seq_to": 17,
+      "status": "normal",
+      "findings": [],
+      "evidence_count": 17,
+      "rule_version": "1",
+      "audited_at": "2026-11-20T03:23:35+00:00"
+     }
+    }
+   ]
+  }
+ ]
+}

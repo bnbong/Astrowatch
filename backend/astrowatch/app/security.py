@@ -4,7 +4,7 @@
 브라우저 사용자는 신뢰하되, 사용자가 방문한 다른 사이트(CSRF)는 신뢰하지 않는다.
 
 - RequestGuardMiddleware : 선택적 접근 토큰, 상태 변경 요청(POST/PATCH/DELETE)의 출처 · 커스텀 헤더 ·
-                           Content-Type 검사, 본문 크기 상한, /api/chat 속도 제한.
+                           Content-Type 검사, 본문 크기 상한, /api/chat 과 POST /api/logs/{id}/audit 속도 제한.
 - SecurityHeadersMiddleware : 모든 응답에 보안 헤더, /api/* 에 no-store, HTML 에 CSP.
 둘 다 순수 ASGI 미들웨어다. Content-Length 없이 스트리밍되는 본문도 상한까지만 읽는다.
 """
@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import hmac
 import json
+import re
 import threading
 import time
 from typing import Any, Awaitable, Callable, Iterable
@@ -38,6 +39,8 @@ DETAIL_MEDIA_TYPE = "JSON 본문만 받습니다"
 DETAIL_TOO_LARGE = "요청 본문이 너무 큽니다"
 DETAIL_UNAUTHORIZED = "접근 토큰이 필요합니다"
 DETAIL_RATE = "요청이 너무 많습니다"
+# 속도 제한 경로 (POST 만). 경로별 버킷과 설정 이름
+AUDIT_PATH = re.compile(r"^/api/logs/[^/]+/audit/?$")
 
 CSP = (
     "default-src 'self'; script-src 'self'; "
@@ -57,7 +60,8 @@ BASE_HEADERS = (
     (b"x-content-type-options", b"nosniff"),
     (b"referrer-policy", b"strict-origin-when-cross-origin"),
     (b"x-frame-options", b"DENY"),
-    (b"permissions-policy", b"camera=(), microphone=(), geolocation=()"),
+    # 하늘 가리키기(pointer.html)가 같은 출처에서만 현재 위치를 쓸 수 있게 geolocation=(self)
+    (b"permissions-policy", b"camera=(), microphone=(), geolocation=(self)"),
 )
 
 
@@ -102,7 +106,7 @@ class TokenBucket:
 class RequestGuardMiddleware:
     def __init__(self, app: ASGIApp) -> None:
         self.app = app
-        self._bucket: TokenBucket | None = None  # 앱 인스턴스별
+        self._buckets: dict[str, TokenBucket] = {}  # 앱 인스턴스별, 경로 종류(chat, audit)별
 
     @staticmethod
     def allowed_origins() -> frozenset[str]:
@@ -125,11 +129,24 @@ class RequestGuardMiddleware:
             return False
         return bool(parts.netloc) and parts.scheme in ("http", "https") and parts.netloc == host.strip().lower()
 
-    def _bucket_for(self) -> TokenBucket:
-        rate = get_settings().chat_rate_per_min
-        if self._bucket is None or self._bucket.rate != rate:
-            self._bucket = TokenBucket(rate)
-        return self._bucket
+    def _bucket_for(self, kind: str = "chat") -> TokenBucket:
+        s = get_settings()
+        rate = s.audit_rate_per_min if kind == "audit" else s.chat_rate_per_min
+        bucket = self._buckets.get(kind)
+        if bucket is None or bucket.rate != rate:
+            bucket = self._buckets[kind] = TokenBucket(rate)
+        return bucket
+
+    @staticmethod
+    def _rate_kind(method: str, path: str) -> str | None:
+        """속도 제한 대상이면 버킷 종류. chat: 대화(LLM, 외부 API), audit: 지금 판정(LLM 진단)."""
+        if method != "POST":
+            return None
+        if path == "/api/chat":
+            return "chat"
+        if AUDIT_PATH.match(path):
+            return "audit"
+        return None
 
     async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
         if scope["type"] != "http":
@@ -178,10 +195,11 @@ class RequestGuardMiddleware:
                     await _json_response(send, 415, DETAIL_MEDIA_TYPE)
                     return
 
-        # 6) /api/chat 속도 제한 (클라이언트 IP 기준)
-        if path == "/api/chat" and method == "POST":
+        # 6) /api/chat, POST /api/logs/{id}/audit 속도 제한 (클라이언트 IP 기준, 경로 종류별 버킷)
+        kind = self._rate_kind(method, path)
+        if kind is not None:
             client = scope.get("client") or ("unknown", 0)
-            allowed, retry = self._bucket_for().allow(str(client[0]))
+            allowed, retry = self._bucket_for(kind).allow(str(client[0]))
             if not allowed:
                 await _json_response(send, 429, DETAIL_RATE, [(b"retry-after", str(retry).encode())])
                 return

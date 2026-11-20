@@ -18,6 +18,30 @@
     occultation: "엄폐", season: "절기", deep_sky: "딥스카이", other: "기타",
   };
   const WEEK = ["일", "월", "화", "수", "목", "금", "토"];
+  // 하늘 가리키기 대상 키 → 표시 이름 (카탈로그 키는 한국어 이름 그대로)
+  const TARGET_NAME = {
+    moon: "달", mercury: "수성", venus: "금성", mars: "화성", jupiter: "목성", saturn: "토성", uranus: "천왕성", neptune: "해왕성",
+    quadrantids: "사분의자리 유성우 복사점", lyrids: "거문고자리 유성우 복사점", "eta-aquariids": "물병자리 에타 유성우 복사점",
+    "southern-delta-aquariids": "남쪽 물병자리 델타 유성우 복사점", perseids: "페르세우스자리 유성우 복사점",
+    draconids: "용자리 유성우 복사점", orionids: "오리온자리 유성우 복사점", "southern-taurids": "남쪽 황소자리 유성우 복사점",
+    "northern-taurids": "북쪽 황소자리 유성우 복사점", leonids: "사자자리 유성우 복사점", geminids: "쌍둥이자리 유성우 복사점",
+    ursids: "작은곰자리 유성우 복사점",
+  };
+  const NO_TARGET = "가리킬 천체가 없는 계획";
+  function targetName(p) {
+    return p.target_object ? TARGET_NAME[p.target_object] || p.target_object : null;
+  }
+  // 하늘에서 찾기 링크. 대상이 없으면 비활성(href 없음) + 툴팁
+  function skyLinkHtml(p, cls) {
+    const icon = '<svg class="svg-i" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<circle cx="12" cy="12" r="8"></circle><circle cx="12" cy="12" r="2.5"></circle><path d="M12 2v3M12 19v3M2 12h3M19 12h3"></path></svg>';
+    if (!p.target_object) {
+      return '<a class="btn btn-sm sky-link ' + (cls || "") + '" role="link" aria-disabled="true" tabindex="0" title="' + NO_TARGET + '">' +
+        icon + "하늘에서 찾기<span class=\"sr-only\"> (" + NO_TARGET + ")</span></a>";
+    }
+    return '<a class="btn btn-sm sky-link ' + (cls || "") + '" href="pointer.html?plan_id=' + encodeURIComponent(p.id) + '" title="' +
+      esc(targetName(p)) + ' 가리키기">' + icon + "하늘에서 찾기</a>";
+  }
   const DRAWER_EMPTY = '<p class="drawer-empty">목록에서 계획을 고르면 상세 · 수정 · 캘린더 등록이 여기에 표시됩니다.</p>';
 
   let plans = [];
@@ -144,7 +168,11 @@
             : "다른 계획 " + ov.length + "건과 겹침") + "</span>" : "") +
           "</div>";
         btn.addEventListener("click", () => select(p.id, true));
-        box.appendChild(btn);
+        const wrap = document.createElement("div");
+        wrap.className = "plan-row-wrap";
+        wrap.appendChild(btn);
+        wrap.insertAdjacentHTML("beforeend", skyLinkHtml(p));
+        box.appendChild(wrap);
       });
       $list.appendChild(box);
     });
@@ -205,7 +233,9 @@
       (p.place_url && /^https?:\/\//.test(p.place_url) ? ' · <a href="' + esc(p.place_url) + '" target="_blank" rel="noopener noreferrer">장소 링크</a>' : "") +
       "</dd>" +
       '<dt>수정</dt><dd class="num">' + esc(F.fmtDateTime(p.updated_at)) + "</dd>" +
+      "<dt>가리킬 천체</dt><dd>" + (p.target_object ? "<b>" + esc(targetName(p)) + "</b>" : '<span class="muted">' + NO_TARGET + "</span>") + "</dd>" +
       "</dl>" +
+      '<div class="form-actions">' + skyLinkHtml(p, "btn-primary") + "</div>" +
       '<form id="edit-form" class="edit-form" novalidate>' +
       '<label class="field full">제목<input name="event_title" required value="' + esc(p.event_title) + '"></label>' +
       '<label class="field">시작<input type="datetime-local" name="start_dt" required value="' + esc(F.toInputValue(p.start_dt)) + '"></label>' +

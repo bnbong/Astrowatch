@@ -1,7 +1,7 @@
 # Astrowatch 검증 결과
 
 > 명세 4장 확인 항목, 대표 시나리오 R1~R7, 실제 E2E 리뷰 발견과 수정을 근거 파일과 함께 정리한다.
-> 갱신일 2026-11-20 (제출일), 테스트 경로는 `backend/tests/`, LLM `claude-haiku-5-5` (GMS Anthropic 호환 경로)
+> 갱신일 2026-11-20 (제출일, 오후 심화 F3020, F3021, F3022 와 하늘 가리키기 반영), 테스트 경로는 `backend/tests/`, LLM `claude-haiku-5-5` (GMS Anthropic 호환 경로)
 
 ---
 
@@ -10,16 +10,17 @@
 | 표시 | 뜻 | 근거 위치 |
 |---|---|---|
 | **E2E** | 실행 중인 서버에 실제 HTTP 요청, 실제 LLM, 실제 외부 API (Codex 리뷰, 2026-11-18 15시경, 당시 LLM `gpt-6-luna`) | `output/e2e-review/Sxx.json`, `Sxx-logs.json`, `browser-*.png` |
-| **실측 샘플** | `backend/scripts/run_scenarios.py` 로 실제 키, 실제 LLM 실행 (`run_turn` 직접 호출, **2026-11-20 09:44~09:46, `claude-haiku-5-5`**, 캘린더는 `CALENDAR_PROVIDER=local`). 요청 원문, 응답, 경과초는 `run_*.json`(`captured_at`), 실행 로그는 `logs_*.json` | `samples/run_R1.json`(R1+R6), `run_R6.json`, `run_R4_nokakao.json`(카카오 키 제거), `run_R5.json`, `run_R7.json`, `run_andromeda.json`, `run_fact_mars.json`, `run_invalid_date.json`, `run_unknown_object.json` |
+| **실측 샘플** | `backend/scripts/run_scenarios.py` 로 실제 키, 실제 LLM 실행 (`run_turn` 직접 호출, **2026-11-20 09:44~09:46, `claude-haiku-5-5`**, 캘린더는 `CALENDAR_PROVIDER=local`). 요청 원문, 응답, 경과초는 `run_*.json`(`captured_at`), 실행 로그는 `logs_*.json` | `samples/run_R1.json`(R1+R6), `run_R6.json`, `run_R4_nokakao.json`(카카오 키 제거), `run_R5.json`, `run_R7.json`, `run_andromeda.json`, `run_fact_mars.json`, `run_invalid_date.json`, `run_unknown_object.json`, `run_knowledge.json`. R1, R6 은 11:35, knowledge 는 11:53 (Planner/Worker 기본 구조, 로깅 Agent 판정 포함) 재캡처 |
+| **심화 스크립트** | 실제 LLM, 외부 API 로 구조 비교 (`compare_structures.py`, 11:35), 합성 이벤트로 이상 판정 (`make_anomalies.py`, LLM 없음) | `samples/structure_compare.json`, `samples/audit_samples.json`, `samples/space_docs_search_sample.json` |
 | **mock 샘플** | 위와 같은 스크립트, 날씨만 `WEATHER_PROVIDER=mock`(전부 흐림) | `samples/run_R2_mock.json`, `run_R3_mock.json` |
-| **화면** | 실제 서버(실제 키, 실제 예보)를 Playwright + Edge 로 캡처 (2026-11-20, `backend/scripts/capture_screens.py`). 카카오 키 없는 서버, LLM 키 없는 서버, mock 예보 서버를 따로 띄워 18, 19, 07, 08 캡처 | `docs/screenshots/01~21_*.png`, `docs/demo/astrowatch_demo.webm`, `.gif` (11절) |
-| **그래프** | `GET /api/graph` 결과 | [`docs/graph_structure.txt`](graph_structure.txt) |
+| **화면** | 실제 서버(실제 키, 실제 예보)를 Playwright + Edge 로 캡처 (2026-11-20, `backend/scripts/capture_screens.py`). 카카오 키 없는 서버, LLM 키 없는 서버, mock 예보 서버를 따로 띄워 18, 19, 07, 08 캡처 | `docs/screenshots/01~25_*.png`, `docs/demo/astrowatch_demo.webm`, `.gif` (11절) |
+| **그래프** | `GET /api/graph` 결과 | [`docs/graph_structure.txt`](graph_structure.txt) (2026-11-20 12:10 재출력, 기본 planner_worker 그래프: analyze → planner → worker → judge → verify → respond). classic 그래프는 `AGENT_STRUCTURE=classic` 으로 같은 API 에서 확인, `test_graph_ascii_shows_active_structure` |
 | **자동 테스트** | 키, 네트워크 없이 `samples/` fixture, 가짜 LLM | `backend/tests/*.py` |
 | **미검증** | 아직 실행 증거 없음 | 없음 |
 
 > ⚠️ E2E 리뷰(`output/e2e-review/`)는 **8절의 수정 이전** 코드, `gpt-6-luna` 로 실행했다. `samples/run_*.json` 과 화면은 수정, 보안 강화, LLM 전환 **이후** 코드로 다시 캡처했다. 수정 후 브라우저 E2E 재실행은 8절 참고.
 
-**자동 테스트**: 22개 파일, **298 통과, 2 건너뜀**(POSIX 전용 권한, 심볼릭 링크 검사, Windows 에서 skip) (`cd backend && ..\.venv\Scripts\python.exe -X utf8 -m pytest -q -o addopts=""`, 2026-11-20). 리뷰 시점은 181개였다(`output/e2e-review/pytest.txt`).
+**자동 테스트**: 28개 파일, 442건 수집, **440 통과, 2 건너뜀**(POSIX 전용 권한, 심볼릭 링크 검사, Windows 에서 skip) (`cd backend && ..\.venv\Scripts\python.exe -X utf8 -m pytest -q -o addopts=""`, 2026-11-20 오후). 오전 제출 직전은 298 통과, 리뷰 시점은 181개였다(`output/e2e-review/pytest.txt`).
 
 ---
 
@@ -27,11 +28,11 @@
 
 | 확인 항목 | 방법 | 근거 | 결과 |
 |---|---|---|---|
-| Tool 이름, 설명, 입력 스키마 목록 | `GET /api/tools` | E2E `meta-tools.json` (당시 5종), `test_tools_is_list`, `test_openai_tool_schema_has_only_name_desc_params`, 화면 [17](screenshots/17_fastapi_swagger.png) (Swagger), 연결 상태 "Tool 7개" 화면 [01](screenshots/01_chat_empty.png) | ✅ (`/api/tools` 7종 응답 원문 캡처는 미첨부) |
+| Tool 이름, 설명, 입력 스키마 목록 | `GET /api/tools` | E2E `meta-tools.json` (당시 5종), `test_tools_is_list`, `test_openai_tool_schema_has_only_name_desc_params`, `test_spec_and_registration` (`search_space_docs` 등록), 화면 [17](screenshots/17_fastapi_swagger.png) (Swagger), 연결 상태 화면 [24](screenshots/24_logs_audit_panel.png) "Tool 8개" (화면 [01](screenshots/01_chat_empty.png) 은 F3022 전이라 7개) | ✅ 현재 8종: 외부 4 (`search_sky_events`, `get_night_window`, `get_sky_forecast`, `search_observatory`), 로컬 4 (`lookup_sky_object`, `get_calendar`, `add_plan_to_calendar`, `search_space_docs`). `/api/tools` 응답 원문 캡처는 미첨부 |
 | 정상, 실패 호출이 봉투로 반환 | Tool 별 정상 / 키 없음 / 잘못된 입력 / 타임아웃 | `test_exception_becomes_envelope_not_raise`, `test_bad_input_and_unknown_tool`, `test_*_no_key_is_auth*`, `test_timeout_mapping`, `test_radius_over_limit_is_bad_input`, 실측 `run_R4_nokakao.json` (`search_observatory` `AUTH`) | ✅ |
 | 기준 날짜 미지정 시 기본값 | 날짜 없이 요청 | 실측 `run_andromeda.json` 2턴 ("2026-11-20~2026-11-29 범위에서 찾았습니다"), `test_deep_sky_without_date_uses_default_range`, 화면 [10](screenshots/10_andromeda_deep_sky.png) | ✅ |
 | 요청 기준 ≠ 조회 기준을 밝힘 | 예보 밖 날짜, 중기예보, mock | 실측 `run_R1.json` 사유 "예보 범위 밖(D-3부터 확인 가능)", `run_andromeda.json` "중기예보 '맑음'(시간별 예보 아님)", mock note, 화면 [03](screenshots/03_card_timebar.png) ("날씨: 예보 범위 밖") | ✅ |
-| 후보 식별자 → 상세 조회로 이어짐 | 현상 date → 박명 date | `run_R1.json` seq 8→12 (사이 seq 10 `get_calendar`), `test_r1_flow` (Tool 순서 고정), 화면 [04](screenshots/04_execution_timeline.png) | ✅ |
+| 후보 식별자 → 상세 조회로 이어짐 | 현상 date → 박명 date | `run_R1.json` seq 9→15 (사이 seq 12 `get_calendar`), `test_r1_flow` (Tool 순서 고정), 화면 [04](screenshots/04_execution_timeline.png) | ✅ |
 | 판단 속성이 비면 판단 안 함 | 박명 빈 값, 미등록 천체 | `test_blank_twilight_is_no_window`, `test_no_night_window_unjudged`, `test_object_not_found_is_unjudged`, 실측 `run_unknown_object.json` (`unjudged` 1, `NOT_FOUND`) | ✅ 수정 후 (E2E S07 은 수정 전 실패 → 8절 R1) |
 | 보조 Tool 결과 없음 형식 | 반경 안 0건 | `test_no_result` (observatory) | ✅ 자동 테스트 |
 
@@ -42,7 +43,7 @@
 | 확인 항목 | 방법 | 근거 | 결과 |
 |---|---|---|---|
 | 조건 추출, 임의로 안 채움 | `ChatResponse.conditions` | 실측 `run_R7.json` (`needs_clarification=[region, start_minute]`), E2E S03, S02, `test_conditions_missing_rules`, 조건 스트립 화면 [02](screenshots/02_chat_r1_recommendation.png) | ✅ |
-| **그래프 구조 출력**, 5노드 | `GET /api/graph` | [`docs/graph_structure.txt`](graph_structure.txt) (analyze → plan → execute → judge → respond, judge ⇢ plan 재계획 엣지), E2E `meta-graph.json`, `test_graph`, `test_r1_flow` | ✅ |
+| **그래프 구조 출력** | `GET /api/graph` | [`docs/graph_structure.txt`](graph_structure.txt) (planner_worker: analyze → planner → worker → judge → verify → respond, judge/worker/verify ⇢ planner 재계획 엣지), classic 5노드는 E2E `meta-graph.json`, `test_graph`, `test_r1_flow` | ✅ |
 | Tool 필요 / 불필요 계획이 다름 | 인사 vs 관측 요청 | 실측 `run_R5.json`(Tool 0) vs `run_R1.json`(Tool 4), `test_greeting_no_tools`, 화면 [01](screenshots/01_chat_empty.png), [02](screenshots/02_chat_r1_recommendation.png) | ✅ |
 | 앞 결과 → 다음 입력, 한 Tool 실패에도 진행 | 카카오 키 제거 | 실측 `run_R4_nokakao.json`, E2E S20, `test_tool_auth_failure_continues`, 화면 [18](screenshots/18_tool_failure_warning_kakao.png) | ✅ |
 | 계산 값과 응답 판단 기준 일치 | 관측 창, 맑은 시간 | `run_R1.json` 사유 240분 = 답변 22:00~02:00+1, `test_judge.py`, 카드 헤드라인 화면 [02](screenshots/02_chat_r1_recommendation.png), [03](screenshots/03_card_timebar.png) | ✅ |
@@ -59,9 +60,9 @@
 
 | 확인 항목 | 근거 | 결과 |
 |---|---|---|
-| 단계 진입/종료, Tool 요청/응답, 소요 시간 이벤트 | `logs_R1.json` seq 1~21, [RUN_LOG_SAMPLE](RUN_LOG_SAMPLE.md), 화면 [16](screenshots/16_log_events_table.png) | ✅ |
+| 단계 진입/종료, Tool 요청/응답, 소요 시간 이벤트 | `logs_R1.json` 1턴 seq 1~28, [RUN_LOG_SAMPLE](RUN_LOG_SAMPLE.md), 화면 [16](screenshots/16_log_events_table.png) | ✅ |
 | LLM 판단과 이유가 이벤트에 | `llm_decision` (`logs_R1.json` seq 3, `model: claude-haiku-5-5`), 화면 [04](screenshots/04_execution_timeline.png) | ✅ |
-| 로깅 Agent 가 LLM 을 안 씀 | `test_no_llm_dependency` | ✅ 자동 테스트 |
+| 로깅 Agent 가 LLM 을 안 씀 | `test_no_llm_dependency` (저장). 판정도 규칙만, 진단만 이상일 때 LLM (6-1) | ✅ 자동 테스트 |
 | 로깅 Agent 없이도 메인 정상 | `test_runs_without_subscribers`, `test_bad_db_path_never_raises` | ✅ 자동 테스트 (운영 중 분리 실험은 미검증) |
 | 세션별 구분, 섞이지 않음 | `test_events_in_seq_order_and_isolated`, `test_seq_continues_after_restart`, 화면 [15](screenshots/15_logs_sessions.png) | ✅ |
 | 목록, 상세(순서), 삭제 | E2E 목록/상세 200, 삭제 204 → 404, `test_logs_list_detail_delete`, `test_list_limit_offset`, 화면 [15](screenshots/15_logs_sessions.png), [16](screenshots/16_log_events_table.png) | ✅ |
@@ -83,8 +84,8 @@
 
 | 확인 항목 | 근거 | 결과 |
 |---|---|---|
-| 대화, 계획, 로그 API 경로 분리, 형식 일치 | E2E `openapi.json`, 화면 [17](screenshots/17_fastapi_swagger.png) (chat, plans, calendar, logs, sessions, meta) | ✅ |
-| 화면이 모두 백엔드 호출 | 화면 [02](screenshots/02_chat_r1_recommendation.png), [13](screenshots/13_plans_list.png), [15](screenshots/15_logs_sessions.png), 세션 복원 화면 [12](screenshots/12_session_restored.png), 모바일 화면 [20](screenshots/20_mobile_chat.png), [21](screenshots/21_mobile_plans.png), E2E 브라우저 (pageerror 0) | ✅ |
+| 대화, 계획, 로그 API 경로 분리, 형식 일치 | E2E `openapi.json`, 화면 [17](screenshots/17_fastapi_swagger.png) (chat, plans, calendar, logs, sessions, meta), 현재 21개 (`@router.` 기준, sky 2, 판정 3 추가) | ✅ |
+| 화면이 모두 백엔드 호출 | 화면 [02](screenshots/02_chat_r1_recommendation.png), [13](screenshots/13_plans_list.png), [15](screenshots/15_logs_sessions.png), 세션 복원 화면 [12](screenshots/12_session_restored.png), 모바일 화면 [20](screenshots/20_mobile_chat.png), [21](screenshots/21_mobile_plans.png), 하늘 가리키기 [22](screenshots/22_pointer_desktop_sim.png), [23](screenshots/23_pointer_mobile.png), 판정 패널 [24](screenshots/24_logs_audit_panel.png), E2E 브라우저 (pageerror 0) | ✅ 4화면 (index, plans, logs, pointer) |
 | 실행 단계, Tool 이력 순서대로, 재계획 지점 구분 | 화면 [04](screenshots/04_execution_timeline.png), 화면 [08](screenshots/08_timeline_replan_marker.png) (재계획 1회차 구분선, 회차 태그, 3/3 카운터), `StepOut.replan_round`, `frontend/js/timeline.js`, `test_replan_reuses_cache` | ✅ |
 | 처리 중 표시 | [영상](demo/astrowatch_demo.webm) (질문 직후 처리 중 표시), E2E 로딩 표시 확인 | ✅ |
 | Tool 실패, 키 누락 안내 | 카카오 키 누락 경고 배너 화면 [18](screenshots/18_tool_failure_warning_kakao.png), LLM 키 누락 안내 화면 [19](screenshots/19_llm_key_missing_notice.png) (연결 상태 "LLM 키 없음"), E2E S20 | ✅ |
@@ -92,7 +93,44 @@
 
 ---
 
-## 6. 4.6 심화: F3023 캘린더 (선택 과제만)
+## 6. 4.6 심화 (F3020~F3023)
+
+심화 4건 모두 구현했다. F3023 은 1일차, F3020, F3021, F3022 는 3일차 오후(2026-11-20) 구현.
+
+### 6-1. F3020 로깅 Agent 이상 징후 판정
+
+| 확인 항목 | 근거 | 결과 |
+|---|---|---|
+| 이상 실행 3종이 각각 이상으로 판정 | `backend/scripts/make_anomalies.py` → `samples/audit_samples.json` (5세션, 기대와 모두 일치): repeated → `repeated_call` seq 6, 8, 10 / replan → `excessive_replan` seq 8, 13, 18 / unplanned → `unplanned_call` seq 8 / normal → normal. 테스트 `test_repeated_same_input`, `test_excessive_replan_threshold_from_settings`, `test_replan_limit_reached_flags`, `test_unplanned_call_from_plan_stage_end`, `test_unplanned_uses_planner_tasks_when_present` | ✅ 스크립트, 자동 테스트 |
+| 근거가 없으면 판정 불가 | `audit_samples.json` demo-audit-empty → `undetermined` (근거 2건: `session_start`, `session_end` 만), `test_undetermined_without_evidence`, `test_no_plan_evidence_gives_no_unplanned_finding_but_note`, 화면 [24](screenshots/24_logs_audit_panel.png) 목록의 "판정 불가" 배지 | ✅ |
+| 정상 실행은 경고 없음 (오탐 방지) | `test_normal_run`, `test_cache_reuse_not_counted`, `test_same_input_in_different_turns_is_not_repeat`, `test_real_graph_normal_turn_is_normal`, `test_real_graph_replan_with_cache_reuse_not_repeated`, 실측 `logs_R1.json` seq 28, 54 `audit_result` normal | ✅ |
+| 메인 Agent 가 결과를 참조 | 턴 시작 시 직전 판정 → `state["audit"]`, 이번 턴 판정 → `ChatResponse.audit` (`run_R1.json` `audit.status=normal`), `test_run_turn_attaches_audit_and_passes_previous_to_state`, `test_previous_audit_anomaly_recomposes_once` (직전 이상 → Planner 재구성), `test_stored_turn_includes_audit` | ✅ |
+| 진단은 이상일 때만, 정상에는 LLM 없음 | `test_no_llm_on_normal_or_undetermined`, `test_diagnosis_on_anomaly_three_sentences`, `test_diagnosis_off_by_setting`, `test_diagnosis_failure_keeps_result`, `test_real_graph_replan_limit_is_anomaly_and_failed_diagnosis_kept`. 실제 LLM 진단: 화면 [24](screenshots/24_logs_audit_panel.png) (demo-audit-replan, `claude-haiku-5-5`, 원인 쪽 Planner, 경고 수에 포함 안 함) | ✅ (`audit_samples.json` 은 `llm: false` 로 생성, 실제 진단은 화면 24 의 POST 재판정 1건) |
+| 판정 API, 화면 | `test_api_audit_endpoints`, `test_api_session_list_badge`, `GET /api/logs/{id}/audits`, `GET`/`POST /api/logs/{id}/audit`, 화면 [24](screenshots/24_logs_audit_panel.png) (세션 배지, 판정 패널, 근거 seq 버튼) | ✅ |
+
+### 6-2. F3021 Planner/Worker 분리
+
+| 확인 항목 | 근거 | 결과 |
+|---|---|---|
+| 작업 목록과 결과가 정해진 형식 | 실측 `logs_R1.json` seq 6 `planner_tasks` (`task_id`, `args`, `fixed_args`, `purpose`, `depends_on`, `trigger=user`), seq 11, 14, 17, 21 `worker_result`, [RUN_LOG_SAMPLE 1절](RUN_LOG_SAMPLE.md), `test_normal_path_formats_and_zero_worker_llm` | ✅ 실측, 자동 테스트 |
+| 로깅 Agent 이상 판정 시 Planner 재구성 | verify 노드(`agent/verify.py`) → `trigger=audit_anomaly`, 턴마다 1회. `test_inturn_anomaly_recomposes_once`, `test_previous_audit_anomaly_recomposes_once`. 실측 `structure_compare.json` R2, R3 (pw 구성 trigger 마지막 `audit_anomaly`, 재구성 뒤 Tool 호출 증가 없음) | ✅ |
+| 메시지가 실행 로그에 남음 | `planner_tasks`, `worker_result`, `worker_decision` 이벤트 (`logs_R1.json`, `logs_R6.json`, `logs_knowledge.json`) | ✅ |
+| 구조 변경 전후 비교 표 | `backend/scripts/compare_structures.py` → `samples/structure_compare.json` (실제 LLM, 6 시나리오 x 3 구성). 평균: 재계획 1.17 / 1.17 / 1.17, Tool 호출 15.17 (세 구성 동일), 요청당 LLM 호출 1.33 / 1.33 / 1.50, 응답 시간 17.05 / 15.96 / 16.11초 (classic / pw_rule / pw_llm). 시나리오별 표는 [AGENT_DESIGN 8-2](AGENT_DESIGN.md) | ✅ 실측 |
+| 정상 경로 Worker LLM 0회, 치명적 실패와 필수 인자 누락도 0회 | `test_normal_path_formats_and_zero_worker_llm`, `test_fatal_auth_failure_no_llm`, `test_missing_required_args_no_llm_no_call`, `test_ambiguous_not_sent_to_llm`. 실측 `logs_R1.json` seq 20 `worker_decision source=rule, llm_attempted=false` (OUT_OF_RANGE), 비교 표 R1, R4, R6 Worker LLM 0 | ✅ |
+| NO_RESULT → LLM 이 고친 인자로 재호출, 고정 인자는 그대로 | `test_no_result_llm_retry_same_tool_fixed_args_kept`, `test_llm_cannot_change_fixed_arg`, `test_retry_bounded_by_worker_max_retry` | ✅ 가짜 LLM 테스트만. 실제 실행(비교 NR, pw_llm)에서 LLM 은 retry 가 아닌 replan_request 를 골랐다 |
+| Worker 의 계획 변경 요청을 Planner 가 반영 | `test_worker_replan_request_reflected_by_planner_rule`, `test_worker_llm_replan_request`. 실측 비교 NR (없는 유성우): pw_rule, pw_llm 모두 trigger `user, worker_request`, 재계획 1, 추천 1 | ✅ |
+| classic 구조 유지 | `test_classic_structure_still_runs`, `test_graph_ascii_shows_active_structure` | ✅ |
+
+### 6-3. F3022 RAG 검색 Tool
+
+| 확인 항목 | 근거 | 결과 |
+|---|---|---|
+| 배경 지식 질문에 이 Tool 선택 | 실측 `samples/run_knowledge.json` ("안드로메다 은하는 어떤 천체야? 우리 은하와 어떤 관계야?" → `knowledge`, `search_space_docs` 1회, 12.2초, 판정 normal), `logs_knowledge.json`, `test_knowledge_build_plan_single_docs_call`, `test_fact_definition_question_rerouted_to_knowledge`, `test_knowledge_question_rule` | ✅ 실측 |
+| 답변에 출처 표시 | `run_knowledge.json` 답 끝 "출처:" 줄(안드로메다 은하, 우리 은하 URL, CC BY-SA 4.0), 화면 [25](screenshots/25_knowledge_rag_sources.png), `test_knowledge_template_answer_cites_sources`, `test_knowledge_llm_answer_gets_sources_appended` | ✅ |
+| 색인 없음 형식 | `test_no_index_when_absent`, `test_no_index_when_collection_empty`, `test_knowledge_no_index_answer_format`, `test_knowledge_real_tool_no_index`. 불일치 `test_index_mismatch`, 결과 없음 `test_no_result_below_min_score` | ✅ 자동 테스트 |
+| 검색 결과 원문 | `samples/space_docs_search_sample.json` (같은 질문, 1위 "안드로메다 은하" 0.987, 2위 "우리 은하" 0.759). 색인: 문서 321건 → 청크 724개, 384차원 (로컬 ONNX all-MiniLM-L6-v2) | ✅ |
+
+### 6-4. F3023 캘린더
 
 | 확인 항목 | 근거 | 결과 |
 |---|---|---|
@@ -101,22 +139,20 @@
 | 조회 일정이 판정에 반영 | `test_calendar_conflict_shrinks_window`, `test_calendar_full_overlap_unfit`, `test_calendar_auth_failure_continues` | ✅ 자동 테스트 |
 | 실제 Google 계정 | `scripts/google_auth.py` 로 토큰 발급, `events.list` 조회 확인 (11-18) | 조회 ✅, 등록(`events.insert`)은 개인 일정이 생기지 않도록 **의도적으로 미실행** (가짜 클라이언트 테스트만) |
 
-F3020, F3021, F3022 는 선택하지 않았거나 미구현이라 확인 대상이 아니다. E2E S12(배경지식)는 "미지원" 안내.
-
 ---
 
 ## 7. 4.7 대표 시나리오
 
-실측 2026-11-20 09:44~09:46, `claude-haiku-5-5`, `run_scenarios.py` 기대 체크 **20건 모두 OK**.
+실측 2026-11-20 09:44~09:46, `claude-haiku-5-5`, `run_scenarios.py` 기대 체크 **20건 모두 OK**. R1, R6 은 11:35 에 기본 Planner/Worker 구조로 다시 캡처했다 (`planner_tasks`, `worker_result`, `worker_decision`, `audit_result` 이벤트 포함, 판정 normal). 시나리오는 12종 (아래 R1~R7 과 보충 5종).
 
 | # | 요청 | 기대 | 실제 | 근거 | 종류 | 차이 |
 |---|---|---|---|---|---|---|
-| R1 | 12/14 서울 22~02시 쌍둥이자리 유성우 | 조건부 충족, 달 영향, "D-3부터" | 조건부 충족 1, 창 22:00~02:00+1 (240분), 맑은 시간 미산정, 월령 5.5, 늦어도 01:30+1, Tool 4회(예보 `OUT_OF_RANGE`), 재계획 0, `stop_reason=null`, 7.5초 | `samples/run_R1.json` 1턴, `logs_R1.json`, 화면 [02](screenshots/02_chat_r1_recommendation.png), E2E S03 | 실측, E2E | 없음 |
+| R1 | 12/14 서울 22~02시 쌍둥이자리 유성우 | 조건부 충족, 달 영향, "D-3부터" | 조건부 충족 1, 창 22:00~02:00+1 (240분), 맑은 시간 미산정, 월령 5.5, 늦어도 01:30+1, Tool 4회(예보 `OUT_OF_RANGE`, Worker 규칙 skip), 재계획 0, `stop_reason=null`, 판정 normal, 10.4초 (11:35 재캡처, 09:44 classic 은 7.5초) | `samples/run_R1.json` 1턴, `logs_R1.json`, 화면 [02](screenshots/02_chat_r1_recommendation.png), E2E S03 | 실측, E2E | 없음 |
 | R2 | 주말 21~24시 대전, 흐리면 다른 날 | 재계획 + 현상, 출몰 재사용 | 재계획 3회(날짜 ±2일 → 다른 현상 → 세종) 후 추천 0, 제외 8, `stop_reason=limit_reached`, 캐시 재사용 1 → 5 → 2회, Tool 28회, 30.9초 | `samples/run_R2_mock.json`, `logs_R2_mock.json` | mock | mock 은 모든 날 흐림이라 재계획 후 충족이 불가능 → 상한까지 감. "재계획 후 충족" 경로는 `test_replan_reuses_cache` 로 확인. 상한 도달 화면은 [07](screenshots/07_replan_and_stop_reason.png) (mock 서버, R3 문장) |
 | R3 | 다음 주 서울 보름달 피해 유성 | 재계획 3회 → 멈춤 + 넓힐지 질문 | 3회(날짜 ±2일 → 다른 현상 → 인천) 후 추천 0, 제외 13, `stop_reason=limit_reached`, `replan_limit_reached=true`, Tool 46회, 32.9초, 마지막 줄 "날짜 범위나 지역을 넓혀 볼까요?" | `samples/run_R3_mock.json`, `logs_R3_mock.json`, E2E S08 | mock, E2E | 없음 |
 | R4 | 토요일 대전 천문대 20km + 카카오 키 없음 | 장소만 실패, 판단은 진행 | 장소 `AUTH`, 경고 1건("카카오 장소 검색 API 키…"), 수성 서방 최대이각 충족(창 21:00~23:59, 맑은 179분), Tool 5회(실패 1), 6.9초 | `samples/run_R4_nokakao.json`, 화면 [18](screenshots/18_tool_failure_warning_kakao.png), E2E S20 | 실측, E2E | 없음 |
 | R5 | 안녕, 이거 어떻게 써? | Tool 없이 사용법 | chat, Tool 0, 3.6초 | `samples/run_R5.json`, E2E S01, `test_greeting_no_tools` | 실측, E2E | 없음 |
-| R6 | 같은 날 장소만 대전으로 바꿔 줘 (R1 세션 2턴) | 날짜, 시간 유지, 지역만 | 12/14, 22:00~02:00+1 유지, 지역만 대전, 조건부 충족 1 (창 240분), 현상 조회 재사용(캐시 1회, 캘린더, 박명, 예보 3회만 호출), 5.8초 | `samples/run_R6.json`(= `run_R1.json` 2턴), 화면 [06](screenshots/06_followup_context_kept.png), E2E S14, `test_follow_up_keeps_context` | 실측, E2E | 기획 문구는 "강원도", 시험은 "대전" |
+| R6 | 같은 날 장소만 대전으로 바꿔 줘 (R1 세션 2턴) | 날짜, 시간 유지, 지역만 | 12/14, 22:00~02:00+1 유지, 지역만 대전, 조건부 충족 1 (창 240분), 현상 조회 재사용(캐시 1회, 캘린더, 박명, 예보 3회만 호출), 판정 normal, 8.9초 (11:35 재캡처, 09:44 classic 은 5.8초) | `samples/run_R6.json`(= `run_R1.json` 2턴), 화면 [06](screenshots/06_followup_context_kept.png), E2E S14, `test_follow_up_keeps_context` | 실측, E2E | 기획 문구는 "강원도", 시험은 "대전" |
 | R7 | 밤 11시 전에는 들어와야 해 | Tool 전 되묻기 | clarify, "어느 지역, 몇 시부터", Tool 0, 2.1초 | `samples/run_R7.json`, E2E S02, `test_clarify_when_only_end_time` | 실측, E2E | 없음 |
 
 보충 실측 (같은 스크립트, 2026-11-20)
@@ -126,9 +162,10 @@ F3020, F3021, F3022 는 선택하지 않았거나 미구현이라 확인 대상�
 | andromeda | 1턴 "안드로메다 은하를 제일 잘 볼 수 있는 날짜를 추천해줘" → 2턴 "대전 유성구 지역에서. 날짜는 아직 미정…" | 1턴 clarify(지역), 2.2초. 2턴 plan, 날짜 미지정 → 2026-11-20~29 탐색, 천체 고도 20° 창, 달 회피, 충족 2건(11/29 18:47~22:19 맑은 212분, 11/20 03:08+1~03:40+1 맑은 32분), 제외 8, 재계획 0, Tool 33회, 35.7초 | `samples/run_andromeda.json`, 화면 [10](screenshots/10_andromeda_deep_sky.png) |
 | fact_mars | 오늘 대전에서 화성이 제일 잘 보이는 시간대 | fact, 11/21 04:43~05:43, 남중 06:33 고도 67.9°, Tool 2회, 6.2초 | `samples/run_fact_mars.json` |
 | invalid_date | 2026년 2월 30일 서울 21~23시 | clarify "존재하지 않는 날짜", Tool 0, 2.1초 (8절 R2, P1 수정 확인) | `samples/run_invalid_date.json`, 화면 [09](screenshots/09_clarify_invalid_date.png) |
+| knowledge (F3022) | 안드로메다 은하는 어떤 천체야? 우리 은하와 어떤 관계야? | knowledge, `search_space_docs` 1회(781ms), 추천 0, LLM 판단 1회, 판정 normal, 답 끝 "출처:" 2줄 + CC BY-SA 4.0, 12.2초 (11:53) | `samples/run_knowledge.json`, `logs_knowledge.json`, 화면 [25](screenshots/25_knowledge_rag_sources.png) |
 | unknown_object | 2026-11-18 서울 21~23시 가짜천체 XYZ-FAKE-999 | plan, 추천 0, `unjudged` 1, `lookup_sky_object` `NOT_FOUND`, 재계획 안 함, 비슷한 이름 되묻기, Tool 3회, 2.7초 (8절 R1, P1 수정 확인) | `samples/run_unknown_object.json` |
 
-> `run_R2_mock.json`, `run_andromeda.json` 은 respond 규칙 9, 14 수정(8절) **후** 10:10 에 다시 캡처했다(내부 필드명, 날짜 오타 없음). 나머지 9건은 09:4x 캡처이며 판정, 구조화 필드는 규칙 수정의 영향을 받지 않는다.
+> `run_R2_mock.json`, `run_andromeda.json` 은 respond 규칙 9, 14 수정(8절) **후** 10:10 에 다시 캡처했다(내부 필드명, 날짜 오타 없음). R1, R6 은 11:35, knowledge 는 11:53 캡처. 나머지 7건은 09:4x 캡처이며 판정, 구조화 필드는 규칙 수정의 영향을 받지 않는다.
 
 재캡처: `.venv\Scripts\python -X utf8 backend\scripts\run_scenarios.py [--only R1,R2]`: 시나리오별 기대 체크를 OK/DIFF 로 출력한다.
 
@@ -185,6 +222,27 @@ E2E 응답 시간 (S01~S19 성공 17건, 수정 전, `gpt-6-luna`): 중앙값 6.
 
 ---
 
+### 8-3. 심화 기능 Codex 리뷰와 수정 (2026-11-20 오후)
+
+심화 기능 구현 직후 Codex(gpt-6-astra, 읽기 전용 샌드박스)가 코드를 리뷰했고, 지적 13건을 같은 날 모두 수정했다. 원문은 [REVIEW_ADVANCED.md](../output/e2e-review/REVIEW_ADVANCED.md), [REVIEW_RAG.md](../output/e2e-review/REVIEW_RAG.md).
+
+| 대상 | 지적 | 수정 | 테스트 |
+|---|---|---|---|
+| F3021 | 고정 날짜가 예보 작업의 고정 인자에 빠져 다른 날짜 결과가 원래 캐시에 저장될 수 있음 | Planner가 사용자 고정 조건에서 date/lat/lon/kind/name 고정 인자를 유도, 날짜나 좌표가 바뀐 재시도 결과는 원래 키에 저장하지 않음 (`WorkerResult.args_changed`) | `test_fixed_date_retry_to_other_date_rejected`, `test_retry_with_changed_date_never_pollutes_plan_key` |
+| F3021 | 필수 작업의 미해결 실패가 Planner에 전달되지 않음 | 필수/선택 작업 구분, 필수 작업의 skip은 계획 변경 요청으로 승격 (AUTH 는 기존 fatal 경로 유지) | `test_required_night_window_bad_input_reaches_planner`, `test_optional_observatory_no_result_is_skip` |
+| 하늘 가리키기 | 대상 변경과 좌표 갱신 사이 경쟁 상태 | 요청 세대 토큰으로 오래된 응답 무시, 갱신이 전역 key 를 바꾸지 않음 | `test_request_gate_ignores_stale_target_response` (node) |
+| 하늘 가리키기 | 달 출현 시각이 시작 시각 좌표로 고정 | 이동 천체는 10분마다 좌표 재계산 | `test_moon_next_rise_recomputes_position_each_step` |
+| 하늘 가리키기 | 극단 날짜(0001, 9999)에서 500 | `at` 은 1900~2100 범위만 허용, 밖이면 422 | `test_target_at_out_of_range_is_422` |
+| F3020 | 감사 재실행 API 에 속도 제한 없음, 같은 세션에 LLM 진단 반복 | `AUDIT_RATE_PER_MIN`(기본 6) 토큰 버킷, 같은 구간의 성공한 진단은 재사용 (`force=1` 로 강제) | `test_api_audit_rate_limited`, `test_api_audit_reuses_stored_diagnosis` |
+| F3022 | 검색 문서가 사용자 메시지와 같은 블록에 들어가 프롬프트 주입에 열림 | `<documents>` 데이터 블록과 신뢰 경계 문구(문서는 데이터, 문서 안 지시는 무시), 꺾쇠 이스케이프 | `test_knowledge_llm_prompt_has_trust_boundary_and_documents_block` |
+| F3022 | LLM 이 쓴 출처를 그대로 신뢰 | LLM 의 출처 절을 떼고 코드가 hit 기준 출처 꼬리말을 생성 | `test_ensure_sources_always_canonical_footer` |
+| F3022 | 정의 질문 규칙이 관측 질문을 덮을 수 있음 | 실시간 단어와 날짜 패턴이 있으면 관측/사실 의도 유지 (`reconcile_knowledge`) | `test_reconcile_knowledge_live_words_win` (12건) |
+| F3022 | 수집 파일과 색인 경로가 저장소 어디든 가리킬 수 있음 | `CHROMA_DIR`, `SPACE_DOCS_FILE` 은 data/ 아래만 허용 | `test_config_confines_rag_paths_to_data` |
+| F3022 | 파일 크기 상한이 추정치, 응답 크기 무제한 | 직렬화 후 실제 바이트 측정과 축소, 응답 2MB 상한, 캐시 전 길이 제한 | `test_fit_to_budget_measures_serialized_bytes`, `test_wiki_client_rejects_oversized_response` |
+| F3022 | 임베딩 초기화 실패가 INTERNAL 로 나옴 | 초기화 단계 예외를 모두 NO_INDEX 로, 색인 교체는 이전 컬렉션 보존 | `test_local_embedding_function_construction_failure_is_no_index`, `test_rebuild_swap_keeps_old_index_on_failure` |
+
+수정 후 전체 테스트 497 통과, 2 건너뜀(POSIX 전용). 지식 시나리오(`run_knowledge.json`)는 수정된 프롬프트로 12:35 에 다시 캡처했다(체크 3건 OK).
+
 ## 9. 4.8 비기능 요구사항
 
 | 번호 | 확인 | 근거 | 결과 |
@@ -193,7 +251,7 @@ E2E 응답 시간 (S01~S19 성공 17건, 수정 전, `gpt-6-luna`): 중앙값 6.
 | NF3002 | 화면에 키, 오류 상세 없음 | E2E S20 경고 문구, `test_chat_exception_hides_details`, `test_calendar_auth_failure_continues` (토큰 문구 숨김). **보안 강화** (`tests/test_security.py`): CORS 허용 출처 한정(`test_cors_preflight_allowed_origin`, `test_cors_preflight_evil_origin`), CSRF 가드(`test_csrf_evil_origin_forbidden`, `test_csrf_cross_site_fetch_forbidden`, `test_csrf_custom_header_required`, `test_form_content_type_rejected`, `test_large_body_rejected`, `test_large_chunked_body_rejected`), 보안 헤더, CSP(`test_security_headers_html`, `test_security_headers_api`, `test_frontend_has_no_inline_scripts`), 접근 토큰, Host 제한(`test_access_token_required_when_set`, `test_untrusted_host_rejected`), 자원 한도(`test_chat_rate_limit`, `test_list_limit_offset`, `test_http_get_caps_response_size`), 입력 검증, 오류 축소(`test_session_id_pattern`, `test_plan_id_must_be_positive`, `test_validation_error_does_not_echo_input`, `test_update_plan_rejects_unknown_column`), 캘린더 멱등성(`test_add_twice_second_already_registered`, `test_concurrent_add_creates_one_event`, `test_google_409_is_already_registered`), 프론트 이스케이프(`test_timeline_escapes_unknown_type`) | ✅ |
 | NF3003 | Tool 실패에도 서비스 계속 | E2E S20, `test_tool_auth_failure_continues`, `test_exception_still_returns_response` | ✅ |
 | NF3004 | 재계획 상한 | E2E S08, `test_replan_limit`, `recursion_limit=60` | ✅ |
-| NF3005 | 처리 시간 | E2E 중앙값 6.30초, 최대 34.84초 (수정 전), 실측 2026-11-20: R1 7.5초, R4 6.9초, R7 2.1초, R3(mock, Tool 46회) 32.9초, andromeda 2턴(Tool 33회) 35.7초, R2(mock, Tool 28회) 30.9초 | 관측값만 (SLA 미정, 부하 시험 미검증) |
+| NF3005 | 처리 시간 | E2E 중앙값 6.30초, 최대 34.84초 (수정 전), 실측 2026-11-20: R1 7.5초 (classic, 09:44) / 10.4초 (planner_worker, 11:35), knowledge 12.2초, R4 6.9초, R7 2.1초, R3(mock, Tool 46회) 32.9초, andromeda 2턴(Tool 33회) 35.7초, R2(mock, Tool 28회) 30.9초 | 관측값만 (SLA 미정, 부하 시험 미검증) |
 | NF3006 | 모듈 분리 | `frontend/` ↔ `backend/`, `agent/`, `tools/`, `clients/`, `events/`, `logging_agent/`, `storage/` | ✅ |
 | NF3007 | 출처, 이용 조건 기록 | [README 부록 B](../README.md#부록-b-외부-api-출처와-이용-조건), 계획엔 카카오 ID, 링크만 | ✅ 기록 (약관 준수 전반은 미검증) |
 
@@ -203,9 +261,9 @@ E2E 응답 시간 (S01~S19 성공 17건, 수정 전, `gpt-6-luna`): 중앙값 6.
 
 | 항목 | 상태 |
 |---|---|
-| 필수 F3001~F3019 동작 | ✅ 자동 테스트 298, 실측 샘플 11종(체크 20건 OK), 화면 21장, E2E + Codex HTTP 재검증 11건(FIXED 9, PARTIAL 2 → 수정) |
-| 선택 심화 동작, 필수 결과와 비교 | F3023 자동 테스트 ✅, 실제 Google 조회 ✅, 등록 미실행(6절), 비교 표 미작성 |
-| 스크린샷, 실행 로그 첨부 | ✅ `docs/screenshots/` 21장, `docs/demo/` 영상, `samples/logs_*.json` 11개, [RUN_LOG_SAMPLE.md](RUN_LOG_SAMPLE.md) |
+| 필수 F3001~F3019 동작 | ✅ 자동 테스트 440 통과(2 건너뜀), 실측 샘플 12종(오전 체크 20건 OK), 화면 25장, E2E + Codex HTTP 재검증 11건(FIXED 9, PARTIAL 2 → 수정) |
+| 선택 심화 동작, 필수 결과와 비교 | ✅ F3020 이상 판정 5세션 기대 일치, F3021 구조 전후 비교 표(`structure_compare.json`, 6 시나리오 x 3 구성), F3022 실측 knowledge 1건, F3023 자동 테스트 + 실제 Google 조회 (등록 미실행). 6절 |
+| 스크린샷, 실행 로그 첨부 | ✅ `docs/screenshots/` 25장, `docs/demo/` 영상, `samples/logs_*.json` 12개, [RUN_LOG_SAMPLE.md](RUN_LOG_SAMPLE.md) |
 | 문서 7종 + README | ✅ (`docs/` 6종 + 기획안 + README, 설치는 `docs/SETUP.md`) |
 | 셀프 체크리스트 | ⏳ 제공되면 12절에 반영 |
 
@@ -213,7 +271,7 @@ E2E 응답 시간 (S01~S19 성공 17건, 수정 전, `gpt-6-luna`): 중앙값 6.
 
 ## 11. 스크린샷, 데모 영상
 
-캡처: 2026-11-20, 실제 서버(실제 키, 실제 예보), Playwright + Edge, `backend/scripts/capture_screens.py` (`--nokakao`, `--nollm`, `--mock` 으로 18, 19, 07, 08 용 서버 지정). 캘린더 등록 버튼은 누르지 않았다(실제 일정 생성 방지).
+캡처: 2026-11-20, 실제 서버(실제 키, 실제 예보), Playwright + Edge, `backend/scripts/capture_screens.py` (`--nokakao`, `--nollm`, `--mock` 으로 18, 19, 07, 08 용 서버 지정). 오후 추가분 22~25 는 `--only pointer`, `--only audit`, `--only knowledge` 로 따로 캡처했다. 캘린더 등록 버튼은 누르지 않았다(실제 일정 생성 방지).
 
 **데모 영상**: [astrowatch_demo.webm](demo/astrowatch_demo.webm) (40초, 1280×800), [astrowatch_demo.gif](demo/astrowatch_demo.gif) (2.4MB)
 
@@ -245,9 +303,13 @@ flowchart LR
 | 19 | [19_llm_key_missing_notice.png](screenshots/19_llm_key_missing_notice.png) | LLM 키 누락 안내 (사용법만) | 4.5, NF3003 |
 | 20 | [20_mobile_chat.png](screenshots/20_mobile_chat.png) | 모바일 대화 | F3018 |
 | 21 | [21_mobile_plans.png](screenshots/21_mobile_plans.png) | 모바일 계획 | F3018 |
+| 22 | [22_pointer_desktop_sim.png](screenshots/22_pointer_desktop_sim.png) | 하늘 가리키기, 데스크톱 시뮬레이션 (마우스, 방향키) | 명세 외 |
+| 23 | [23_pointer_mobile.png](screenshots/23_pointer_mobile.png) | 하늘 가리키기, 모바일 화면 | 명세 외, F3018 |
+| 24 | [24_logs_audit_panel.png](screenshots/24_logs_audit_panel.png) | 실행 로그 판정 배지(정상, 이상, 판정 불가)와 "로깅 Agent 판정" 패널: demo-audit-replan, 재계획 과다 근거 #8 #13 #18, 실제 LLM 진단(원인 쪽 Planner) | 4.6 F3020 |
+| 25 | [25_knowledge_rag_sources.png](screenshots/25_knowledge_rag_sources.png) | 배경 지식 질문 답변과 끝의 출처 줄 | 4.6 F3022 |
 | 없음 | [graph_structure.txt](graph_structure.txt) | `GET /api/graph` 그래프 구조 (mermaid) | 4.2 |
 
-미첨부: `/api/tools` 응답 원문, 겹침 알림, 캘린더 등록(로컬, Google), 기존 일정으로 창이 줄어든 판정.
+미첨부: `/api/tools` 응답 원문, 겹침 알림, 캘린더 등록(로컬, Google), 기존 일정으로 창이 줄어든 판정, Worker LLM 이 retry 를 고른 실제 실행(가짜 LLM 테스트만), 색인 없음(`NO_INDEX`) 화면 (테스트만), 휴대폰 실기기 센서 동작 영상.
 
 ---
 

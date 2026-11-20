@@ -229,3 +229,36 @@ class CalendarAddOutput(BaseModel):
     end_dt: dt.datetime
     html_link: str | None = None
     already_registered: bool = Field(description="이미 등록된 계획이라 새로 만들지 않았으면 true")
+
+
+# ── 심화 F3022 search_space_docs (로컬 RAG) ───────────────────
+
+class SpaceDocsInput(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    query: str = Field(min_length=1, max_length=300, description="찾을 배경 지식 질문이나 천체/용어 이름")
+    k: int = Field(default=4, ge=1, le=8, description="돌려줄 근거 문서 수 (문서마다 가장 관련 높은 문단 하나)")
+
+
+class SpaceDocsHit(BaseModel):
+    title: str = Field(description="근거 문서 제목 (한국어 위키백과)")
+    source_url: str = Field(description="원문 출처 URL")
+    snippet: str = Field(description="근거 문단 (최대 400자)")
+    score: float = Field(description="관련도 = 코사인 유사도 + 이름 일치 가산 + 글자 겹침")
+    chunk_id: str = Field(description="'문서 번호:청크 번호'")
+    license: str = Field(default="CC BY-SA 4.0")
+    section: str = Field(default="", description="문서 안의 절 이름. 없으면 빈 문자열")
+    name_match: bool = Field(default=False, description="질문의 천체/용어 이름이 이 문서 제목/별칭과 일치")
+
+
+class SpaceDocsIndex(BaseModel):
+    provider: str = Field(description="local | gms")
+    model: str
+    chunks: int
+    docs: int = 0
+    built_at: str | None = None
+
+
+class SpaceDocsOutput(BaseModel):
+    hits: list[SpaceDocsHit]
+    index: SpaceDocsIndex

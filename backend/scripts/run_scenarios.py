@@ -122,6 +122,16 @@ SCENARIOS: list[Scenario] = [
             intent_is("clarify"), ("tool 0", lambda r: tool_calls(r) == 0),
         ]),
     ]),
+    Scenario("knowledge", "knowledge", [
+        # 심화 F3022: 외부 API 로 확인할 수 없는 배경 지식 → search_space_docs, 답에 근거 출처
+        Turn("안드로메다 은하는 어떤 천체야? 우리 은하와 어떤 관계야?", [
+            intent_is("knowledge"),
+            ("search_space_docs 1회", lambda r: [s.get("tool") for s in r.get("steps") or []
+                                                if s.get("type") == "tool_call"] == ["search_space_docs"]),
+            ("답에 출처: + 위키백과 URL", lambda r: "출처:" in r.get("answer", "")
+             and "ko.wikipedia.org/wiki/" in r.get("answer", "")),
+        ]),
+    ]),
     Scenario("unknown_object", "unknown_object", [
         Turn("2026년 11월 18일 서울에서 밤 9시부터 11시까지 가짜천체 XYZ-FAKE-999를 관측하는 계획을 짜줘. "
              "다른 천체는 원하지 않아.", [

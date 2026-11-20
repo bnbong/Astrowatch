@@ -15,7 +15,7 @@ SAMPLES = ROOT / "samples"
 def _isolated_env(tmp_path, monkeypatch):
     """실제 키·DB 를 건드리지 않는다. 각 테스트는 빈 환경 + 임시 DB 로 시작."""
     for key in ("GMS_KEY", "DATA_GO_KR_KEY", "KAKAO_REST_KEY", "OPENWEATHER_KEY",
-                "APP_ACCESS_TOKEN", "APP_ALLOWED_ORIGINS", "CHAT_RATE_PER_MIN", "APP_HOST", "APP_PORT"):
+                "APP_ACCESS_TOKEN", "APP_ALLOWED_ORIGINS", "APP_PUBLIC_URL", "RENDER_EXTERNAL_URL", "CHAT_RATE_PER_MIN", "AUDIT_RATE_PER_MIN", "APP_HOST", "APP_PORT"):
         monkeypatch.delenv(key, raising=False)
     # tmp_path(저장소 밖 절대 경로)를 DB · 토큰 경로로 쓰므로 테스트에서는 허용한다
     monkeypatch.setenv("ALLOW_EXTERNAL_PATHS", "1")
@@ -24,6 +24,9 @@ def _isolated_env(tmp_path, monkeypatch):
     monkeypatch.setenv("DB_PATH", str(tmp_path / "test.db"))
     monkeypatch.setenv("WEATHER_PROVIDER", "mock")
     monkeypatch.setenv("CALENDAR_PROVIDER", "local")
+    # F3022: 실제 색인(data/chroma)과 로컬 임베딩 모델을 쓰지 않는다 (빈 임시 폴더 → NO_INDEX)
+    monkeypatch.setenv("CHROMA_DIR", str(tmp_path / "chroma"))
+    monkeypatch.setenv("EMBEDDING_PROVIDER", "local")
     from astrowatch.config import reset_settings_cache
 
     reset_settings_cache()

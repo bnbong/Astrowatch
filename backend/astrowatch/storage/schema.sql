@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS plans (
     place_url       TEXT,
     target_alt      REAL,
     target_az       REAL,
+    target_object   TEXT,                       -- 하늘 가리키기용 천체 키(카탈로그 이름, 행성, 유성우 복사점). 없으면 NULL
     basis           TEXT,
     calendar_event_id TEXT,
     created_at      TEXT    NOT NULL,
@@ -73,3 +74,19 @@ CREATE TABLE IF NOT EXISTS local_calendar (
     plan_id     INTEGER,
     created_at  TEXT NOT NULL
 );
+
+-- 심화 F3020: 로깅 Agent 의 이상 징후 판정. 턴(세션 내 seq 구간) 단위. 판정(규칙)과 진단(LLM)은 분리해 저장한다.
+CREATE TABLE IF NOT EXISTS run_audits (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    session_id      TEXT    NOT NULL,
+    seq_from        INTEGER NOT NULL,
+    seq_to          INTEGER NOT NULL,
+    status          TEXT    NOT NULL,           -- normal | anomaly | undetermined
+    findings_json   TEXT    NOT NULL DEFAULT '[]',
+    evidence_count  INTEGER NOT NULL DEFAULT 0,
+    rule_version    TEXT    NOT NULL DEFAULT '1',
+    audited_at      TEXT    NOT NULL,
+    diagnosis_json  TEXT,                       -- 이상 판정 실행에만. 실패해도 판정은 남는다
+    UNIQUE (session_id, seq_from, seq_to)
+);
+CREATE INDEX IF NOT EXISTS idx_run_audits_session ON run_audits(session_id, seq_to);

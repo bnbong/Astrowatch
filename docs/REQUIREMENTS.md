@@ -101,18 +101,26 @@
 | F3009 | Agent | 재계획 | 추천 0개일 때 ①날짜 ±2일 → ②다른 현상 → ③인접 지역, 상한 3, 캐시 재사용, `stop_reason` 5종 | `agent/replan.py`, `agent/nodes.py` judge | 구현 |
 | F3010 | Agent | 대화 맥락 유지 | 조건 병합(말한 값만 갱신), 요약, 직전 추천, 최근 6턴을 세션 테이블에. 이전 조건과의 차이(`changes_from_previous`)를 응답에 반영. 화면 복원은 `turns` 표 + `/api/sessions` | `agent/memory.py`, `storage/sessions.py`, `storage/turns.py`, `app/api/sessions.py`, `schemas/domain.py` | 구현 |
 | F3011 | Agent | 최종 응답 | 추천, 관측 창, 맑은 시간, 월령, 역산, 제외 사유, 근거 Tool, 판단 기준, 안전 문구 | `agent/nodes.py` respond, `agent/prompts.py` | 구현 |
-| F3012 | 로깅 | 실행 이벤트 발행 | 단계 진입/종료, Tool 호출/응답(소요 ms), LLM 판단, 재계획 등 9종. 구독자 무관 | `events/bus.py`, `agent/nodes.py` stage | 구현 |
+| F3012 | 로깅 | 실행 이벤트 발행 | 단계 진입/종료, Tool 호출/응답(소요 ms), LLM 판단, 재계획 등 기본 9종 + 심화 5종(`planner_tasks`, `worker_result`, `worker_decision`, `audit_result`, `audit_diagnosis`). 구독자 무관 | `events/bus.py`, `agent/nodes.py` stage | 구현 |
 | F3013 | 로깅 | 실행 로그 저장 | 로깅 Agent 가 구독 → `run_logs` 에 덧붙임. LLM 없음, 저장 실패는 삼킴 | `logging_agent/agent.py`, `storage/run_logs.py` | 구현 |
 | F3014 | 로깅 | 로그 조회, 삭제 | 세션 목록, 상세(seq 순), 삭제, 목록 `limit/offset`. 수정 API 없음(PATCH 405) + DB 트리거 | `app/api/logs.py`, `storage/schema.sql` | 구현 |
 | F3015 | 계획 | 계획 저장, 조회 | 저장 + 같은 시간대 겹침 `overlaps` 반환(한 트랜잭션) | `storage/plans.py`, `app/api/plans.py` | 구현 |
 | F3016 | 계획 | 계획 수정, 삭제 | 보낸 필드만 PATCH, 삭제, 화면 목록 즉시 반영 | `storage/plans.py`, `frontend/js/plans.js` | 구현 |
-| F3017 | 서비스 | FastAPI | `/api/chat`, `/api/plans`, `/api/logs`, `/api/sessions`, `/api/calendar`, 메타 분리(17개 엔드포인트), Pydantic 요청/응답, 보안 미들웨어(요청 가드, 보안 헤더, TrustedHost, CORS) | `app/main.py`, `app/api/*.py`, `app/security.py`, `schemas/api.py` | 구현 |
-| F3018 | 서비스 | 프론트엔드 | 대화, 계획 관리, 실행 로그 3화면 (HTML/CSS/JS), 좌측 레일 최근 대화(세션 복원), 모바일 하단 탭, 인라인 스크립트 없음(CSP) | `frontend/` | 구현 |
+| F3017 | 서비스 | FastAPI | `/api/chat`, `/api/plans`, `/api/logs`(판정 3개 포함), `/api/sessions`, `/api/calendar`, `/api/sky`, 메타 분리(21개 엔드포인트, `@router.` 기준), Pydantic 요청/응답, 보안 미들웨어(요청 가드, 보안 헤더, TrustedHost, CORS) | `app/main.py`, `app/api/*.py`, `app/security.py`, `schemas/api.py` | 구현 |
+| F3018 | 서비스 | 프론트엔드 | 대화, 계획 관리, 실행 로그, 하늘 가리키기 4화면 (HTML/CSS/JS, `index`, `plans`, `logs`, `pointer`), 좌측 레일 최근 대화(세션 복원), 모바일 하단 탭, 실행 로그 화면의 로깅 Agent 판정 배지와 패널, 인라인 스크립트 없음(CSP) | `frontend/` | 구현 |
 | F3019 | 서비스 | 실행 과정, 상태 표시 | 타임라인(단계, Tool, 재계획 회차 구분), 로딩, 종료 사유 배너, 키 누락/실패 경고, 카드 관측 창 헤드라인, 밤 타임바(관측 창, 하늘, 달, 날씨, 천체 행 분리) | `frontend/js/timeline.js`, `frontend/js/chat.js`, `frontend/js/ui.js` | 구현 |
-| F3020 | 심화 | 이상 징후 판단 | 없음 |: | 미구현(미선택) |
-| F3021 | 심화 | Planner, Worker 분리 |: (`fixed_args` 표시만 계약에 있음) | `agent/state.py` | 미구현(미선택) |
-| F3022 | 심화 | RAG 검색 Tool | `search_space_docs` 미구현. 등록되면 쓰도록 분기만 있음 | `agent/nodes.py` T_DOCS | 미구현 |
+| F3020 | 심화 | 이상 징후 판단 | 규칙 판정 3종(같은 입력 반복 호출, 재계획 과다, 계획 외 Tool 호출), 근거 없으면 판정 불가, 턴 종료 뒤 자동 판정 + `state["audit"]`/`ChatResponse.audit` 로 메인 Agent 참조, 이상일 때만 LLM 진단(판정과 분리 저장), 판정 API 3개, 실행 로그 화면 배지와 판정 패널 | `logging_agent/audit.py`, `logging_agent/diagnosis.py`, `storage/run_audits.py`, `agent/service.py`, `app/api/logs.py`, `scripts/make_anomalies.py` | 심화 구현 |
+| F3021 | 심화 | Planner, Worker 분리 | `AGENT_STRUCTURE=planner_worker`(기본): analyze → planner → worker → judge → verify → respond. Planner 가 `TaskList`(task_id, fixed_args, depends_on, trigger user/judge_replan/worker_request/audit_anomaly)를 발행, Worker 가 작업마다 Tool 호출 후 `WorkerResult` 발행. Worker LLM 은 NO_RESULT, NOT_FOUND, 형식 오류일 때만(재시도는 같은 Tool, `WORKER_MAX_RETRY` 안, 고정 인자 불변), 치명적 실패, 필수 인자 누락, 모호함은 규칙. 해결 못 한 실패는 Planner 재계획으로, verify(로깅 Agent 규칙 판정)가 이상이면 턴마다 한 번 재구성. 전후 비교 `scripts/compare_structures.py` → `samples/structure_compare.json`, `ChatResponse.llm_calls` | `agent/planner.py`, `agent/worker.py`, `agent/verify.py`, `agent/graph.py`, `agent/service.py`, `scripts/compare_structures.py`, `tests/test_planner_worker.py` | 심화 구현 |
+| F3022 | 심화 | RAG 검색 Tool | 한국어 위키백과 extract 321건(카탈로그 294 + 용어 27)을 문단 청크 724개로 Chroma 에 색인(로컬 ONNX all-MiniLM-L6-v2, 384차원, `EMBEDDING_PROVIDER=local` 기본), `search_space_docs` 로 하이브리드 검색(이름 가산 + 벡터). 배경 지식 질문(정의, 원리, 역사)은 analyze 가 knowledge 로 분류해 이 Tool 만 호출, 답 끝에 "출처:" 줄(제목, URL). 색인 없음은 `NO_INDEX` → "아직 문서를 모으지 못했습니다(색인 없음)." + 색인 안내, 임베딩 불일치는 `INDEX_MISMATCH` | `rag/`, `tools/space_docs.py`, `agent/nodes.py`, `agent/prompts.py`, `scripts/collect_space_docs.py`, `scripts/build_space_docs.py`, `tests/test_tools_space_docs.py` | 심화 구현 |
 | F3023 | 심화 | 캘린더 연동 Tool | 입출력 계약 → 로컬 SQLite 구현체 → Google 교체. 등록은 `plan_id` 만, 조회 일정은 판정에 반영 | `tools/calendar.py`, `clients/calendar_provider.py`, `agent/judge.py` | 심화 구현 |
+
+심화 4건(F3020~F3023) 모두 구현. 확인 근거는 [VERIFICATION 6절](VERIFICATION.md#6-46-심화-f3020f3023).
+
+### 5-1. 추가 기능 (명세 외)
+
+| 이름 | 내용 | 구현 위치 | 상태 |
+|---|---|---|---|
+| 하늘 가리키기 | 저장한 계획의 천체(카탈로그 천체, 행성, 달, 유성우 복사점 12종) 쪽으로 휴대폰을 안내. 방향 센서(DeviceOrientation), 현재 위치(Geolocation), 센서가 없으면 마우스, 방향키 시뮬레이션. 계획 화면 "하늘에서 찾기" 버튼, 계획에 `target_object` 열(기존 계획은 제목에서 한 번 추론) | `astro/targets.py`, `data/meteor_radiants.json`, `app/api/sky.py` (`GET /api/sky/target`, `GET /api/sky/targets`), `storage/plans.py`, `frontend/pointer.html`, `js/pointer.js`, `js/skymath.js` | 구현 (테스트 `test_sky_targets.py` 42, `test_api_sky.py` 20, `test_frontend_skymath.py` 12, 화면 22, 23) |
 
 ---
 
@@ -146,6 +154,14 @@
 | GMS Tool 선택 | `search_sky_events(2026, 12)` 선택: 당시 `gpt-6-luna`, `reasoning_effort="none"` 필수 |
 | GMS 경로 전환 (11-20) | OpenAI 경로(`gpt-6-luna`) 사용 불가 → `LLM_PROVIDER=anthropic`(기본), `claude-haiku-5-5`, Anthropic 호환 경로, `x-api-key` 헤더, 1회 1크레딧, structured output 은 function_calling. 샘플 11종 재캡처로 확인 |
 | Open-Meteo | **차단** → 백업에서 제외 |
+| 한국어 위키백과 (F3022, 11-20) | MediaWiki API 로 제목 확인(50개씩) 후 도입부 extract 를 20개씩 묶어 수집. User-Agent 명시, 1초 간격, `maxlag=5`. 결과 `data/space_docs.json` 321건, 누락 0 |
+
+F3022 문서 출처
+
+| 출처 | 호출 | 이용 조건 | 호출 예절 | 저장 |
+|---|---|---|---|---|
+| 한국어 위키백과 MediaWiki API (`ko.wikipedia.org/w/api.php`) | `action=query`, `prop=extracts`, `explaintext`, 리다이렉트 따라감 | CC BY-SA 4.0 (출처 표시, 동일 조건 변경 허락) | User-Agent `Astrowatch/0.1 (SSAFY project; ...)`, 요청 하나씩 1초 간격(`REQUEST_INTERVAL`), `maxlag`/429 는 Retry-After(없으면 15~120초)만큼 대기 | 문서 앞부분 extract 만 (문서당 ≤ 6,000자, 파일 ≤ 약 2MB), 제목과 원문 URL 함께 저장, 답변에 출처 표시 |
+| chromadb ONNX 모델 (all-MiniLM-L6-v2) | 최초 1회 내려받아 `~/.cache/chroma` 에 둠 | Apache 2.0 | | 색인은 `data/chroma` (gitignore) |
 
 원본 응답: `samples/kasi_*.xml`, `samples/kma_*.json`, `samples/kakao_*.json`, `samples/owm_*.json`, `samples/gms_*.json`
 

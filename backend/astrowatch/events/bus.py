@@ -24,6 +24,12 @@ class EventType(str, Enum):
     ERROR = "error"                 # 흐름 오류  payload: {message} (키·스택 없음)
     SESSION_START = "session_start"  # 대화 턴 시작 payload: {message}
     SESSION_END = "session_end"     # 대화 턴 종료 payload: {intent, replan_count, duration_ms}
+    # 심화 F3021 Planner/Worker 메시지, F3020 로깅 Agent 판정 (모두 실행 로그에 남는다)
+    PLANNER_TASKS = "planner_tasks"       # Planner → Worker 작업 목록 payload: TaskList.model_dump()
+    WORKER_RESULT = "worker_result"       # Worker → Planner 수행 결과 payload: WorkerResult.model_dump()
+    WORKER_DECISION = "worker_decision"   # Worker 의 LLM 판단 payload: {task_id, tool, decision, reason, model, new_args?}
+    AUDIT_RESULT = "audit_result"         # 로깅 Agent 판정 payload: AuditResult.model_dump() (diagnosis 제외)
+    AUDIT_DIAGNOSIS = "audit_diagnosis"   # 이상 실행에만 붙는 LLM 진단 payload: AuditDiagnosis.model_dump()
 
 
 @dataclass(frozen=True)

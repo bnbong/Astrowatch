@@ -25,8 +25,31 @@ def ensure_db(db_path: Path | None = None) -> Path:
     path = Path(db_path or get_settings().db_path)
     if path not in _initialized or not path.exists():
         init_db(path)
+        _backfill_targets(path)
         _initialized.add(path)
     return path
+
+
+_BACKFILL_VERSION = 1   # PRAGMA user_version: 이 값 이상이면 백필을 이미 끝낸 DB
+
+
+def _backfill_targets(path: Path) -> None:
+    """target_object 컬럼이 생기기 전에 저장한 계획은 제목에서 대상을 추론해 채운다.
+
+    DB 당 딱 한 번만 돈다(PRAGMA user_version 로 표시). 그래야 사용자가 나중에 target_object 를 비워도
+    재시작 때 다시 채워지지 않는다. 못 찾으면 그대로 NULL.
+    """
+    from astrowatch.astro.targets import infer_target
+
+    with connect(path) as conn:
+        if int(conn.execute("PRAGMA user_version").fetchone()[0] or 0) >= _BACKFILL_VERSION:
+            return
+        conn.execute(f"PRAGMA user_version = {_BACKFILL_VERSION}")
+        rows = conn.execute("SELECT id, event_title, event_kind FROM plans WHERE target_object IS NULL").fetchall()
+        for row in rows:
+            key = infer_target(row["event_title"], row["event_kind"])
+            if key:
+                conn.execute("UPDATE plans SET target_object = ? WHERE id = ? AND target_object IS NULL", (key, row["id"]))
 
 
 def _iso(value: datetime) -> str:
@@ -67,9 +90,17 @@ def _overlaps_in(conn: sqlite3.Connection, start_dt: datetime, end_dt: datetime,
     return [_row_to_plan(r) for r in conn.execute(sql, params).fetchall()]
 
 
+def plan_target(target_object: str | None, event_title: str, event_kind: str | None) -> str | None:
+    """저장할 하늘 가리키기 대상 키 — 보낸 값을 정규화하고, 없거나 모르면 제목에서 추론한다 (못 찾으면 None)."""
+    from astrowatch.astro.targets import canonical_key, infer_target
+
+    return canonical_key(target_object) or infer_target(event_title, event_kind)
+
+
 def create_plan(data: PlanCreate, *, db_path: Path | None = None) -> PlanSaveResult:
     path = ensure_db(db_path)
     now = _now()
+    target = plan_target(data.target_object, data.event_title, data.event_kind.value)
     with connect(path) as conn:
         # 겹침 조회와 삽입을 한 트랜잭션(쓰기 잠금)에서 — 동시 저장이 서로를 놓치지 않게
         conn.execute("BEGIN IMMEDIATE")
@@ -77,13 +108,13 @@ def create_plan(data: PlanCreate, *, db_path: Path | None = None) -> PlanSaveRes
         cur = conn.execute(
             """INSERT INTO plans (session_id, event_title, event_kind, start_dt, end_dt,
                    location_label, lat, lon, place_id, place_url, target_alt, target_az,
-                   basis, created_at, updated_at)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                   target_object, basis, created_at, updated_at)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
             (
                 data.session_id, data.event_title, data.event_kind.value,
                 _iso(data.start_dt), _iso(data.end_dt), data.location_label,
                 data.lat, data.lon, data.place_id, data.place_url,
-                data.target_alt, data.target_az, data.basis, now, now,
+                data.target_alt, data.target_az, target, data.basis, now, now,
             ),
         )
         plan_id = int(cur.lastrowid)
@@ -123,6 +154,13 @@ def update_plan(plan_id: int, data: PlanUpdate, *, db_path: Path | None = None) 
     end = changes.get("end_dt", current.end_dt)
     if end <= start:
         raise ValueError("end_dt 는 start_dt 보다 뒤여야 한다")
+    if changes.get("target_object") is not None:
+        from astrowatch.astro.targets import canonical_key
+
+        key = canonical_key(changes["target_object"])
+        if key is None:
+            raise ValueError("가리킬 수 없는 천체")
+        changes["target_object"] = key
     values = {k: (_iso(v) if isinstance(v, datetime) else v) for k, v in changes.items()}
     values["updated_at"] = _now()
     unknown = set(values) - UPDATABLE_COLUMNS

@@ -7,6 +7,8 @@
 
 ## 1. 경로 목록
 
+API 경로 **21개** (`app/api/` 의 `@router.` 데코레이터 기준: chat 1, plans 5, calendar 2, logs 6, sessions 3, sky 2, meta 2) + 정적 화면 4개.
+
 | 메서드 | 경로 | 요청 | 응답 | 상태 코드 | 요구사항 |
 |---|---|---|---|---|---|
 | POST | `/api/chat` | `ChatRequest` | `ChatResponse` | 200, 422, 429 | F3005~F3011, F3019 |
@@ -19,14 +21,19 @@
 | GET | `/api/calendar?date_from=&date_to=` | 쿼리 | `ToolResult[CalendarQueryOutput]` | 200, 422, 502, 503 | F3023 |
 | GET | `/api/logs` | `limit`, `offset` | `LogSessionOut[]` (최근 순) | 200, 422 | F3014 |
 | GET | `/api/logs/{session_id}` | `limit`, `offset` | `LogEventOut[]` (**seq 순**) | 200, 404, 422 | F3014 |
-| DELETE | `/api/logs/{session_id}` | 없음 | 본문 없음 | 204, 404 | F3014 |
+| DELETE | `/api/logs/{session_id}` | 없음 | 본문 없음 (판정 기록도 삭제) | 204, 404 | F3014 |
+| GET | `/api/logs/{session_id}/audits` | 없음 | `AuditResult[]` (최신 먼저) | 200, 422 | F3020 |
+| GET | `/api/logs/{session_id}/audit` | 없음 | `AuditResult` (최신) | 200, 404, 422 | F3020 |
+| POST | `/api/logs/{session_id}/audit` | 없음 (본문 없음) | `AuditResult` (세션 전체 재판정) | 200, 403, 404, 422 | F3020 |
 | GET | `/api/sessions` | `limit`, `offset` | `SessionSummaryOut[]` (최근 순) | 200, 422 | F3010 화면 복원 |
 | GET | `/api/sessions/{session_id}` | 없음 | `SessionDetailOut` (턴 **seq 순**) | 200, 404 | F3010 화면 복원 |
 | DELETE | `/api/sessions/{session_id}` | 없음 | 본문 없음 (run_logs 유지) | 204, 404 | F3010 화면 복원 |
+| GET | `/api/sky/target` | `key` 또는 `plan_id`, `lat`, `lon`, `at` | `SkyTargetOut` | 200, 404, 422 | 하늘 가리키기 |
+| GET | `/api/sky/targets` | `q` | `SkySuggestion[]` (최대 8) | 200, 422 | 하늘 가리키기 |
 | GET | `/api/tools` | 없음 | Tool 명세 목록 | 200 | F3001 |
 | GET | `/api/graph` | 없음 | `{"ascii": "..."}` | 200, 503 | 검증 4.2 |
 | GET | `/api/health` | 없음 | `{status, llm_configured, tools}` | 200 | 없음 |
-| GET | `/`, `/plans.html`, `/logs.html` | 없음 | 정적 화면 | 200 | F3018 |
+| GET | `/`, `/plans.html`, `/logs.html`, `/pointer.html` | 없음 | 정적 화면 | 200 | F3018 |
 
 - **실행 로그 수정 API 는 없다** (`PATCH /api/logs/{id}` → 405). DB 에도 UPDATE 차단 트리거 (F3014).
 - 공통 오류: 미처리 예외 → `500 {"detail": "서버 내부 오류가 발생했습니다"}` (상세는 서버 로그에만, NF3002). 검증 오류(422)는 입력값을 되돌려 주지 않는다.
@@ -43,6 +50,7 @@
 | 413 | 요청 본문 256KB 초과 (chunked 포함) | POST, PATCH, DELETE |
 | 415 | 본문이 JSON 이 아님 | POST, PATCH |
 | 429 | `/api/chat` IP 당 분당 `CHAT_RATE_PER_MIN`(기본 12) 초과 `"요청이 너무 많습니다"` + `Retry-After` | POST `/api/chat` |
+| 429 | 지금 판정 IP 당 분당 `AUDIT_RATE_PER_MIN`(기본 6) 초과, 같은 응답 | POST `/api/logs/{id}/audit` |
 
 - CORS: `APP_ALLOWED_ORIGINS`(기본은 앱 자신의 출처)만 허용, 메서드 GET, POST, PATCH, DELETE, 헤더 `Content-Type`, `X-Requested-With`, `X-Astrowatch-Token`, credentials 없음.
 - 응답 헤더: 모든 응답에 `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy`, `Permissions-Policy`, `/api/*` 는 `Cache-Control: no-store`, HTML 은 CSP(`script-src 'self'`, `/docs` 만 완화).
@@ -78,13 +86,15 @@
 | `steps` | StepOut[] | 실행 타임라인 (아래) |
 | `warnings` | str[] | 키 누락, Tool 실패 안내 (상세 오류 없음) |
 | `safety_note` | str | 야간 안전 문구 (눈 예보면 "눈/결빙 주의" 추가) |
+| `audit` | `AuditSummary` 또는 null | F3020 이번 턴 로깅 Agent 판정: `status`(normal, anomaly, undetermined), `warning_count`, `findings[{kind, message}]`, `diagnosis_text`(이상일 때만, 경고 수와 별개). 판정 실패면 null |
+| `llm_calls` | int 또는 null | F3021 이번 턴의 LLM 판단 호출 수: `llm_decision` + Worker 의 LLM 시도 + 로깅 Agent 진단. 응답 문장 생성(respond) 1회는 이벤트가 없어 세지 않는다 |
 
 **`StepOut`** (F3019)
 
 | 필드 | 설명 |
 |---|---|
 | `seq` | 세션 내 발생 순서 |
-| `type` | `stage_start, stage_end, tool_call, tool_result, llm_decision, replan, error` |
+| `type` | `stage_start, stage_end, tool_call, tool_result, llm_decision, replan, error` + F3021 `planner_tasks, worker_decision` (`worker_result`, `audit_result` 는 실행 로그에만) |
 | `stage`, `tool` | 단계, Tool 이름 |
 | `ok` | `tool_result` 일 때 성공 여부 |
 | `summary` | 사람이 읽는 한 줄 |
@@ -174,6 +184,7 @@ X-Requested-With: Astrowatch
 | `lat`, `lon` | float | | |
 | `place_id`, `place_url` | str | | 카카오 ID, 링크만 (이름, 주소 저장 안 함) |
 | `target_alt`, `target_az` | float | | 천체 남중 고도, 방위 |
+| `target_object` | str (최대 100) | | 하늘 가리키기 대상 키. 보낸 이름은 키로 정규화, 비우거나 모르는 이름이면 제목에서 추론, 그래도 없으면 `null` |
 | `basis` | str | | 판정 등급, 맑은 시간, 달 영향 요약 |
 | `session_id` | str | | 어느 대화에서 만든 계획인지 |
 
@@ -190,6 +201,7 @@ X-Requested-With: Astrowatch
 |---|---|
 | `event_title`, `start_dt`, `end_dt`, `location_label` | null 로 비울 수 없음 → 422 |
 | `basis` | null 로 비울 수 있음 |
+| `target_object` | 이름, 키 → 키로 정규화 (모르면 422 `"가리킬 수 있는 천체가 아닙니다"`). null 로 비울 수 있음 |
 
 | 상태 | 경우 |
 |---|---|
@@ -228,13 +240,14 @@ X-Requested-With: Astrowatch
 | `started_at`, `last_at` | 첫, 마지막 이벤트 시각 |
 | `event_count`, `tool_calls`, `replans` | 집계 |
 | `first_message` | 첫 `session_start` 의 메시지 |
+| `audit_status`, `audit_warnings` | F3020 최신 판정 상태와 경고 수. 판정 없으면 null |
 
 ### `LogEventOut`
 
 | 필드 | 설명 |
 |---|---|
 | `session_id`, `seq`, `ts` | 세션, 순서, 시각(UTC) |
-| `type` | 이벤트 9종 (`session_start, stage_start, stage_end, llm_decision, tool_call, tool_result, replan, error, session_end`) |
+| `type` | 이벤트 14종: 기본 9종 (`session_start, stage_start, stage_end, llm_decision, tool_call, tool_result, replan, error, session_end`) + F3021 `planner_tasks, worker_result, worker_decision` + F3020 `audit_result, audit_diagnosis` |
 | `stage`, `tool` | |
 | `payload` | JSON (이벤트별 필드는 [AGENT_DESIGN 8절](AGENT_DESIGN.md#8-메인-agent--로깅-agent)) |
 
@@ -242,6 +255,27 @@ X-Requested-With: Astrowatch
 |---|---|
 | 404 | 없는 세션 `"실행 로그를 찾을 수 없습니다"` |
 | 405 | PATCH, PUT (경로 없음) |
+
+### 로깅 Agent 판정 (F3020)
+
+| 경로 | 동작 |
+|---|---|
+| `GET /api/logs/{id}/audits` | 저장된 판정 목록. 최신(구간 끝 seq 큰 것, 같으면 넓은 구간) 먼저. 없으면 `[]` |
+| `GET /api/logs/{id}/audit` | 최신 판정 하나. 없으면 404 `"판정 기록이 없습니다"` |
+| `POST /api/logs/{id}/audit` | 세션 전체를 지금 규칙으로 판정해 저장하고 돌려준다. 이상이면 LLM 진단 시도(실패해도 판정은 반환). 상태 변경 요청이라 `X-Requested-With: Astrowatch` 필요(없으면 403). 로그 없는 세션 404. 같은 구간, 같은 판정에 실패하지 않은 진단이 저장돼 있으면 LLM 을 다시 부르지 않고 그 진단을 돌려준다 (`?force=1` 이면 다시 진단). IP 당 분당 `AUDIT_RATE_PER_MIN` 회 |
+
+`AuditResult`
+
+| 필드 | 설명 |
+|---|---|
+| `session_id`, `seq_from`, `seq_to` | 판정 구간 |
+| `status` | `normal`, `anomaly`, `undetermined`(근거 이벤트 없음, 판정 불가) |
+| `findings[]` | `kind`(`repeated_call`, `excessive_replan`, `unplanned_call`), `message`, `evidence_seqs`, `count` |
+| `evidence_count` | 대조한 이벤트 수 |
+| `rule_version`, `audited_at` | 규칙 버전, 판정 시각 |
+| `diagnosis` | 이상 판정에만: `culprit`, `fix`, `text`(세 문장 이내), `model`, `failed`. 경고 수에 포함하지 않음 |
+
+규칙 정의는 [AGENT_DESIGN 8-1절](AGENT_DESIGN.md#8-1-로깅-agent-판정-f3020).
 
 ---
 
@@ -280,3 +314,70 @@ X-Requested-With: Astrowatch
 | `GET /api/tools` | `[{name, kind, description, input_schema, fixed_args}]`: LLM 에 넘기는 것과 같은 스키마 |
 | `GET /api/graph` | `{"ascii": "<그래프 그림>"}`: grandalf 없으면 mermaid 텍스트. 그래프 모듈 import 실패 시 503 |
 | `GET /api/health` | `{"status": "ok", "llm_configured": bool, "tools": [이름…]}` |
+
+---
+
+## 8. 하늘 가리키기 `/api/sky`
+
+계획의 천체 쪽으로 휴대폰을 안내하는 화면(`pointer.html`)이 쓴다. 대상 해석은 `astro/targets.py`.
+
+```mermaid
+flowchart LR
+  P[계획 target_object] --> R[resolve_target]
+  K[key 쿼리] --> R
+  R --> O[카탈로그 천체<br/>J2000 고정]
+  R --> PL[행성, 달<br/>at 시각 계산]
+  R --> M[유성우 복사점<br/>meteor_radiants.json]
+  O & PL & M --> POS[position: 고도, 방위]
+```
+
+### 대상 키
+
+| kind | 키 예 | 좌표 |
+|---|---|---|
+| `object` | `안드로메다 은하`, `시리우스`, `쌍둥이자리`(별자리) | 카탈로그 J2000 |
+| `planet` | `mars`, `jupiter` | `at` 시각의 지구 중심 좌표, `refresh_s: 60` |
+| `moon` | `moon` | 같음 (일주시차 약 1° 무시) |
+| `radiant` | `geminids`, `perseids` | 극대일 근처 복사점 대략값 (IMO 12개 유성우) |
+
+`key` 는 키 말고도 한국어, 영어 이름, 별칭(`M31`, `화성`, `쌍둥이자리 유성우`, `GEM`)을 받는다.
+
+### `GET /api/sky/target`
+
+| 쿼리 | 타입 | 설명 |
+|---|---|---|
+| `key` | str 1~100 | 대상. 없으면 `plan_id` 계획의 `target_object` |
+| `plan_id` | int 1 이상 | 계획. `key` 와 함께 주면 대상은 `key`, 위치는 계획 |
+| `lat`, `lon` | float (-90~90, -180~180) | 둘 다 주거나 둘 다 생략. 생략 시 계획 좌표 → 계획 지역(`location_label`) → 서울 |
+| `at` | ISO datetime | 기본 지금. 시간대가 없으면 KST. 1900-01-01 ~ 2100-12-31 (받은 시간대 기준 날짜) |
+
+`SkyTargetOut` (200):
+
+| 필드 | 설명 |
+|---|---|
+| `key`, `name`, `kind`, `subkind` | 대상. `subkind` 는 카탈로그 종류(`galaxy` 등) 또는 IMO 코드 |
+| `ra`, `dec` | 도. 화면은 이 값으로 1초마다 고도, 방위를 다시 계산한다 |
+| `alt`, `az`, `above_horizon`, `compass` | `at` 시각 관측지 기준. 방위는 북 0° → 동 90°, `compass` 는 8방위 한국어 |
+| `at` | 계산 시각 (UTC) |
+| `lat`, `lon`, `location_source`, `location_label` | 관측지와 출처 `query`, `plan`, `region`, `default` |
+| `rises_at` | 지금 지평선 아래면 24시간 안에 떠오르는 대략의 시각 (UTC, 10분 단위, 행성, 달은 걸음마다 좌표 재계산). 아니면 `null` |
+| `refresh_s` | 행성, 달은 `60`, 고정 천체는 `null` |
+| `plan_id`, `plan_title` | `plan_id` 로 불렀을 때 |
+
+예: `?key=안드로메다 은하&lat=37.5665&lon=126.978&at=2026-11-20T21:00:00+09:00`
+
+```json
+{"key": "안드로메다 은하", "name": "안드로메다 은하", "kind": "object", "subkind": "galaxy",
+ "ra": 10.6847, "dec": 41.2687, "alt": 85.08, "az": 39.84, "above_horizon": true, "compass": "북동",
+ "at": "2026-11-20T12:00:00Z", "lat": 37.5665, "lon": 126.978, "location_source": "query",
+ "location_label": null, "rises_at": null, "refresh_s": null, "plan_id": null, "plan_title": null}
+```
+
+| 상태 | 경우 |
+|---|---|
+| 404 | `"계획을 찾을 수 없습니다"`, `"이 계획에는 가리킬 천체가 없습니다"`, `"가리킬 천체를 찾을 수 없습니다"` |
+| 422 | `key`, `plan_id` 둘 다 없음, `lat`/`lon` 범위 밖 또는 한쪽만, `key` 101자 이상, `at` 형식 오류, `at` 범위 밖 `"at 은 1900-01-01 부터 2100-12-31 사이 시각이어야 합니다"` |
+
+### `GET /api/sky/targets?q=`
+
+`q`(최대 50자) 이름 일부로 찾는다. 비우면 추천 8개(달, 목성, 토성 ...). 응답 `[{key, name, kind}]`, 정확 > 앞부분 > 포함 순, 같으면 달, 행성 > 유성우 > 메시에 > 별 > 별자리.

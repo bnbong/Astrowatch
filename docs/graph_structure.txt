@@ -1,3 +1,4 @@
+[agent_structure=planner_worker]
 ---
 config:
   flowchart:
@@ -6,20 +7,24 @@ config:
 graph TD;
 	__start__([<p>__start__</p>]):::first
 	analyze(analyze)
-	plan(plan)
-	execute(execute)
+	planner(planner)
+	worker(worker)
 	judge(judge)
+	verify(verify)
 	respond(respond)
 	__end__([<p>__end__</p>]):::last
 	__start__ --> analyze;
-	analyze -.-> plan;
+	analyze -. &nbsp;plan&nbsp; .-> planner;
 	analyze -.-> respond;
-	execute --> judge;
-	judge -.-> plan;
-	judge -.-> respond;
-	plan --> execute;
+	judge -. &nbsp;plan&nbsp; .-> planner;
+	judge -. &nbsp;respond&nbsp; .-> verify;
+	planner -.-> judge;
+	planner -.-> worker;
+	verify -.-> planner;
+	verify -.-> respond;
+	worker -.-> judge;
+	worker -.-> planner;
 	respond --> __end__;
 	classDef default fill:#f2f0ff,line-height:1.2
 	classDef first fill-opacity:0
 	classDef last fill:#bfb6fc
-

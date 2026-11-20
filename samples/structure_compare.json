@@ -1,0 +1,538 @@
+{
+ "captured_at": "2026-11-20T11:35:07+09:00",
+ "configs": {
+  "classic": {
+   "AGENT_STRUCTURE": "classic"
+  },
+  "pw_rule": {
+   "AGENT_STRUCTURE": "planner_worker",
+   "WORKER_LLM": "0"
+  },
+  "pw_llm": {
+   "AGENT_STRUCTURE": "planner_worker",
+   "WORKER_LLM": "1"
+  }
+ },
+ "base_env": {
+  "CALENDAR_PROVIDER": "local"
+ },
+ "model": "claude-haiku-5-5",
+ "max_replans": 3,
+ "worker_max_retry": 2,
+ "rows": [
+  {
+   "config": "classic",
+   "scenario": "R1",
+   "message": "12월 14일 쌍둥이자리 유성우, 서울에서 밤 10시부터 새벽 2시 사이에 볼 수 있어?",
+   "session_id": "ccc6b4548f8b",
+   "intent": "plan",
+   "replan_count": 0,
+   "stop_reason": null,
+   "recommended": 1,
+   "llm_calls_response": 1,
+   "elapsed_s": 10.47,
+   "env_overrides": {
+    "AGENT_STRUCTURE": "classic"
+   },
+   "tool_calls": 4,
+   "llm_calls_events": 1,
+   "worker_llm_decisions": 0,
+   "worker_rule_decisions": 0,
+   "planner_tasks": 0,
+   "worker_results": 0,
+   "replan_events": 0,
+   "flow": "analyze > plan > execute > judge > respond",
+   "task_triggers": [],
+   "audit_status": "normal"
+  },
+  {
+   "config": "classic",
+   "scenario": "R6",
+   "message": "같은 날 장소만 대전으로 바꿔 줘",
+   "session_id": "ccc6b4548f8b",
+   "intent": "plan",
+   "replan_count": 0,
+   "stop_reason": null,
+   "recommended": 1,
+   "llm_calls_response": 1,
+   "elapsed_s": 10.27,
+   "env_overrides": {
+    "AGENT_STRUCTURE": "classic"
+   },
+   "tool_calls": 3,
+   "llm_calls_events": 1,
+   "worker_llm_decisions": 0,
+   "worker_rule_decisions": 0,
+   "planner_tasks": 0,
+   "worker_results": 0,
+   "replan_events": 0,
+   "flow": "analyze > plan > execute > judge > respond",
+   "task_triggers": [],
+   "audit_status": "normal"
+  },
+  {
+   "config": "classic",
+   "scenario": "R2",
+   "message": "이번 주말 밤 9시~12시에 대전에서 사자자리 유성우 보고 싶어. 구름 많으면 다른 날로",
+   "session_id": "48059b5c8a5b",
+   "intent": "plan",
+   "replan_count": 3,
+   "stop_reason": "limit_reached",
+   "recommended": 0,
+   "llm_calls_response": 2,
+   "elapsed_s": 27.54,
+   "env_overrides": {
+    "AGENT_STRUCTURE": "classic",
+    "WEATHER_PROVIDER": "mock"
+   },
+   "tool_calls": 28,
+   "llm_calls_events": 2,
+   "worker_llm_decisions": 0,
+   "worker_rule_decisions": 0,
+   "planner_tasks": 0,
+   "worker_results": 0,
+   "replan_events": 3,
+   "flow": "analyze > plan > execute > judge > plan > execute > judge > plan > execute > judge > plan > execute > judge > respond",
+   "task_triggers": [],
+   "audit_status": "anomaly"
+  },
+  {
+   "config": "classic",
+   "scenario": "R3",
+   "message": "다음 주 아무 날이나 서울에서 보름달 피해서 유성 보고 싶어",
+   "session_id": "fbbdfabe49df",
+   "intent": "plan",
+   "replan_count": 3,
+   "stop_reason": "limit_reached",
+   "recommended": 0,
+   "llm_calls_response": 2,
+   "elapsed_s": 32.76,
+   "env_overrides": {
+    "AGENT_STRUCTURE": "classic",
+    "WEATHER_PROVIDER": "mock"
+   },
+   "tool_calls": 46,
+   "llm_calls_events": 2,
+   "worker_llm_decisions": 0,
+   "worker_rule_decisions": 0,
+   "planner_tasks": 0,
+   "worker_results": 0,
+   "replan_events": 3,
+   "flow": "analyze > plan > execute > judge > plan > execute > judge > plan > execute > judge > plan > execute > judge > respond",
+   "task_triggers": [],
+   "audit_status": "anomaly"
+  },
+  {
+   "config": "classic",
+   "scenario": "R4",
+   "message": "토요일 밤 9시부터 대전 근처 천문대에서 보고 싶어, 20km 이내. 자정 전에는 끝내야 해",
+   "session_id": "e9f230e574f8",
+   "intent": "plan",
+   "replan_count": 0,
+   "stop_reason": null,
+   "recommended": 1,
+   "llm_calls_response": 1,
+   "elapsed_s": 11.6,
+   "env_overrides": {
+    "AGENT_STRUCTURE": "classic",
+    "KAKAO_REST_KEY": ""
+   },
+   "tool_calls": 5,
+   "llm_calls_events": 1,
+   "worker_llm_decisions": 0,
+   "worker_rule_decisions": 0,
+   "planner_tasks": 0,
+   "worker_results": 0,
+   "replan_events": 0,
+   "flow": "analyze > plan > execute > judge > respond",
+   "task_triggers": [],
+   "audit_status": "normal"
+  },
+  {
+   "config": "classic",
+   "scenario": "NR",
+   "message": "2026년 12월 14일 서울에서 존재하지않는유성우XYZ 관측 계획",
+   "session_id": "0b5b93dd5785",
+   "intent": "plan",
+   "replan_count": 1,
+   "stop_reason": null,
+   "recommended": 1,
+   "llm_calls_response": 1,
+   "elapsed_s": 9.67,
+   "env_overrides": {
+    "AGENT_STRUCTURE": "classic"
+   },
+   "tool_calls": 5,
+   "llm_calls_events": 1,
+   "worker_llm_decisions": 0,
+   "worker_rule_decisions": 0,
+   "planner_tasks": 0,
+   "worker_results": 0,
+   "replan_events": 1,
+   "flow": "analyze > plan > execute > judge > plan > execute > judge > respond",
+   "task_triggers": [],
+   "audit_status": "normal"
+  },
+  {
+   "config": "pw_rule",
+   "scenario": "R1",
+   "message": "12월 14일 쌍둥이자리 유성우, 서울에서 밤 10시부터 새벽 2시 사이에 볼 수 있어?",
+   "session_id": "6ae5ab10c75f",
+   "intent": "plan",
+   "replan_count": 0,
+   "stop_reason": null,
+   "recommended": 1,
+   "llm_calls_response": 1,
+   "elapsed_s": 8.99,
+   "env_overrides": {
+    "AGENT_STRUCTURE": "planner_worker",
+    "WORKER_LLM": "0"
+   },
+   "tool_calls": 4,
+   "llm_calls_events": 1,
+   "worker_llm_decisions": 0,
+   "worker_rule_decisions": 1,
+   "planner_tasks": 1,
+   "worker_results": 4,
+   "replan_events": 0,
+   "flow": "analyze > plan > execute > judge > respond",
+   "task_triggers": [
+    "user"
+   ],
+   "audit_status": "normal"
+  },
+  {
+   "config": "pw_rule",
+   "scenario": "R6",
+   "message": "같은 날 장소만 대전으로 바꿔 줘",
+   "session_id": "6ae5ab10c75f",
+   "intent": "plan",
+   "replan_count": 0,
+   "stop_reason": null,
+   "recommended": 1,
+   "llm_calls_response": 1,
+   "elapsed_s": 8.47,
+   "env_overrides": {
+    "AGENT_STRUCTURE": "planner_worker",
+    "WORKER_LLM": "0"
+   },
+   "tool_calls": 3,
+   "llm_calls_events": 1,
+   "worker_llm_decisions": 0,
+   "worker_rule_decisions": 1,
+   "planner_tasks": 1,
+   "worker_results": 4,
+   "replan_events": 0,
+   "flow": "analyze > plan > execute > judge > respond",
+   "task_triggers": [
+    "user"
+   ],
+   "audit_status": "normal"
+  },
+  {
+   "config": "pw_rule",
+   "scenario": "R2",
+   "message": "이번 주말 밤 9시~12시에 대전에서 사자자리 유성우 보고 싶어. 구름 많으면 다른 날로",
+   "session_id": "7414167d7d7c",
+   "intent": "plan",
+   "replan_count": 3,
+   "stop_reason": "limit_reached",
+   "recommended": 0,
+   "llm_calls_response": 2,
+   "elapsed_s": 27.36,
+   "env_overrides": {
+    "AGENT_STRUCTURE": "planner_worker",
+    "WORKER_LLM": "0",
+    "WEATHER_PROVIDER": "mock"
+   },
+   "tool_calls": 28,
+   "llm_calls_events": 2,
+   "worker_llm_decisions": 0,
+   "worker_rule_decisions": 0,
+   "planner_tasks": 5,
+   "worker_results": 20,
+   "replan_events": 3,
+   "flow": "analyze > plan > execute > judge > plan > execute > judge > plan > execute > judge > plan > execute > judge > plan > execute > judge > respond",
+   "task_triggers": [
+    "user",
+    "judge_replan",
+    "judge_replan",
+    "judge_replan",
+    "audit_anomaly"
+   ],
+   "audit_status": "anomaly"
+  },
+  {
+   "config": "pw_rule",
+   "scenario": "R3",
+   "message": "다음 주 아무 날이나 서울에서 보름달 피해서 유성 보고 싶어",
+   "session_id": "061f7fc282d3",
+   "intent": "plan",
+   "replan_count": 3,
+   "stop_reason": "limit_reached",
+   "recommended": 0,
+   "llm_calls_response": 2,
+   "elapsed_s": 32.73,
+   "env_overrides": {
+    "AGENT_STRUCTURE": "planner_worker",
+    "WORKER_LLM": "0",
+    "WEATHER_PROVIDER": "mock"
+   },
+   "tool_calls": 46,
+   "llm_calls_events": 2,
+   "worker_llm_decisions": 0,
+   "worker_rule_decisions": 0,
+   "planner_tasks": 5,
+   "worker_results": 25,
+   "replan_events": 3,
+   "flow": "analyze > plan > execute > judge > plan > execute > judge > plan > execute > judge > plan > execute > judge > plan > execute > judge > respond",
+   "task_triggers": [
+    "user",
+    "judge_replan",
+    "judge_replan",
+    "judge_replan",
+    "audit_anomaly"
+   ],
+   "audit_status": "anomaly"
+  },
+  {
+   "config": "pw_rule",
+   "scenario": "R4",
+   "message": "토요일 밤 9시부터 대전 근처 천문대에서 보고 싶어, 20km 이내. 자정 전에는 끝내야 해",
+   "session_id": "726be308a185",
+   "intent": "plan",
+   "replan_count": 0,
+   "stop_reason": null,
+   "recommended": 1,
+   "llm_calls_response": 1,
+   "elapsed_s": 11.3,
+   "env_overrides": {
+    "AGENT_STRUCTURE": "planner_worker",
+    "WORKER_LLM": "0",
+    "KAKAO_REST_KEY": ""
+   },
+   "tool_calls": 5,
+   "llm_calls_events": 1,
+   "worker_llm_decisions": 0,
+   "worker_rule_decisions": 1,
+   "planner_tasks": 1,
+   "worker_results": 5,
+   "replan_events": 0,
+   "flow": "analyze > plan > execute > judge > respond",
+   "task_triggers": [
+    "user"
+   ],
+   "audit_status": "normal"
+  },
+  {
+   "config": "pw_rule",
+   "scenario": "NR",
+   "message": "2026년 12월 14일 서울에서 존재하지않는유성우XYZ 관측 계획",
+   "session_id": "4e10874198db",
+   "intent": "plan",
+   "replan_count": 1,
+   "stop_reason": null,
+   "recommended": 1,
+   "llm_calls_response": 1,
+   "elapsed_s": 6.91,
+   "env_overrides": {
+    "AGENT_STRUCTURE": "planner_worker",
+    "WORKER_LLM": "0"
+   },
+   "tool_calls": 5,
+   "llm_calls_events": 1,
+   "worker_llm_decisions": 0,
+   "worker_rule_decisions": 2,
+   "planner_tasks": 2,
+   "worker_results": 8,
+   "replan_events": 1,
+   "flow": "analyze > plan > execute > plan > execute > judge > respond",
+   "task_triggers": [
+    "user",
+    "worker_request"
+   ],
+   "audit_status": "normal"
+  },
+  {
+   "config": "pw_llm",
+   "scenario": "R1",
+   "message": "12월 14일 쌍둥이자리 유성우, 서울에서 밤 10시부터 새벽 2시 사이에 볼 수 있어?",
+   "session_id": "0e577dc54125",
+   "intent": "plan",
+   "replan_count": 0,
+   "stop_reason": null,
+   "recommended": 1,
+   "llm_calls_response": 1,
+   "elapsed_s": 8.49,
+   "env_overrides": {
+    "AGENT_STRUCTURE": "planner_worker",
+    "WORKER_LLM": "1"
+   },
+   "tool_calls": 4,
+   "llm_calls_events": 1,
+   "worker_llm_decisions": 0,
+   "worker_rule_decisions": 1,
+   "planner_tasks": 1,
+   "worker_results": 4,
+   "replan_events": 0,
+   "flow": "analyze > plan > execute > judge > respond",
+   "task_triggers": [
+    "user"
+   ],
+   "audit_status": "normal"
+  },
+  {
+   "config": "pw_llm",
+   "scenario": "R6",
+   "message": "같은 날 장소만 대전으로 바꿔 줘",
+   "session_id": "0e577dc54125",
+   "intent": "plan",
+   "replan_count": 0,
+   "stop_reason": null,
+   "recommended": 1,
+   "llm_calls_response": 1,
+   "elapsed_s": 8.22,
+   "env_overrides": {
+    "AGENT_STRUCTURE": "planner_worker",
+    "WORKER_LLM": "1"
+   },
+   "tool_calls": 3,
+   "llm_calls_events": 1,
+   "worker_llm_decisions": 0,
+   "worker_rule_decisions": 1,
+   "planner_tasks": 1,
+   "worker_results": 4,
+   "replan_events": 0,
+   "flow": "analyze > plan > execute > judge > respond",
+   "task_triggers": [
+    "user"
+   ],
+   "audit_status": "normal"
+  },
+  {
+   "config": "pw_llm",
+   "scenario": "R2",
+   "message": "이번 주말 밤 9시~12시에 대전에서 사자자리 유성우 보고 싶어. 구름 많으면 다른 날로",
+   "session_id": "29133d7531c5",
+   "intent": "plan",
+   "replan_count": 3,
+   "stop_reason": "limit_reached",
+   "recommended": 0,
+   "llm_calls_response": 2,
+   "elapsed_s": 27.64,
+   "env_overrides": {
+    "AGENT_STRUCTURE": "planner_worker",
+    "WORKER_LLM": "1",
+    "WEATHER_PROVIDER": "mock"
+   },
+   "tool_calls": 28,
+   "llm_calls_events": 2,
+   "worker_llm_decisions": 0,
+   "worker_rule_decisions": 0,
+   "planner_tasks": 5,
+   "worker_results": 20,
+   "replan_events": 3,
+   "flow": "analyze > plan > execute > judge > plan > execute > judge > plan > execute > judge > plan > execute > judge > plan > execute > judge > respond",
+   "task_triggers": [
+    "user",
+    "judge_replan",
+    "judge_replan",
+    "judge_replan",
+    "audit_anomaly"
+   ],
+   "audit_status": "anomaly"
+  },
+  {
+   "config": "pw_llm",
+   "scenario": "R3",
+   "message": "다음 주 아무 날이나 서울에서 보름달 피해서 유성 보고 싶어",
+   "session_id": "29d0d8ad49fb",
+   "intent": "plan",
+   "replan_count": 3,
+   "stop_reason": "limit_reached",
+   "recommended": 0,
+   "llm_calls_response": 2,
+   "elapsed_s": 28.48,
+   "env_overrides": {
+    "AGENT_STRUCTURE": "planner_worker",
+    "WORKER_LLM": "1",
+    "WEATHER_PROVIDER": "mock"
+   },
+   "tool_calls": 46,
+   "llm_calls_events": 2,
+   "worker_llm_decisions": 0,
+   "worker_rule_decisions": 0,
+   "planner_tasks": 5,
+   "worker_results": 25,
+   "replan_events": 3,
+   "flow": "analyze > plan > execute > judge > plan > execute > judge > plan > execute > judge > plan > execute > judge > plan > execute > judge > respond",
+   "task_triggers": [
+    "user",
+    "judge_replan",
+    "judge_replan",
+    "judge_replan",
+    "audit_anomaly"
+   ],
+   "audit_status": "anomaly"
+  },
+  {
+   "config": "pw_llm",
+   "scenario": "R4",
+   "message": "토요일 밤 9시부터 대전 근처 천문대에서 보고 싶어, 20km 이내. 자정 전에는 끝내야 해",
+   "session_id": "7e5eb77a17a8",
+   "intent": "plan",
+   "replan_count": 0,
+   "stop_reason": null,
+   "recommended": 1,
+   "llm_calls_response": 1,
+   "elapsed_s": 13.13,
+   "env_overrides": {
+    "AGENT_STRUCTURE": "planner_worker",
+    "WORKER_LLM": "1",
+    "KAKAO_REST_KEY": ""
+   },
+   "tool_calls": 5,
+   "llm_calls_events": 1,
+   "worker_llm_decisions": 0,
+   "worker_rule_decisions": 1,
+   "planner_tasks": 1,
+   "worker_results": 5,
+   "replan_events": 0,
+   "flow": "analyze > plan > execute > judge > respond",
+   "task_triggers": [
+    "user"
+   ],
+   "audit_status": "normal"
+  },
+  {
+   "config": "pw_llm",
+   "scenario": "NR",
+   "message": "2026년 12월 14일 서울에서 존재하지않는유성우XYZ 관측 계획",
+   "session_id": "ff687a2a2eb0",
+   "intent": "plan",
+   "replan_count": 1,
+   "stop_reason": null,
+   "recommended": 1,
+   "llm_calls_response": 2,
+   "elapsed_s": 10.72,
+   "env_overrides": {
+    "AGENT_STRUCTURE": "planner_worker",
+    "WORKER_LLM": "1"
+   },
+   "tool_calls": 5,
+   "llm_calls_events": 2,
+   "worker_llm_decisions": 1,
+   "worker_rule_decisions": 1,
+   "planner_tasks": 2,
+   "worker_results": 8,
+   "replan_events": 1,
+   "flow": "analyze > plan > execute > plan > execute > judge > respond",
+   "task_triggers": [
+    "user",
+    "worker_request"
+   ],
+   "audit_status": "normal"
+  }
+ ],
+ "markdown": "| 시나리오 | 구성 | 재계획 | Tool 호출 | LLM 호출 | Worker LLM | 작업 목록(trigger) | 추천 | stop_reason | 응답 시간(s) |\n|---|---|---|---|---|---|---|---|---|---|\n| NR | classic | 1 | 5 | 1 | 0 | - | 1 | - | 9.67 |\n| NR | pw_rule | 1 | 5 | 1 | 0 | user, worker_request | 1 | - | 6.91 |\n| NR | pw_llm | 1 | 5 | 2 | 1 | user, worker_request | 1 | - | 10.72 |\n| R1 | classic | 0 | 4 | 1 | 0 | - | 1 | - | 10.47 |\n| R1 | pw_rule | 0 | 4 | 1 | 0 | user | 1 | - | 8.99 |\n| R1 | pw_llm | 0 | 4 | 1 | 0 | user | 1 | - | 8.49 |\n| R2 | classic | 3 | 28 | 2 | 0 | - | 0 | limit_reached | 27.54 |\n| R2 | pw_rule | 3 | 28 | 2 | 0 | user, judge_replan, judge_replan, judge_replan, audit_anomaly | 0 | limit_reached | 27.36 |\n| R2 | pw_llm | 3 | 28 | 2 | 0 | user, judge_replan, judge_replan, judge_replan, audit_anomaly | 0 | limit_reached | 27.64 |\n| R3 | classic | 3 | 46 | 2 | 0 | - | 0 | limit_reached | 32.76 |\n| R3 | pw_rule | 3 | 46 | 2 | 0 | user, judge_replan, judge_replan, judge_replan, audit_anomaly | 0 | limit_reached | 32.73 |\n| R3 | pw_llm | 3 | 46 | 2 | 0 | user, judge_replan, judge_replan, judge_replan, audit_anomaly | 0 | limit_reached | 28.48 |\n| R4 | classic | 0 | 5 | 1 | 0 | - | 1 | - | 11.6 |\n| R4 | pw_rule | 0 | 5 | 1 | 0 | user | 1 | - | 11.3 |\n| R4 | pw_llm | 0 | 5 | 1 | 0 | user | 1 | - | 13.13 |\n| R6 | classic | 0 | 3 | 1 | 0 | - | 1 | - | 10.27 |\n| R6 | pw_rule | 0 | 3 | 1 | 0 | user | 1 | - | 8.47 |\n| R6 | pw_llm | 0 | 3 | 1 | 0 | user | 1 | - | 8.22 |\n\n| 구성 | 평균 재계획 | 평균 Tool 호출 | 평균 LLM 호출 | 평균 응답 시간(s) |\n|---|---|---|---|---|\n| classic | 1.17 | 15.17 | 1.33 | 17.05 |\n| pw_rule | 1.17 | 15.17 | 1.33 | 15.96 |\n| pw_llm | 1.17 | 15.17 | 1.50 | 16.11 |"
+}

@@ -34,7 +34,8 @@ class ErrorCode(str, Enum):
     NO_RESULT = "NO_RESULT"         # 조회 결과 없음
     NO_WINDOW = "NO_WINDOW"         # 박명·출몰 값이 비어 관측 창을 계산할 수 없음
     OUT_OF_RANGE = "OUT_OF_RANGE"   # 예보 범위 밖 등 제공 범위 밖
-    NO_INDEX = "NO_INDEX"           # RAG 색인 없음 (심화)
+    NO_INDEX = "NO_INDEX"           # RAG 색인 없음, chromadb/임베딩 모델 사용 불가 (심화 F3022)
+    INDEX_MISMATCH = "INDEX_MISMATCH"  # RAG 색인의 임베딩 모델/차원이 현재 설정과 다름 (심화 F3022)
     NOT_FOUND = "NOT_FOUND"         # 저장소에 대상 없음 (심화 캘린더)
     UPSTREAM = "UPSTREAM"           # 외부 API 오류 응답
     TIMEOUT = "TIMEOUT"             # 외부 API 시간 초과
@@ -47,8 +48,11 @@ class ErrorCode(str, Enum):
 
     @property
     def fatal(self) -> bool:
-        """다시 시도해도 같은 결과 — 재계획하지 않고 바로 안내한다."""
-        return self in {ErrorCode.AUTH, ErrorCode.OUT_OF_RANGE, ErrorCode.NO_INDEX}
+        """다시 시도해도 같은 결과 — 재계획하지 않고 바로 안내한다.
+
+        NO_INDEX, INDEX_MISMATCH 는 키 문제가 아니라 색인 준비 문제라 여기 넣지 않는다
+        (재계획 대상도 아니다: retriable 아님. 응답이 색인 안내 문장으로 바로 답한다)."""
+        return self in {ErrorCode.AUTH, ErrorCode.OUT_OF_RANGE}
 
 
 class ToolError(BaseModel):

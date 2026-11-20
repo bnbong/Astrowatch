@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Astrowatch | 하늘 가리키기</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Noto+Serif+KR:wght@600;700&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="css/style.css?v=9">
+</head>
+<body>
+<div class="app">
+  <nav class="rail" aria-label="주 메뉴">
+    <a class="brand" href="index.html" aria-label="Astrowatch 홈"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="13" fill="none" stroke="#1B2A4A" stroke-width="1.5" stroke-dasharray="3 4"></circle><circle cx="15" cy="15" r="5.5" fill="#1B2A4A"></circle><circle cx="24" cy="8" r="2" fill="#B8731B"></circle></svg><span class="brand-name">Astrowatch</span></a>
+    <a class="rail-link" href="index.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg><span>대화</span></a>
+    <a class="rail-link" href="plans.html" aria-current="page"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg><span>관측 계획</span><span class="rail-count" id="rail-plan-count" hidden></span></a>
+    <a class="rail-link" href="logs.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h7"></path></svg><span>실행 로그</span></a>
+    <div class="rail-card" id="health" aria-live="polite"><div class="rail-card-title">연결 상태</div><div class="muted">확인 중…</div></div>
+  </nav>
+
+  <main class="pt-page">
+    <header class="page-head pt-head">
+      <a class="mobile-brand" href="index.html" aria-label="Astrowatch 홈"><svg width="24" height="24" viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="13" fill="none" stroke="#1B2A4A" stroke-width="1.5" stroke-dasharray="3 4"></circle><circle cx="15" cy="15" r="5.5" fill="#1B2A4A"></circle><circle cx="24" cy="8" r="2" fill="#B8731B"></circle></svg></a>
+      <div class="pt-titles">
+        <a class="pt-back" href="plans.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>관측 계획으로</a>
+        <div class="pt-name-row">
+          <h1 class="page-title" id="pt-name">하늘 가리키기</h1>
+          <span class="pt-kind" id="pt-kind" hidden></span>
+        </div>
+        <p class="pt-plan" id="pt-plan">대상을 불러오는 중…</p>
+      </div>
+    </header>
+
+    <div id="pt-msg" class="banner banner-cond" role="status" hidden></div>
+
+    <div class="pt-layout">
+      <section class="pt-stage-col" aria-label="가리키기 화면">
+        <p class="pt-guide" id="pt-guide" aria-hidden="true">대상을 불러오는 중</p>
+        <p class="sr-only" id="pt-live" aria-live="polite"></p>
+        <div class="pt-stage" id="pt-stage" tabindex="0" role="application"
+             aria-roledescription="하늘 가리키기 조준경" aria-describedby="pt-hint" aria-label="조준경. 시뮬레이션 모드에서는 방향키로 돌릴 수 있습니다">
+          <svg class="pt-svg" viewBox="0 0 400 400" aria-hidden="true">
+            <defs>
+              <clipPath id="pt-field-clip"><circle cx="200" cy="200" r="150"></circle></clipPath>
+            </defs>
+            <!-- 나침반 고리: 휴대폰이 보는 방위가 위로 오게 돌린다 -->
+            <circle class="pt-ring-bg" cx="200" cy="200" r="186"></circle>
+            <g id="pt-ring"></g>
+            <path class="pt-index" d="M200 8 L192 -4 L208 -4 Z" transform="translate(0 6)"></path>
+            <!-- 시야: 반지름 150 = 45도 -->
+            <circle class="pt-field" cx="200" cy="200" r="150"></circle>
+            <g clip-path="url(#pt-field-clip)">
+              <path class="pt-ground" id="pt-ground" d=""></path>
+              <path class="pt-horizon" id="pt-horizon" d=""></path>
+              <text class="pt-horizon-label" id="pt-horizon-label" x="0" y="0" style="display:none">지평선</text>
+              <circle class="pt-grid" cx="200" cy="200" r="50"></circle>
+              <circle class="pt-grid" cx="200" cy="200" r="100"></circle>
+            </g>
+            <g id="pt-arrow" class="pt-arrow">
+              <line x1="0" y1="0" x2="100" y2="0"></line>
+              <path d="M112 0 L94 -12 L98 0 L94 12 Z"></path>
+            </g>
+            <g id="pt-target" class="pt-target">
+              <circle class="pt-target-halo" r="16"></circle>
+              <circle class="pt-target-dot" r="6"></circle>
+              <text class="pt-target-label" id="pt-target-label" x="14" y="-12"></text>
+            </g>
+            <!-- 가운데 조준: 반지름 13.3 = 4도 (잠김 범위) -->
+            <circle class="pt-cross-ring" id="pt-cross-ring" cx="200" cy="200" r="13.3"></circle>
+            <path class="pt-cross" d="M200 172 V186 M200 214 V228 M172 200 H186 M214 200 H228"></path>
+            <text class="pt-lock-text" id="pt-lock-text" x="200" y="252" text-anchor="middle">여기예요</text>
+          </svg>
+        </div>
+        <p class="pt-hint" id="pt-hint">시뮬레이션 모드: 끌거나 방향키로 돌려 보세요</p>
+      </section>
+
+      <aside class="pt-side" aria-label="위치와 상태">
+        <div class="pt-actions">
+          <button type="button" class="btn btn-primary" id="pt-sensor-btn">센서 시작</button>
+          <button type="button" class="btn" id="pt-geo-btn">현재 위치 사용</button>
+          <button type="button" class="btn" id="pt-pick-btn" aria-expanded="false" aria-controls="pt-picker">다른 천체</button>
+        </div>
+
+        <section class="pt-picker info-card" id="pt-picker" hidden aria-label="다른 천체 고르기">
+          <label class="field" for="pt-q">천체 이름</label>
+          <input class="input" id="pt-q" type="search" maxlength="50" autocomplete="off" placeholder="예: 목성, M45, 페르세우스자리 유성우">
+          <ul class="pt-pick-list" id="pt-pick-list" aria-label="찾은 천체"></ul>
+        </section>
+
+        <div id="pt-below" class="banner banner-cond pt-below" hidden></div>
+
+        <dl class="pt-readout">
+          <div class="pt-read"><dt>천체 위치</dt><dd><span class="num" id="pt-t-alt">-</span><span class="num" id="pt-t-az">-</span></dd></div>
+          <div class="pt-read"><dt>휴대폰 방향</dt><dd><span class="num" id="pt-p-alt">-</span><span class="num" id="pt-p-az">-</span></dd></div>
+          <div class="pt-read"><dt>남은 각도</dt><dd><span class="num" id="pt-sep">-</span><span class="num muted" id="pt-delta"></span></dd></div>
+        </dl>
+
+        <ul class="pt-status" aria-label="상태">
+          <li><span class="pt-status-k">센서</span><span class="dot" id="pt-sensor-dot" aria-hidden="true"></span><span id="pt-sensor">대기</span></li>
+          <li><span class="pt-status-k">위치</span><span class="dot dot-ok" id="pt-loc-dot" aria-hidden="true"></span><span id="pt-loc">확인 중</span></li>
+          <li>
+            <span class="pt-status-k">시뮬레이션</span>
+            <button type="button" class="pt-switch" id="pt-sim" role="switch" aria-checked="false" aria-label="시뮬레이션 모드"><span class="pt-switch-knob" aria-hidden="true"></span></button>
+            <span id="pt-sim-text">꺼짐</span>
+          </li>
+        </ul>
+
+        <p class="pt-note" id="pt-note">휴대폰에서는 "센서 시작"을 누르고 화면을 보면서 휴대폰을 하늘로 들어 올리세요. 화면 뒷면이 가리키는 쪽을 안내합니다.</p>
+        <p class="pt-note pt-note-sub" id="pt-kind-note" hidden></p>
+      </aside>
+    </div>
+  </main>
+
+  <nav class="tabbar" aria-label="주 메뉴(모바일)">
+    <a class="tab" href="index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg><span>대화</span></a>
+    <a class="tab" href="plans.html" aria-current="page"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg><span>계획</span></a>
+    <a class="tab" href="logs.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h7"></path></svg><span>로그</span></a>
+  </nav>
+</div>
+  <script src="js/api.js?v=9"></script>
+  <script src="js/ui.js?v=9"></script>
+  <script src="js/skymath.js?v=9"></script>
+  <script src="js/pointer.js?v=9"></script>
+</body>
+</html>

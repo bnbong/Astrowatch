@@ -31,6 +31,13 @@ def _env(name: str, default: str | None = None) -> str | None:
     return value if value else default
 
 
+def _env_bool(name: str, default: bool) -> bool:
+    raw = _env(name)
+    if raw is None or raw == "":
+        return default
+    return raw.strip().lower() in ("1", "true", "yes", "on")
+
+
 def _env_int(name: str, default: int) -> int:
     raw = _env(name)
     try:
@@ -116,6 +123,30 @@ def _resolve_secret(path: str | None, *, name: str) -> Path | None:
     return resolved
 
 
+DATA_DIR = ROOT_DIR / "data"
+
+
+def _resolve_data(path: str | None, *, name: str, default: Path) -> Path:
+    """쓰기 대상 데이터 경로(SPACE_DOCS_FILE, CHROMA_DIR). _resolve 규칙 + 위치 제한.
+
+    | 허용                                                        | 예                         |
+    |-------------------------------------------------------------|----------------------------|
+    | 저장소의 data/ 아래                                         | data/space_docs.json       |
+    | ALLOW_EXTERNAL_PATHS=1 일 때 저장소 밖 절대 경로            | /srv/astrowatch/chroma     |
+    거부(frontend/, backend/, 저장소 루트의 다른 파일 등)하면 경고 로그(값은 남기지 않음) 후 기본값을 쓴다.
+    수집기와 색인 재구축이 이 경로에 파일을 쓰므로 정적 서빙 파일이나 소스를 덮어쓰지 못하게 한다.
+    """
+    resolved = _resolve(path, name=name)
+    if resolved is None:
+        return default
+    if resolved != DATA_DIR and resolved.is_relative_to(DATA_DIR):
+        return resolved
+    if _env_flag("ALLOW_EXTERNAL_PATHS") and Path(path or "").is_absolute() and not resolved.is_relative_to(ROOT_DIR):
+        return resolved
+    logger.warning("%s: data/ 밖 경로를 거부하고 기본값을 씀 (저장소 밖 절대 경로는 ALLOW_EXTERNAL_PATHS=1 필요)", name)
+    return default
+
+
 def _origins(raw: str | None) -> tuple[str, ...]:
     if not raw:
         return ()
@@ -162,6 +193,16 @@ class Settings:
     app_allowed_hosts: tuple[str, ...] = ()     # Host 헤더 추가 허용 (TrustedHost)
     app_access_token: str | None = None         # 설정 시 /api/* 에 X-Astrowatch-Token 필요
     chat_rate_per_min: int = 12                 # /api/chat IP 당 분당 요청 수
+    audit_rate_per_min: int = 6                 # POST /api/logs/{id}/audit IP 당 분당 요청 수 (LLM 진단 비용 보호)
+
+    # 심화 F3020 (이상 징후) / F3021 (Planner/Worker) / F3022 (RAG)
+    agent_structure: str = "planner_worker"     # planner_worker | classic (구조 변경 전후 비교용)
+    worker_llm: bool = True                      # Worker 가 고칠 여지가 있는 실패(NO_RESULT 등)에만 LLM 판단
+    worker_max_retry: int = 2                    # 같은 Tool 재시도 상한
+    audit_llm: bool = True                       # 이상으로 판정한 실행에만 LLM 원인 진단
+    audit_replan_threshold: int = 3              # 재계획이 이 횟수 이상이면 과다 재계획
+    embedding_provider: str = "local"           # local(chromadb 내장 ONNX MiniLM) | gms(OpenAI 호환 임베딩 API)
+    space_docs_file: Path = field(default=ROOT_DIR / "data/space_docs.json")  # 수집한 문서 원문(JSON)
 
     root_dir: Path = field(default=ROOT_DIR)
 
@@ -194,6 +235,11 @@ class Settings:
     def samples_dir(self) -> Path:
         return self.root_dir / "samples"
 
+    @property
+    def space_docs_cache_file(self) -> Path:
+        """수집기 원문 캐시 (재실행 시 이어받기). space_docs_file 과 같은 폴더의 cache/ 아래라 같은 위치 제한을 받는다."""
+        return self.space_docs_file.parent / "cache" / "space_docs_raw.json"
+
 
 _LLM_BASE_URLS = {
     "anthropic": "https://gms.ssafy.io/gmsapi/api.anthropic.com/v1",
@@ -222,17 +268,27 @@ def get_settings() -> Settings:
         min_obs_minutes=_env_int("MIN_OBS_MINUTES", 30),
         timezone=_env("TIMEZONE", "Asia/Seoul") or "Asia/Seoul",
         db_path=_resolve(_env("DB_PATH", "data/astrowatch.db"), name="DB_PATH") or ROOT_DIR / "data/astrowatch.db",
-        chroma_dir=_resolve(_env("CHROMA_DIR", "data/chroma"), name="CHROMA_DIR") or ROOT_DIR / "data/chroma",
+        chroma_dir=_resolve_data(_env("CHROMA_DIR", "data/chroma"), name="CHROMA_DIR", default=ROOT_DIR / "data/chroma"),
         calendar_provider=(_env("CALENDAR_PROVIDER", "local") or "local").lower(),
         google_client_secret_file=_resolve_secret(_env("GOOGLE_CLIENT_SECRET_FILE"), name="GOOGLE_CLIENT_SECRET_FILE"),
         google_token_file=_resolve_secret(_env("GOOGLE_TOKEN_FILE"), name="GOOGLE_TOKEN_FILE"),
         google_calendar_id=_env("GOOGLE_CALENDAR_ID", "primary") or "primary",
         app_host=_env("APP_HOST", "127.0.0.1") or "127.0.0.1",
         app_port=_env_int("APP_PORT", 8000),
-        app_allowed_origins=_origins(_env("APP_ALLOWED_ORIGINS")),
+        # 배포 주소: APP_PUBLIC_URL(직접 지정) 과 Render 가 주는 RENDER_EXTERNAL_URL 은 허용 출처/Host 에 자동 포함
+        app_allowed_origins=_origins(",".join(v for v in (_env("APP_ALLOWED_ORIGINS"), _env("APP_PUBLIC_URL"), _env("RENDER_EXTERNAL_URL")) if v)),
         app_allowed_hosts=tuple(h.strip() for h in (_env("APP_ALLOWED_HOSTS") or "").split(",") if h.strip()),
         app_access_token=_env("APP_ACCESS_TOKEN"),
         chat_rate_per_min=max(1, _env_int("CHAT_RATE_PER_MIN", 12)),
+        audit_rate_per_min=max(1, _env_int("AUDIT_RATE_PER_MIN", 6)),
+        agent_structure=("classic" if (_env("AGENT_STRUCTURE", "planner_worker") or "").lower() == "classic" else "planner_worker"),
+        worker_llm=_env_bool("WORKER_LLM", True),
+        worker_max_retry=max(0, _env_int("WORKER_MAX_RETRY", 2)),
+        audit_llm=_env_bool("AUDIT_LLM", True),
+        audit_replan_threshold=max(1, _env_int("AUDIT_REPLAN_THRESHOLD", 3)),
+        embedding_provider=("gms" if (_env("EMBEDDING_PROVIDER", "local") or "").lower() == "gms" else "local"),
+        space_docs_file=_resolve_data(_env("SPACE_DOCS_FILE", "data/space_docs.json"), name="SPACE_DOCS_FILE",
+                                      default=ROOT_DIR / "data/space_docs.json"),
     )
 
 

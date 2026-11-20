@@ -21,6 +21,10 @@ class PlanBase(BaseModel):
     place_url: str | None = Field(default=None, max_length=500, pattern=r"^https?://")
     target_alt: float | None = Field(default=None, ge=-90, le=90)
     target_az: float | None = Field(default=None, ge=0, le=360)
+    target_object: str | None = Field(
+        default=None, max_length=100,
+        description="하늘 가리키기 대상 키(카탈로그 이름, 행성 키, 'moon', 유성우 복사점 키). 비우면 제목에서 추론, 못 찾으면 null",
+    )
     basis: str | None = Field(default=None, max_length=2000, description="판정 등급 · 맑은 시간 · 달 영향 요약")
 
     @model_validator(mode="after")
@@ -42,6 +46,7 @@ class PlanUpdate(BaseModel):
     end_dt: datetime | None = None
     location_label: str | None = Field(default=None, min_length=1, max_length=100)
     basis: str | None = Field(default=None, max_length=2000)
+    target_object: str | None = Field(default=None, max_length=100, description="null 이면 대상 없음으로 비운다")
 
 
 class PlanOut(PlanBase):

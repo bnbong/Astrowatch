@@ -107,3 +107,23 @@ def test_update_can_clear_basis_but_not_required_fields(tmp_path):
     assert update_plan(plan.id, PlanUpdate(), db_path=db).event_title == "e"  # 보낸 것 없음 → 그대로
     with pytest.raises(ValueError):
         update_plan(plan.id, PlanUpdate(event_title=None), db_path=db)
+
+
+def test_target_object_roundtrip():
+    """하늘 가리키기 대상: 비우면 제목에서 추론, 보내면 키로 정규화, 수정, 비우기."""
+    base = dict(start=datetime(2026, 12, 14, 22, 0), end=datetime(2026, 12, 15, 1, 0))
+    inferred = plans.create_plan(_plan(**base)).plan                     # '쌍둥이자리 유성우 극대'
+    assert inferred.target_object == "geminids"
+    assert plans.get_plan(inferred.id).target_object == "geminids"
+
+    unknown = plans.create_plan(_plan(**base, title="이름 없는 관측")).plan
+    assert unknown.target_object is None
+
+    given = plans.create_plan(_plan(**base, title="저녁 관측").model_copy(update={"target_object": "M31"})).plan
+    assert given.target_object == "안드로메다 은하"
+
+    assert plans.update_plan(unknown.id, PlanUpdate(target_object="토성")).target_object == "saturn"
+    assert plans.update_plan(unknown.id, PlanUpdate(target_object=None)).target_object is None
+    with pytest.raises(ValueError):
+        plans.update_plan(unknown.id, PlanUpdate(target_object="없는 천체"))
+    assert "target_object" in plans.UPDATABLE_COLUMNS

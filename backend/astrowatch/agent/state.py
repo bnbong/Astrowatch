@@ -65,6 +65,9 @@ class AgentState(TypedDict, total=False):
     answer: str
     warnings: list[str]
 
+    # ── 심화 F3020: 직전 턴의 로깅 Agent 판정 (AuditResult.model_dump). 메인 Agent(Planner)가 참조 ──
+    audit: dict[str, Any] | None
+
     # ── 세션에 남길 요약 (F3010: Tool 원본은 남기지 않는다) ──
     memory_summary: str
 

@@ -9,6 +9,9 @@
     GET  /api/logs                 → list[LogSessionOut]
     GET  /api/logs/{session_id}    → list[LogEventOut]   (seq 순)
     DELETE /api/logs/{session_id}  → 204
+    GET  /api/logs/{session_id}/audits → list[AuditResult]   (F3020 로깅 Agent 판정, 최신 먼저)
+    GET  /api/logs/{session_id}/audit  → AuditResult         (최신 판정, 없으면 404)
+    POST /api/logs/{session_id}/audit  → AuditResult         (세션 전체를 지금 다시 판정)
     (실행 로그 수정 API 는 두지 않는다 — F3014)
     GET  /api/sessions             → list[SessionSummaryOut]   (대화 목록, last_at 내림차순)
     GET  /api/sessions/{id}        → SessionDetailOut          (턴 전체, 화면 복원)
@@ -24,6 +27,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, field_validator
 
+from astrowatch.schemas.audit import AuditResult
 from astrowatch.schemas.domain import Conditions, Intent, JudgedCandidate
 from astrowatch.tools.contracts import Place
 
@@ -54,6 +58,28 @@ class StepOut(BaseModel):
     replan_round: int | None = Field(default=None, description="재계획 안에서 일어난 단계면 몇 번째 재계획인지")
 
 
+class AuditFindingBrief(BaseModel):
+    kind: str
+    message: str
+
+
+class AuditSummary(BaseModel):
+    """심화 F3020: 로깅 Agent 판정 요약 (이번 턴). 진단 문장은 경고 수에 섞지 않는다."""
+
+    status: str = Field(description="normal | anomaly | undetermined(판정 불가)")
+    warning_count: int = 0
+    findings: list[AuditFindingBrief] = Field(default_factory=list)
+    diagnosis_text: str | None = Field(default=None, description="이상 판정에만 붙는 LLM 진단 (실패 시 '진단 실패: ...')")
+
+    @classmethod
+    def from_result(cls, r: AuditResult) -> "AuditSummary":
+        return cls(
+            status=r.status.value, warning_count=r.warning_count,
+            findings=[AuditFindingBrief(kind=f.kind.value, message=f.message) for f in r.findings],
+            diagnosis_text=r.diagnosis.text if r.diagnosis else None,
+        )
+
+
 class ChatResponse(BaseModel):
     session_id: str
     intent: Intent
@@ -75,6 +101,11 @@ class ChatResponse(BaseModel):
     steps: list[StepOut] = Field(default_factory=list)
     warnings: list[str] = Field(default_factory=list, description="API 키 누락 · Tool 실패 안내 (상세 오류는 넣지 않는다, NF3002)")
     safety_note: str = "야간 관측 시 이동 안전과 방한에 유의하세요."
+    audit: AuditSummary | None = Field(default=None, description="심화 F3020 로깅 Agent 판정 (판정 실패 시 null)")
+    llm_calls: int | None = Field(
+        default=None,
+        description="심화 F3021 이번 턴의 LLM 판단 호출 수 (llm_decision + worker_decision 중 LLM 시도 + audit_diagnosis). "
+                    "응답 문장 생성 1회는 이벤트가 없어 세지 않는다")
 
 
 class SessionSummaryOut(BaseModel):
@@ -116,6 +147,8 @@ class LogSessionOut(BaseModel):
     tool_calls: int
     replans: int
     first_message: str | None = None
+    audit_status: str | None = Field(default=None, description="F3020 최신 판정 normal | anomaly | undetermined, 판정 없음 null")
+    audit_warnings: int | None = None
 
 
 class LogEventOut(BaseModel):

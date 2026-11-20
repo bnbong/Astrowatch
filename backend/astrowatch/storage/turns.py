@@ -54,6 +54,19 @@ def append_turn(
     return int(row[0])
 
 
+def update_turn_response(
+    session_id: str, seq: int, response: ChatResponse, *, db_path: Path | None = None
+) -> bool:
+    """저장한 턴의 응답 JSON 을 바꾼다 (턴 종료 뒤 붙는 로깅 Agent 판정을 복원 화면에도 보이게). 바뀌었으면 True."""
+    path = ensure_db(db_path)
+    with connect(path) as conn:
+        cur = conn.execute(
+            "UPDATE turns SET response_json = ? WHERE session_id = ? AND seq = ?",
+            (response.model_dump_json(), session_id, seq),
+        )
+    return cur.rowcount > 0
+
+
 def list_sessions(*, db_path: Path | None = None) -> list[SessionSummaryOut]:
     """대화 목록. 마지막 턴 시각 내림차순."""
     path = ensure_db(db_path)

@@ -13,6 +13,7 @@ router = APIRouter(prefix="/plans", tags=["plans"])
 
 NOT_FOUND = "계획을 찾을 수 없습니다"
 BAD_ORDER = "종료 시각은 시작 시각보다 뒤여야 합니다"
+BAD_TARGET = "가리킬 수 있는 천체가 아닙니다"
 
 
 def _store() -> ModuleType:
@@ -29,6 +30,11 @@ def list_plans(limit: Limit = DEFAULT_LIMIT, offset: Offset = 0) -> list[PlanOut
 
 @router.post("", response_model=PlanSaveResult, status_code=status.HTTP_201_CREATED, summary="계획 저장")
 def create_plan(body: PlanCreate) -> PlanSaveResult:
+    # 하늘 가리키기 대상: 보낸 이름을 키로 정규화하고, 없으면 제목에서 추론한다 (못 찾으면 null)
+    from astrowatch.astro.targets import canonical_key, infer_target
+
+    target = canonical_key(body.target_object) or infer_target(body.event_title, body.event_kind.value)
+    body = body.model_copy(update={"target_object": target})
     try:
         return _store().create_plan(body)
     except ValueError:
@@ -45,6 +51,13 @@ def get_plan(plan_id: PlanId) -> PlanOut:
 
 @router.patch("/{plan_id}", response_model=PlanOut, summary="계획 수정 (보낸 필드만)")
 def update_plan(plan_id: PlanId, body: PlanUpdate) -> PlanOut:
+    if body.target_object is not None:
+        from astrowatch.astro.targets import canonical_key
+
+        key = canonical_key(body.target_object)
+        if key is None:
+            raise HTTPException(status_code=422, detail=BAD_TARGET)
+        body = body.model_copy(update={"target_object": key})
     try:
         plan = _store().update_plan(plan_id, body)
     except ValueError:

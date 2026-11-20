@@ -25,6 +25,7 @@
   const $sheetSummary = document.getElementById("sheet-summary");
   const $sumTools = document.getElementById("sum-tools");
   const $sumReplan = document.getElementById("sum-replan");
+  const $sumAudit = document.getElementById("sum-audit");   // 심화 F3020 로깅 Agent 판정
   const $sumLog = document.getElementById("sum-log");
   const $convoList = document.getElementById("convo-list");     // 레일 (넓은 화면)
   const $convoListM = document.getElementById("convo-list-m");  // 상단 드롭다운 (모바일)
@@ -268,6 +269,8 @@
         basis: reasons.join(" / ") || null,
         session_id: sessionId || null,
       };
+      // 하늘 가리키기 대상: 천체(딥스카이)와 유성우는 카드 제목이 곧 대상 이름. 그 밖은 서버가 제목에서 추론한다
+      if ((c.kind === "deep_sky" || c.kind === "meteor") && c.title) body.target_object = String(c.title).slice(0, 100);
       btn.disabled = true;
       out.innerHTML = '<span class="save-msg">저장 중…</span>';
       try {
@@ -395,14 +398,34 @@
     if (!res) {
       $sumTools.textContent = "—";
       $sumReplan.textContent = "—";
+      renderAuditRow(null);
       $sheetSummary.textContent = "아직 실행 없음";
       return;
     }
+    renderAuditRow(res.audit);
     const st = window.Timeline.stats(res.steps);
     $sumTools.textContent = st.calls + " · 실패 " + st.failed;
     const replan = (res.replan_count || 0) + (res.replan_limit != null ? " / " + res.replan_limit : "");
     $sumReplan.textContent = replan;
     $sheetSummary.textContent = "Tool " + st.calls + " · 실패 " + st.failed + " · 재계획 " + replan.replace(/ /g, "");
+  }
+
+  // 로깅 Agent 판정 한 줄: 정상 / 이상 N건 / 판정 불가. 진단 문장은 title 로만 (경고 수와 섞지 않는다)
+  function renderAuditRow(audit) {
+    if (!$sumAudit) return;
+    $sumAudit.className = "audit-badge";
+    $sumAudit.title = "";
+    if (!audit) {
+      $sumAudit.textContent = "-";
+      $sumAudit.className = "";
+      return;
+    }
+    const labels = { normal: "정상", undetermined: "판정 불가" };
+    $sumAudit.textContent = audit.status === "anomaly" ? "이상 " + (audit.warning_count || 0) + "건" : (labels[audit.status] || audit.status);
+    $sumAudit.classList.add("a-" + (audit.status in labels || audit.status === "anomaly" ? audit.status : "none"));
+    const tip = (audit.findings || []).map((f) => f.message);
+    if (audit.diagnosis_text) tip.push("진단: " + audit.diagnosis_text);
+    if (tip.length) $sumAudit.title = tip.join("\n");
   }
 
   function resetPanel() {

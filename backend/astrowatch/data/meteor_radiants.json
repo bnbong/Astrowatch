@@ -1,0 +1,65 @@
+{
+  "source": "IMO Meteor Shower Calendar (International Meteor Organization) 주요 연례 유성우. 복사점은 극대일 근처의 대략값(J2000, 도)이며 하루 약 1도씩 이동하는 것은 무시한다.",
+  "showers": [
+    {
+      "key": "quadrantids", "imo_code": "QUA", "name_ko": "사분의자리 유성우", "name_imo": "Quadrantids",
+      "aliases": ["사분의자리", "quadrantids", "quadrantid"],
+      "ra_deg": 230.0, "dec_deg": 49.0, "active": ["12-28", "01-12"], "peak": "01-03", "zhr": 80
+    },
+    {
+      "key": "lyrids", "imo_code": "LYR", "name_ko": "거문고자리 유성우", "name_imo": "April Lyrids",
+      "aliases": ["거문고자리", "4월거문고자리", "lyrids", "aprillyrids", "lyrid"],
+      "ra_deg": 271.0, "dec_deg": 34.0, "active": ["04-14", "04-30"], "peak": "04-22", "zhr": 18
+    },
+    {
+      "key": "eta-aquariids", "imo_code": "ETA", "name_ko": "물병자리 에타 유성우", "name_imo": "eta Aquariids",
+      "aliases": ["물병자리에타", "에타물병자리", "물병자리η", "η물병자리", "물병자리에타(η)", "etaaquariids", "etaaquariid"],
+      "ra_deg": 338.0, "dec_deg": -1.0, "active": ["04-19", "05-28"], "peak": "05-06", "zhr": 50
+    },
+    {
+      "key": "southern-delta-aquariids", "imo_code": "SDA", "name_ko": "남쪽 물병자리 델타 유성우", "name_imo": "Southern delta Aquariids",
+      "aliases": ["남쪽물병자리델타", "물병자리델타남쪽", "물병자리남쪽델타", "남쪽델타물병자리", "델타물병자리남쪽", "물병자리δ남쪽", "남쪽물병자리δ", "물병자리델타", "델타물병자리", "물병자리δ", "southerndeltaaquariids", "deltaaquariids"],
+      "ra_deg": 340.0, "dec_deg": -16.0, "active": ["07-12", "08-23"], "peak": "07-30", "zhr": 25
+    },
+    {
+      "key": "perseids", "imo_code": "PER", "name_ko": "페르세우스자리 유성우", "name_imo": "Perseids",
+      "aliases": ["페르세우스자리", "페르세우스", "perseids", "perseid"],
+      "ra_deg": 48.0, "dec_deg": 58.0, "active": ["07-17", "08-24"], "peak": "08-12", "zhr": 100
+    },
+    {
+      "key": "draconids", "imo_code": "DRA", "name_ko": "용자리 유성우", "name_imo": "October Draconids",
+      "aliases": ["용자리", "10월용자리", "자코비니", "draconids", "octoberdraconids", "giacobinids"],
+      "ra_deg": 262.0, "dec_deg": 54.0, "active": ["10-06", "10-10"], "peak": "10-08", "zhr": 10
+    },
+    {
+      "key": "orionids", "imo_code": "ORI", "name_ko": "오리온자리 유성우", "name_imo": "Orionids",
+      "aliases": ["오리온자리", "오리온", "orionids", "orionid"],
+      "ra_deg": 95.0, "dec_deg": 16.0, "active": ["10-02", "11-07"], "peak": "10-21", "zhr": 20
+    },
+    {
+      "key": "southern-taurids", "imo_code": "STA", "name_ko": "남쪽 황소자리 유성우", "name_imo": "Southern Taurids",
+      "aliases": ["남쪽황소자리", "황소자리남쪽", "황소자리남", "southerntaurids"],
+      "ra_deg": 32.0, "dec_deg": 9.0, "active": ["09-10", "11-20"], "peak": "10-10", "zhr": 5
+    },
+    {
+      "key": "northern-taurids", "imo_code": "NTA", "name_ko": "북쪽 황소자리 유성우", "name_imo": "Northern Taurids",
+      "aliases": ["북쪽황소자리", "황소자리북쪽", "황소자리북", "northerntaurids"],
+      "ra_deg": 58.0, "dec_deg": 22.0, "active": ["10-20", "12-10"], "peak": "11-12", "zhr": 5
+    },
+    {
+      "key": "leonids", "imo_code": "LEO", "name_ko": "사자자리 유성우", "name_imo": "Leonids",
+      "aliases": ["사자자리", "leonids", "leonid"],
+      "ra_deg": 152.0, "dec_deg": 22.0, "active": ["11-06", "11-30"], "peak": "11-17", "zhr": 15
+    },
+    {
+      "key": "geminids", "imo_code": "GEM", "name_ko": "쌍둥이자리 유성우", "name_imo": "Geminids",
+      "aliases": ["쌍둥이자리", "geminids", "geminid"],
+      "ra_deg": 112.0, "dec_deg": 33.0, "active": ["12-04", "12-20"], "peak": "12-14", "zhr": 150
+    },
+    {
+      "key": "ursids", "imo_code": "URS", "name_ko": "작은곰자리 유성우", "name_imo": "Ursids",
+      "aliases": ["작은곰자리", "ursids", "ursid"],
+      "ra_deg": 217.0, "dec_deg": 76.0, "active": ["12-17", "12-26"], "peak": "12-22", "zhr": 10
+    }
+  ]
+}

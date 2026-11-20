@@ -1,17 +1,17 @@
 {
  "scenario": "R1",
- "captured_at": "2026-11-20T09:44:03+09:00",
+ "captured_at": "2026-11-20T11:35:27+09:00",
  "env_overrides": {
   "CALENDAR_PROVIDER": "local"
  },
- "session_id": "b98028bec110",
+ "session_id": "29beffb3a8b7",
  "turns": [
   {
    "message": "12월 14일 쌍둥이자리 유성우, 서울에서 밤 10시부터 새벽 2시 사이에 볼 수 있어?",
    "response": {
-    "session_id": "b98028bec110",
+    "session_id": "29beffb3a8b7",
     "intent": "plan",
-    "answer": "**요청 조건**: 2026-12-14, 서울, 22:00~02:00(다음날) 사이 쌍둥이자리 유성우 관측 가능 여부\n(날짜 관련 추가 안내 없음, 가정 사항 없음)\n\n**추천 결과 (1건)**\n- **쌍둥이자리 유성우 극대기 (ZHR=150, IMO 기준)**\n  - 날짜·지역: 2026-12-14, 서울\n  - 등급: **조건부 충족** (날씨 예보 미확인)\n  - 관측 창: **22:00~02:00(+1일)**, 총 240분\n  - 맑은 시간: 날씨 예보 확인 전이라 산정하지 않음\n  - 달 영향: 월령 5.5일, 달빛 영향 적음\n  - 늦어도 **01:30(+1일)** 까지 도착하면 최소 30분 관측 가능\n\n**날씨 확인 안내**\n- 날씨는 관측일 D-3부터 예보로 확인 가능합니다. 현재는 예보 범위 밖이라 날씨는 판단하지 않았습니다.\n\n**판단 기준**\n- 관측 창 = 어두운 시간 ∩ 내 시간 ∩ 현상 시간 (천체는 고도 20° 이상인 시간), 최소 30분, 맑음(강수확률 30% 이하)만 맑은 시간으로 계산\n\n**근거 도구**\n- search_sky_events: 성공\n- get_calendar: 성공\n- get_night_window: 성공\n- get_sky_forecast: 실패 (예보 범위 밖, 가장 늦은 예보일 2026-11-30)\n\n**제외 항목**: 없음\n**장소 정보**: 별도 장소 조회 없이 서울 기준으로 판정\n**재계획**: 0회 (추천 결과가 있어 추가 탐색 없음)\n**경고**: 없음",
+    "answer": "**요청 조건:** 2026년 12월 14일, 서울, 22:00~02:00(다음 날), 쌍둥이자리 유성우\n\n요청하신 조건에서 바뀐 부분은 없고, 날짜·지역·시간대 모두 그대로 계산했습니다.\n\n**추천 결과 (1순위)**\n- **현상:** 쌍둥이자리 유성우 극대기 (ZHR 150, IMO 기준)\n- **날짜·지역:** 2026년 12월 14일, 서울\n- **등급:** 조건부 충족\n- **관측 창:** 22:00~02:00 (다음 날)\n- **달 영향:** 월령 5.5일이라 달빛 영향이 적습니다.\n- 추천 후보가 이 하나뿐이라 다른 날짜와 비교하지는 않았습니다.\n\n**관측 시작 기준**\n- 늦어도 01:30까지 도착하면 최소 30분은 관측할 수 있습니다.\n\n**날씨 확인**\n- 현재 날씨 예보 범위 밖이라 맑은 시간은 판단하지 못했습니다. 관측일 D-3부터 예보로 확인할 수 있습니다.\n\n**판단 기준**\n- 관측 창은 어두운 시간(18:48~06:05), 내 요청 시간(22:00~02:00), 현상 시간이 겹치는 구간입니다. 최소 30분 이상이어야 하고, 맑음(강수확률 30% 이하)인 시간만 맑은 시간으로 셉니다.\n\n**근거 Tool**\n- 성공: search_sky_events, get_calendar, get_night_window\n- 실패: get_sky_forecast (예보 범위 밖)",
     "conditions": {
      "date_from": "2026-12-14",
      "date_to": "2026-12-14",
@@ -110,7 +110,7 @@
       "stage": "analyze",
       "tool": null,
       "ok": null,
-      "summary": "의도 판단: plan - 서울에서 특정 날짜·시간대의 쌍둥이자리 유성우 관측 가능 여부를 묻는 관측 계획 요청이다.",
+      "summary": "의도 판단: plan - 서울에서 특정 날짜·시간대의 쌍둥이자리 유성우 관측 가능 여부를 묻는 관측 계획 질문이다.",
       "duration_ms": null,
       "replan_round": null
      },
@@ -121,7 +121,7 @@
       "tool": null,
       "ok": null,
       "summary": "의도 plan",
-      "duration_ms": 3357,
+      "duration_ms": 3442,
       "replan_round": null
      },
      {
@@ -136,16 +136,26 @@
      },
      {
       "seq": 6,
-      "type": "stage_end",
+      "type": "planner_tasks",
       "stage": "plan",
       "tool": null,
       "ok": null,
-      "summary": "4단계 계획: 현상 → 내 일정 → 출몰·월령 → 날씨 (search_sky_events → get_calendar → get_night_window → get_sky_forecast)",
-      "duration_ms": 0,
+      "summary": "작업 목록 0회차(user): search_sky_events → get_calendar → get_night_window → get_sky_forecast",
+      "duration_ms": null,
       "replan_round": null
      },
      {
       "seq": 7,
+      "type": "stage_end",
+      "stage": "plan",
+      "tool": null,
+      "ok": null,
+      "summary": "[Planner] 4단계 계획: 현상 → 내 일정 → 출몰·월령 → 날씨 (search_sky_events → get_calendar → get_night_window → get_sky_forecast)",
+      "duration_ms": 3,
+      "replan_round": null
+     },
+     {
+      "seq": 8,
       "type": "stage_start",
       "stage": "execute",
       "tool": null,
@@ -155,7 +165,7 @@
       "replan_round": null
      },
      {
-      "seq": 8,
+      "seq": 9,
       "type": "tool_call",
       "stage": "execute",
       "tool": "search_sky_events",
@@ -165,17 +175,17 @@
       "replan_round": null
      },
      {
-      "seq": 9,
+      "seq": 10,
       "type": "tool_result",
       "stage": "execute",
       "tool": "search_sky_events",
       "ok": true,
       "summary": "천문현상 조회 성공",
-      "duration_ms": 241,
+      "duration_ms": 174,
       "replan_round": null
      },
      {
-      "seq": 10,
+      "seq": 12,
       "type": "tool_call",
       "stage": "execute",
       "tool": "get_calendar",
@@ -185,7 +195,7 @@
       "replan_round": null
      },
      {
-      "seq": 11,
+      "seq": 13,
       "type": "tool_result",
       "stage": "execute",
       "tool": "get_calendar",
@@ -195,7 +205,7 @@
       "replan_round": null
      },
      {
-      "seq": 12,
+      "seq": 15,
       "type": "tool_call",
       "stage": "execute",
       "tool": "get_night_window",
@@ -205,17 +215,17 @@
       "replan_round": null
      },
      {
-      "seq": 13,
+      "seq": 16,
       "type": "tool_result",
       "stage": "execute",
       "tool": "get_night_window",
       "ok": true,
       "summary": "박명·출몰 조회 성공",
-      "duration_ms": 837,
+      "duration_ms": 995,
       "replan_round": null
      },
      {
-      "seq": 14,
+      "seq": 18,
       "type": "tool_call",
       "stage": "execute",
       "tool": "get_sky_forecast",
@@ -225,7 +235,7 @@
       "replan_round": null
      },
      {
-      "seq": 15,
+      "seq": 19,
       "type": "tool_result",
       "stage": "execute",
       "tool": "get_sky_forecast",
@@ -235,17 +245,27 @@
       "replan_round": null
      },
      {
-      "seq": 16,
+      "seq": 20,
+      "type": "worker_decision",
+      "stage": "execute",
+      "tool": "get_sky_forecast",
+      "ok": null,
+      "summary": "Worker 판단(규칙): r0-t4 날씨 예보 조회 OUT_OF_RANGE → 건너뜀 - 치명적 실패(OUT_OF_RANGE) → LLM 미호출 → 건너뜀 (규칙)",
+      "duration_ms": null,
+      "replan_round": null
+     },
+     {
+      "seq": 22,
       "type": "stage_end",
       "stage": "execute",
       "tool": null,
       "ok": null,
-      "summary": "Tool 호출 4회(실패 1) · 캐시 재사용 0회 · 후보 1개",
-      "duration_ms": 1114,
+      "summary": "[Worker] 작업 4개 · Tool 호출 4회(실패 1) · 캐시 재사용 0회 · 후보 1개",
+      "duration_ms": 1223,
       "replan_round": null
      },
      {
-      "seq": 17,
+      "seq": 23,
       "type": "stage_start",
       "stage": "judge",
       "tool": null,
@@ -255,7 +275,7 @@
       "replan_round": null
      },
      {
-      "seq": 18,
+      "seq": 24,
       "type": "stage_end",
       "stage": "judge",
       "tool": null,
@@ -265,7 +285,7 @@
       "replan_round": null
      },
      {
-      "seq": 19,
+      "seq": 25,
       "type": "stage_start",
       "stage": "respond",
       "tool": null,
@@ -275,27 +295,34 @@
       "replan_round": null
      },
      {
-      "seq": 20,
+      "seq": 26,
       "type": "stage_end",
       "stage": "respond",
       "tool": null,
       "ok": null,
-      "summary": "plan 응답 744자",
-      "duration_ms": 2916,
+      "summary": "plan 응답 675자",
+      "duration_ms": 5590,
       "replan_round": null
      }
     ],
     "warnings": [],
-    "safety_note": "야간 관측 시 이동 안전과 방한에 유의하세요."
+    "safety_note": "야간 관측 시 이동 안전과 방한에 유의하세요.",
+    "audit": {
+     "status": "normal",
+     "warning_count": 0,
+     "findings": [],
+     "diagnosis_text": null
+    },
+    "llm_calls": 1
    },
-   "elapsed_s": 7.48
+   "elapsed_s": 10.36
   },
   {
    "message": "같은 날 장소만 대전으로 바꿔 줘",
    "response": {
-    "session_id": "b98028bec110",
+    "session_id": "29beffb3a8b7",
     "intent": "plan",
-    "answer": "**요청 조건**: 2026-12-14, 대전, 22:00~02:00+1, 쌍둥이자리 유성우\n(요청하신 \"같은 날 장소만 대전으로 바꾸기\"에 맞춰 날짜는 그대로 두고 지역만 대전으로 판정했습니다. 재계획은 하지 않았습니다.)\n\n**추천 (1순위)**\n- **쌍둥이자리 유성우 극대기 (ZHR=150, IMO 기준)**\n  - 날짜·지역: 2026-12-14, 대전\n  - 등급: 조건부 충족\n  - 관측 창: 22:00~02:00+1 (240분)\n  - 맑은 시간: 날씨 예보 범위 밖이라 아직 판단하지 않음\n  - 달 영향: 월령 5.5일, 달빛 영향 적음\n  - 늦어도 01:30+1 까지 도착하면 최소 30분 관측 가능\n\n**역산 기준**: 늦어도 01:30+1 까지 도착하면 최소 30분 관측 가능합니다.\n\n**날씨 확인**: 날씨는 관측일 D-3(2026-12-11)부터 예보로 확인 가능합니다.\n\n**판단 기준**: 관측 창 = 어두운 시간(18:48~06:02+1) ∩ 내 시간(22:00~02:00+1) ∩ 현상 시간, 최소 30분, 맑음(강수확률 30% 이하)만 맑은 시간으로 셉니다.\n\n**근거 Tool**\n- get_calendar: 성공\n- get_night_window: 성공\n- get_sky_forecast: 실패 (예보 범위 밖, 가장 늦은 예보일 2026-11-30)\n\n**제외 항목**: 없음\n**장소**: 장소 정보는 확인하지 못했습니다.",
+    "answer": "**요청 조건**: 2026-12-14, 대전, 22:00~02:00(+1일), 쌍둥이자리 유성우\n이전 조건에서 **지역을 서울에서 대전으로 바꿔** 다시 계산했습니다. 날짜와 시간대는 그대로입니다.\n\n**추천 결과** (1개)\n- **쌍둥이자리 유성우 극대기** (ZHR 150, IMO 기준)\n  - 날짜·지역: 2026-12-14, 대전\n  - 등급: **조건부 충족** (날씨 예보 전)\n  - 관측 창: 22:00~02:00(다음 날), 240분\n  - 맑은 시간: 날씨 예보 전이라 판단하지 않음\n  - 달 영향: 적음 (월령 5.5일)\n\n**도착 기준**\n- 늦어도 **다음 날 01:30까지 도착하면** 최소 30분 관측이 가능합니다.\n\n**날씨 확인**\n- 현재는 예보 범위 밖이라 날씨를 판단하지 못했습니다. **관측일 D-3부터 예보로 확인**할 수 있습니다.\n\n**판단 기준**\n- 관측 창 = 어두운 시간 ∩ 내 시간 ∩ 현상 시간, 최소 30분, 강수확률 30% 이하일 때만 맑은 시간으로 계산했습니다.\n\n**근거 도구**\n- 일정 조회(get_calendar): 성공\n- 야간 시간 계산(get_night_window): 성공\n- 하늘 예보 조회(get_sky_forecast): 실패 (예보 범위 밖, 가장 늦은 예보일 2026-11-30)",
     "conditions": {
      "date_from": "2026-12-14",
      "date_to": "2026-12-14",
@@ -379,7 +406,7 @@
     "stop_reason": null,
     "steps": [
      {
-      "seq": 23,
+      "seq": 30,
       "type": "stage_start",
       "stage": "analyze",
       "tool": null,
@@ -389,27 +416,27 @@
       "replan_round": null
      },
      {
-      "seq": 24,
+      "seq": 31,
       "type": "llm_decision",
       "stage": "analyze",
       "tool": null,
       "ok": null,
-      "summary": "의도 판단: plan - 직전 추천 조건(2026-12-14, 쌍둥이자리 유성우)을 유지하고 장소만 대전으로 바꾸는 후속 수정 요청이다.",
+      "summary": "의도 판단: plan - 직전 추천(2026-12-14 쌍둥이자리 유성우)과 같은 날짜·시간대에서 지역만 대전으로 바꿔 관측 가능 여부를 다시 묻는 후속 요청이다.",
       "duration_ms": null,
       "replan_round": null
      },
      {
-      "seq": 25,
+      "seq": 32,
       "type": "stage_end",
       "stage": "analyze",
       "tool": null,
       "ok": null,
       "summary": "의도 plan",
-      "duration_ms": 2121,
+      "duration_ms": 2213,
       "replan_round": null
      },
      {
-      "seq": 26,
+      "seq": 33,
       "type": "stage_start",
       "stage": "plan",
       "tool": null,
@@ -419,17 +446,27 @@
       "replan_round": null
      },
      {
-      "seq": 27,
+      "seq": 34,
+      "type": "planner_tasks",
+      "stage": "plan",
+      "tool": null,
+      "ok": null,
+      "summary": "작업 목록 0회차(user): search_sky_events → get_calendar → get_night_window → get_sky_forecast",
+      "duration_ms": null,
+      "replan_round": null
+     },
+     {
+      "seq": 35,
       "type": "stage_end",
       "stage": "plan",
       "tool": null,
       "ok": null,
-      "summary": "4단계 계획: 현상 → 내 일정 → 출몰·월령 → 날씨 (search_sky_events → get_calendar → get_night_window → get_sky_forecast)",
-      "duration_ms": 0,
+      "summary": "[Planner] 4단계 계획: 현상 → 내 일정 → 출몰·월령 → 날씨 (search_sky_events → get_calendar → get_night_window → get_sky_forecast)",
+      "duration_ms": 4,
       "replan_round": null
      },
      {
-      "seq": 28,
+      "seq": 36,
       "type": "stage_start",
       "stage": "execute",
       "tool": null,
@@ -439,7 +476,7 @@
       "replan_round": null
      },
      {
-      "seq": 29,
+      "seq": 38,
       "type": "tool_call",
       "stage": "execute",
       "tool": "get_calendar",
@@ -449,17 +486,17 @@
       "replan_round": null
      },
      {
-      "seq": 30,
+      "seq": 39,
       "type": "tool_result",
       "stage": "execute",
       "tool": "get_calendar",
       "ok": true,
       "summary": "get_calendar 성공",
-      "duration_ms": 3,
+      "duration_ms": 0,
       "replan_round": null
      },
      {
-      "seq": 31,
+      "seq": 41,
       "type": "tool_call",
       "stage": "execute",
       "tool": "get_night_window",
@@ -469,17 +506,17 @@
       "replan_round": null
      },
      {
-      "seq": 32,
+      "seq": 42,
       "type": "tool_result",
       "stage": "execute",
       "tool": "get_night_window",
       "ok": true,
       "summary": "박명·출몰 조회 성공",
-      "duration_ms": 863,
+      "duration_ms": 768,
       "replan_round": null
      },
      {
-      "seq": 33,
+      "seq": 44,
       "type": "tool_call",
       "stage": "execute",
       "tool": "get_sky_forecast",
@@ -489,7 +526,7 @@
       "replan_round": null
      },
      {
-      "seq": 34,
+      "seq": 45,
       "type": "tool_result",
       "stage": "execute",
       "tool": "get_sky_forecast",
@@ -499,17 +536,27 @@
       "replan_round": null
      },
      {
-      "seq": 35,
+      "seq": 46,
+      "type": "worker_decision",
+      "stage": "execute",
+      "tool": "get_sky_forecast",
+      "ok": null,
+      "summary": "Worker 판단(규칙): r0-t4 날씨 예보 조회 OUT_OF_RANGE → 건너뜀 - 치명적 실패(OUT_OF_RANGE) → LLM 미호출 → 건너뜀 (규칙)",
+      "duration_ms": null,
+      "replan_round": null
+     },
+     {
+      "seq": 48,
       "type": "stage_end",
       "stage": "execute",
       "tool": null,
       "ok": null,
-      "summary": "Tool 호출 3회(실패 1) · 캐시 재사용 1회 · 후보 1개",
-      "duration_ms": 900,
+      "summary": "[Worker] 작업 4개 · Tool 호출 3회(실패 1) · 캐시 재사용 1회 · 후보 1개",
+      "duration_ms": 810,
       "replan_round": null
      },
      {
-      "seq": 36,
+      "seq": 49,
       "type": "stage_start",
       "stage": "judge",
       "tool": null,
@@ -519,7 +566,7 @@
       "replan_round": null
      },
      {
-      "seq": 37,
+      "seq": 50,
       "type": "stage_end",
       "stage": "judge",
       "tool": null,
@@ -529,7 +576,7 @@
       "replan_round": null
      },
      {
-      "seq": 38,
+      "seq": 51,
       "type": "stage_start",
       "stage": "respond",
       "tool": null,
@@ -539,20 +586,27 @@
       "replan_round": null
      },
      {
-      "seq": 39,
+      "seq": 52,
       "type": "stage_end",
       "stage": "respond",
       "tool": null,
       "ok": null,
-      "summary": "plan 응답 712자",
-      "duration_ms": 2731,
+      "summary": "plan 응답 654자",
+      "duration_ms": 5834,
       "replan_round": null
      }
     ],
     "warnings": [],
-    "safety_note": "야간 관측 시 이동 안전과 방한에 유의하세요."
+    "safety_note": "야간 관측 시 이동 안전과 방한에 유의하세요.",
+    "audit": {
+     "status": "normal",
+     "warning_count": 0,
+     "findings": [],
+     "diagnosis_text": null
+    },
+    "llm_calls": 1
    },
-   "elapsed_s": 5.82
+   "elapsed_s": 8.93
   }
  ]
 }

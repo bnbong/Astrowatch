@@ -38,6 +38,7 @@ from astrowatch.tools.contracts import (
     SkyEventsOutput,
     SkyForecastOutput,
     SkyObjectOutput,
+    SpaceDocsOutput,
 )
 from astrowatch.tools.event_kind import classify, classify_query
 from astrowatch.tools.registry import registry
@@ -106,7 +107,9 @@ def stage(name: str) -> Callable[[Callable[[RunState], tuple[dict[str, Any], str
             bus.publish(sid, EventType.STAGE_START, stage=name)
             t = bus.timer()
             update, summary = fn(state)
-            bus.publish(sid, EventType.STAGE_END, stage=name, payload={"duration_ms": t.ms, "summary": summary})
+            # summary 는 문자열(기존) 또는 {"summary": str, ...구조화 키} (F3020: plan 의 planned_tools)
+            extra = dict(summary) if isinstance(summary, dict) else {"summary": summary}
+            bus.publish(sid, EventType.STAGE_END, stage=name, payload={"duration_ms": t.ms, **extra})
             return update
 
         return wrapper
@@ -391,6 +394,7 @@ def call_analyze_llm(state: RunState, prev: Conditions) -> AnalyzeOutput:
         weekday=_WEEKDAYS[d.weekday()],
         prev_conditions=prev.model_dump_json(exclude_defaults=True) or "{}",
         memory_summary=state.get("memory_summary") or "없음",
+        knowledge_rule=P.KNOWLEDGE_RULE_ON if registry.get(T_DOCS) is not None else P.KNOWLEDGE_RULE_OFF,
     )
     messages = [("system", system), *_history_messages(state.get("history") or []), ("human", state.get("message", ""))]
     out = _structured_invoke(AnalyzeOutput, messages)
@@ -443,6 +447,16 @@ def analyze(state: RunState) -> tuple[dict[str, Any], str]:
         reason = f"{reason} / 장소만 요청 → places"
     if intent == Intent.CALENDAR:
         calendar_plan_id = extract_plan_id(state.get("message", ""))
+    # F3022: 정의/원리/역사 질문은 문서 검색 Tool 로, 관측/계산이 필요한 말이 섞이면 계산 경로로 (live 가 이긴다)
+    has_slots = update.region is not None or update.date_from is not None
+    fixed_intent = reconcile_knowledge(intent, state.get("message", ""), docs_ready=registry.get(T_DOCS) is not None,
+                                       has_slots=has_slots, fact_kind=llm_fact_kind)
+    if fixed_intent != intent:
+        if fixed_intent == Intent.KNOWLEDGE:
+            reason = f"{reason} / 배경 지식 질문(정의/원리) → knowledge(규칙)"
+        else:
+            reason = f"{reason} / 관측/계산이 필요한 말이 있음 → {fixed_intent.value}(규칙)"
+        intent = fixed_intent
 
     if intent == Intent.CLARIFY:
         # 되물을지는 코드가 정한다 (날짜는 되묻지 않음). 부족한 조건이 없으면 계획으로 진행
@@ -516,6 +530,44 @@ def places_only(c: Conditions, message: str) -> bool:
     return not any(w in m for w in _OBSERVE_WORDS)
 
 
+# F3022 배경 지식 질문 판별 (LLM 판단의 보정 규칙). 관측/계산/조회가 필요한 말(live)이 하나라도 있으면 live 가 이긴다.
+_KNOWLEDGE_WORDS = ("뭐야", "뭔가요", "뭐지", "뭔데", "무엇", "무슨 뜻", "란?", "이란", "왜 ", "왜생", "원리",
+                    "역사", "정의", "어떤 천체", "어떤 관계", "무슨 관계", "어떻게 생", "어떻게 만들", "특징", "유래")
+_LIVE_WORDS = ("언제", "몇 시", "몇시", "시간대", "날씨", "예보", "구름", "고도", "관측", "가능", "보여", "보일",
+               "보이는", "보이나", "보입", "볼 수", "볼수", "볼까", "보러", "떠?", "뜨나", "뜨는", "오늘", "내일", "모레",
+               "이번 주", "이번주", "이번 달", "주말", "천문대", "관측지", "추천", "계획", "일몰", "일출")
+# 날짜 표현: 12월 14일, 2026-12-14, 2026.12.14, 12/14
+_LIVE_DATE = re.compile(r"\d{1,2}\s*월\s*\d{1,2}\s*일|\d{4}\s*[-./]\s*\d{1,2}\s*[-./]\s*\d{1,2}|\b\d{1,2}/\d{1,2}\b")
+
+
+def live_question(message: str, *, has_slots: bool = False) -> bool:
+    """관측/계산/조회가 필요한 말이 있는가. has_slots: LLM 이 이번 메시지에서 날짜나 지역을 뽑았다."""
+    m = message or ""
+    return has_slots or any(w in m for w in _LIVE_WORDS) or _LIVE_DATE.search(m) is not None
+
+
+def knowledge_question(message: str, *, has_slots: bool = False) -> bool:
+    m = message or ""
+    return any(w in m for w in _KNOWLEDGE_WORDS) and not live_question(m, has_slots=has_slots)
+
+
+def reconcile_knowledge(intent: Intent, message: str, *, docs_ready: bool, has_slots: bool = False,
+                        fact_kind: str | None = None) -> Intent:
+    """LLM 의도를 규칙으로 보정한다 (live 가 이긴다).
+
+    | LLM 의도    | 메시지                           | 결과                                |
+    |-------------|----------------------------------|-------------------------------------|
+    | knowledge   | live 말, 날짜, 지역 중 하나라도  | fact(fact_kind 가 있으면) 또는 plan |
+    | fact / chat | 정의/원리 말만 있고 live 말 없음 | knowledge (문서 Tool 이 있을 때만)  |
+    | 그 밖       |                                  | 그대로                              |
+    """
+    if intent == Intent.KNOWLEDGE and live_question(message, has_slots=has_slots):
+        return Intent.FACT if fact_kind else Intent.PLAN
+    if intent in (Intent.FACT, Intent.CHAT) and docs_ready and knowledge_question(message, has_slots=has_slots):
+        return Intent.KNOWLEDGE
+    return intent
+
+
 _PLAN_NO = re.compile(r"(?:계획|플랜)\s*#?\s*(\d+)|(\d+)\s*번")
 
 
@@ -562,7 +614,8 @@ def build_plan(intent: Intent, c: Conditions, fact_kind: str | None = None, *,
         return [], "Tool 불필요"
     if intent == Intent.KNOWLEDGE:
         if registry.get(T_DOCS) is not None and message:
-            return [PlannedCall(tool=T_DOCS, args={"query": message}, reason="배경 지식 문서 검색",
+            return [PlannedCall(tool=T_DOCS, args={"query": message.strip()[:300]},
+                                reason="배경 지식 문서 검색 (외부 API 로 확인할 수 없는 정의/원리/역사)",
                                 fixed_args=[])], f"배경 지식 검색({T_DOCS})"
         return [], "Tool 불필요"
 
@@ -619,7 +672,8 @@ def plan(state: RunState) -> tuple[dict[str, Any], str]:
                                message=state.get("message", ""))
     round_ = state.get("replan_count", 0)
     prefix = f"[재계획 {round_}회차] " if round_ else ""
-    return {"plan": calls, "plan_reason": reason, "replan_pending": False}, f"{prefix}{len(calls)}단계 계획: {reason}"
+    summary = {"summary": f"{prefix}{len(calls)}단계 계획: {reason}", "planned_tools": [p["tool"] for p in calls]}
+    return {"plan": calls, "plan_reason": reason, "replan_pending": False}, summary  # type: ignore[return-value]
 
 
 # ── execute ──────────────────────────────────────────────────
@@ -1194,14 +1248,17 @@ def clarify_answer(missing: list[str], c: Conditions, date_issue: str | None = N
     return head + " ".join(qs)
 
 
-def _llm_text(system: str, payload: dict[str, Any] | None, state: RunState, with_history: bool = False) -> str:
+def _llm_text(system: str, payload: dict[str, Any] | None, state: RunState, with_history: bool = False,
+              label: str = "판정 데이터(JSON)", human: str | None = None) -> str:
+    """human 을 주면 그 문자열을 사용자 메시지로 그대로 쓴다 (payload, label 은 무시)."""
     model = get_chat_model()
     msgs: list[Any] = [("system", system)]
     if with_history:
         msgs.extend(_history_messages(state.get("history") or []))
-    human = state.get("message", "")
-    if payload is not None:
-        human = f"사용자 요청: {human}\n\n판정 데이터(JSON):\n{json.dumps(payload, ensure_ascii=False, default=str)}"
+    if human is None:
+        human = state.get("message", "")
+        if payload is not None:
+            human = f"사용자 요청: {human}\n\n{label}:\n{json.dumps(payload, ensure_ascii=False, default=str)}"
     msgs.append(("human", human))
     res = model.invoke(msgs)
     text = getattr(res, "content", res)
@@ -1266,14 +1323,8 @@ def respond(state: RunState) -> tuple[dict[str, Any], str]:
             answer = P.USAGE_TEMPLATE
     elif intent == Intent.CALENDAR:
         answer = calendar_answer(state)
-    elif intent == Intent.KNOWLEDGE and registry.get(T_DOCS) is not None and state.get("calls"):
-        payload = {"tool_results": fact_context(state)}
-        try:
-            if not llm_available():
-                raise RuntimeError
-            answer = _llm_text(P.RESPOND_FACT_SYSTEM, payload, state)
-        except Exception:  # noqa: BLE001
-            answer, fallback = _template_fact(payload["tool_results"]), True
+    elif intent == Intent.KNOWLEDGE and registry.get(T_DOCS) is not None and _docs_result(state) is not None:
+        answer, fallback = knowledge_answer(state)
     else:
         answer = _other_intent_answer(intent)
 
@@ -1307,6 +1358,9 @@ def summarize_result(tool: str, r: ToolResult[Any]) -> dict[str, Any]:
                     visible=[f"{J.label(w.start)}~{J.label(w.end)}" for w in so.visible_windows],
                     transit=J.label(so.transit_minute), transit_alt=so.transit_alt, transit_az=so.transit_az,
                     never_rises=so.never_rises)
+    elif tool == T_DOCS and (sd := _as(SpaceDocsOutput, r.data)):
+        item.update(count=len(sd.hits), top=[{"title": h.title, "url": h.source_url, "score": h.score}
+                                             for h in sd.hits[:5]])
     elif tool == T_PLACE and (o := _as(ObservatoryOutput, r.data)):
         item.update(count=len(o.places),
                     top=[{"name": p.name, "distance_m": p.distance_m, "address": p.address} for p in o.places[:5]])
@@ -1486,6 +1540,105 @@ def calendar_answer(state: RunState) -> str:
         return f"계획 {plan_id}번 '{title}'은(는) 이미 캘린더에 등록돼 있어요{when}.{link}"
     provider = {"google": "구글", "local": "로컬"}.get(str(data.get("provider")), "")
     return f"계획 {plan_id}번 '{title}'을(를) {provider + ' ' if provider else ''}캘린더에 등록했습니다(실제 캘린더에 생성됨){when}.{link}"
+
+
+# ── F3022 배경 지식 응답 ──────────────────────────────────────
+
+def _docs_result(state: RunState) -> ToolResult[Any] | None:
+    """이번 턴 search_space_docs 결과 (없으면 계획 인자의 캐시 결과)."""
+    call = next((x for x in reversed(state.get("calls") or []) if x["tool"] == T_DOCS), None)
+    return call["result"] if call is not None else _cached(state, T_DOCS)
+
+
+DEFAULT_DOC_LICENSE = "CC BY-SA 4.0"
+# 답 끝의 '출처:' 절 머리 (마크다운 꾸밈 허용)와 그 아래 목록 줄
+_SOURCES_HEAD = re.compile(r"^[\s>#*_]*출처\s*[*_]*\s*[:：]")
+_SOURCE_LINE = re.compile(r"^\s*(?:[-*+•]|\d+[.)]|\(|\[|https?://|<https?://)")
+
+
+def _one_line(text: str) -> str:
+    return " ".join(str(text or "").split())
+
+
+def sources_block(hits: list[Any]) -> str:
+    """근거 hit 에서 직접 만든 출처 목록 (URL 기준 중복 제거). 생성된 인용 문장은 쓰지 않는다."""
+    lines = ["출처:"]
+    seen: set[str] = set()
+    licenses: list[str] = []
+    for h in hits:
+        url = _one_line(h.source_url)
+        if not url.startswith(("https://", "http://")) or url in seen:
+            continue
+        seen.add(url)
+        lines.append(f"- {_one_line(h.title)}: {url}")
+        lic = _one_line(getattr(h, "license", "") or DEFAULT_DOC_LICENSE)
+        if lic not in licenses:
+            licenses.append(lic)
+    lines.append(f"(한국어 위키백과, {', '.join(licenses or [DEFAULT_DOC_LICENSE])})")
+    return "\n".join(lines)
+
+
+def strip_llm_sources(answer: str) -> str:
+    """답 끝의 '출처:' 절을 지운다. 마지막 '출처:' 줄 아래가 목록 줄뿐일 때(답의 꼬리일 때)만 지운다."""
+    lines = (answer or "").rstrip().split("\n")
+    for i in range(len(lines) - 1, -1, -1):
+        if _SOURCES_HEAD.match(lines[i]):
+            if all(_SOURCE_LINE.match(x) for x in lines[i + 1:] if x.strip()):
+                return "\n".join(lines[:i]).rstrip()
+            break
+    return "\n".join(lines).rstrip()
+
+
+def ensure_sources(answer: str, hits: list[Any]) -> str:
+    """LLM 이 쓴 '출처:' 절은 믿지 않고 지운 뒤, 근거 hit 으로 만든 정해진 출처 목록을 붙인다."""
+    head = strip_llm_sources(answer)
+    return f"{head}\n\n{sources_block(hits)}" if head else sources_block(hits)
+
+
+def knowledge_template(hits: list[Any]) -> str:
+    """LLM 없이 만드는 배경 지식 답: 근거 문단(한 줄로 펴서 인용) + 출처. 문서 속 문장은 따르지 않고 보여 주기만 한다."""
+    lines = ["모은 문서에서 찾은 내용입니다."]
+    for h in hits:
+        lines.append(f"- {_one_line(h.title)}: {_one_line(h.snippet)}")
+    return "\n".join(lines) + "\n\n" + sources_block(hits)
+
+
+def knowledge_human(message: str, hits: list[Any]) -> str:
+    """knowledge 답 생성용 사용자 메시지. 근거 문서는 질문과 분리된 <documents> 데이터 블록에 넣는다.
+
+    JSON 안의 '<', '>' 는 \\u003c, \\u003e 로 바꿔 문서가 블록 경계를 흉내 내지 못하게 한다.
+    URL 은 넣지 않는다 (출처는 코드가 hit 에서 직접 붙인다).
+    """
+    docs = [{"no": i, "title": _one_line(h.title), "text": _one_line(h.snippet)} for i, h in enumerate(hits, 1)]
+    block = json.dumps({"note": P.DOCUMENTS_NOTE, "documents": docs}, ensure_ascii=False)
+    block = block.replace("<", "\\u003c").replace(">", "\\u003e")
+    return f"사용자 질문:\n{message}\n\n{P.DOCUMENTS_NOTE}\n<documents>\n{block}\n</documents>"
+
+
+def knowledge_answer(state: RunState) -> tuple[str, bool]:
+    """(답, 템플릿 여부). 색인 없음/불일치/결과 없음은 정해진 문장으로 답한다."""
+    r = _docs_result(state)
+    if r is None:
+        return _other_intent_answer(Intent.KNOWLEDGE), False
+    if not r.ok:
+        if r.code == ErrorCode.NO_INDEX:
+            return f"{P.NO_INDEX_ANSWER}\n{P.NO_INDEX_HINT}", False
+        if r.code == ErrorCode.INDEX_MISMATCH:
+            return P.INDEX_MISMATCH_ANSWER, False
+        if r.code == ErrorCode.NO_RESULT:
+            return P.NO_DOC_RESULT_ANSWER, False
+        return _other_intent_answer(Intent.KNOWLEDGE), False
+    data = _as(SpaceDocsOutput, r.data)
+    if data is None or not data.hits:
+        return P.NO_DOC_RESULT_ANSWER, False
+    try:
+        if not llm_available():
+            raise RuntimeError
+        text = _llm_text(P.RESPOND_KNOWLEDGE_SYSTEM, None, state,
+                         human=knowledge_human(state.get("message", ""), data.hits))
+        return ensure_sources(text, data.hits), False
+    except Exception:  # noqa: BLE001
+        return knowledge_template(data.hits), True
 
 
 def _other_intent_answer(intent: Intent) -> str:

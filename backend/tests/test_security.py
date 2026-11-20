@@ -659,3 +659,14 @@ def test_same_host_origin_allowed_on_any_port(monkeypatch):
         assert c.delete("/api/plans/999999", headers=h).status_code == 404   # 403 이 아니라 라우터까지 도달
         bad = {"X-Requested-With": "Astrowatch", "Origin": "http://127.0.0.1:9999", "Host": "127.0.0.1:8003"}
         assert c.delete("/api/plans/999999", headers=bad).status_code == 403
+
+
+def test_public_url_and_render_url_are_allowed(monkeypatch):
+    """배포 주소(APP_PUBLIC_URL)와 Render 의 RENDER_EXTERNAL_URL 은 허용 출처와 Host 에 자동으로 들어간다."""
+    monkeypatch.setenv("APP_PUBLIC_URL", "https://astrowatch.example.com/")
+    monkeypatch.setenv("RENDER_EXTERNAL_URL", "https://astrowatch.onrender.com")
+    reset_settings_cache()
+    s = get_settings()
+    assert "https://astrowatch.example.com" in s.allowed_origins
+    assert "https://astrowatch.onrender.com" in s.allowed_origins
+    assert "astrowatch.example.com" in s.allowed_hosts and "astrowatch.onrender.com" in s.allowed_hosts

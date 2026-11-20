@@ -1,14 +1,14 @@
 {
  "scenario": "R1",
- "session_id": "b98028bec110",
+ "session_id": "29beffb3a8b7",
  "turns": [
   {
    "message": "12월 14일 쌍둥이자리 유성우, 서울에서 밤 10시부터 새벽 2시 사이에 볼 수 있어?",
    "events": [
     {
-     "session_id": "b98028bec110",
+     "session_id": "29beffb3a8b7",
      "seq": 1,
-     "ts": "2026-11-20T00:44:03.682204Z",
+     "ts": "2026-11-20T02:35:27.661108Z",
      "type": "session_start",
      "stage": null,
      "tool": null,
@@ -17,73 +17,153 @@
      }
     },
     {
-     "session_id": "b98028bec110",
+     "session_id": "29beffb3a8b7",
      "seq": 2,
-     "ts": "2026-11-20T00:44:03.701187Z",
+     "ts": "2026-11-20T02:35:27.684519Z",
      "type": "stage_start",
      "stage": "analyze",
      "tool": null,
      "payload": {}
     },
     {
-     "session_id": "b98028bec110",
+     "session_id": "29beffb3a8b7",
      "seq": 3,
-     "ts": "2026-11-20T00:44:07.057954Z",
+     "ts": "2026-11-20T02:35:31.126159Z",
      "type": "llm_decision",
      "stage": "analyze",
      "tool": null,
      "payload": {
       "decision": "plan",
-      "reason": "서울에서 특정 날짜·시간대의 쌍둥이자리 유성우 관측 가능 여부를 묻는 관측 계획 요청이다.",
+      "reason": "서울에서 특정 날짜·시간대의 쌍둥이자리 유성우 관측 가능 여부를 묻는 관측 계획 질문이다.",
       "model": "claude-haiku-5-5"
      }
     },
     {
-     "session_id": "b98028bec110",
+     "session_id": "29beffb3a8b7",
      "seq": 4,
-     "ts": "2026-11-20T00:44:07.062235Z",
+     "ts": "2026-11-20T02:35:31.130305Z",
      "type": "stage_end",
      "stage": "analyze",
      "tool": null,
      "payload": {
-      "duration_ms": 3357,
+      "duration_ms": 3442,
       "summary": "의도 plan"
      }
     },
     {
-     "session_id": "b98028bec110",
+     "session_id": "29beffb3a8b7",
      "seq": 5,
-     "ts": "2026-11-20T00:44:07.067045Z",
+     "ts": "2026-11-20T02:35:31.134809Z",
      "type": "stage_start",
      "stage": "plan",
      "tool": null,
      "payload": {}
     },
     {
-     "session_id": "b98028bec110",
+     "session_id": "29beffb3a8b7",
      "seq": 6,
-     "ts": "2026-11-20T00:44:07.073092Z",
+     "ts": "2026-11-20T02:35:31.138813Z",
+     "type": "planner_tasks",
+     "stage": "plan",
+     "tool": null,
+     "payload": {
+      "round": 0,
+      "tasks": [
+       {
+        "task_id": "r0-t1",
+        "tool": "search_sky_events",
+        "args": {
+         "year": 2026,
+         "month": 12,
+         "kind": "meteor"
+        },
+        "fixed_args": [
+         "year",
+         "month"
+        ],
+        "purpose": "2026-12 쌍둥이자리 유성우 날짜·시각 확인",
+        "depends_on": []
+       },
+       {
+        "task_id": "r0-t2",
+        "tool": "get_calendar",
+        "args": {
+         "date_from": "2026-12-14",
+         "date_to": "2026-12-15"
+        },
+        "fixed_args": [],
+        "purpose": "기존 일정과 겹치는 관측 시간 확인",
+        "depends_on": []
+       },
+       {
+        "task_id": "r0-t3",
+        "tool": "get_night_window",
+        "args": {
+         "date": "@candidate_dates",
+         "lat": 37.5665,
+         "lon": 126.978
+        },
+        "fixed_args": [
+         "date"
+        ],
+        "purpose": "후보 날짜마다 서울 어두운 시간·월령 확인",
+        "depends_on": [
+         "r0-t1"
+        ]
+       },
+       {
+        "task_id": "r0-t4",
+        "tool": "get_sky_forecast",
+        "args": {
+         "date": "@candidate_dates",
+         "lat": 37.5665,
+         "lon": 126.978,
+         "hours": "@from_night_window"
+        },
+        "fixed_args": [],
+        "purpose": "관측 창 시각의 하늘 상태 확인",
+        "depends_on": [
+         "r0-t3"
+        ]
+       }
+      ],
+      "reason": "현상 → 내 일정 → 출몰·월령 → 날씨 (search_sky_events → get_calendar → get_night_window → get_sky_forecast)",
+      "trigger": "user"
+     }
+    },
+    {
+     "session_id": "29beffb3a8b7",
+     "seq": 7,
+     "ts": "2026-11-20T02:35:31.143205Z",
      "type": "stage_end",
      "stage": "plan",
      "tool": null,
      "payload": {
-      "duration_ms": 0,
-      "summary": "4단계 계획: 현상 → 내 일정 → 출몰·월령 → 날씨 (search_sky_events → get_calendar → get_night_window → get_sky_forecast)"
+      "duration_ms": 3,
+      "summary": "[Planner] 4단계 계획: 현상 → 내 일정 → 출몰·월령 → 날씨 (search_sky_events → get_calendar → get_night_window → get_sky_forecast)",
+      "planned_tools": [
+       "search_sky_events",
+       "get_calendar",
+       "get_night_window",
+       "get_sky_forecast"
+      ],
+      "trigger": "user",
+      "round": 0
      }
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 7,
-     "ts": "2026-11-20T00:44:07.076417Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 8,
+     "ts": "2026-11-20T02:35:31.146919Z",
      "type": "stage_start",
      "stage": "execute",
      "tool": null,
      "payload": {}
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 8,
-     "ts": "2026-11-20T00:44:07.079416Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 9,
+     "ts": "2026-11-20T02:35:31.150917Z",
      "type": "tool_call",
      "stage": "execute",
      "tool": "search_sky_events",
@@ -93,26 +173,52 @@
        "month": 12,
        "kind": "meteor"
       },
-      "reason": "2026-12 쌍둥이자리 유성우 날짜·시각 확인"
+      "reason": "2026-12 쌍둥이자리 유성우 날짜·시각 확인",
+      "task_id": "r0-t1"
      }
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 9,
-     "ts": "2026-11-20T00:44:07.325259Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 10,
+     "ts": "2026-11-20T02:35:31.329444Z",
      "type": "tool_result",
      "stage": "execute",
      "tool": "search_sky_events",
      "payload": {
       "ok": true,
       "data": "{\"data\":{\"year\":2026,\"month\":12,\"requested_defaulted\":false,\"events\":[{\"event_id\":\"20261214-1\",\"date\":\"2026-12-14\",\"time\":\"23:00\",\"title\":\"쌍둥이자리 유성우 극대기(ZHR=150) (IMO 기준)\",\"kind\":\"meteor\",\"description\":null},{\"event_id\":\"20261223-1\",\"date\":\"2026-12-23\",\"time\":\"07:00\",\"title\":\"작은곰자리 유성우 극대기(ZHR=10) (IMO 기준)\",\"kind\":\"meteor\",\"description\":null}]}}",
-      "duration_ms": 241
+      "duration_ms": 174,
+      "task_id": "r0-t1"
      }
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 10,
-     "ts": "2026-11-20T00:44:07.329236Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 11,
+     "ts": "2026-11-20T02:35:31.334188Z",
+     "type": "worker_result",
+     "stage": "execute",
+     "tool": "search_sky_events",
+     "payload": {
+      "task_id": "r0-t1",
+      "tool": "search_sky_events",
+      "args_used": {
+       "year": 2026,
+       "month": 12,
+       "kind": "meteor"
+      },
+      "ok": true,
+      "error_code": null,
+      "attempts": 1,
+      "from_cache": false,
+      "duration_ms": 183,
+      "decision": null,
+      "replan_request": null
+     }
+    },
+    {
+     "session_id": "29beffb3a8b7",
+     "seq": 12,
+     "ts": "2026-11-20T02:35:31.337705Z",
      "type": "tool_call",
      "stage": "execute",
      "tool": "get_calendar",
@@ -121,26 +227,51 @@
        "date_from": "2026-12-14",
        "date_to": "2026-12-15"
       },
-      "reason": "기존 일정과 겹치는 관측 시간 확인"
+      "reason": "기존 일정과 겹치는 관측 시간 확인",
+      "task_id": "r0-t2"
      }
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 11,
-     "ts": "2026-11-20T00:44:07.333392Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 13,
+     "ts": "2026-11-20T02:35:31.341705Z",
      "type": "tool_result",
      "stage": "execute",
      "tool": "get_calendar",
      "payload": {
       "ok": true,
       "data": "{\"data\":{\"provider\":\"local\",\"date_from\":\"2026-12-14\",\"date_to\":\"2026-12-15\",\"events\":[]}}",
-      "duration_ms": 0
+      "duration_ms": 0,
+      "task_id": "r0-t2"
      }
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 12,
-     "ts": "2026-11-20T00:44:07.336395Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 14,
+     "ts": "2026-11-20T02:35:31.344232Z",
+     "type": "worker_result",
+     "stage": "execute",
+     "tool": "get_calendar",
+     "payload": {
+      "task_id": "r0-t2",
+      "tool": "get_calendar",
+      "args_used": {
+       "date_from": "2026-12-14",
+       "date_to": "2026-12-15"
+      },
+      "ok": true,
+      "error_code": null,
+      "attempts": 1,
+      "from_cache": false,
+      "duration_ms": 7,
+      "decision": null,
+      "replan_request": null
+     }
+    },
+    {
+     "session_id": "29beffb3a8b7",
+     "seq": 15,
+     "ts": "2026-11-20T02:35:31.344232Z",
      "type": "tool_call",
      "stage": "execute",
      "tool": "get_night_window",
@@ -150,26 +281,52 @@
        "lat": 37.5665,
        "lon": 126.978
       },
-      "reason": "2026-12-14 후보의 어두운 시간·월령"
+      "reason": "2026-12-14 후보의 어두운 시간·월령",
+      "task_id": "r0-t3"
      }
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 13,
-     "ts": "2026-11-20T00:44:08.178836Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 16,
+     "ts": "2026-11-20T02:35:32.348901Z",
      "type": "tool_result",
      "stage": "execute",
      "tool": "get_night_window",
      "payload": {
       "ok": true,
       "data": "{\"data\":{\"date\":\"2026-12-14\",\"sunset\":\"17:14\",\"astro_dusk_end\":\"18:48\",\"astro_dawn_start\":\"06:05\",\"sunrise_next\":\"07:39\",\"moonrise\":\"11:11\",\"moonset\":\"21:52\",\"moonrise_next\":\"11:36\",\"moonset_next\":\"22:52\",\"lun_age\":5.5,\"dark_minutes\":677}}",
-      "duration_ms": 837
+      "duration_ms": 995,
+      "task_id": "r0-t3"
      }
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 14,
-     "ts": "2026-11-20T00:44:08.184347Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 17,
+     "ts": "2026-11-20T02:35:32.356100Z",
+     "type": "worker_result",
+     "stage": "execute",
+     "tool": "get_night_window",
+     "payload": {
+      "task_id": "r0-t3",
+      "tool": "get_night_window",
+      "args_used": {
+       "date": "2026-12-14",
+       "lat": 37.5665,
+       "lon": 126.978
+      },
+      "ok": true,
+      "error_code": null,
+      "attempts": 1,
+      "from_cache": false,
+      "duration_ms": 1006,
+      "decision": null,
+      "replan_request": null
+     }
+    },
+    {
+     "session_id": "29beffb3a8b7",
+     "seq": 18,
+     "ts": "2026-11-20T02:35:32.360099Z",
      "type": "tool_call",
      "stage": "execute",
      "tool": "get_sky_forecast",
@@ -185,13 +342,14 @@
         25
        ]
       },
-      "reason": "2026-12-14 관측 창 시각의 하늘 상태"
+      "reason": "2026-12-14 관측 창 시각의 하늘 상태",
+      "task_id": "r0-t4"
      }
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 15,
-     "ts": "2026-11-20T00:44:08.189346Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 19,
+     "ts": "2026-11-20T02:35:32.363098Z",
      "type": "tool_result",
      "stage": "execute",
      "tool": "get_sky_forecast",
@@ -201,34 +359,102 @@
        "code": "OUT_OF_RANGE",
        "message": "예보 범위 밖: 가장 늦은 예보일 2026-11-30"
       },
-      "duration_ms": 0
+      "duration_ms": 0,
+      "task_id": "r0-t4"
      }
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 16,
-     "ts": "2026-11-20T00:44:08.193500Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 20,
+     "ts": "2026-11-20T02:35:32.366441Z",
+     "type": "worker_decision",
+     "stage": "execute",
+     "tool": "get_sky_forecast",
+     "payload": {
+      "task_id": "r0-t4",
+      "tool": "get_sky_forecast",
+      "decision": "skip",
+      "reason": "치명적 실패(OUT_OF_RANGE) → LLM 미호출 → 건너뜀 (규칙)",
+      "model": null,
+      "new_args": null,
+      "source": "rule",
+      "error_code": "OUT_OF_RANGE",
+      "args": {
+       "date": "2026-12-14",
+       "lat": 37.5665,
+       "lon": 126.978,
+       "hours": [
+        22,
+        23,
+        24,
+        25
+       ]
+      },
+      "fixed_args": [],
+      "llm_attempted": false,
+      "retry": 0
+     }
+    },
+    {
+     "session_id": "29beffb3a8b7",
+     "seq": 21,
+     "ts": "2026-11-20T02:35:32.370441Z",
+     "type": "worker_result",
+     "stage": "execute",
+     "tool": "get_sky_forecast",
+     "payload": {
+      "task_id": "r0-t4",
+      "tool": "get_sky_forecast",
+      "args_used": {
+       "date": "2026-12-14",
+       "lat": 37.5665,
+       "lon": 126.978,
+       "hours": [
+        22,
+        23,
+        24,
+        25
+       ]
+      },
+      "ok": false,
+      "error_code": "OUT_OF_RANGE",
+      "attempts": 1,
+      "from_cache": false,
+      "duration_ms": 10,
+      "decision": {
+       "kind": "skip",
+       "reason": "치명적 실패(OUT_OF_RANGE) → LLM 미호출 → 건너뜀 (규칙)",
+       "new_args": null,
+       "source": "rule"
+      },
+      "replan_request": null
+     }
+    },
+    {
+     "session_id": "29beffb3a8b7",
+     "seq": 22,
+     "ts": "2026-11-20T02:35:32.374070Z",
      "type": "stage_end",
      "stage": "execute",
      "tool": null,
      "payload": {
-      "duration_ms": 1114,
-      "summary": "Tool 호출 4회(실패 1) · 캐시 재사용 0회 · 후보 1개"
+      "duration_ms": 1223,
+      "summary": "[Worker] 작업 4개 · Tool 호출 4회(실패 1) · 캐시 재사용 0회 · 후보 1개"
      }
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 17,
-     "ts": "2026-11-20T00:44:08.198211Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 23,
+     "ts": "2026-11-20T02:35:32.378073Z",
      "type": "stage_start",
      "stage": "judge",
      "tool": null,
      "payload": {}
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 18,
-     "ts": "2026-11-20T00:44:08.204137Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 24,
+     "ts": "2026-11-20T02:35:32.383075Z",
      "type": "stage_end",
      "stage": "judge",
      "tool": null,
@@ -238,37 +464,55 @@
      }
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 19,
-     "ts": "2026-11-20T00:44:08.209142Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 25,
+     "ts": "2026-11-20T02:35:32.388078Z",
      "type": "stage_start",
      "stage": "respond",
      "tool": null,
      "payload": {}
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 20,
-     "ts": "2026-11-20T00:44:11.128784Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 26,
+     "ts": "2026-11-20T02:35:37.983097Z",
      "type": "stage_end",
      "stage": "respond",
      "tool": null,
      "payload": {
-      "duration_ms": 2916,
-      "summary": "plan 응답 744자"
+      "duration_ms": 5590,
+      "summary": "plan 응답 675자"
      }
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 21,
-     "ts": "2026-11-20T00:44:11.146209Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 27,
+     "ts": "2026-11-20T02:35:37.997858Z",
      "type": "session_end",
      "stage": null,
      "tool": null,
      "payload": {
       "intent": "plan",
       "replan_count": 0,
-      "duration_ms": 7465
+      "duration_ms": 10339
+     }
+    },
+    {
+     "session_id": "29beffb3a8b7",
+     "seq": 28,
+     "ts": "2026-11-20T02:35:38.006878Z",
+     "type": "audit_result",
+     "stage": "audit",
+     "tool": null,
+     "payload": {
+      "session_id": "29beffb3a8b7",
+      "seq_from": 1,
+      "seq_to": 27,
+      "status": "normal",
+      "findings": [],
+      "evidence_count": 27,
+      "rule_version": "1",
+      "audited_at": "2026-11-20T02:35:38+00:00"
      }
     }
    ]
@@ -277,9 +521,9 @@
    "message": "같은 날 장소만 대전으로 바꿔 줘",
    "events": [
     {
-     "session_id": "b98028bec110",
-     "seq": 22,
-     "ts": "2026-11-20T00:44:11.151326Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 29,
+     "ts": "2026-11-20T02:35:38.014104Z",
      "type": "session_start",
      "stage": null,
      "tool": null,
@@ -288,73 +532,177 @@
      }
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 23,
-     "ts": "2026-11-20T00:44:11.155487Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 30,
+     "ts": "2026-11-20T02:35:38.017139Z",
      "type": "stage_start",
      "stage": "analyze",
      "tool": null,
      "payload": {}
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 24,
-     "ts": "2026-11-20T00:44:13.276042Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 31,
+     "ts": "2026-11-20T02:35:40.230773Z",
      "type": "llm_decision",
      "stage": "analyze",
      "tool": null,
      "payload": {
       "decision": "plan",
-      "reason": "직전 추천 조건(2026-12-14, 쌍둥이자리 유성우)을 유지하고 장소만 대전으로 바꾸는 후속 수정 요청이다.",
+      "reason": "직전 추천(2026-12-14 쌍둥이자리 유성우)과 같은 날짜·시간대에서 지역만 대전으로 바꿔 관측 가능 여부를 다시 묻는 후속 요청이다.",
       "model": "claude-haiku-5-5"
      }
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 25,
-     "ts": "2026-11-20T00:44:13.281039Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 32,
+     "ts": "2026-11-20T02:35:40.236280Z",
      "type": "stage_end",
      "stage": "analyze",
      "tool": null,
      "payload": {
-      "duration_ms": 2121,
+      "duration_ms": 2213,
       "summary": "의도 plan"
      }
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 26,
-     "ts": "2026-11-20T00:44:13.286560Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 33,
+     "ts": "2026-11-20T02:35:40.240522Z",
      "type": "stage_start",
      "stage": "plan",
      "tool": null,
      "payload": {}
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 27,
-     "ts": "2026-11-20T00:44:13.290560Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 34,
+     "ts": "2026-11-20T02:35:40.244024Z",
+     "type": "planner_tasks",
+     "stage": "plan",
+     "tool": null,
+     "payload": {
+      "round": 0,
+      "tasks": [
+       {
+        "task_id": "r0-t1",
+        "tool": "search_sky_events",
+        "args": {
+         "year": 2026,
+         "month": 12,
+         "kind": "meteor"
+        },
+        "fixed_args": [
+         "year",
+         "month"
+        ],
+        "purpose": "2026-12 쌍둥이자리 유성우 날짜·시각 확인",
+        "depends_on": []
+       },
+       {
+        "task_id": "r0-t2",
+        "tool": "get_calendar",
+        "args": {
+         "date_from": "2026-12-14",
+         "date_to": "2026-12-15"
+        },
+        "fixed_args": [],
+        "purpose": "기존 일정과 겹치는 관측 시간 확인",
+        "depends_on": []
+       },
+       {
+        "task_id": "r0-t3",
+        "tool": "get_night_window",
+        "args": {
+         "date": "@candidate_dates",
+         "lat": 36.3504,
+         "lon": 127.3845
+        },
+        "fixed_args": [
+         "date"
+        ],
+        "purpose": "후보 날짜마다 대전 어두운 시간·월령 확인",
+        "depends_on": [
+         "r0-t1"
+        ]
+       },
+       {
+        "task_id": "r0-t4",
+        "tool": "get_sky_forecast",
+        "args": {
+         "date": "@candidate_dates",
+         "lat": 36.3504,
+         "lon": 127.3845,
+         "hours": "@from_night_window"
+        },
+        "fixed_args": [],
+        "purpose": "관측 창 시각의 하늘 상태 확인",
+        "depends_on": [
+         "r0-t3"
+        ]
+       }
+      ],
+      "reason": "현상 → 내 일정 → 출몰·월령 → 날씨 (search_sky_events → get_calendar → get_night_window → get_sky_forecast)",
+      "trigger": "user"
+     }
+    },
+    {
+     "session_id": "29beffb3a8b7",
+     "seq": 35,
+     "ts": "2026-11-20T02:35:40.248027Z",
      "type": "stage_end",
      "stage": "plan",
      "tool": null,
      "payload": {
-      "duration_ms": 0,
-      "summary": "4단계 계획: 현상 → 내 일정 → 출몰·월령 → 날씨 (search_sky_events → get_calendar → get_night_window → get_sky_forecast)"
+      "duration_ms": 4,
+      "summary": "[Planner] 4단계 계획: 현상 → 내 일정 → 출몰·월령 → 날씨 (search_sky_events → get_calendar → get_night_window → get_sky_forecast)",
+      "planned_tools": [
+       "search_sky_events",
+       "get_calendar",
+       "get_night_window",
+       "get_sky_forecast"
+      ],
+      "trigger": "user",
+      "round": 0
      }
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 28,
-     "ts": "2026-11-20T00:44:13.297091Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 36,
+     "ts": "2026-11-20T02:35:40.252028Z",
      "type": "stage_start",
      "stage": "execute",
      "tool": null,
      "payload": {}
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 29,
-     "ts": "2026-11-20T00:44:13.301088Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 37,
+     "ts": "2026-11-20T02:35:40.256045Z",
+     "type": "worker_result",
+     "stage": "execute",
+     "tool": "search_sky_events",
+     "payload": {
+      "task_id": "r0-t1",
+      "tool": "search_sky_events",
+      "args_used": {
+       "year": 2026,
+       "month": 12,
+       "kind": "meteor"
+      },
+      "ok": true,
+      "error_code": null,
+      "attempts": 1,
+      "from_cache": true,
+      "duration_ms": 0,
+      "decision": null,
+      "replan_request": null
+     }
+    },
+    {
+     "session_id": "29beffb3a8b7",
+     "seq": 38,
+     "ts": "2026-11-20T02:35:40.259531Z",
      "type": "tool_call",
      "stage": "execute",
      "tool": "get_calendar",
@@ -363,26 +711,51 @@
        "date_from": "2026-12-14",
        "date_to": "2026-12-15"
       },
-      "reason": "기존 일정과 겹치는 관측 시간 확인"
+      "reason": "기존 일정과 겹치는 관측 시간 확인",
+      "task_id": "r0-t2"
      }
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 30,
-     "ts": "2026-11-20T00:44:13.309459Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 39,
+     "ts": "2026-11-20T02:35:40.262530Z",
      "type": "tool_result",
      "stage": "execute",
      "tool": "get_calendar",
      "payload": {
       "ok": true,
       "data": "{\"data\":{\"provider\":\"local\",\"date_from\":\"2026-12-14\",\"date_to\":\"2026-12-15\",\"events\":[]}}",
-      "duration_ms": 3
+      "duration_ms": 0,
+      "task_id": "r0-t2"
      }
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 31,
-     "ts": "2026-11-20T00:44:13.314974Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 40,
+     "ts": "2026-11-20T02:35:40.267035Z",
+     "type": "worker_result",
+     "stage": "execute",
+     "tool": "get_calendar",
+     "payload": {
+      "task_id": "r0-t2",
+      "tool": "get_calendar",
+      "args_used": {
+       "date_from": "2026-12-14",
+       "date_to": "2026-12-15"
+      },
+      "ok": true,
+      "error_code": null,
+      "attempts": 1,
+      "from_cache": false,
+      "duration_ms": 7,
+      "decision": null,
+      "replan_request": null
+     }
+    },
+    {
+     "session_id": "29beffb3a8b7",
+     "seq": 41,
+     "ts": "2026-11-20T02:35:40.270035Z",
      "type": "tool_call",
      "stage": "execute",
      "tool": "get_night_window",
@@ -392,26 +765,52 @@
        "lat": 36.3504,
        "lon": 127.3845
       },
-      "reason": "2026-12-14 후보의 어두운 시간·월령"
+      "reason": "2026-12-14 후보의 어두운 시간·월령",
+      "task_id": "r0-t3"
      }
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 32,
-     "ts": "2026-11-20T00:44:14.184084Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 42,
+     "ts": "2026-11-20T02:35:41.042417Z",
      "type": "tool_result",
      "stage": "execute",
      "tool": "get_night_window",
      "payload": {
       "ok": true,
       "data": "{\"data\":{\"date\":\"2026-12-14\",\"sunset\":\"17:16\",\"astro_dusk_end\":\"18:48\",\"astro_dawn_start\":\"06:02\",\"sunrise_next\":\"07:34\",\"moonrise\":\"11:07\",\"moonset\":\"21:52\",\"moonrise_next\":\"11:33\",\"moonset_next\":\"22:51\",\"lun_age\":5.5,\"dark_minutes\":674}}",
-      "duration_ms": 863
+      "duration_ms": 768,
+      "task_id": "r0-t3"
      }
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 33,
-     "ts": "2026-11-20T00:44:14.192090Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 43,
+     "ts": "2026-11-20T02:35:41.047932Z",
+     "type": "worker_result",
+     "stage": "execute",
+     "tool": "get_night_window",
+     "payload": {
+      "task_id": "r0-t3",
+      "tool": "get_night_window",
+      "args_used": {
+       "date": "2026-12-14",
+       "lat": 36.3504,
+       "lon": 127.3845
+      },
+      "ok": true,
+      "error_code": null,
+      "attempts": 1,
+      "from_cache": false,
+      "duration_ms": 777,
+      "decision": null,
+      "replan_request": null
+     }
+    },
+    {
+     "session_id": "29beffb3a8b7",
+     "seq": 44,
+     "ts": "2026-11-20T02:35:41.051931Z",
      "type": "tool_call",
      "stage": "execute",
      "tool": "get_sky_forecast",
@@ -427,13 +826,14 @@
         25
        ]
       },
-      "reason": "2026-12-14 관측 창 시각의 하늘 상태"
+      "reason": "2026-12-14 관측 창 시각의 하늘 상태",
+      "task_id": "r0-t4"
      }
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 34,
-     "ts": "2026-11-20T00:44:14.197156Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 45,
+     "ts": "2026-11-20T02:35:41.055284Z",
      "type": "tool_result",
      "stage": "execute",
      "tool": "get_sky_forecast",
@@ -443,34 +843,102 @@
        "code": "OUT_OF_RANGE",
        "message": "예보 범위 밖: 가장 늦은 예보일 2026-11-30"
       },
-      "duration_ms": 0
+      "duration_ms": 0,
+      "task_id": "r0-t4"
      }
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 35,
-     "ts": "2026-11-20T00:44:14.201271Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 46,
+     "ts": "2026-11-20T02:35:41.059286Z",
+     "type": "worker_decision",
+     "stage": "execute",
+     "tool": "get_sky_forecast",
+     "payload": {
+      "task_id": "r0-t4",
+      "tool": "get_sky_forecast",
+      "decision": "skip",
+      "reason": "치명적 실패(OUT_OF_RANGE) → LLM 미호출 → 건너뜀 (규칙)",
+      "model": null,
+      "new_args": null,
+      "source": "rule",
+      "error_code": "OUT_OF_RANGE",
+      "args": {
+       "date": "2026-12-14",
+       "lat": 36.3504,
+       "lon": 127.3845,
+       "hours": [
+        22,
+        23,
+        24,
+        25
+       ]
+      },
+      "fixed_args": [],
+      "llm_attempted": false,
+      "retry": 0
+     }
+    },
+    {
+     "session_id": "29beffb3a8b7",
+     "seq": 47,
+     "ts": "2026-11-20T02:35:41.063286Z",
+     "type": "worker_result",
+     "stage": "execute",
+     "tool": "get_sky_forecast",
+     "payload": {
+      "task_id": "r0-t4",
+      "tool": "get_sky_forecast",
+      "args_used": {
+       "date": "2026-12-14",
+       "lat": 36.3504,
+       "lon": 127.3845,
+       "hours": [
+        22,
+        23,
+        24,
+        25
+       ]
+      },
+      "ok": false,
+      "error_code": "OUT_OF_RANGE",
+      "attempts": 1,
+      "from_cache": false,
+      "duration_ms": 11,
+      "decision": {
+       "kind": "skip",
+       "reason": "치명적 실패(OUT_OF_RANGE) → LLM 미호출 → 건너뜀 (규칙)",
+       "new_args": null,
+       "source": "rule"
+      },
+      "replan_request": null
+     }
+    },
+    {
+     "session_id": "29beffb3a8b7",
+     "seq": 48,
+     "ts": "2026-11-20T02:35:41.066316Z",
      "type": "stage_end",
      "stage": "execute",
      "tool": null,
      "payload": {
-      "duration_ms": 900,
-      "summary": "Tool 호출 3회(실패 1) · 캐시 재사용 1회 · 후보 1개"
+      "duration_ms": 810,
+      "summary": "[Worker] 작업 4개 · Tool 호출 3회(실패 1) · 캐시 재사용 1회 · 후보 1개"
      }
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 36,
-     "ts": "2026-11-20T00:44:14.205334Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 49,
+     "ts": "2026-11-20T02:35:41.070316Z",
      "type": "stage_start",
      "stage": "judge",
      "tool": null,
      "payload": {}
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 37,
-     "ts": "2026-11-20T00:44:14.209671Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 50,
+     "ts": "2026-11-20T02:35:41.073938Z",
      "type": "stage_end",
      "stage": "judge",
      "tool": null,
@@ -480,37 +948,55 @@
      }
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 38,
-     "ts": "2026-11-20T00:44:14.214106Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 51,
+     "ts": "2026-11-20T02:35:41.078942Z",
      "type": "stage_start",
      "stage": "respond",
      "tool": null,
      "payload": {}
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 39,
-     "ts": "2026-11-20T00:44:16.950366Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 52,
+     "ts": "2026-11-20T02:35:46.917602Z",
      "type": "stage_end",
      "stage": "respond",
      "tool": null,
      "payload": {
-      "duration_ms": 2731,
-      "summary": "plan 응답 712자"
+      "duration_ms": 5834,
+      "summary": "plan 응답 654자"
      }
     },
     {
-     "session_id": "b98028bec110",
-     "seq": 40,
-     "ts": "2026-11-20T00:44:16.967218Z",
+     "session_id": "29beffb3a8b7",
+     "seq": 53,
+     "ts": "2026-11-20T02:35:46.930129Z",
      "type": "session_end",
      "stage": null,
      "tool": null,
      "payload": {
       "intent": "plan",
       "replan_count": 0,
-      "duration_ms": 5815
+      "duration_ms": 8915
+     }
+    },
+    {
+     "session_id": "29beffb3a8b7",
+     "seq": 54,
+     "ts": "2026-11-20T02:35:46.940013Z",
+     "type": "audit_result",
+     "stage": "audit",
+     "tool": null,
+     "payload": {
+      "session_id": "29beffb3a8b7",
+      "seq_from": 29,
+      "seq_to": 53,
+      "status": "normal",
+      "findings": [],
+      "evidence_count": 25,
+      "rule_version": "1",
+      "audited_at": "2026-11-20T02:35:46+00:00"
      }
     }
    ]
