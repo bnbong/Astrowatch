@@ -7,7 +7,7 @@ services:
     runtime: python
     plan: free
     region: singapore
-    branch: master
+    branch: main
     rootDir: .
     # 의존성 설치 뒤 커밋된 data/space_docs.json 으로 RAG 색인을 빌드 시점에 만든다 (모델 80MB 1회 다운로드).
     buildCommand: pip install -r requirements.txt && python backend/scripts/build_space_docs.py
