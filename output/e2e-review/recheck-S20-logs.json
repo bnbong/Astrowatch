@@ -1,0 +1,304 @@
+{
+  "status": 200,
+  "response": [
+    {
+      "session_id": "recheck-2a149f1dfc7d4c4abb4d1e927f111094",
+      "seq": 1,
+      "ts": "2026-11-20T01:00:15.247881Z",
+      "type": "session_start",
+      "stage": null,
+      "tool": null,
+      "payload": {
+        "message": "2026년 12월 14일 서울에서 밤 10시부터 다음 날 새벽 2시까지 쌍둥이자리 유성우 관측 계획을 짜고 근처 천문대도 20km 이내로 찾아줘."
+      }
+    },
+    {
+      "session_id": "recheck-2a149f1dfc7d4c4abb4d1e927f111094",
+      "seq": 2,
+      "ts": "2026-11-20T01:00:15.254189Z",
+      "type": "stage_start",
+      "stage": "analyze",
+      "tool": null,
+      "payload": {}
+    },
+    {
+      "session_id": "recheck-2a149f1dfc7d4c4abb4d1e927f111094",
+      "seq": 3,
+      "ts": "2026-11-20T01:00:17.552909Z",
+      "type": "llm_decision",
+      "stage": "analyze",
+      "tool": null,
+      "payload": {
+        "decision": "plan",
+        "reason": "서울에서 특정 밤(2026-12-14 22:00~다음날 02:00)의 쌍둥이자리 유성우 관측 계획을 요청하고, 근처 천문대 거리 제한도 함께 말했다.",
+        "model": "claude-haiku-5-5"
+      }
+    },
+    {
+      "session_id": "recheck-2a149f1dfc7d4c4abb4d1e927f111094",
+      "seq": 4,
+      "ts": "2026-11-20T01:00:17.557909Z",
+      "type": "stage_end",
+      "stage": "analyze",
+      "tool": null,
+      "payload": {
+        "duration_ms": 2298,
+        "summary": "의도 plan"
+      }
+    },
+    {
+      "session_id": "recheck-2a149f1dfc7d4c4abb4d1e927f111094",
+      "seq": 5,
+      "ts": "2026-11-20T01:00:17.563417Z",
+      "type": "stage_start",
+      "stage": "plan",
+      "tool": null,
+      "payload": {}
+    },
+    {
+      "session_id": "recheck-2a149f1dfc7d4c4abb4d1e927f111094",
+      "seq": 6,
+      "ts": "2026-11-20T01:00:17.567999Z",
+      "type": "stage_end",
+      "stage": "plan",
+      "tool": null,
+      "payload": {
+        "duration_ms": 0,
+        "summary": "5단계 계획: 현상 → 내 일정 → 출몰·월령 → 날씨 → 장소 (search_sky_events → get_calendar → get_night_window → get_sky_forecast → search_observatory)"
+      }
+    },
+    {
+      "session_id": "recheck-2a149f1dfc7d4c4abb4d1e927f111094",
+      "seq": 7,
+      "ts": "2026-11-20T01:00:17.573542Z",
+      "type": "stage_start",
+      "stage": "execute",
+      "tool": null,
+      "payload": {}
+    },
+    {
+      "session_id": "recheck-2a149f1dfc7d4c4abb4d1e927f111094",
+      "seq": 8,
+      "ts": "2026-11-20T01:00:17.578988Z",
+      "type": "tool_call",
+      "stage": "execute",
+      "tool": "search_sky_events",
+      "payload": {
+        "args": {
+          "year": 2026,
+          "month": 12,
+          "kind": "meteor"
+        },
+        "reason": "2026-12 쌍둥이자리 유성우 날짜·시각 확인"
+      }
+    },
+    {
+      "session_id": "recheck-2a149f1dfc7d4c4abb4d1e927f111094",
+      "seq": 9,
+      "ts": "2026-11-20T01:00:17.799201Z",
+      "type": "tool_result",
+      "stage": "execute",
+      "tool": "search_sky_events",
+      "payload": {
+        "ok": true,
+        "data": "{\"data\":{\"year\":2026,\"month\":12,\"requested_defaulted\":false,\"events\":[{\"event_id\":\"20261214-1\",\"date\":\"2026-12-14\",\"time\":\"23:00\",\"title\":\"쌍둥이자리 유성우 극대기(ZHR=150) (IMO 기준)\",\"kind\":\"meteor\",\"description\":null},{\"event_id\":\"20261223-1\",\"date\":\"2026-12-23\",\"time\":\"07:00\",\"title\":\"작은곰자리 유성우 극대기(ZHR=10) (IMO 기준)\",\"kind\":\"meteor\",\"description\":null}]}}",
+        "duration_ms": 215
+      }
+    },
+    {
+      "session_id": "recheck-2a149f1dfc7d4c4abb4d1e927f111094",
+      "seq": 10,
+      "ts": "2026-11-20T01:00:17.803965Z",
+      "type": "tool_call",
+      "stage": "execute",
+      "tool": "get_calendar",
+      "payload": {
+        "args": {
+          "date_from": "2026-12-14",
+          "date_to": "2026-12-15"
+        },
+        "reason": "기존 일정과 겹치는 관측 시간 확인"
+      }
+    },
+    {
+      "session_id": "recheck-2a149f1dfc7d4c4abb4d1e927f111094",
+      "seq": 11,
+      "ts": "2026-11-20T01:00:17.808467Z",
+      "type": "tool_result",
+      "stage": "execute",
+      "tool": "get_calendar",
+      "payload": {
+        "ok": true,
+        "data": "{\"data\":{\"provider\":\"local\",\"date_from\":\"2026-12-14\",\"date_to\":\"2026-12-15\",\"events\":[]}}",
+        "duration_ms": 0
+      }
+    },
+    {
+      "session_id": "recheck-2a149f1dfc7d4c4abb4d1e927f111094",
+      "seq": 12,
+      "ts": "2026-11-20T01:00:17.814477Z",
+      "type": "tool_call",
+      "stage": "execute",
+      "tool": "get_night_window",
+      "payload": {
+        "args": {
+          "date": "2026-12-14",
+          "lat": 37.5665,
+          "lon": 126.978
+        },
+        "reason": "2026-12-14 후보의 어두운 시간·월령"
+      }
+    },
+    {
+      "session_id": "recheck-2a149f1dfc7d4c4abb4d1e927f111094",
+      "seq": 13,
+      "ts": "2026-11-20T01:00:18.703495Z",
+      "type": "tool_result",
+      "stage": "execute",
+      "tool": "get_night_window",
+      "payload": {
+        "ok": true,
+        "data": "{\"data\":{\"date\":\"2026-12-14\",\"sunset\":\"17:14\",\"astro_dusk_end\":\"18:48\",\"astro_dawn_start\":\"06:05\",\"sunrise_next\":\"07:39\",\"moonrise\":\"11:11\",\"moonset\":\"21:52\",\"moonrise_next\":\"11:36\",\"moonset_next\":\"22:52\",\"lun_age\":5.5,\"dark_minutes\":677}}",
+        "duration_ms": 884
+      }
+    },
+    {
+      "session_id": "recheck-2a149f1dfc7d4c4abb4d1e927f111094",
+      "seq": 14,
+      "ts": "2026-11-20T01:00:18.710001Z",
+      "type": "tool_call",
+      "stage": "execute",
+      "tool": "get_sky_forecast",
+      "payload": {
+        "args": {
+          "date": "2026-12-14",
+          "lat": 37.5665,
+          "lon": 126.978,
+          "hours": [
+            22,
+            23,
+            24,
+            25
+          ]
+        },
+        "reason": "2026-12-14 관측 창 시각의 하늘 상태"
+      }
+    },
+    {
+      "session_id": "recheck-2a149f1dfc7d4c4abb4d1e927f111094",
+      "seq": 15,
+      "ts": "2026-11-20T01:00:18.716000Z",
+      "type": "tool_result",
+      "stage": "execute",
+      "tool": "get_sky_forecast",
+      "payload": {
+        "ok": false,
+        "error": {
+          "code": "OUT_OF_RANGE",
+          "message": "예보 범위 밖: 가장 늦은 예보일 2026-11-30"
+        },
+        "duration_ms": 0
+      }
+    },
+    {
+      "session_id": "recheck-2a149f1dfc7d4c4abb4d1e927f111094",
+      "seq": 16,
+      "ts": "2026-11-20T01:00:18.720507Z",
+      "type": "tool_call",
+      "stage": "execute",
+      "tool": "search_observatory",
+      "payload": {
+        "args": {
+          "query": "천문대",
+          "lat": 37.5665,
+          "lon": 126.978,
+          "radius_km": 20.0
+        },
+        "reason": "서울 근처 '천문대' 검색"
+      }
+    },
+    {
+      "session_id": "recheck-2a149f1dfc7d4c4abb4d1e927f111094",
+      "seq": 17,
+      "ts": "2026-11-20T01:00:18.725507Z",
+      "type": "tool_result",
+      "stage": "execute",
+      "tool": "search_observatory",
+      "payload": {
+        "ok": false,
+        "error": {
+          "code": "AUTH",
+          "message": "카카오 REST 키가 설정되지 않았다"
+        },
+        "duration_ms": 0
+      }
+    },
+    {
+      "session_id": "recheck-2a149f1dfc7d4c4abb4d1e927f111094",
+      "seq": 18,
+      "ts": "2026-11-20T01:00:18.731029Z",
+      "type": "stage_end",
+      "stage": "execute",
+      "tool": null,
+      "payload": {
+        "duration_ms": 1152,
+        "summary": "Tool 호출 5회(실패 2) · 캐시 재사용 0회 · 후보 1개"
+      }
+    },
+    {
+      "session_id": "recheck-2a149f1dfc7d4c4abb4d1e927f111094",
+      "seq": 19,
+      "ts": "2026-11-20T01:00:18.737142Z",
+      "type": "stage_start",
+      "stage": "judge",
+      "tool": null,
+      "payload": {}
+    },
+    {
+      "session_id": "recheck-2a149f1dfc7d4c4abb4d1e927f111094",
+      "seq": 20,
+      "ts": "2026-11-20T01:00:18.742748Z",
+      "type": "stage_end",
+      "stage": "judge",
+      "tool": null,
+      "payload": {
+        "duration_ms": 0,
+        "summary": "조건부 충족 1"
+      }
+    },
+    {
+      "session_id": "recheck-2a149f1dfc7d4c4abb4d1e927f111094",
+      "seq": 21,
+      "ts": "2026-11-20T01:00:18.746762Z",
+      "type": "stage_start",
+      "stage": "respond",
+      "tool": null,
+      "payload": {}
+    },
+    {
+      "session_id": "recheck-2a149f1dfc7d4c4abb4d1e927f111094",
+      "seq": 22,
+      "ts": "2026-11-20T01:00:21.425253Z",
+      "type": "stage_end",
+      "stage": "respond",
+      "tool": null,
+      "payload": {
+        "duration_ms": 2674,
+        "summary": "plan 응답 761자"
+      }
+    },
+    {
+      "session_id": "recheck-2a149f1dfc7d4c4abb4d1e927f111094",
+      "seq": 23,
+      "ts": "2026-11-20T01:00:21.441969Z",
+      "type": "session_end",
+      "stage": null,
+      "tool": null,
+      "payload": {
+        "intent": "plan",
+        "replan_count": 0,
+        "duration_ms": 6194
+      }
+    }
+  ]
+}

@@ -1,14 +1,14 @@
 {
  "scenario": "R5",
- "session_id": "dc90729ed225",
+ "session_id": "23a16d4ecdca",
  "turns": [
   {
    "message": "안녕, 이거 어떻게 써?",
    "events": [
     {
-     "session_id": "dc90729ed225",
+     "session_id": "23a16d4ecdca",
      "seq": 1,
-     "ts": "2026-11-18T07:52:27.582320Z",
+     "ts": "2026-11-20T00:45:19.223128Z",
      "type": "session_start",
      "stage": null,
      "tool": null,
@@ -17,71 +17,71 @@
      }
     },
     {
-     "session_id": "dc90729ed225",
+     "session_id": "23a16d4ecdca",
      "seq": 2,
-     "ts": "2026-11-18T07:52:27.587320Z",
+     "ts": "2026-11-20T00:45:19.227343Z",
      "type": "stage_start",
      "stage": "analyze",
      "tool": null,
      "payload": {}
     },
     {
-     "session_id": "dc90729ed225",
+     "session_id": "23a16d4ecdca",
      "seq": 3,
-     "ts": "2026-11-18T07:52:29.864334Z",
+     "ts": "2026-11-20T00:45:21.442876Z",
      "type": "llm_decision",
      "stage": "analyze",
      "tool": null,
      "payload": {
       "decision": "chat",
-      "reason": "인사와 서비스 사용법을 물어보는 잡담성 요청입니다.",
-      "model": "gpt-6-luna"
+      "reason": "인사와 사용법 질문이라 관측 조건 없이 잡담/안내로 처리한다.",
+      "model": "claude-haiku-5-5"
      }
     },
     {
-     "session_id": "dc90729ed225",
+     "session_id": "23a16d4ecdca",
      "seq": 4,
-     "ts": "2026-11-18T07:52:29.868334Z",
+     "ts": "2026-11-20T00:45:21.516501Z",
      "type": "stage_end",
      "stage": "analyze",
      "tool": null,
      "payload": {
-      "duration_ms": 2277,
+      "duration_ms": 2285,
       "summary": "의도 chat"
      }
     },
     {
-     "session_id": "dc90729ed225",
+     "session_id": "23a16d4ecdca",
      "seq": 5,
-     "ts": "2026-11-18T07:52:29.873412Z",
+     "ts": "2026-11-20T00:45:21.568045Z",
      "type": "stage_start",
      "stage": "respond",
      "tool": null,
      "payload": {}
     },
     {
-     "session_id": "dc90729ed225",
+     "session_id": "23a16d4ecdca",
      "seq": 6,
-     "ts": "2026-11-18T07:52:31.853636Z",
+     "ts": "2026-11-20T00:45:22.798543Z",
      "type": "stage_end",
      "stage": "respond",
      "tool": null,
      "payload": {
-      "duration_ms": 1975,
-      "summary": "chat 응답 159자"
+      "duration_ms": 1181,
+      "summary": "chat 응답 211자"
      }
     },
     {
-     "session_id": "dc90729ed225",
+     "session_id": "23a16d4ecdca",
      "seq": 7,
-     "ts": "2026-11-18T07:52:31.865664Z",
+     "ts": "2026-11-20T00:45:22.809610Z",
      "type": "session_end",
      "stage": null,
      "tool": null,
      "payload": {
       "intent": "chat",
       "replan_count": 0,
-      "duration_ms": 4284
+      "duration_ms": 3588
      }
     }
    ]

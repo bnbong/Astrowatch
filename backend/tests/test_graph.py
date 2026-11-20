@@ -872,3 +872,18 @@ def test_run_turn_records_turn(world, llm, monkeypatch):
     res2 = run_turn(res.session_id, "같은 날 장소만 강원도로")
     assert res2.session_id == res.session_id and res2.answer != service.GENERIC_ERROR_ANSWER
     assert len(turns.get_session_detail(res.session_id).turns) == 1
+
+
+def test_cond_changes_describe_followup_edits():
+    """후속 요청(R-S15): 종료 시각만 바꾼 경우 바뀐 항목만 사람이 읽는 문장으로 나온다."""
+    import datetime as dt
+
+    from astrowatch.agent.nodes import _cond_changes
+    from astrowatch.schemas.domain import Conditions
+
+    prev = Conditions(date_from=dt.date(2026, 12, 14), date_to=dt.date(2026, 12, 14), region="서울",
+                      start_minute=1320, end_minute=1560, event_query="쌍둥이자리 유성우")
+    cur = prev.model_copy(update={"end_minute": 1380, "region": "대전"})
+    assert _cond_changes(prev, cur) == ["지역 서울 → 대전", "종료 시각 02:00+1 → 23:00"]
+    assert _cond_changes(Conditions(), cur) == []  # 첫 턴은 '변경' 이 아니다
+    assert _cond_changes(prev, prev) == []

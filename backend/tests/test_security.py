@@ -642,3 +642,20 @@ def test_redact_keeps_uvicorn_access_args_structure():
     rec2 = logging.LogRecord("x", logging.INFO, __file__, 1, "키 %s 값 %d", ("SUPERSECRETKEY", 3), None)
     f.filter(rec2)
     assert rec2.getMessage() == "키 *** 값 3"
+
+
+def test_same_host_origin_allowed_on_any_port(monkeypatch):
+    """uvicorn 을 APP_PORT 와 다른 포트로 띄워도 같은 서버가 서빙한 화면의 변경 요청은 통과한다(실제 회귀)."""
+    from fastapi.testclient import TestClient
+
+    from astrowatch.app.main import create_app
+    from astrowatch.config import reset_settings_cache
+
+    monkeypatch.setenv("APP_ALLOWED_HOSTS", "127.0.0.1")
+    reset_settings_cache()
+    app = create_app()
+    with TestClient(app, base_url="http://127.0.0.1:8003") as c:
+        h = {"X-Requested-With": "Astrowatch", "Origin": "http://127.0.0.1:8003", "Host": "127.0.0.1:8003"}
+        assert c.delete("/api/plans/999999", headers=h).status_code == 404   # 403 이 아니라 라우터까지 도달
+        bad = {"X-Requested-With": "Astrowatch", "Origin": "http://127.0.0.1:9999", "Host": "127.0.0.1:8003"}
+        assert c.delete("/api/plans/999999", headers=bad).status_code == 403

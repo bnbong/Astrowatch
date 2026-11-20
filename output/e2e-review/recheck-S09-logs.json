@@ -1,0 +1,177 @@
+{
+  "status": 200,
+  "response": [
+    {
+      "session_id": "recheck-de93b871d22942068e653a6b77ff64b2",
+      "seq": 1,
+      "ts": "2026-11-20T01:00:11.246706Z",
+      "type": "session_start",
+      "stage": null,
+      "tool": null,
+      "payload": {
+        "message": "2026년 11월 18일 대전 근처 천문대를 20km 이내에서 찾아줘."
+      }
+    },
+    {
+      "session_id": "recheck-de93b871d22942068e653a6b77ff64b2",
+      "seq": 2,
+      "ts": "2026-11-20T01:00:11.252214Z",
+      "type": "stage_start",
+      "stage": "analyze",
+      "tool": null,
+      "payload": {}
+    },
+    {
+      "session_id": "recheck-de93b871d22942068e653a6b77ff64b2",
+      "seq": 3,
+      "ts": "2026-11-20T01:00:13.248902Z",
+      "type": "llm_decision",
+      "stage": "analyze",
+      "tool": null,
+      "payload": {
+        "decision": "fact",
+        "reason": "현상·대상·관측 시간 없이 장소(천문대)만 찾아 달라는 요청이므로 fact의 places 질문이다. / fact_kind=places(LLM)",
+        "model": "claude-haiku-5-5"
+      }
+    },
+    {
+      "session_id": "recheck-de93b871d22942068e653a6b77ff64b2",
+      "seq": 4,
+      "ts": "2026-11-20T01:00:13.253904Z",
+      "type": "stage_end",
+      "stage": "analyze",
+      "tool": null,
+      "payload": {
+        "duration_ms": 1998,
+        "summary": "의도 fact"
+      }
+    },
+    {
+      "session_id": "recheck-de93b871d22942068e653a6b77ff64b2",
+      "seq": 5,
+      "ts": "2026-11-20T01:00:13.259688Z",
+      "type": "stage_start",
+      "stage": "plan",
+      "tool": null,
+      "payload": {}
+    },
+    {
+      "session_id": "recheck-de93b871d22942068e653a6b77ff64b2",
+      "seq": 6,
+      "ts": "2026-11-20T01:00:13.264692Z",
+      "type": "stage_end",
+      "stage": "plan",
+      "tool": null,
+      "payload": {
+        "duration_ms": 0,
+        "summary": "1단계 계획: 사실 조회(places): search_observatory"
+      }
+    },
+    {
+      "session_id": "recheck-de93b871d22942068e653a6b77ff64b2",
+      "seq": 7,
+      "ts": "2026-11-20T01:00:13.269199Z",
+      "type": "stage_start",
+      "stage": "execute",
+      "tool": null,
+      "payload": {}
+    },
+    {
+      "session_id": "recheck-de93b871d22942068e653a6b77ff64b2",
+      "seq": 8,
+      "ts": "2026-11-20T01:00:13.276767Z",
+      "type": "tool_call",
+      "stage": "execute",
+      "tool": "search_observatory",
+      "payload": {
+        "args": {
+          "query": "천문대",
+          "lat": 36.3504,
+          "lon": 127.3845,
+          "radius_km": 20.0
+        },
+        "reason": "관측지 검색"
+      }
+    },
+    {
+      "session_id": "recheck-de93b871d22942068e653a6b77ff64b2",
+      "seq": 9,
+      "ts": "2026-11-20T01:00:13.498509Z",
+      "type": "tool_result",
+      "stage": "execute",
+      "tool": "search_observatory",
+      "payload": {
+        "ok": true,
+        "data": "{\"data\":{\"query\":\"천문대\",\"radius_km\":20.0,\"places\":[{\"place_id\":\"8263441\",\"name\":\"대전시민천문대\",\"address\":\"대전 유성구 과학로 213-48\",\"url\":\"http://place.map.kakao.com/8263441\",\"distance_m\":4431,\"category\":\"관광명소\"},{\"place_id\":\"1231832531\",\"name\":\"대덕전파천문대\",\"address\":\"대전 유성구 대덕대로 776\",\"url\":\"http://place.map.kakao.com/1231832531\",\"distance_m\":5300,\"category\":\"관광명소\"},{\"place_id\":\"1696348207\",\"name\":\"한국천문연구원 천문대\",\"address\":\"대전 유성구 대덕대로 776\",\"url\":\"http://place.map.kakao.com/1696348207\",\"distance_m\":5304,\"category\":null},{\"place_id\":\"1003273121\",\"name\":\"대전어린이천문대 주차장\",\"address\":\"대전 유성구 현충원로 165\",\"url\":\"http://place.map.kakao.com/1003273121\",\"distance_m\":8573,\"category\":\"주차장\"},{\"place_id\":\"1835584605\",\"name\":\"대전어린이천문대\",\"address\":\"대전 유성구 현충원로 165\",\"url\":\"http://place.map.kakao.com/1835584605\",\"distance_m\":8576,\"category\":\"관광명소\"},{\"place_id\":\"1364625622\",\"name\":\"세종어린이천문대\",\"address\":\"세종특별자치시 장군면 금송로 293\",\"url\":\"http://place.map.kakao.com/1364625622\",\"distance_m\":17787,\"category\":null},{\"place_id\":\"226451234\",\"name\":\"타슈스테이션 천문대입구\",\"address\":\"대전 유성구 신성동 458\",\"url\":\"http://place.map.kakao.com/226451234\",\"distance_m\":4464,\"category\":null}],\"note\":\"장소 검색은 그 장소의 하늘 상태를 알려 주지 않는다. 날씨는 지역 격자 기준이다.\"}}",
+        "duration_ms": 213
+      }
+    },
+    {
+      "session_id": "recheck-de93b871d22942068e653a6b77ff64b2",
+      "seq": 10,
+      "ts": "2026-11-20T01:00:13.502513Z",
+      "type": "stage_end",
+      "stage": "execute",
+      "tool": null,
+      "payload": {
+        "duration_ms": 225,
+        "summary": "Tool 호출 1회(실패 0) · 캐시 재사용 0회 · 후보 0개"
+      }
+    },
+    {
+      "session_id": "recheck-de93b871d22942068e653a6b77ff64b2",
+      "seq": 11,
+      "ts": "2026-11-20T01:00:13.506511Z",
+      "type": "stage_start",
+      "stage": "judge",
+      "tool": null,
+      "payload": {}
+    },
+    {
+      "session_id": "recheck-de93b871d22942068e653a6b77ff64b2",
+      "seq": 12,
+      "ts": "2026-11-20T01:00:13.510099Z",
+      "type": "stage_end",
+      "stage": "judge",
+      "tool": null,
+      "payload": {
+        "duration_ms": 0,
+        "summary": "판정 생략 (계획 요청 아님)"
+      }
+    },
+    {
+      "session_id": "recheck-de93b871d22942068e653a6b77ff64b2",
+      "seq": 13,
+      "ts": "2026-11-20T01:00:13.514765Z",
+      "type": "stage_start",
+      "stage": "respond",
+      "tool": null,
+      "payload": {}
+    },
+    {
+      "session_id": "recheck-de93b871d22942068e653a6b77ff64b2",
+      "seq": 14,
+      "ts": "2026-11-20T01:00:15.195950Z",
+      "type": "stage_end",
+      "stage": "respond",
+      "tool": null,
+      "payload": {
+        "duration_ms": 1677,
+        "summary": "fact 응답 371자"
+      }
+    },
+    {
+      "session_id": "recheck-de93b871d22942068e653a6b77ff64b2",
+      "seq": 15,
+      "ts": "2026-11-20T01:00:15.212153Z",
+      "type": "session_end",
+      "stage": null,
+      "tool": null,
+      "payload": {
+        "intent": "fact",
+        "replan_count": 0,
+        "duration_ms": 3965
+      }
+    }
+  ]
+}

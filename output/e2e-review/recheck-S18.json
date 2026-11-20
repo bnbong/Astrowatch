@@ -1,0 +1,31 @@
+{
+  "id": "S18",
+  "message": "   ",
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/api/chat",
+    "headers": {
+      "X-Requested-With": "Astrowatch",
+      "Origin": "http://127.0.0.1:8000"
+    },
+    "json": {
+      "session_id": "recheck-779c7cc7d818414a93fff41698381236",
+      "message": "   "
+    }
+  },
+  "started_at": "2026-11-20T10:00:11+0900",
+  "status": 422,
+  "seconds": 0.0,
+  "response": {
+    "detail": [
+      {
+        "loc": [
+          "body",
+          "message"
+        ],
+        "msg": "Value error, 메시지가 비어 있습니다",
+        "type": "value_error"
+      }
+    ]
+  }
+}

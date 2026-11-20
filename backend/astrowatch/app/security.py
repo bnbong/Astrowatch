@@ -108,6 +108,23 @@ class RequestGuardMiddleware:
     def allowed_origins() -> frozenset[str]:
         return frozenset(o.lower() for o in get_settings().allowed_origins)
 
+    def _origin_ok(self, origin: str, host: str) -> bool:
+        """허용 목록에 있거나, Origin 의 host:port 가 요청의 Host 와 같으면(같은 출처) 허용.
+
+        uvicorn 을 APP_PORT 와 다른 포트로 띄워도 같은 서버가 서빙한 화면의 요청은 막히지 않아야 한다.
+        Host 헤더는 TrustedHostMiddleware 가 먼저 검사한다.
+        """
+        o = origin.rstrip("/").lower()
+        if o in self.allowed_origins():
+            return True
+        try:
+            from urllib.parse import urlsplit
+
+            parts = urlsplit(o)
+        except ValueError:
+            return False
+        return bool(parts.netloc) and parts.scheme in ("http", "https") and parts.netloc == host.strip().lower()
+
     def _bucket_for(self) -> TokenBucket:
         rate = get_settings().chat_rate_per_min
         if self._bucket is None or self._bucket.rate != rate:
@@ -134,7 +151,7 @@ class RequestGuardMiddleware:
         if method in UNSAFE_METHODS:
             # 2) 출처 검사 — Origin 이 있으면 허용 목록에 있어야 한다
             origin = headers.get("origin")
-            if origin is not None and origin.rstrip("/").lower() not in self.allowed_origins():
+            if origin is not None and not self._origin_ok(origin, headers.get("host", "")):
                 await _json_response(send, 403, DETAIL_BAD_ORIGIN)
                 return
             if headers.get("sec-fetch-site", "").lower() == "cross-site":

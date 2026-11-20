@@ -1,15 +1,15 @@
 {
  "scenario": "andromeda",
- "captured_at": "2026-11-18T16:52:33+09:00",
+ "captured_at": "2026-11-20T10:11:17+09:00",
  "env_overrides": {
   "CALENDAR_PROVIDER": "local"
  },
- "session_id": "3b8ed2bb6b73",
+ "session_id": "2648f290415c",
  "turns": [
   {
    "message": "안드로메다 은하를 제일 잘 볼 수 있는 날짜를 추천해줘",
    "response": {
-    "session_id": "3b8ed2bb6b73",
+    "session_id": "2648f290415c",
     "intent": "clarify",
     "answer": "지금까지 조건: 안드로메다 은하\n어느 지역에서 보실 건가요?",
     "conditions": {
@@ -53,7 +53,7 @@
       "stage": "analyze",
       "tool": null,
       "ok": null,
-      "summary": "의도 판단: clarify - 안드로메다 은하를 관측하기 가장 좋은 날짜를 추천해 달라는 계획 요청입니다. / 조건 부족(region) → 되묻기",
+      "summary": "의도 판단: clarify - 안드로메다 은하를 가장 잘 볼 수 있는 날짜 추천을 요청하므로 관측 계획(plan)이다. 날짜는 미정이라 추천이 필요하고 지역은 빠져 있다. / 조건 부족(region) → 되묻기",
       "duration_ms": null,
       "replan_round": null
      },
@@ -64,7 +64,7 @@
       "tool": null,
       "ok": null,
       "summary": "의도 clarify · 부족한 조건 region",
-      "duration_ms": 2019,
+      "duration_ms": 2253,
       "replan_round": null
      },
      {
@@ -91,14 +91,14 @@
     "warnings": [],
     "safety_note": "야간 관측 시 이동 안전과 방한에 유의하세요."
    },
-   "elapsed_s": 2.05
+   "elapsed_s": 2.29
   },
   {
    "message": "대전 유성구 지역에서. 날짜는 아직 미정이라 보기 좋은 날짜를 추천해줘",
    "response": {
-    "session_id": "3b8ed2bb6b73",
+    "session_id": "2648f290415c",
     "intent": "plan",
-    "answer": "- 요청 조건: 대전 유성구에서 안드로메다 은하 관측. 날짜를 지정하지 않아 2026-11-18~2026-11-27 범위에서 찾았습니다.\n- **1순위 — 안드로메다 은하, 2026-11-18, 대전:** 충족. 관측 창 **01:02+1~03:50+1**, 맑은 시간 **168분**, 달 영향 없음(월령 9.2일).\n- 11월 27일도 충족하지만 맑은 시간은 62분으로 더 짧고, 달 영향은 없음(월령 18.2일).\n- 11월 20일은 맑은 시간이 32분으로 최소 관측 시간에 가까워 1순위보다 여유가 적습니다(달 영향 없음, 월령 11.2일).\n- 11월 18일은 늦어도 **03:20+1까지 도착하면 최소 30분 관측 가능**합니다.\n- 관측 창이 천체 고도 20° 이상인 시간으로 줄었습니다. 남중은 **21:23, 고도 85°**입니다.\n- 비 예보는 18:00~21:00, 22:00~23:00입니다.\n- 판단 기준: 관측 창 = 어두운 시간 ∩ 내 시간 ∩ 현상 시간(천체는 고도 20° 이상인 시간), 최소 30분, 맑음(강수확률 30% 이하)만 맑은 시간으로 셈.\n- 근거 도구: search_sky_events, lookup_sky_object, get_calendar, get_night_window, get_sky_forecast 모두 성공.\n- 제외: 11월 19일은 맑은 시간 0분, 최소 30분 미달; 11월 21~26일은 달빛이 희미한 은하 관측에 불리해 제외됐습니다.\n- 달이 적은 다음 기간(다음 합삭 전후)으로 다시 찾을까요?",
+    "answer": "**조건**: 대전 유성구에서 안드로메다 은하 관측 (지역을 대전 유성구로 지정). 날짜를 정하지 않아 2026-11-20~11-29 범위에서 찾았습니다.\n\n**추천 (1순위 → 2순위)**\n1. **2026-11-29 (충족)**, 안드로메다 은하, 대전\n   - 관측 창 18:47~22:19, 맑은 시간 212분\n   - 달 영향: 월령 20.2일이라 월출(22:19) 전까지만 관측 창으로 잡음\n   - 늦어도 21:49까지 도착하면 최소 30분 관측 가능\n   - 날씨: 중기예보 '맑음' (하루 단위 값이라 시간별 예보는 아님)\n2. **2026-11-20 (충족)**, 안드로메다 은하, 대전\n   - 관측 창 03:08~03:40(다음 날), 맑은 시간 32분\n   - 달 영향: 월령 11.2일이라 월몰(03:08) 이후만 사용\n   - 늦어도 03:10까지 도착해야 최소 30분 확보\n3. 1순위는 맑은 시간이 212분으로 2순위(32분)보다 훨씬 길어 우선 추천합니다.\n4. 두 날 모두 안드로메다가 고도 20° 이상인 시간으로 관측 창이 좁혀졌습니다. 남중은 20:40(고도 85°) 무렵입니다.\n\n**제외 항목**\n- 11-28: 구름많음 예보, 맑은 시간 0분\n- 11-27: 맑은 시간 0분 (최소 30분 미달)\n- 11-21~11-26: 월령 12~17일로 달빛 영향이 커서 희미한 천체 관측에 불리\n\n**판단 기준**: 관측 창 = 어두운 시간 ∩ 내 시간 ∩ 천체 고도 20° 이상인 시간. 최소 30분이어야 하며, 강수확률 30% 이하인 시간만 맑은 시간으로 셌습니다.\n\n**근거 Tool**: 천체 검색, 천체 정보, 일정, 관측 시간, 예보 조회가 모두 성공했습니다.",
     "conditions": {
      "date_from": null,
      "date_to": null,
@@ -117,148 +117,10 @@
     "recommended": [
      {
       "candidate": {
-       "event_id": "target-20261118",
+       "event_id": "target-20261129",
        "title": "안드로메다 은하",
        "kind": "deep_sky",
-       "date": "2026-11-18",
-       "region": "대전",
-       "lat": 36.3504,
-       "lon": 127.3845,
-       "event_minute": null
-      },
-      "verdict": "fit",
-      "dark_window": {
-       "start": 1130,
-       "end": 1782
-      },
-      "user_window": {
-       "start": 1130,
-       "end": 1782
-      },
-      "event_window": {
-       "start": 1130,
-       "end": 1670
-      },
-      "time_window": {
-       "start": 1502,
-       "end": 1670
-      },
-      "clear_minutes": 168,
-      "worst_sky": "clear",
-      "max_pop": 0,
-      "moon_interferes": false,
-      "lun_age": 9.2,
-      "latest_arrival_minute": 1640,
-      "forecast_source": "kma_short",
-      "reasons": [
-       "어두운 시간 18:50~05:42+1 · 내 시간 18:50~05:42+1 · 천체 고도 18:50~03:50+1 → 관측 창 18:50~03:50+1 (540분)",
-       "안드로메다 은하 고도 20° 이상 15:10~03:50+1, 남중 21:23(고도 85°)",
-       "달빛(월령 9.2일)을 피해 관측 창을 01:02+1~03:50+1 (168분)로 줄임 - 월몰 01:02+1 이후 기준",
-       "비 예보 18:00~21:00 · 비 예보 22:00~23:00",
-       "맑은 시간 168분"
-      ],
-      "target_alt": 85.1,
-      "target_az": 359.9,
-      "moon_up": [
-       {
-        "start": 0,
-        "end": 2
-       },
-       {
-        "start": 812,
-        "end": 1440
-       },
-       {
-        "start": 1440,
-        "end": 1502
-       }
-      ],
-      "moon_unknown": [],
-      "hourly_sky": [
-       {
-        "hour": 18,
-        "sky": "cloudy",
-        "pop": 60,
-        "precip": "rain"
-       },
-       {
-        "hour": 19,
-        "sky": "cloudy",
-        "pop": 60,
-        "precip": "rain"
-       },
-       {
-        "hour": 20,
-        "sky": "cloudy",
-        "pop": 60,
-        "precip": "rain"
-       },
-       {
-        "hour": 21,
-        "sky": "clear",
-        "pop": 0,
-        "precip": "none"
-       },
-       {
-        "hour": 22,
-        "sky": "cloudy",
-        "pop": 60,
-        "precip": "rain"
-       },
-       {
-        "hour": 23,
-        "sky": "partly",
-        "pop": 20,
-        "precip": "none"
-       },
-       {
-        "hour": 24,
-        "sky": "partly",
-        "pop": 20,
-        "precip": "none"
-       },
-       {
-        "hour": 25,
-        "sky": "clear",
-        "pop": 0,
-        "precip": "none"
-       },
-       {
-        "hour": 26,
-        "sky": "clear",
-        "pop": 0,
-        "precip": "none"
-       },
-       {
-        "hour": 27,
-        "sky": "clear",
-        "pop": 0,
-        "precip": "none"
-       },
-       {
-        "hour": 28,
-        "sky": "clear",
-        "pop": 0,
-        "precip": "none"
-       },
-       {
-        "hour": 29,
-        "sky": "clear",
-        "pop": 0,
-        "precip": "none"
-       }
-      ],
-      "object_window": {
-       "start": 910,
-       "end": 1670
-      }
-     },
-     {
-      "candidate": {
-       "event_id": "target-20261127",
-       "title": "안드로메다 은하",
-       "kind": "deep_sky",
-       "date": "2026-11-27",
+       "date": "2026-11-29",
        "region": "대전",
        "lat": 36.3504,
        "lon": 127.3845,
@@ -267,47 +129,47 @@
       "verdict": "fit",
       "dark_window": {
        "start": 1127,
-       "end": 1789
+       "end": 1791
       },
       "user_window": {
        "start": 1127,
-       "end": 1789
+       "end": 1791
       },
       "event_window": {
        "start": 1127,
-       "end": 1630
+       "end": 1620
       },
       "time_window": {
        "start": 1127,
-       "end": 1189
+       "end": 1339
       },
-      "clear_minutes": 62,
+      "clear_minutes": 212,
       "worst_sky": "clear",
       "max_pop": 10,
       "moon_interferes": false,
-      "lun_age": 18.2,
-      "latest_arrival_minute": 1159,
+      "lun_age": 20.2,
+      "latest_arrival_minute": 1309,
       "forecast_source": "kma_mid",
       "reasons": [
-       "어두운 시간 18:47~05:49+1 · 내 시간 18:47~05:49+1 · 천체 고도 18:47~03:10+1 → 관측 창 18:47~03:10+1 (503분)",
-       "안드로메다 은하 고도 20° 이상 14:40~03:10+1, 남중 20:48(고도 85°)",
-       "달빛(월령 18.2일)을 피해 관측 창을 18:47~19:49 (62분)로 줄임 - 월출 19:49 이전 기준",
-       "맑은 시간 62분"
+       "어두운 시간 18:47~05:51+1 · 내 시간 18:47~05:51+1 · 천체 고도 18:47~03:00+1 → 관측 창 18:47~03:00+1 (493분)",
+       "안드로메다 은하 고도 20° 이상 14:30~03:00+1, 남중 20:40(고도 85°)",
+       "달빛(월령 20.2일)을 피해 관측 창을 18:47~22:19 (212분)로 줄임 - 월출 22:19 이전 기준",
+       "맑은 시간 212분"
       ],
       "target_alt": 85.1,
-      "target_az": 359.0,
+      "target_az": 359.3,
       "moon_up": [
        {
         "start": 0,
-        "end": 613
+        "end": 705
        },
        {
-        "start": 1189,
+        "start": 1339,
         "end": 1440
        },
        {
         "start": 1440,
-        "end": 2104
+        "end": 2159
        }
       ],
       "moon_unknown": [],
@@ -386,8 +248,8 @@
        }
       ],
       "object_window": {
-       "start": 880,
-       "end": 1630
+       "start": 870,
+       "end": 1620
       }
      },
      {
@@ -487,20 +349,20 @@
        },
        {
         "hour": 24,
-        "sky": "cloudy",
-        "pop": 30,
+        "sky": "partly",
+        "pop": 20,
         "precip": "none"
        },
        {
         "hour": 25,
-        "sky": "cloudy",
-        "pop": 30,
+        "sky": "clear",
+        "pop": 0,
         "precip": "none"
        },
        {
         "hour": 26,
-        "sky": "cloudy",
-        "pop": 30,
+        "sky": "clear",
+        "pop": 0,
         "precip": "none"
        },
        {
@@ -531,10 +393,10 @@
     "excluded": [
      {
       "candidate": {
-       "event_id": "target-20261119",
+       "event_id": "target-20261128",
        "title": "안드로메다 은하",
        "kind": "deep_sky",
-       "date": "2026-11-19",
+       "date": "2026-11-28",
        "region": "대전",
        "lat": 36.3504,
        "lon": 127.3845,
@@ -542,129 +404,265 @@
       },
       "verdict": "unfit",
       "dark_window": {
-       "start": 1129,
-       "end": 1783
+       "start": 1127,
+       "end": 1790
       },
       "user_window": {
-       "start": 1129,
-       "end": 1783
+       "start": 1127,
+       "end": 1790
       },
       "event_window": {
-       "start": 1129,
-       "end": 1660
+       "start": 1127,
+       "end": 1630
       },
       "time_window": {
-       "start": 1564,
-       "end": 1660
+       "start": 1127,
+       "end": 1265
       },
       "clear_minutes": 0,
-      "worst_sky": "cloudy",
-      "max_pop": 60,
+      "worst_sky": "partly",
+      "max_pop": 20,
       "moon_interferes": false,
-      "lun_age": 10.2,
+      "lun_age": 19.2,
       "latest_arrival_minute": null,
-      "forecast_source": "kma_short",
+      "forecast_source": "kma_mid",
       "reasons": [
-       "어두운 시간 18:49~05:43+1 · 내 시간 18:49~05:43+1 · 천체 고도 18:49~03:40+1 → 관측 창 18:49~03:40+1 (531분)",
-       "안드로메다 은하 고도 20° 이상 15:10~03:40+1, 남중 21:19(고도 85°)",
-       "달빛(월령 10.2일)을 피해 관측 창을 02:04+1~03:40+1 (96분)로 줄임 - 월몰 02:04+1 이후 기준",
-       "비 예보 18:00~19:00 · 비/눈 예보 21:00~23:00 · 눈 예보 23:00~04:00+1",
+       "어두운 시간 18:47~05:50+1 · 내 시간 18:47~05:50+1 · 천체 고도 18:47~03:10+1 → 관측 창 18:47~03:10+1 (503분)",
+       "안드로메다 은하 고도 20° 이상 14:30~03:10+1, 남중 20:44(고도 85°)",
+       "달빛(월령 19.2일)을 피해 관측 창을 18:47~21:05 (138분)로 줄임 - 월출 21:05 이전 기준",
        "맑은 시간 0분 - 최소 30분 미달"
       ],
       "target_alt": 85.1,
-      "target_az": 0.0,
+      "target_az": 359.2,
       "moon_up": [
        {
         "start": 0,
-        "end": 62
+        "end": 664
        },
        {
-        "start": 836,
+        "start": 1265,
         "end": 1440
        },
        {
         "start": 1440,
-        "end": 1564
+        "end": 2145
        }
       ],
       "moon_unknown": [],
       "hourly_sky": [
        {
         "hour": 18,
-        "sky": "cloudy",
-        "pop": 60,
-        "precip": "rain"
+        "sky": "partly",
+        "pop": 20,
+        "precip": null
        },
        {
         "hour": 19,
-        "sky": "clear",
-        "pop": 0,
-        "precip": "none"
+        "sky": "partly",
+        "pop": 20,
+        "precip": null
        },
        {
         "hour": 20,
         "sky": "partly",
         "pop": 20,
-        "precip": "none"
+        "precip": null
        },
        {
         "hour": 21,
-        "sky": "cloudy",
-        "pop": 60,
-        "precip": "sleet"
+        "sky": "partly",
+        "pop": 20,
+        "precip": null
        },
        {
         "hour": 22,
-        "sky": "cloudy",
-        "pop": 60,
-        "precip": "sleet"
+        "sky": "partly",
+        "pop": 20,
+        "precip": null
        },
        {
         "hour": 23,
-        "sky": "cloudy",
-        "pop": 60,
-        "precip": "snow"
+        "sky": "partly",
+        "pop": 20,
+        "precip": null
        },
        {
         "hour": 24,
-        "sky": "cloudy",
-        "pop": 60,
-        "precip": "snow"
+        "sky": "clear",
+        "pop": 10,
+        "precip": null
        },
        {
         "hour": 25,
-        "sky": "cloudy",
-        "pop": 60,
-        "precip": "snow"
+        "sky": "clear",
+        "pop": 10,
+        "precip": null
        },
        {
         "hour": 26,
-        "sky": "cloudy",
-        "pop": 60,
-        "precip": "snow"
+        "sky": "clear",
+        "pop": 10,
+        "precip": null
        },
        {
         "hour": 27,
-        "sky": "cloudy",
-        "pop": 60,
-        "precip": "snow"
+        "sky": "clear",
+        "pop": 10,
+        "precip": null
        },
        {
         "hour": 28,
         "sky": "clear",
-        "pop": 0,
-        "precip": "none"
+        "pop": 10,
+        "precip": null
        },
        {
         "hour": 29,
         "sky": "clear",
-        "pop": 0,
-        "precip": "none"
+        "pop": 10,
+        "precip": null
        }
       ],
       "object_window": {
-       "start": 910,
-       "end": 1660
+       "start": 870,
+       "end": 1630
+      }
+     },
+     {
+      "candidate": {
+       "event_id": "target-20261127",
+       "title": "안드로메다 은하",
+       "kind": "deep_sky",
+       "date": "2026-11-27",
+       "region": "대전",
+       "lat": 36.3504,
+       "lon": 127.3845,
+       "event_minute": null
+      },
+      "verdict": "unfit",
+      "dark_window": {
+       "start": 1127,
+       "end": 1789
+      },
+      "user_window": {
+       "start": 1127,
+       "end": 1789
+      },
+      "event_window": {
+       "start": 1127,
+       "end": 1630
+      },
+      "time_window": {
+       "start": 1127,
+       "end": 1189
+      },
+      "clear_minutes": 0,
+      "worst_sky": "partly",
+      "max_pop": 20,
+      "moon_interferes": false,
+      "lun_age": 18.2,
+      "latest_arrival_minute": null,
+      "forecast_source": "kma_mid",
+      "reasons": [
+       "어두운 시간 18:47~05:49+1 · 내 시간 18:47~05:49+1 · 천체 고도 18:47~03:10+1 → 관측 창 18:47~03:10+1 (503분)",
+       "안드로메다 은하 고도 20° 이상 14:40~03:10+1, 남중 20:48(고도 85°)",
+       "달빛(월령 18.2일)을 피해 관측 창을 18:47~19:49 (62분)로 줄임 - 월출 19:49 이전 기준",
+       "맑은 시간 0분 - 최소 30분 미달"
+      ],
+      "target_alt": 85.1,
+      "target_az": 359.0,
+      "moon_up": [
+       {
+        "start": 0,
+        "end": 613
+       },
+       {
+        "start": 1189,
+        "end": 1440
+       },
+       {
+        "start": 1440,
+        "end": 2104
+       }
+      ],
+      "moon_unknown": [],
+      "hourly_sky": [
+       {
+        "hour": 18,
+        "sky": "partly",
+        "pop": 20,
+        "precip": null
+       },
+       {
+        "hour": 19,
+        "sky": "partly",
+        "pop": 20,
+        "precip": null
+       },
+       {
+        "hour": 20,
+        "sky": "partly",
+        "pop": 20,
+        "precip": null
+       },
+       {
+        "hour": 21,
+        "sky": "partly",
+        "pop": 20,
+        "precip": null
+       },
+       {
+        "hour": 22,
+        "sky": "partly",
+        "pop": 20,
+        "precip": null
+       },
+       {
+        "hour": 23,
+        "sky": "partly",
+        "pop": 20,
+        "precip": null
+       },
+       {
+        "hour": 24,
+        "sky": "partly",
+        "pop": 20,
+        "precip": null
+       },
+       {
+        "hour": 25,
+        "sky": "partly",
+        "pop": 20,
+        "precip": null
+       },
+       {
+        "hour": 26,
+        "sky": "partly",
+        "pop": 20,
+        "precip": null
+       },
+       {
+        "hour": 27,
+        "sky": "partly",
+        "pop": 20,
+        "precip": null
+       },
+       {
+        "hour": 28,
+        "sky": "partly",
+        "pop": 20,
+        "precip": null
+       },
+       {
+        "hour": 29,
+        "sky": "partly",
+        "pop": 20,
+        "precip": null
+       }
+      ],
+      "object_window": {
+       "start": 880,
+       "end": 1630
       }
      },
      {
@@ -727,73 +725,73 @@
       "hourly_sky": [
        {
         "hour": 18,
-        "sky": "partly",
+        "sky": "clear",
         "pop": 0,
         "precip": "none"
        },
        {
         "hour": 19,
-        "sky": "partly",
+        "sky": "clear",
         "pop": 0,
         "precip": "none"
        },
        {
         "hour": 20,
-        "sky": "partly",
+        "sky": "clear",
         "pop": 0,
         "precip": "none"
        },
        {
         "hour": 21,
-        "sky": "partly",
+        "sky": "clear",
         "pop": 0,
         "precip": "none"
        },
        {
         "hour": 22,
-        "sky": "partly",
+        "sky": "clear",
         "pop": 0,
         "precip": "none"
        },
        {
         "hour": 23,
-        "sky": "partly",
+        "sky": "clear",
         "pop": 0,
         "precip": "none"
        },
        {
         "hour": 24,
-        "sky": "cloudy",
-        "pop": 0,
+        "sky": "partly",
+        "pop": 20,
         "precip": "none"
        },
        {
         "hour": 25,
-        "sky": "cloudy",
-        "pop": 0,
+        "sky": "partly",
+        "pop": 20,
         "precip": "none"
        },
        {
         "hour": 26,
-        "sky": "cloudy",
-        "pop": 0,
+        "sky": "partly",
+        "pop": 20,
         "precip": "none"
        },
        {
         "hour": 27,
-        "sky": "cloudy",
+        "sky": "clear",
         "pop": 0,
         "precip": "none"
        },
        {
         "hour": 28,
-        "sky": "cloudy",
+        "sky": "clear",
         "pop": 0,
         "precip": "none"
        },
        {
         "hour": 29,
-        "sky": "cloudy",
+        "sky": "clear",
         "pop": 0,
         "precip": "none"
        }
@@ -865,72 +863,72 @@
         "hour": 18,
         "sky": "cloudy",
         "pop": 60,
-        "precip": null
+        "precip": "rain"
        },
        {
         "hour": 19,
         "sky": "cloudy",
         "pop": 60,
-        "precip": null
+        "precip": "rain"
        },
        {
         "hour": 20,
         "sky": "cloudy",
         "pop": 60,
-        "precip": null
+        "precip": "rain"
        },
        {
         "hour": 21,
         "sky": "cloudy",
         "pop": 60,
-        "precip": null
+        "precip": "rain"
        },
        {
         "hour": 22,
         "sky": "cloudy",
         "pop": 60,
-        "precip": null
+        "precip": "rain"
        },
        {
         "hour": 23,
         "sky": "cloudy",
         "pop": 60,
-        "precip": null
+        "precip": "rain"
        },
        {
         "hour": 24,
-        "sky": "partly",
-        "pop": 20,
-        "precip": null
+        "sky": "cloudy",
+        "pop": 60,
+        "precip": "rain"
        },
        {
         "hour": 25,
-        "sky": "partly",
-        "pop": 20,
-        "precip": null
+        "sky": "cloudy",
+        "pop": 60,
+        "precip": "rain"
        },
        {
         "hour": 26,
-        "sky": "partly",
-        "pop": 20,
-        "precip": null
+        "sky": "cloudy",
+        "pop": 60,
+        "precip": "rain"
        },
        {
         "hour": 27,
-        "sky": "partly",
-        "pop": 20,
+        "sky": "unknown",
+        "pop": null,
         "precip": null
        },
        {
         "hour": 28,
-        "sky": "partly",
-        "pop": 20,
+        "sky": "unknown",
+        "pop": null,
         "precip": null
        },
        {
         "hour": 29,
-        "sky": "partly",
-        "pop": 20,
+        "sky": "unknown",
+        "pop": null,
         "precip": null
        }
       ],
@@ -1053,21 +1051,21 @@
        },
        {
         "hour": 27,
-        "sky": "unknown",
-        "pop": null,
-        "precip": null
+        "sky": "clear",
+        "pop": 0,
+        "precip": "none"
        },
        {
         "hour": 28,
-        "sky": "unknown",
-        "pop": null,
-        "precip": null
+        "sky": "clear",
+        "pop": 0,
+        "precip": "none"
        },
        {
         "hour": 29,
-        "sky": "unknown",
-        "pop": null,
-        "precip": null
+        "sky": "clear",
+        "pop": 0,
+        "precip": "none"
        }
       ],
       "object_window": {
@@ -1135,75 +1133,75 @@
       "hourly_sky": [
        {
         "hour": 18,
-        "sky": "clear",
-        "pop": 10,
-        "precip": null
+        "sky": "partly",
+        "pop": 0,
+        "precip": "none"
        },
        {
         "hour": 19,
-        "sky": "clear",
-        "pop": 10,
-        "precip": null
+        "sky": "partly",
+        "pop": 0,
+        "precip": "none"
        },
        {
         "hour": 20,
-        "sky": "clear",
-        "pop": 10,
-        "precip": null
+        "sky": "partly",
+        "pop": 0,
+        "precip": "none"
        },
        {
         "hour": 21,
-        "sky": "clear",
-        "pop": 10,
-        "precip": null
+        "sky": "cloudy",
+        "pop": 0,
+        "precip": "none"
        },
        {
         "hour": 22,
-        "sky": "clear",
-        "pop": 10,
-        "precip": null
+        "sky": "cloudy",
+        "pop": 0,
+        "precip": "none"
        },
        {
         "hour": 23,
-        "sky": "clear",
-        "pop": 10,
-        "precip": null
+        "sky": "cloudy",
+        "pop": 0,
+        "precip": "none"
        },
        {
         "hour": 24,
         "sky": "clear",
-        "pop": 10,
-        "precip": null
+        "pop": 0,
+        "precip": "none"
        },
        {
         "hour": 25,
         "sky": "clear",
-        "pop": 10,
-        "precip": null
+        "pop": 0,
+        "precip": "none"
        },
        {
         "hour": 26,
         "sky": "clear",
-        "pop": 10,
-        "precip": null
+        "pop": 0,
+        "precip": "none"
        },
        {
         "hour": 27,
         "sky": "clear",
-        "pop": 10,
-        "precip": null
+        "pop": 0,
+        "precip": "none"
        },
        {
         "hour": 28,
         "sky": "clear",
-        "pop": 10,
-        "precip": null
+        "pop": 0,
+        "precip": "none"
        },
        {
         "hour": 29,
         "sky": "clear",
-        "pop": 10,
-        "precip": null
+        "pop": 0,
+        "precip": "none"
        }
       ],
       "object_window": {
@@ -1506,7 +1504,7 @@
       "stage": "analyze",
       "tool": null,
       "ok": null,
-      "summary": "의도 판단: plan - 안드로메다 은하를 보기 좋은 날짜를 대전 유성구 기준으로 추천해 달라는 관측 계획 요청입니다. / 날짜 미지정 → 기본 범위 2026-11-18~2026-11-27",
+      "summary": "의도 판단: plan - 대전 유성구에서 안드로메다 은하를 가장 잘 볼 날짜를 추천해 달라는 관측 계획 요청이며, 날짜는 미정이라 날짜 추천이 필요하다. / 날짜 미지정 → 기본 범위 2026-11-20~2026-11-29",
       "duration_ms": null,
       "replan_round": null
      },
@@ -1516,8 +1514,8 @@
       "stage": "analyze",
       "tool": null,
       "ok": null,
-      "summary": "의도 plan · 날짜 기본 범위 2026-11-18~2026-11-27",
-      "duration_ms": 1957,
+      "summary": "의도 plan · 날짜 기본 범위 2026-11-20~2026-11-29",
+      "duration_ms": 2325,
       "replan_round": null
      },
      {
@@ -1536,7 +1534,7 @@
       "stage": "plan",
       "tool": null,
       "ok": null,
-      "summary": "5단계 계획: 현상 → 천체 고도 → 내 일정 → 출몰·월령 → 날씨 (search_sky_events → lookup_sky_object → get_calendar → get_night_window → get_sky_forecast)",
+      "summary": "6단계 계획: 현상 → 천체 고도 → 내 일정 → 출몰·월령 → 날씨 (search_sky_events → search_sky_events → lookup_sky_object → get_calendar → get_night_window → get_sky_forecast)",
       "duration_ms": 0,
       "replan_round": null
      },
@@ -1567,16 +1565,16 @@
       "tool": "search_sky_events",
       "ok": true,
       "summary": "천문현상 조회 성공",
-      "duration_ms": 211,
+      "duration_ms": 230,
       "replan_round": null
      },
      {
       "seq": 17,
       "type": "tool_call",
       "stage": "execute",
-      "tool": "lookup_sky_object",
+      "tool": "search_sky_events",
       "ok": null,
-      "summary": "천체 고도 계산 호출 (date=2026-11-18)",
+      "summary": "천문현상 조회 호출 (year=2026, month=12)",
       "duration_ms": null,
       "replan_round": null
      },
@@ -1584,10 +1582,10 @@
       "seq": 18,
       "type": "tool_result",
       "stage": "execute",
-      "tool": "lookup_sky_object",
+      "tool": "search_sky_events",
       "ok": true,
-      "summary": "천체 고도 계산 성공",
-      "duration_ms": 1,
+      "summary": "천문현상 조회 성공",
+      "duration_ms": 195,
       "replan_round": null
      },
      {
@@ -1596,7 +1594,7 @@
       "stage": "execute",
       "tool": "lookup_sky_object",
       "ok": null,
-      "summary": "천체 고도 계산 호출 (date=2026-11-19)",
+      "summary": "천체 고도 계산 호출 (date=2026-11-20)",
       "duration_ms": null,
       "replan_round": null
      },
@@ -1607,7 +1605,7 @@
       "tool": "lookup_sky_object",
       "ok": true,
       "summary": "천체 고도 계산 성공",
-      "duration_ms": 1,
+      "duration_ms": 3,
       "replan_round": null
      },
      {
@@ -1616,7 +1614,7 @@
       "stage": "execute",
       "tool": "lookup_sky_object",
       "ok": null,
-      "summary": "천체 고도 계산 호출 (date=2026-11-20)",
+      "summary": "천체 고도 계산 호출 (date=2026-11-21)",
       "duration_ms": null,
       "replan_round": null
      },
@@ -1636,7 +1634,7 @@
       "stage": "execute",
       "tool": "lookup_sky_object",
       "ok": null,
-      "summary": "천체 고도 계산 호출 (date=2026-11-21)",
+      "summary": "천체 고도 계산 호출 (date=2026-11-22)",
       "duration_ms": null,
       "replan_round": null
      },
@@ -1656,7 +1654,7 @@
       "stage": "execute",
       "tool": "lookup_sky_object",
       "ok": null,
-      "summary": "천체 고도 계산 호출 (date=2026-11-22)",
+      "summary": "천체 고도 계산 호출 (date=2026-11-23)",
       "duration_ms": null,
       "replan_round": null
      },
@@ -1676,7 +1674,7 @@
       "stage": "execute",
       "tool": "lookup_sky_object",
       "ok": null,
-      "summary": "천체 고도 계산 호출 (date=2026-11-23)",
+      "summary": "천체 고도 계산 호출 (date=2026-11-24)",
       "duration_ms": null,
       "replan_round": null
      },
@@ -1696,7 +1694,7 @@
       "stage": "execute",
       "tool": "lookup_sky_object",
       "ok": null,
-      "summary": "천체 고도 계산 호출 (date=2026-11-24)",
+      "summary": "천체 고도 계산 호출 (date=2026-11-25)",
       "duration_ms": null,
       "replan_round": null
      },
@@ -1716,7 +1714,7 @@
       "stage": "execute",
       "tool": "lookup_sky_object",
       "ok": null,
-      "summary": "천체 고도 계산 호출 (date=2026-11-25)",
+      "summary": "천체 고도 계산 호출 (date=2026-11-26)",
       "duration_ms": null,
       "replan_round": null
      },
@@ -1736,7 +1734,7 @@
       "stage": "execute",
       "tool": "lookup_sky_object",
       "ok": null,
-      "summary": "천체 고도 계산 호출 (date=2026-11-26)",
+      "summary": "천체 고도 계산 호출 (date=2026-11-27)",
       "duration_ms": null,
       "replan_round": null
      },
@@ -1747,7 +1745,7 @@
       "tool": "lookup_sky_object",
       "ok": true,
       "summary": "천체 고도 계산 성공",
-      "duration_ms": 1,
+      "duration_ms": 2,
       "replan_round": null
      },
      {
@@ -1756,7 +1754,7 @@
       "stage": "execute",
       "tool": "lookup_sky_object",
       "ok": null,
-      "summary": "천체 고도 계산 호출 (date=2026-11-27)",
+      "summary": "천체 고도 계산 호출 (date=2026-11-28)",
       "duration_ms": null,
       "replan_round": null
      },
@@ -1774,6 +1772,26 @@
       "seq": 37,
       "type": "tool_call",
       "stage": "execute",
+      "tool": "lookup_sky_object",
+      "ok": null,
+      "summary": "천체 고도 계산 호출 (date=2026-11-29)",
+      "duration_ms": null,
+      "replan_round": null
+     },
+     {
+      "seq": 38,
+      "type": "tool_result",
+      "stage": "execute",
+      "tool": "lookup_sky_object",
+      "ok": true,
+      "summary": "천체 고도 계산 성공",
+      "duration_ms": 1,
+      "replan_round": null
+     },
+     {
+      "seq": 39,
+      "type": "tool_call",
+      "stage": "execute",
       "tool": "get_calendar",
       "ok": null,
       "summary": "get_calendar 호출 ()",
@@ -1781,7 +1799,7 @@
       "replan_round": null
      },
      {
-      "seq": 38,
+      "seq": 40,
       "type": "tool_result",
       "stage": "execute",
       "tool": "get_calendar",
@@ -1791,32 +1809,12 @@
       "replan_round": null
      },
      {
-      "seq": 39,
-      "type": "tool_call",
-      "stage": "execute",
-      "tool": "get_night_window",
-      "ok": null,
-      "summary": "박명·출몰 조회 호출 (date=2026-11-18)",
-      "duration_ms": null,
-      "replan_round": null
-     },
-     {
-      "seq": 40,
-      "type": "tool_result",
-      "stage": "execute",
-      "tool": "get_night_window",
-      "ok": true,
-      "summary": "박명·출몰 조회 성공",
-      "duration_ms": 708,
-      "replan_round": null
-     },
-     {
       "seq": 41,
       "type": "tool_call",
       "stage": "execute",
       "tool": "get_night_window",
       "ok": null,
-      "summary": "박명·출몰 조회 호출 (date=2026-11-19)",
+      "summary": "박명·출몰 조회 호출 (date=2026-11-20)",
       "duration_ms": null,
       "replan_round": null
      },
@@ -1827,7 +1825,7 @@
       "tool": "get_night_window",
       "ok": true,
       "summary": "박명·출몰 조회 성공",
-      "duration_ms": 763,
+      "duration_ms": 907,
       "replan_round": null
      },
      {
@@ -1836,7 +1834,7 @@
       "stage": "execute",
       "tool": "get_night_window",
       "ok": null,
-      "summary": "박명·출몰 조회 호출 (date=2026-11-20)",
+      "summary": "박명·출몰 조회 호출 (date=2026-11-21)",
       "duration_ms": null,
       "replan_round": null
      },
@@ -1847,7 +1845,7 @@
       "tool": "get_night_window",
       "ok": true,
       "summary": "박명·출몰 조회 성공",
-      "duration_ms": 761,
+      "duration_ms": 1043,
       "replan_round": null
      },
      {
@@ -1856,7 +1854,7 @@
       "stage": "execute",
       "tool": "get_night_window",
       "ok": null,
-      "summary": "박명·출몰 조회 호출 (date=2026-11-21)",
+      "summary": "박명·출몰 조회 호출 (date=2026-11-22)",
       "duration_ms": null,
       "replan_round": null
      },
@@ -1867,7 +1865,7 @@
       "tool": "get_night_window",
       "ok": true,
       "summary": "박명·출몰 조회 성공",
-      "duration_ms": 811,
+      "duration_ms": 1134,
       "replan_round": null
      },
      {
@@ -1876,7 +1874,7 @@
       "stage": "execute",
       "tool": "get_night_window",
       "ok": null,
-      "summary": "박명·출몰 조회 호출 (date=2026-11-22)",
+      "summary": "박명·출몰 조회 호출 (date=2026-11-23)",
       "duration_ms": null,
       "replan_round": null
      },
@@ -1887,7 +1885,7 @@
       "tool": "get_night_window",
       "ok": true,
       "summary": "박명·출몰 조회 성공",
-      "duration_ms": 805,
+      "duration_ms": 1060,
       "replan_round": null
      },
      {
@@ -1896,7 +1894,7 @@
       "stage": "execute",
       "tool": "get_night_window",
       "ok": null,
-      "summary": "박명·출몰 조회 호출 (date=2026-11-23)",
+      "summary": "박명·출몰 조회 호출 (date=2026-11-24)",
       "duration_ms": null,
       "replan_round": null
      },
@@ -1907,7 +1905,7 @@
       "tool": "get_night_window",
       "ok": true,
       "summary": "박명·출몰 조회 성공",
-      "duration_ms": 791,
+      "duration_ms": 1161,
       "replan_round": null
      },
      {
@@ -1916,7 +1914,7 @@
       "stage": "execute",
       "tool": "get_night_window",
       "ok": null,
-      "summary": "박명·출몰 조회 호출 (date=2026-11-24)",
+      "summary": "박명·출몰 조회 호출 (date=2026-11-25)",
       "duration_ms": null,
       "replan_round": null
      },
@@ -1927,7 +1925,7 @@
       "tool": "get_night_window",
       "ok": true,
       "summary": "박명·출몰 조회 성공",
-      "duration_ms": 833,
+      "duration_ms": 1067,
       "replan_round": null
      },
      {
@@ -1936,7 +1934,7 @@
       "stage": "execute",
       "tool": "get_night_window",
       "ok": null,
-      "summary": "박명·출몰 조회 호출 (date=2026-11-25)",
+      "summary": "박명·출몰 조회 호출 (date=2026-11-26)",
       "duration_ms": null,
       "replan_round": null
      },
@@ -1947,7 +1945,7 @@
       "tool": "get_night_window",
       "ok": true,
       "summary": "박명·출몰 조회 성공",
-      "duration_ms": 883,
+      "duration_ms": 1226,
       "replan_round": null
      },
      {
@@ -1956,7 +1954,7 @@
       "stage": "execute",
       "tool": "get_night_window",
       "ok": null,
-      "summary": "박명·출몰 조회 호출 (date=2026-11-26)",
+      "summary": "박명·출몰 조회 호출 (date=2026-11-27)",
       "duration_ms": null,
       "replan_round": null
      },
@@ -1967,7 +1965,7 @@
       "tool": "get_night_window",
       "ok": true,
       "summary": "박명·출몰 조회 성공",
-      "duration_ms": 773,
+      "duration_ms": 1102,
       "replan_round": null
      },
      {
@@ -1976,7 +1974,7 @@
       "stage": "execute",
       "tool": "get_night_window",
       "ok": null,
-      "summary": "박명·출몰 조회 호출 (date=2026-11-27)",
+      "summary": "박명·출몰 조회 호출 (date=2026-11-28)",
       "duration_ms": null,
       "replan_round": null
      },
@@ -1987,16 +1985,16 @@
       "tool": "get_night_window",
       "ok": true,
       "summary": "박명·출몰 조회 성공",
-      "duration_ms": 839,
+      "duration_ms": 1039,
       "replan_round": null
      },
      {
       "seq": 59,
       "type": "tool_call",
       "stage": "execute",
-      "tool": "get_sky_forecast",
+      "tool": "get_night_window",
       "ok": null,
-      "summary": "날씨 예보 조회 호출 (date=2026-11-18, hours=18~29시)",
+      "summary": "박명·출몰 조회 호출 (date=2026-11-29)",
       "duration_ms": null,
       "replan_round": null
      },
@@ -2004,10 +2002,10 @@
       "seq": 60,
       "type": "tool_result",
       "stage": "execute",
-      "tool": "get_sky_forecast",
+      "tool": "get_night_window",
       "ok": true,
-      "summary": "날씨 예보 조회 성공",
-      "duration_ms": 1209,
+      "summary": "박명·출몰 조회 성공",
+      "duration_ms": 1146,
       "replan_round": null
      },
      {
@@ -2016,7 +2014,7 @@
       "stage": "execute",
       "tool": "get_sky_forecast",
       "ok": null,
-      "summary": "날씨 예보 조회 호출 (date=2026-11-19, hours=18~29시)",
+      "summary": "날씨 예보 조회 호출 (date=2026-11-20, hours=18~29시)",
       "duration_ms": null,
       "replan_round": null
      },
@@ -2027,7 +2025,7 @@
       "tool": "get_sky_forecast",
       "ok": true,
       "summary": "날씨 예보 조회 성공",
-      "duration_ms": 1060,
+      "duration_ms": 1310,
       "replan_round": null
      },
      {
@@ -2036,7 +2034,7 @@
       "stage": "execute",
       "tool": "get_sky_forecast",
       "ok": null,
-      "summary": "날씨 예보 조회 호출 (date=2026-11-20, hours=18~29시)",
+      "summary": "날씨 예보 조회 호출 (date=2026-11-21, hours=18~29시)",
       "duration_ms": null,
       "replan_round": null
      },
@@ -2047,31 +2045,11 @@
       "tool": "get_sky_forecast",
       "ok": true,
       "summary": "날씨 예보 조회 성공",
-      "duration_ms": 1125,
+      "duration_ms": 1158,
       "replan_round": null
      },
      {
       "seq": 65,
-      "type": "tool_call",
-      "stage": "execute",
-      "tool": "get_sky_forecast",
-      "ok": null,
-      "summary": "날씨 예보 조회 호출 (date=2026-11-21, hours=18~29시)",
-      "duration_ms": null,
-      "replan_round": null
-     },
-     {
-      "seq": 66,
-      "type": "tool_result",
-      "stage": "execute",
-      "tool": "get_sky_forecast",
-      "ok": true,
-      "summary": "날씨 예보 조회 성공 - 예보 없음: 27, 28, 29시 (unknown 으로 표시)",
-      "duration_ms": 1143,
-      "replan_round": null
-     },
-     {
-      "seq": 67,
       "type": "tool_call",
       "stage": "execute",
       "tool": "get_sky_forecast",
@@ -2081,17 +2059,17 @@
       "replan_round": null
      },
      {
-      "seq": 68,
+      "seq": 66,
       "type": "tool_result",
       "stage": "execute",
       "tool": "get_sky_forecast",
       "ok": true,
-      "summary": "날씨 예보 조회 성공 - OpenWeatherMap 3시간 간격 예보",
-      "duration_ms": 437,
+      "summary": "날씨 예보 조회 성공",
+      "duration_ms": 1200,
       "replan_round": null
      },
      {
-      "seq": 69,
+      "seq": 67,
       "type": "tool_call",
       "stage": "execute",
       "tool": "get_sky_forecast",
@@ -2101,17 +2079,17 @@
       "replan_round": null
      },
      {
-      "seq": 70,
+      "seq": 68,
       "type": "tool_result",
       "stage": "execute",
       "tool": "get_sky_forecast",
       "ok": true,
-      "summary": "날씨 예보 조회 성공 - 중기예보(대전 구역) 2026-11-23 오후 '흐리고 비', 2026-11-24 오전 '구름많음' 값을 해당 시간대 전체에 적용 — 시간별 예보 아님",
-      "duration_ms": 659,
+      "summary": "날씨 예보 조회 성공 - 예보 없음: 27, 28, 29시 (unknown 으로 표시)",
+      "duration_ms": 1145,
       "replan_round": null
      },
      {
-      "seq": 71,
+      "seq": 69,
       "type": "tool_call",
       "stage": "execute",
       "tool": "get_sky_forecast",
@@ -2121,17 +2099,17 @@
       "replan_round": null
      },
      {
-      "seq": 72,
+      "seq": 70,
       "type": "tool_result",
       "stage": "execute",
       "tool": "get_sky_forecast",
       "ok": true,
-      "summary": "날씨 예보 조회 성공 - 중기예보(대전 구역) 2026-11-24 오후 '맑음', 2026-11-25 오전 '맑음' 값을 해당 시간대 전체에 적용 — 시간별 예보 아님",
-      "duration_ms": 172,
+      "summary": "날씨 예보 조회 성공 - OpenWeatherMap 3시간 간격 예보",
+      "duration_ms": 459,
       "replan_round": null
      },
      {
-      "seq": 73,
+      "seq": 71,
       "type": "tool_call",
       "stage": "execute",
       "tool": "get_sky_forecast",
@@ -2141,17 +2119,17 @@
       "replan_round": null
      },
      {
-      "seq": 74,
+      "seq": 72,
       "type": "tool_result",
       "stage": "execute",
       "tool": "get_sky_forecast",
       "ok": true,
-      "summary": "날씨 예보 조회 성공 - 중기예보(대전 구역) 2026-11-25 오후 '맑음', 2026-11-26 하루 '맑음' 값을 해당 시간대 전체에 적용 — 시간별 예보 아님",
-      "duration_ms": 192,
+      "summary": "날씨 예보 조회 성공 - 중기예보(대전 구역) 2026-11-25 오후 '맑음', 2026-11-26 오전 '맑음' 값을 해당 시간대 전체에 적용 — 시간별 예보 아님",
+      "duration_ms": 698,
       "replan_round": null
      },
      {
-      "seq": 75,
+      "seq": 73,
       "type": "tool_call",
       "stage": "execute",
       "tool": "get_sky_forecast",
@@ -2161,17 +2139,17 @@
       "replan_round": null
      },
      {
-      "seq": 76,
+      "seq": 74,
       "type": "tool_result",
       "stage": "execute",
       "tool": "get_sky_forecast",
       "ok": true,
-      "summary": "날씨 예보 조회 성공 - 중기예보(대전 구역) 2026-11-26 하루 '맑음', 2026-11-27 하루 '맑음' 값을 해당 시간대 전체에 적용 — 시간별 예보 아님",
-      "duration_ms": 193,
+      "summary": "날씨 예보 조회 성공 - 중기예보(대전 구역) 2026-11-26 오후 '맑음', 2026-11-27 오전 '맑음' 값을 해당 시간대 전체에 적용 — 시간별 예보 아님",
+      "duration_ms": 240,
       "replan_round": null
      },
      {
-      "seq": 77,
+      "seq": 75,
       "type": "tool_call",
       "stage": "execute",
       "tool": "get_sky_forecast",
@@ -2181,27 +2159,67 @@
       "replan_round": null
      },
      {
+      "seq": 76,
+      "type": "tool_result",
+      "stage": "execute",
+      "tool": "get_sky_forecast",
+      "ok": true,
+      "summary": "날씨 예보 조회 성공 - 중기예보(대전 구역) 2026-11-27 오후 '구름많음', 2026-11-28 하루 '구름많음' 값을 해당 시간대 전체에 적용 — 시간별 예보 아님",
+      "duration_ms": 187,
+      "replan_round": null
+     },
+     {
+      "seq": 77,
+      "type": "tool_call",
+      "stage": "execute",
+      "tool": "get_sky_forecast",
+      "ok": null,
+      "summary": "날씨 예보 조회 호출 (date=2026-11-28, hours=18~29시)",
+      "duration_ms": null,
+      "replan_round": null
+     },
+     {
       "seq": 78,
       "type": "tool_result",
       "stage": "execute",
       "tool": "get_sky_forecast",
       "ok": true,
-      "summary": "날씨 예보 조회 성공 - 중기예보(대전 구역) 2026-11-27 하루 '맑음', 2026-11-28 하루 '맑음' 값을 해당 시간대 전체에 적용 — 시간별 예보 아님",
-      "duration_ms": 211,
+      "summary": "날씨 예보 조회 성공 - 중기예보(대전 구역) 2026-11-28 하루 '구름많음', 2026-11-29 하루 '맑음' 값을 해당 시간대 전체에 적용 — 시간별 예보 아님",
+      "duration_ms": 253,
       "replan_round": null
      },
      {
       "seq": 79,
-      "type": "stage_end",
+      "type": "tool_call",
       "stage": "execute",
-      "tool": null,
+      "tool": "get_sky_forecast",
       "ok": null,
-      "summary": "Tool 호출 32회(실패 0) · 캐시 재사용 0회 · 후보 10개 · 천체 고도 10/10일 계산",
-      "duration_ms": 14883,
+      "summary": "날씨 예보 조회 호출 (date=2026-11-29, hours=18~29시)",
+      "duration_ms": null,
       "replan_round": null
      },
      {
       "seq": 80,
+      "type": "tool_result",
+      "stage": "execute",
+      "tool": "get_sky_forecast",
+      "ok": true,
+      "summary": "날씨 예보 조회 성공 - 중기예보(대전 구역) 2026-11-29 하루 '맑음', 2026-11-30 하루 '맑음' 값을 해당 시간대 전체에 적용 — 시간별 예보 아님",
+      "duration_ms": 215,
+      "replan_round": null
+     },
+     {
+      "seq": 81,
+      "type": "stage_end",
+      "stage": "execute",
+      "tool": null,
+      "ok": null,
+      "summary": "Tool 호출 33회(실패 0) · 캐시 재사용 0회 · 후보 10개 · 천체 고도 10/10일 계산",
+      "duration_ms": 18507,
+      "replan_round": null
+     },
+     {
+      "seq": 82,
       "type": "stage_start",
       "stage": "judge",
       "tool": null,
@@ -2211,17 +2229,17 @@
       "replan_round": null
      },
      {
-      "seq": 81,
+      "seq": 83,
       "type": "stage_end",
       "stage": "judge",
       "tool": null,
       "ok": null,
-      "summary": "충족 3 · 불충족 7",
+      "summary": "충족 2 · 불충족 8",
       "duration_ms": 1,
       "replan_round": null
      },
      {
-      "seq": 82,
+      "seq": 84,
       "type": "stage_start",
       "stage": "respond",
       "tool": null,
@@ -2231,20 +2249,20 @@
       "replan_round": null
      },
      {
-      "seq": 83,
+      "seq": 85,
       "type": "stage_end",
       "stage": "respond",
       "tool": null,
       "ok": null,
-      "summary": "plan 응답 762자",
-      "duration_ms": 4036,
+      "summary": "plan 응답 842자",
+      "duration_ms": 14777,
       "replan_round": null
      }
     ],
     "warnings": [],
     "safety_note": "야간 관측 시 이동 안전과 방한에 유의하세요."
    },
-   "elapsed_s": 20.94
+   "elapsed_s": 35.68
   }
  ]
 }

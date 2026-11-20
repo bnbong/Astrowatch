@@ -1,14 +1,14 @@
 {
  "scenario": "invalid_date",
- "session_id": "2fc3192cb570",
+ "session_id": "67f56ccc71ae",
  "turns": [
   {
    "message": "2026년 2월 30일 서울에서 밤 9시부터 11시까지 별을 보고 싶어.",
    "events": [
     {
-     "session_id": "2fc3192cb570",
+     "session_id": "67f56ccc71ae",
      "seq": 1,
-     "ts": "2026-11-18T07:53:01.987323Z",
+     "ts": "2026-11-20T00:46:09.526588Z",
      "type": "session_start",
      "stage": null,
      "tool": null,
@@ -17,71 +17,71 @@
      }
     },
     {
-     "session_id": "2fc3192cb570",
+     "session_id": "67f56ccc71ae",
      "seq": 2,
-     "ts": "2026-11-18T07:53:01.991373Z",
+     "ts": "2026-11-20T00:46:09.530588Z",
      "type": "stage_start",
      "stage": "analyze",
      "tool": null,
      "payload": {}
     },
     {
-     "session_id": "2fc3192cb570",
+     "session_id": "67f56ccc71ae",
      "seq": 3,
-     "ts": "2026-11-18T07:53:04.227407Z",
+     "ts": "2026-11-20T00:46:11.640811Z",
      "type": "llm_decision",
      "stage": "analyze",
      "tool": null,
      "payload": {
       "decision": "clarify",
-      "reason": "서울에서 특정 시간대에 별을 관측하려는 계획 요청이지만 날짜가 존재하지 않습니다. / 날짜 오류 → 되묻기",
-      "model": "gpt-6-luna"
+      "reason": "서울에서 밤 시간대에 별 관측을 원하는 관측 계획 요청이며, 날짜가 존재하지 않는 2026년 2월 30일이라 date_invalid로 처리한다. / 날짜 오류 → 되묻기",
+      "model": "claude-haiku-5-5"
      }
     },
     {
-     "session_id": "2fc3192cb570",
+     "session_id": "67f56ccc71ae",
      "seq": 4,
-     "ts": "2026-11-18T07:53:04.232406Z",
+     "ts": "2026-11-20T00:46:11.646899Z",
      "type": "stage_end",
      "stage": "analyze",
      "tool": null,
      "payload": {
-      "duration_ms": 2237,
+      "duration_ms": 2112,
       "summary": "의도 clarify · 부족한 조건 date_from"
      }
     },
     {
-     "session_id": "2fc3192cb570",
+     "session_id": "67f56ccc71ae",
      "seq": 5,
-     "ts": "2026-11-18T07:53:04.237098Z",
+     "ts": "2026-11-20T00:46:11.651402Z",
      "type": "stage_start",
      "stage": "respond",
      "tool": null,
      "payload": {}
     },
     {
-     "session_id": "2fc3192cb570",
+     "session_id": "67f56ccc71ae",
      "seq": 6,
-     "ts": "2026-11-18T07:53:04.241106Z",
+     "ts": "2026-11-20T00:46:11.655026Z",
      "type": "stage_end",
      "stage": "respond",
      "tool": null,
      "payload": {
       "duration_ms": 0,
-      "summary": "clarify 응답 72자"
+      "summary": "clarify 응답 70자"
      }
     },
     {
-     "session_id": "2fc3192cb570",
+     "session_id": "67f56ccc71ae",
      "seq": 7,
-     "ts": "2026-11-18T07:53:04.253101Z",
+     "ts": "2026-11-20T00:46:11.665913Z",
      "type": "session_end",
      "stage": null,
      "tool": null,
      "payload": {
       "intent": "clarify",
       "replan_count": 0,
-      "duration_ms": 2266
+      "duration_ms": 2140
      }
     }
    ]

@@ -101,22 +101,23 @@
   }
 
   // 판정 결과(JudgedCandidate) 하나 → 타임바 HTML. 그릴 것이 없으면 "".
+  // 자정에서 쪼개진 인접 구간(…–00:00, 00:00–…)은 하나로 이어 붙인다 (타임바 · 달 수치 공통)
+  function mergeAdjacent(list) {
+    const out = [];
+    list.slice().sort((a, b) => a.start - b.start).forEach((w) => {
+      const last = out[out.length - 1];
+      if (last && w.start <= last.end) last.end = Math.max(last.end, w.end);
+      else out.push({ start: w.start, end: w.end });
+    });
+    return out;
+  }
+
   // 행(lane) 분리형: 한 트랙에 겹치지 않고 하늘 · 달 · 날씨 · 천체 · 관측 창을 각각 한 줄씩 그린다.
   function nightBar(j) {
     const c = j.candidate || {};
     const dark = clip(j.dark_window);
     const win = j.time_window && j.time_window.end > j.time_window.start ? clip(j.time_window) : null;
     const user = j.user_window && j.user_window.end > j.user_window.start ? clip(j.user_window) : null;
-    // 자정에서 쪼개진 인접 구간(…–00:00, 00:00–…)은 하나로 이어 붙인다
-    function mergeAdjacent(list) {
-      const out = [];
-      list.slice().sort((a, b) => a.start - b.start).forEach((w) => {
-        const last = out[out.length - 1];
-        if (last && w.start <= last.end) last.end = Math.max(last.end, w.end);
-        else out.push({ start: w.start, end: w.end });
-      });
-      return out;
-    }
     const moonUp = mergeAdjacent(arr(j.moon_up)).map((w) => ({ w, c: clip(w) })).filter((x) => x.c);
     const moonUnknown = mergeAdjacent(arr(j.moon_unknown)).map((w) => ({ w, c: clip(w) })).filter((x) => x.c);
     const obj = clip(j.object_window);
@@ -219,7 +220,7 @@
   const MINUTE_MAX = 2159;
   function moonEdges(j) {
     const out = [];
-    arr(j.moon_up).forEach((w) => {
+    mergeAdjacent(arr(j.moon_up)).forEach((w) => {
       if (w.end <= T0 || w.start >= T1) return; // 트랙과 겹치지 않는 구간은 생략
       const realRise = w.start > T0 && w.start < T1 && w.start > 0;
       const realSet = w.end > T0 && w.end < T1 && w.end < MINUTE_MAX;

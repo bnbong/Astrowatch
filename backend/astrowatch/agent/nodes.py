@@ -22,7 +22,7 @@ from pydantic import BaseModel, Field, ValidationError
 
 from astrowatch.agent import judge as J
 from astrowatch.agent import prompts as P
-from astrowatch.agent.llm import get_chat_model, llm_available, model_name
+from astrowatch.agent.llm import get_chat_model, llm_available, model_name, structured_methods
 from astrowatch.agent.replan import STRATEGY_LABEL, describe, exhausted_stop_reason, next_strategy, tried_until
 from astrowatch.agent.state import AgentState, ExecutedCall, PlannedCall, cache_key
 from astrowatch.config import get_settings
@@ -369,10 +369,10 @@ def _history_messages(history: list[dict[str, str]]) -> list[tuple[str, str]]:
 
 
 def _structured_invoke(schema: type[BaseModel], messages: list[Any]) -> BaseModel:
-    """json_schema → function_calling 순서로 시도."""
+    """공급자별 순서로 시도 (anthropic: function_calling → json_mode, openai: json_schema → function_calling)."""
     model = get_chat_model()
     last: Exception | None = None
-    for method in ("json_schema", "function_calling"):
+    for method in structured_methods():
         try:
             result = model.with_structured_output(schema, method=method).invoke(messages)
             if isinstance(result, schema):
@@ -497,6 +497,7 @@ def analyze(state: RunState) -> tuple[dict[str, Any], str]:
         summary += f" · 날짜 기본 범위 {conditions.date_from}~{conditions.date_to}"
     return {**base, "intent": intent, "intent_reason": reason, "conditions": conditions, "missing": missing,
             "warnings": warnings, "fact_kind": fact_kind, "user_conditions": user_conditions,
+            "prev_conditions": prev,
             "date_defaulted": date_defaulted, "assumptions": assumptions, "date_issue": date_issue,
             "calendar_plan_id": calendar_plan_id, "stop_reason": None}, summary
 
@@ -957,6 +958,31 @@ def _cond_line(c: Conditions) -> str:
     return " ".join(parts) or "조건 없음"
 
 
+_CHANGE_LABELS = (("date_from", "시작 날짜"), ("date_to", "끝 날짜"), ("region", "지역"),
+                  ("start_minute", "시작 시각"), ("end_minute", "종료 시각"), ("event_query", "대상"),
+                  ("event_kind", "현상 종류"), ("place_query", "장소"), ("max_distance_km", "거리 상한(km)"))
+
+
+def _cond_changes(prev: Conditions, cur: Conditions) -> list[str]:
+    """이전 턴 조건 → 이번 턴 조건에서 바뀐 항목을 사람이 읽는 문장으로. 이전 조건이 비어 있으면 빈 목록."""
+    if prev.model_dump(exclude_defaults=True) == {}:
+        return []
+
+    def show(key: str, v: Any) -> str:
+        if v is None:
+            return "없음"
+        if key.endswith("_minute"):
+            return J.label(int(v))
+        return str(getattr(v, "value", v))
+
+    out: list[str] = []
+    for key, label in _CHANGE_LABELS:
+        a, b = getattr(prev, key, None), getattr(cur, key, None)
+        if a != b:
+            out.append(f"{label} {show(key, a)} → {show(key, b)}")
+    return out
+
+
 def judged_view(j: JudgedCandidate) -> dict[str, Any]:
     tw = j.time_window
     return {
@@ -1022,6 +1048,7 @@ def plan_context(state: RunState) -> dict[str, Any]:
     mock = any(j.forecast_source == "mock" for j in judged)
     return {
         "user_conditions": _cond_line(user_c),
+        "changes_from_previous": _cond_changes(state.get("prev_conditions") or Conditions(), user_c),
         "searched_conditions": searched if searched != _cond_line(user_c) else None,
         "replan_history": state.get("replan_history") or [],
         "date_note": (f"날짜를 지정하지 않아 {state['conditions'].date_from}~{state['conditions'].date_to} 범위에서 찾았습니다"
@@ -1050,6 +1077,8 @@ def plan_context(state: RunState) -> dict[str, Any]:
 def template_plan_answer(ctx: dict[str, Any]) -> str:
     """LLM 없이 만드는 기본 답변 (LLM 실패 대비)."""
     lines: list[str] = [f"요청 조건: {ctx['user_conditions']}"]
+    if ctx.get("changes_from_previous"):
+        lines.append("이전 조건에서 바꾼 것: " + ", ".join(ctx["changes_from_previous"]))
     for h in ctx["replan_history"]:
         lines.append(f"재계획 {h['round']}회차({h['strategy']}): {h['reason']}")
     if ctx["date_note"]:

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="300" viewBox="0 0 960 300" role="img" aria-label="Astrowatch 배너: 크림색 바탕 위의 밤 타임바와 관측 창, 문구 '오늘 밤, 어디서, 몇 시에 볼 수 있을까'">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#F0E6CF"/>
+      <stop offset="0.18" stop-color="#1B2A4A"/>
+      <stop offset="0.82" stop-color="#1B2A4A"/>
+      <stop offset="1" stop-color="#F0E6CF"/>
+    </linearGradient>
+  </defs>
+  <rect width="960" height="300" rx="24" fill="#F6F1E7"/>
+
+  <!-- 로고 마크 -->
+  <circle cx="92" cy="92" r="46" fill="none" stroke="#1B2A4A" stroke-width="4" stroke-dasharray="10 12" stroke-linecap="round"/>
+  <circle cx="92" cy="92" r="20" fill="#1B2A4A"/>
+  <circle cx="124" cy="61" r="7" fill="#B8731B"/>
+
+  <!-- 워드마크 -->
+  <text x="160" y="84" font-family="'Noto Serif KR','Apple SD Gothic Neo','Malgun Gothic',Georgia,serif" font-size="46" font-weight="700" fill="#1B2A4A">Astrowatch</text>
+  <text x="162" y="120" font-family="'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="19" fill="#4A5568">오늘 밤, 어디서, 몇 시에 볼 수 있을까. 근거로 답하는 천문 관측 플래너</text>
+
+  <!-- 밤 타임바 -->
+  <text x="60" y="186" font-family="'Noto Sans KR','Malgun Gothic',sans-serif" font-size="13" fill="#6B7280">18:00</text>
+  <text x="862" y="186" font-family="'Noto Sans KR','Malgun Gothic',sans-serif" font-size="13" fill="#6B7280">06:00</text>
+  <rect x="60" y="196" width="840" height="34" rx="8" fill="url(#sky)"/>
+  <!-- 달 -->
+  <rect x="211" y="196" width="300" height="34" fill="#F6F1E7" opacity="0.28"/>
+  <!-- 관측 창 -->
+  <rect x="540" y="190" width="200" height="46" rx="8" fill="none" stroke="#B8731B" stroke-width="3"/>
+  <rect x="540" y="196" width="200" height="34" fill="#B8731B" opacity="0.35"/>
+  <line x1="640" y1="184" x2="640" y2="242" stroke="#B8731B" stroke-width="2" stroke-dasharray="4 4"/>
+
+  <text x="60" y="262" font-family="'Noto Sans KR','Malgun Gothic',sans-serif" font-size="13" fill="#6B7280">어두운 시간</text>
+  <text x="211" y="262" font-family="'Noto Sans KR','Malgun Gothic',sans-serif" font-size="13" fill="#6B7280">달이 떠 있음</text>
+  <text x="540" y="262" font-family="'Noto Sans KR','Malgun Gothic',sans-serif" font-size="14" font-weight="700" fill="#8A5412">관측 창 22:00 ~ 02:00 (극대 00:00)</text>
+</svg>

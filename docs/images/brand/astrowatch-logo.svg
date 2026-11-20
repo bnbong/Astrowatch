@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240" role="img" aria-label="Astrowatch 로고: 점선 궤도 안의 어두운 원과 호박색 별">
+  <rect width="240" height="240" rx="48" fill="#F6F1E7"/>
+  <circle cx="120" cy="120" r="86" fill="none" stroke="#1B2A4A" stroke-width="7" stroke-dasharray="18 22" stroke-linecap="round"/>
+  <circle cx="120" cy="120" r="38" fill="#1B2A4A"/>
+  <circle cx="180" cy="62" r="13" fill="#B8731B"/>
+</svg>

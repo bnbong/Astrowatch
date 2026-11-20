@@ -1,0 +1,205 @@
+{
+  "id": "S10",
+  "message": "2030년 12월 14일 서울에서 밤 10시부터 다음 날 새벽 2시까지 유성우 관측 계획을 짜줘. 날짜는 고정이야.",
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/api/chat",
+    "headers": {
+      "X-Requested-With": "Astrowatch",
+      "Origin": "http://127.0.0.1:8000"
+    },
+    "json": {
+      "session_id": "recheck-f4014c7bfa854190800247e47223d86f",
+      "message": "2030년 12월 14일 서울에서 밤 10시부터 다음 날 새벽 2시까지 유성우 관측 계획을 짜줘. 날짜는 고정이야."
+    }
+  },
+  "started_at": "2026-11-20T09:59:57+0900",
+  "status": 200,
+  "seconds": 5.12,
+  "response": {
+    "session_id": "recheck-f4014c7bfa854190800247e47223d86f",
+    "intent": "plan",
+    "answer": "**요청 조건**: 2030-12-14, 서울, 22:00~02:00(+1일), 유성우 관측 (날짜 고정)\n\n- 날짜 고정 조건에서 2030년 12월 천문현상(유성우) 검색 결과가 없어 추천 항목은 0개입니다.\n- 재계획은 하지 않았습니다. 날짜를 고정했기 때문에 바꿔 볼 조건이 없어 더 찾지 않았습니다 (stop_reason: 고정 조건).\n- 제외 항목은 없고, 장소 조회 결과도 없습니다. 기존 일정 충돌도 없습니다.\n\n**근거 Tool**\n- search_sky_events: 실패 (2030년 12월 유성우 데이터 없음)\n- get_calendar: 성공\n\n**판단 기준**: 관측 창 = 어두운 시간 ∩ 내 시간 ∩ 현상 시간, 최소 30분, 맑음(강수확률 30% 이하)만 맑은 시간으로 계산합니다.\n\n날짜나 지역 조건을 넓혀 다른 날짜로 다시 찾아볼까요?",
+    "conditions": {
+      "date_from": "2030-12-14",
+      "date_to": "2030-12-14",
+      "start_minute": 1320,
+      "region": "서울",
+      "event_kind": "meteor",
+      "event_query": null,
+      "place_query": null,
+      "end_minute": 1560,
+      "max_distance_km": null,
+      "allow_partly_cloudy": false,
+      "avoid_moon": true,
+      "fixed": [
+        "date_from",
+        "date_to",
+        "event_kind",
+        "region"
+      ]
+    },
+    "needs_clarification": [],
+    "recommended": [],
+    "excluded": [],
+    "places": [],
+    "replan_count": 0,
+    "replan_limit": 3,
+    "replan_limit_reached": false,
+    "stop_reason": "fixed_constraints",
+    "steps": [
+      {
+        "seq": 2,
+        "type": "stage_start",
+        "stage": "analyze",
+        "tool": null,
+        "ok": null,
+        "summary": "요청 분석 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 3,
+        "type": "llm_decision",
+        "stage": "analyze",
+        "tool": null,
+        "ok": null,
+        "summary": "의도 판단: plan - 서울에서 특정 밤(2030-12-14 22:00~다음날 02:00) 유성우 관측 계획을 요청했고 날짜 고정을 명시함.",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 4,
+        "type": "stage_end",
+        "stage": "analyze",
+        "tool": null,
+        "ok": null,
+        "summary": "의도 plan",
+        "duration_ms": 2293,
+        "replan_round": null
+      },
+      {
+        "seq": 5,
+        "type": "stage_start",
+        "stage": "plan",
+        "tool": null,
+        "ok": null,
+        "summary": "작업 계획 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 6,
+        "type": "stage_end",
+        "stage": "plan",
+        "tool": null,
+        "ok": null,
+        "summary": "4단계 계획: 현상 → 내 일정 → 출몰·월령 → 날씨 (search_sky_events → get_calendar → get_night_window → get_sky_forecast)",
+        "duration_ms": 0,
+        "replan_round": null
+      },
+      {
+        "seq": 7,
+        "type": "stage_start",
+        "stage": "execute",
+        "tool": null,
+        "ok": null,
+        "summary": "Tool 실행 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 8,
+        "type": "tool_call",
+        "stage": "execute",
+        "tool": "search_sky_events",
+        "ok": null,
+        "summary": "천문현상 조회 호출 (year=2030, month=12, kind=meteor)",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 9,
+        "type": "tool_result",
+        "stage": "execute",
+        "tool": "search_sky_events",
+        "ok": false,
+        "summary": "천문현상 조회 실패(NO_RESULT): 2030년 12월 천문현상 (meteor) 없음",
+        "duration_ms": 212,
+        "replan_round": null
+      },
+      {
+        "seq": 10,
+        "type": "tool_call",
+        "stage": "execute",
+        "tool": "get_calendar",
+        "ok": null,
+        "summary": "get_calendar 호출 ()",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 11,
+        "type": "tool_result",
+        "stage": "execute",
+        "tool": "get_calendar",
+        "ok": true,
+        "summary": "get_calendar 성공",
+        "duration_ms": 414,
+        "replan_round": null
+      },
+      {
+        "seq": 12,
+        "type": "stage_end",
+        "stage": "execute",
+        "tool": null,
+        "ok": null,
+        "summary": "Tool 호출 2회(실패 1) · 캐시 재사용 0회 · 후보 0개",
+        "duration_ms": 643,
+        "replan_round": null
+      },
+      {
+        "seq": 13,
+        "type": "stage_start",
+        "stage": "judge",
+        "tool": null,
+        "ok": null,
+        "summary": "판정 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 14,
+        "type": "stage_end",
+        "stage": "judge",
+        "tool": null,
+        "ok": null,
+        "summary": "후보 0개 · 고정 조건 때문에 적용할 전략 없음 → 재계획 종료",
+        "duration_ms": 0,
+        "replan_round": null
+      },
+      {
+        "seq": 15,
+        "type": "stage_start",
+        "stage": "respond",
+        "tool": null,
+        "ok": null,
+        "summary": "응답 작성 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 16,
+        "type": "stage_end",
+        "stage": "respond",
+        "tool": null,
+        "ok": null,
+        "summary": "plan 응답 430자",
+        "duration_ms": 2108,
+        "replan_round": null
+      }
+    ],
+    "warnings": [],
+    "safety_note": "야간 관측 시 이동 안전과 방한에 유의하세요."
+  }
+}

@@ -126,9 +126,10 @@ def _origins(raw: str | None) -> tuple[str, ...]:
 class Settings:
     # LLM (SSAFY GMS, OpenAI 호환)
     gms_key: str | None
+    llm_provider: str              # anthropic(기본: GMS 의 Anthropic 호환 경로) | openai(GMS 의 OpenAI 호환 경로)
     openai_base_url: str
     llm_model: str
-    llm_reasoning_effort: str      # gpt-6-luna 는 tools 사용 시 "none" 필수
+    llm_reasoning_effort: str      # openai 공급자 전용. gpt-6-luna 는 tools 사용 시 "none" 필수
     embedding_model: str
 
     # 외부 API 키
@@ -194,12 +195,23 @@ class Settings:
         return self.root_dir / "samples"
 
 
+_LLM_BASE_URLS = {
+    "anthropic": "https://gms.ssafy.io/gmsapi/api.anthropic.com/v1",
+    "openai": "https://gms.ssafy.io/gmsapi/api.openai.com/v1/",
+}
+_LLM_DEFAULT_MODELS = {"anthropic": "claude-haiku-5-5", "openai": "gpt-6-luna"}
+
+
 @lru_cache(maxsize=1)
 def get_settings() -> Settings:
+    _llm_provider = (_env("LLM_PROVIDER", "anthropic") or "anthropic").lower()
+    if _llm_provider not in _LLM_BASE_URLS:
+        _llm_provider = "anthropic"
     return Settings(
-        gms_key=_env("GMS_KEY"),
-        openai_base_url=_env("OPENAI_BASE_URL", "https://gms.ssafy.io/gmsapi/api.openai.com/v1/") or "",
-        llm_model=_env("LLM_MODEL", "gpt-6-luna") or "gpt-6-luna",
+        gms_key=_env("GMS_KEY") or _env("GMS_API_KEY"),   # 전환 가이드는 GMS_API_KEY 이름을 쓴다 — 둘 다 허용
+        llm_provider=_llm_provider,
+        openai_base_url=_env("OPENAI_BASE_URL", _LLM_BASE_URLS[_llm_provider]) or _LLM_BASE_URLS[_llm_provider],
+        llm_model=_env("LLM_MODEL", _LLM_DEFAULT_MODELS[_llm_provider]) or _LLM_DEFAULT_MODELS[_llm_provider],
         llm_reasoning_effort=_env("LLM_REASONING_EFFORT", "none") or "none",
         embedding_model=_env("EMBEDDING_MODEL", "text-embedding-3-small") or "text-embedding-3-small",
         data_go_kr_key=_data_go_kr_key(),

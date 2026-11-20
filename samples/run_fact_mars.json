@@ -1,23 +1,23 @@
 {
  "scenario": "fact_mars",
- "captured_at": "2026-11-18T16:52:56+09:00",
+ "captured_at": "2026-11-20T09:46:03+09:00",
  "env_overrides": {
   "CALENDAR_PROVIDER": "local"
  },
- "session_id": "c90bd2b9ea8f",
+ "session_id": "81a13ec7ec7c",
  "turns": [
   {
    "message": "오늘 대전에서 화성이 제일 잘 보이는 시간대",
    "response": {
-    "session_id": "c90bd2b9ea8f",
+    "session_id": "81a13ec7ec7c",
     "intent": "fact",
-    "answer": "대전에서 오늘 화성은 **새벽 4:42~5:42**가 가장 잘 보입니다. 이 시간은 어두운 시간대의 끝부분이며, 남중이 날 밝은 뒤라 새벽 시간대로 계산됐습니다.\n\n화성은 고도 20° 이상으로 **01:40~11:40** 떠 있고, **06:37에 남쪽 하늘에서 고도 68.2°**로 남중합니다. 어두운 시간은 **18:50~다음 날 05:42**입니다.\n\n날씨(구름)는 별도로 확인해야 합니다.",
+    "answer": "**대전 화성 관측 시간대 (2026-11-20 저녁 → 11-21 새벽)**\n\n- **가장 잘 보이는 시간대: 11월 21일 04:43~05:43**\n  남중(06:33)이 어두운 시간이 끝난 뒤라, 어두운 창 안에서 남중에 가장 가까운 새벽 1시간을 골랐습니다.\n- 고도 20° 이상 구간: 11월 21일 01:40~11:40\n- 남중: 11월 21일 06:33, 고도 67.9°, 방위 남쪽\n- 어두운 시간: 11월 20일 18:49 ~ 11월 21일 05:43\n- 행성 위치는 저정밀 궤도 요소로 계산해 오차가 수 분각 정도 있을 수 있습니다.\n- 날씨(구름)는 따로 확인해야 합니다. 이 답은 고도와 어두운 시간만 계산했습니다.",
     "conditions": {
-     "date_from": "2026-11-18",
-     "date_to": "2026-11-18",
+     "date_from": "2026-11-20",
+     "date_to": "2026-11-20",
      "start_minute": null,
      "region": "대전",
-     "event_kind": "other",
+     "event_kind": "planet",
      "event_query": "화성",
      "place_query": null,
      "end_minute": null,
@@ -53,7 +53,7 @@
       "stage": "analyze",
       "tool": null,
       "ok": null,
-      "summary": "의도 판단: fact - 대전에서 오늘 화성이 가장 잘 보이는 시간대를 묻는 사실 질문입니다. / fact_kind=object_visibility(LLM)",
+      "summary": "의도 판단: fact - 특정 행성(화성)이 언제 가장 잘 보이는지 묻는 질문이라 object_visibility 사실 질의다. / fact_kind=object_visibility(LLM)",
       "duration_ms": null,
       "replan_round": null
      },
@@ -64,7 +64,7 @@
       "tool": null,
       "ok": null,
       "summary": "의도 fact",
-      "duration_ms": 2143,
+      "duration_ms": 2167,
       "replan_round": null
      },
      {
@@ -103,7 +103,7 @@
       "stage": "execute",
       "tool": "lookup_sky_object",
       "ok": null,
-      "summary": "천체 고도 계산 호출 (date=2026-11-18)",
+      "summary": "천체 고도 계산 호출 (date=2026-11-20)",
       "duration_ms": null,
       "replan_round": null
      },
@@ -123,7 +123,7 @@
       "stage": "execute",
       "tool": "get_night_window",
       "ok": null,
-      "summary": "박명·출몰 조회 호출 (date=2026-11-18)",
+      "summary": "박명·출몰 조회 호출 (date=2026-11-20)",
       "duration_ms": null,
       "replan_round": null
      },
@@ -134,7 +134,7 @@
       "tool": "get_night_window",
       "ok": true,
       "summary": "박명·출몰 조회 성공",
-      "duration_ms": 751,
+      "duration_ms": 945,
       "replan_round": null
      },
      {
@@ -144,7 +144,7 @@
       "tool": null,
       "ok": null,
       "summary": "Tool 호출 2회(실패 0) · 캐시 재사용 0회 · 후보 0개",
-      "duration_ms": 771,
+      "duration_ms": 967,
       "replan_round": null
      },
      {
@@ -183,15 +183,15 @@
       "stage": "respond",
       "tool": null,
       "ok": null,
-      "summary": "fact 응답 221자",
-      "duration_ms": 2166,
+      "summary": "fact 응답 356자",
+      "duration_ms": 3048,
       "replan_round": null
      }
     ],
     "warnings": [],
     "safety_note": "야간 관측 시 이동 안전과 방한에 유의하세요."
    },
-   "elapsed_s": 5.15
+   "elapsed_s": 6.25
   }
  ]
 }

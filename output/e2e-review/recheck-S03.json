@@ -1,0 +1,299 @@
+{
+  "id": "S03",
+  "message": "2026년 12월 14일 서울에서 밤 10시부터 다음 날 새벽 2시까지 쌍둥이자리 유성우 관측 계획을 짜줘.",
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/api/chat",
+    "headers": {
+      "X-Requested-With": "Astrowatch",
+      "Origin": "http://127.0.0.1:8000"
+    },
+    "json": {
+      "session_id": "recheck-a7bd3a83f651415596eee1b520fedfa8",
+      "message": "2026년 12월 14일 서울에서 밤 10시부터 다음 날 새벽 2시까지 쌍둥이자리 유성우 관측 계획을 짜줘."
+    }
+  },
+  "started_at": "2026-11-20T10:00:21+0900",
+  "status": 200,
+  "seconds": 6.28,
+  "response": {
+    "session_id": "recheck-a7bd3a83f651415596eee1b520fedfa8",
+    "intent": "plan",
+    "answer": "**요청 조건**: 2026-12-14 서울, 22:00~02:00(+1일) 쌍둥이자리 유성우 관측\n(날짜 조정·가정 없음, 재계획 없음)\n\n**추천 (1순위)**\n- **쌍둥이자리 유성우 극대기 (ZHR=150, IMO 기준)**\n  - 날짜: 2026-12-14 / 지역: 서울\n  - 등급: **조건부 충족** (날씨 미판단)\n  - 관측 창: **22:00~02:00(+1일), 240분**\n  - 맑은 시간: 예보 없음 → 산정 불가\n  - 달 영향: 월령 5.5일, 달빛 영향 적음\n\n**역산 기준**\n- 늦어도 **01:30(+1일)** 까지 도착하면 최소 30분 관측 가능\n\n**날씨 확인**\n- 현재 날씨 예보 범위 밖이므로 **관측일 D-3부터 예보로 확인 가능**합니다.\n\n**판단 기준**\n- 관측 창 = 어두운 시간 ∩ 내 시간 ∩ 현상 시간 (천체는 고도 20° 이상인 시간), 최소 30분, 맑음(강수확률 30% 이하)만 맑은 시간으로 계산\n\n**근거 Tool**\n- search_sky_events: 성공\n- get_calendar: 성공\n- get_night_window: 성공\n- get_sky_forecast: 실패 (예보 범위 밖, 가장 늦은 예보일 2026-11-30)\n\n**제외 항목**: 없음\n**장소**: 별도 장소 정보 없음 (장소 조회 실패 아님)\n**일정 충돌**: 없음\n**경고**: 없음",
+    "conditions": {
+      "date_from": "2026-12-14",
+      "date_to": "2026-12-14",
+      "start_minute": 1320,
+      "region": "서울",
+      "event_kind": "meteor",
+      "event_query": "쌍둥이자리 유성우",
+      "place_query": null,
+      "end_minute": 1560,
+      "max_distance_km": null,
+      "allow_partly_cloudy": false,
+      "avoid_moon": true,
+      "fixed": [
+        "date_from"
+      ]
+    },
+    "needs_clarification": [],
+    "recommended": [
+      {
+        "candidate": {
+          "event_id": "20261214-1",
+          "title": "쌍둥이자리 유성우 극대기(ZHR=150) (IMO 기준)",
+          "kind": "meteor",
+          "date": "2026-12-14",
+          "region": "서울",
+          "lat": 37.5665,
+          "lon": 126.978,
+          "event_minute": 1380
+        },
+        "verdict": "conditional",
+        "dark_window": {
+          "start": 1128,
+          "end": 1805
+        },
+        "user_window": {
+          "start": 1320,
+          "end": 1560
+        },
+        "event_window": {
+          "start": 1020,
+          "end": 1740
+        },
+        "time_window": {
+          "start": 1320,
+          "end": 1560
+        },
+        "clear_minutes": null,
+        "worst_sky": null,
+        "max_pop": null,
+        "moon_interferes": false,
+        "lun_age": 5.5,
+        "latest_arrival_minute": 1530,
+        "forecast_source": null,
+        "reasons": [
+          "어두운 시간 18:48~06:05+1 · 내 시간 22:00~02:00+1 → 관측 창 22:00~02:00+1 (240분)",
+          "월령 5.5일 - 달빛 영향 적음",
+          "예보 범위 밖(D-3부터 확인 가능) - 날씨 미판단"
+        ],
+        "target_alt": null,
+        "target_az": null,
+        "moon_up": [
+          {
+            "start": 671,
+            "end": 1312
+          },
+          {
+            "start": 2136,
+            "end": 2159
+          }
+        ],
+        "moon_unknown": [],
+        "hourly_sky": [],
+        "object_window": null
+      }
+    ],
+    "excluded": [],
+    "places": [],
+    "replan_count": 0,
+    "replan_limit": 3,
+    "replan_limit_reached": false,
+    "stop_reason": null,
+    "steps": [
+      {
+        "seq": 2,
+        "type": "stage_start",
+        "stage": "analyze",
+        "tool": null,
+        "ok": null,
+        "summary": "요청 분석 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 3,
+        "type": "llm_decision",
+        "stage": "analyze",
+        "tool": null,
+        "ok": null,
+        "summary": "의도 판단: plan - 서울에서 2026년 12월 14일 밤 쌍둥이자리 유성우 관측 계획을 요청했으므로 plan이다.",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 4,
+        "type": "stage_end",
+        "stage": "analyze",
+        "tool": null,
+        "ok": null,
+        "summary": "의도 plan",
+        "duration_ms": 2082,
+        "replan_round": null
+      },
+      {
+        "seq": 5,
+        "type": "stage_start",
+        "stage": "plan",
+        "tool": null,
+        "ok": null,
+        "summary": "작업 계획 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 6,
+        "type": "stage_end",
+        "stage": "plan",
+        "tool": null,
+        "ok": null,
+        "summary": "4단계 계획: 현상 → 내 일정 → 출몰·월령 → 날씨 (search_sky_events → get_calendar → get_night_window → get_sky_forecast)",
+        "duration_ms": 0,
+        "replan_round": null
+      },
+      {
+        "seq": 7,
+        "type": "stage_start",
+        "stage": "execute",
+        "tool": null,
+        "ok": null,
+        "summary": "Tool 실행 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 8,
+        "type": "tool_call",
+        "stage": "execute",
+        "tool": "search_sky_events",
+        "ok": null,
+        "summary": "천문현상 조회 호출 (year=2026, month=12, kind=meteor)",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 9,
+        "type": "tool_result",
+        "stage": "execute",
+        "tool": "search_sky_events",
+        "ok": true,
+        "summary": "천문현상 조회 성공",
+        "duration_ms": 314,
+        "replan_round": null
+      },
+      {
+        "seq": 10,
+        "type": "tool_call",
+        "stage": "execute",
+        "tool": "get_calendar",
+        "ok": null,
+        "summary": "get_calendar 호출 ()",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 11,
+        "type": "tool_result",
+        "stage": "execute",
+        "tool": "get_calendar",
+        "ok": true,
+        "summary": "get_calendar 성공",
+        "duration_ms": 438,
+        "replan_round": null
+      },
+      {
+        "seq": 12,
+        "type": "tool_call",
+        "stage": "execute",
+        "tool": "get_night_window",
+        "ok": null,
+        "summary": "박명·출몰 조회 호출 (date=2026-12-14)",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 13,
+        "type": "tool_result",
+        "stage": "execute",
+        "tool": "get_night_window",
+        "ok": true,
+        "summary": "박명·출몰 조회 성공",
+        "duration_ms": 812,
+        "replan_round": null
+      },
+      {
+        "seq": 14,
+        "type": "tool_call",
+        "stage": "execute",
+        "tool": "get_sky_forecast",
+        "ok": null,
+        "summary": "날씨 예보 조회 호출 (date=2026-12-14, hours=22~25시)",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 15,
+        "type": "tool_result",
+        "stage": "execute",
+        "tool": "get_sky_forecast",
+        "ok": false,
+        "summary": "날씨 예보 조회 실패(OUT_OF_RANGE): 예보 범위 밖: 가장 늦은 예보일 2026-11-30",
+        "duration_ms": 0,
+        "replan_round": null
+      },
+      {
+        "seq": 16,
+        "type": "stage_end",
+        "stage": "execute",
+        "tool": null,
+        "ok": null,
+        "summary": "Tool 호출 4회(실패 1) · 캐시 재사용 0회 · 후보 1개",
+        "duration_ms": 1598,
+        "replan_round": null
+      },
+      {
+        "seq": 17,
+        "type": "stage_start",
+        "stage": "judge",
+        "tool": null,
+        "ok": null,
+        "summary": "판정 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 18,
+        "type": "stage_end",
+        "stage": "judge",
+        "tool": null,
+        "ok": null,
+        "summary": "조건부 충족 1",
+        "duration_ms": 0,
+        "replan_round": null
+      },
+      {
+        "seq": 19,
+        "type": "stage_start",
+        "stage": "respond",
+        "tool": null,
+        "ok": null,
+        "summary": "응답 작성 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 20,
+        "type": "stage_end",
+        "stage": "respond",
+        "tool": null,
+        "ok": null,
+        "summary": "plan 응답 693자",
+        "duration_ms": 2535,
+        "replan_round": null
+      }
+    ],
+    "warnings": [],
+    "safety_note": "야간 관측 시 이동 안전과 방한에 유의하세요."
+  }
+}

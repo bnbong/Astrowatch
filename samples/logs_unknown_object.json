@@ -1,14 +1,14 @@
 {
  "scenario": "unknown_object",
- "session_id": "426a3fe0f4d1",
+ "session_id": "7165bf089469",
  "turns": [
   {
    "message": "2026년 11월 18일 서울에서 밤 9시부터 11시까지 가짜천체 XYZ-FAKE-999를 관측하는 계획을 짜줘. 다른 천체는 원하지 않아.",
    "events": [
     {
-     "session_id": "426a3fe0f4d1",
+     "session_id": "7165bf089469",
      "seq": 1,
-     "ts": "2026-11-18T07:53:04.259607Z",
+     "ts": "2026-11-20T00:46:11.672423Z",
      "type": "session_start",
      "stage": null,
      "tool": null,
@@ -17,52 +17,52 @@
      }
     },
     {
-     "session_id": "426a3fe0f4d1",
+     "session_id": "7165bf089469",
      "seq": 2,
-     "ts": "2026-11-18T07:53:04.263528Z",
+     "ts": "2026-11-20T00:46:11.677090Z",
      "type": "stage_start",
      "stage": "analyze",
      "tool": null,
      "payload": {}
     },
     {
-     "session_id": "426a3fe0f4d1",
+     "session_id": "7165bf089469",
      "seq": 3,
-     "ts": "2026-11-18T07:53:06.454175Z",
+     "ts": "2026-11-20T00:46:14.006113Z",
      "type": "llm_decision",
      "stage": "analyze",
      "tool": null,
      "payload": {
       "decision": "plan",
-      "reason": "지정한 날짜와 서울에서 특정 천체만 관측하는 계획을 요청했습니다.",
-      "model": "gpt-6-luna"
+      "reason": "특정 날짜·지역·시간대에 특정 천체 관측 계획을 요청했으므로 plan 이다.",
+      "model": "claude-haiku-5-5"
      }
     },
     {
-     "session_id": "426a3fe0f4d1",
+     "session_id": "7165bf089469",
      "seq": 4,
-     "ts": "2026-11-18T07:53:06.458679Z",
+     "ts": "2026-11-20T00:46:14.011614Z",
      "type": "stage_end",
      "stage": "analyze",
      "tool": null,
      "payload": {
-      "duration_ms": 2192,
+      "duration_ms": 2331,
       "summary": "의도 plan"
      }
     },
     {
-     "session_id": "426a3fe0f4d1",
+     "session_id": "7165bf089469",
      "seq": 5,
-     "ts": "2026-11-18T07:53:06.463693Z",
+     "ts": "2026-11-20T00:46:14.016260Z",
      "type": "stage_start",
      "stage": "plan",
      "tool": null,
      "payload": {}
     },
     {
-     "session_id": "426a3fe0f4d1",
+     "session_id": "7165bf089469",
      "seq": 6,
-     "ts": "2026-11-18T07:53:06.467692Z",
+     "ts": "2026-11-20T00:46:14.019807Z",
      "type": "stage_end",
      "stage": "plan",
      "tool": null,
@@ -72,18 +72,18 @@
      }
     },
     {
-     "session_id": "426a3fe0f4d1",
+     "session_id": "7165bf089469",
      "seq": 7,
-     "ts": "2026-11-18T07:53:06.472819Z",
+     "ts": "2026-11-20T00:46:14.024263Z",
      "type": "stage_start",
      "stage": "execute",
      "tool": null,
      "payload": {}
     },
     {
-     "session_id": "426a3fe0f4d1",
+     "session_id": "7165bf089469",
      "seq": 8,
-     "ts": "2026-11-18T07:53:06.476393Z",
+     "ts": "2026-11-20T00:46:14.027641Z",
      "type": "tool_call",
      "stage": "execute",
      "tool": "search_sky_events",
@@ -97,22 +97,22 @@
      }
     },
     {
-     "session_id": "426a3fe0f4d1",
+     "session_id": "7165bf089469",
      "seq": 9,
-     "ts": "2026-11-18T07:53:06.699384Z",
+     "ts": "2026-11-20T00:46:14.306429Z",
      "type": "tool_result",
      "stage": "execute",
      "tool": "search_sky_events",
      "payload": {
       "ok": true,
       "data": "{\"data\":{\"year\":2026,\"month\":11,\"requested_defaulted\":false,\"events\":[{\"event_id\":\"20261104-1\",\"date\":\"2026-11-04\",\"time\":\"23:00\",\"title\":\"수성의 내합\",\"kind\":\"other\",\"description\":null},{\"event_id\":\"20261129-1\",\"date\":\"2026-11-29\",\"time\":\"23:00\",\"title\":\"금성 최대 빛나는 면적\",\"kind\":\"other\",\"description\":null}]}}",
-      "duration_ms": 219
+      "duration_ms": 274
      }
     },
     {
-     "session_id": "426a3fe0f4d1",
+     "session_id": "7165bf089469",
      "seq": 10,
-     "ts": "2026-11-18T07:53:06.703386Z",
+     "ts": "2026-11-20T00:46:14.310429Z",
      "type": "tool_call",
      "stage": "execute",
      "tool": "lookup_sky_object",
@@ -127,9 +127,9 @@
      }
     },
     {
-     "session_id": "426a3fe0f4d1",
+     "session_id": "7165bf089469",
      "seq": 11,
-     "ts": "2026-11-18T07:53:06.708384Z",
+     "ts": "2026-11-20T00:46:14.316553Z",
      "type": "tool_result",
      "stage": "execute",
      "tool": "lookup_sky_object",
@@ -143,9 +143,9 @@
      }
     },
     {
-     "session_id": "426a3fe0f4d1",
+     "session_id": "7165bf089469",
      "seq": 12,
-     "ts": "2026-11-18T07:53:06.712386Z",
+     "ts": "2026-11-20T00:46:14.320551Z",
      "type": "tool_call",
      "stage": "execute",
      "tool": "get_calendar",
@@ -158,9 +158,9 @@
      }
     },
     {
-     "session_id": "426a3fe0f4d1",
+     "session_id": "7165bf089469",
      "seq": 13,
-     "ts": "2026-11-18T07:53:06.717384Z",
+     "ts": "2026-11-20T00:46:14.325251Z",
      "type": "tool_result",
      "stage": "execute",
      "tool": "get_calendar",
@@ -171,30 +171,30 @@
      }
     },
     {
-     "session_id": "426a3fe0f4d1",
+     "session_id": "7165bf089469",
      "seq": 14,
-     "ts": "2026-11-18T07:53:06.720531Z",
+     "ts": "2026-11-20T00:46:14.327691Z",
      "type": "stage_end",
      "stage": "execute",
      "tool": null,
      "payload": {
-      "duration_ms": 243,
+      "duration_ms": 300,
       "summary": "Tool 호출 3회(실패 1) · 캐시 재사용 0회 · 후보 1개 · 천체 고도 0/1일 계산"
      }
     },
     {
-     "session_id": "426a3fe0f4d1",
+     "session_id": "7165bf089469",
      "seq": 15,
-     "ts": "2026-11-18T07:53:06.724529Z",
+     "ts": "2026-11-20T00:46:14.331692Z",
      "type": "stage_start",
      "stage": "judge",
      "tool": null,
      "payload": {}
     },
     {
-     "session_id": "426a3fe0f4d1",
+     "session_id": "7165bf089469",
      "seq": 16,
-     "ts": "2026-11-18T07:53:06.728521Z",
+     "ts": "2026-11-20T00:46:14.335700Z",
      "type": "stage_end",
      "stage": "judge",
      "tool": null,
@@ -204,18 +204,18 @@
      }
     },
     {
-     "session_id": "426a3fe0f4d1",
+     "session_id": "7165bf089469",
      "seq": 17,
-     "ts": "2026-11-18T07:53:06.732528Z",
+     "ts": "2026-11-20T00:46:14.338701Z",
      "type": "stage_start",
      "stage": "respond",
      "tool": null,
      "payload": {}
     },
     {
-     "session_id": "426a3fe0f4d1",
+     "session_id": "7165bf089469",
      "seq": 18,
-     "ts": "2026-11-18T07:53:06.735530Z",
+     "ts": "2026-11-20T00:46:14.342739Z",
      "type": "stage_end",
      "stage": "respond",
      "tool": null,
@@ -225,16 +225,16 @@
      }
     },
     {
-     "session_id": "426a3fe0f4d1",
+     "session_id": "7165bf089469",
      "seq": 19,
-     "ts": "2026-11-18T07:53:06.747704Z",
+     "ts": "2026-11-20T00:46:14.352562Z",
      "type": "session_end",
      "stage": null,
      "tool": null,
      "payload": {
       "intent": "plan",
       "replan_count": 0,
-      "duration_ms": 2488
+      "duration_ms": 2681
      }
     }
    ]

@@ -1,0 +1,102 @@
+{
+  "id": "S16",
+  "message": "이 추천을 구글 캘린더에 등록해줘.",
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/api/chat",
+    "headers": {
+      "X-Requested-With": "Astrowatch",
+      "Origin": "http://127.0.0.1:8000"
+    },
+    "json": {
+      "session_id": "recheck-a7bd3a83f651415596eee1b520fedfa8",
+      "message": "이 추천을 구글 캘린더에 등록해줘."
+    }
+  },
+  "started_at": "2026-11-20T10:00:43+0900",
+  "status": 200,
+  "seconds": 2.17,
+  "response": {
+    "session_id": "recheck-a7bd3a83f651415596eee1b520fedfa8",
+    "intent": "calendar",
+    "answer": "직전 추천은 아직 계획으로 저장되지 않아 계획 번호가 없어요. 먼저 '계획으로 저장' 을 누른 뒤 \"계획 N번을 캘린더에 넣어 줘\" 라고 말씀해 주세요.",
+    "conditions": {
+      "date_from": "2026-12-14",
+      "date_to": "2026-12-14",
+      "start_minute": 1320,
+      "region": "대전",
+      "event_kind": "meteor",
+      "event_query": "쌍둥이자리 유성우",
+      "place_query": null,
+      "end_minute": 1380,
+      "max_distance_km": null,
+      "allow_partly_cloudy": false,
+      "avoid_moon": true,
+      "fixed": [
+        "date_from"
+      ]
+    },
+    "needs_clarification": [],
+    "recommended": [],
+    "excluded": [],
+    "places": [],
+    "replan_count": 0,
+    "replan_limit": 3,
+    "replan_limit_reached": false,
+    "stop_reason": null,
+    "steps": [
+      {
+        "seq": 61,
+        "type": "stage_start",
+        "stage": "analyze",
+        "tool": null,
+        "ok": null,
+        "summary": "요청 분석 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 62,
+        "type": "llm_decision",
+        "stage": "analyze",
+        "tool": null,
+        "ok": null,
+        "summary": "의도 판단: calendar - 직전 추천(쌍둥이자리 유성우 극대기, 2026-12-14 대전 22:00~23:00)을 구글 캘린더에 등록해 달라는 요청이라 calendar 의도다.",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 63,
+        "type": "stage_end",
+        "stage": "analyze",
+        "tool": null,
+        "ok": null,
+        "summary": "의도 calendar",
+        "duration_ms": 2118,
+        "replan_round": null
+      },
+      {
+        "seq": 64,
+        "type": "stage_start",
+        "stage": "respond",
+        "tool": null,
+        "ok": null,
+        "summary": "응답 작성 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 65,
+        "type": "stage_end",
+        "stage": "respond",
+        "tool": null,
+        "ok": null,
+        "summary": "calendar 응답 85자",
+        "duration_ms": 0,
+        "replan_round": null
+      }
+    ],
+    "warnings": [],
+    "safety_note": "야간 관측 시 이동 안전과 방한에 유의하세요."
+  }
+}

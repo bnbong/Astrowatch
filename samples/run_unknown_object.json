@@ -1,15 +1,15 @@
 {
  "scenario": "unknown_object",
- "captured_at": "2026-11-18T16:53:04+09:00",
+ "captured_at": "2026-11-20T09:46:11+09:00",
  "env_overrides": {
   "CALENDAR_PROVIDER": "local"
  },
- "session_id": "426a3fe0f4d1",
+ "session_id": "7165bf089469",
  "turns": [
   {
    "message": "2026년 11월 18일 서울에서 밤 9시부터 11시까지 가짜천체 XYZ-FAKE-999를 관측하는 계획을 짜줘. 다른 천체는 원하지 않아.",
    "response": {
-    "session_id": "426a3fe0f4d1",
+    "session_id": "7165bf089469",
     "intent": "plan",
     "answer": "요청 조건: 2026-11-18 서울 21:00~23:00 XYZ-FAKE-999\n'XYZ-FAKE-999'를 천문현상 목록과 천체 카탈로그에서 찾지 못해 관측 가능 여부를 판단하지 않았습니다.\n좌표를 모르는 천체는 고도와 관측 창을 추정하지 않으므로 추천하지 않았어요.\n근거: get_calendar(성공), lookup_sky_object(실패), search_sky_events(성공)\n천체 이름을 다시 확인해 주세요.\n혹시 다른 이름(예: 'M42', '안드로메다 은하')을 말씀하신가요?",
     "conditions": {
@@ -25,8 +25,7 @@
      "allow_partly_cloudy": false,
      "avoid_moon": true,
      "fixed": [
-      "date_from",
-      "event_query"
+      "date_from"
      ]
     },
     "needs_clarification": [],
@@ -88,7 +87,7 @@
       "stage": "analyze",
       "tool": null,
       "ok": null,
-      "summary": "의도 판단: plan - 지정한 날짜와 서울에서 특정 천체만 관측하는 계획을 요청했습니다.",
+      "summary": "의도 판단: plan - 특정 날짜·지역·시간대에 특정 천체 관측 계획을 요청했으므로 plan 이다.",
       "duration_ms": null,
       "replan_round": null
      },
@@ -99,7 +98,7 @@
       "tool": null,
       "ok": null,
       "summary": "의도 plan",
-      "duration_ms": 2192,
+      "duration_ms": 2331,
       "replan_round": null
      },
      {
@@ -149,7 +148,7 @@
       "tool": "search_sky_events",
       "ok": true,
       "summary": "천문현상 조회 성공",
-      "duration_ms": 219,
+      "duration_ms": 274,
       "replan_round": null
      },
      {
@@ -199,7 +198,7 @@
       "tool": null,
       "ok": null,
       "summary": "Tool 호출 3회(실패 1) · 캐시 재사용 0회 · 후보 1개 · 천체 고도 0/1일 계산",
-      "duration_ms": 243,
+      "duration_ms": 300,
       "replan_round": null
      },
      {
@@ -246,7 +245,7 @@
     "warnings": [],
     "safety_note": "야간 관측 시 이동 안전과 방한에 유의하세요."
    },
-   "elapsed_s": 2.49
+   "elapsed_s": 2.68
   }
  ]
 }

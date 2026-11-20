@@ -1,14 +1,14 @@
 {
  "scenario": "fact_mars",
- "session_id": "c90bd2b9ea8f",
+ "session_id": "81a13ec7ec7c",
  "turns": [
   {
    "message": "오늘 대전에서 화성이 제일 잘 보이는 시간대",
    "events": [
     {
-     "session_id": "c90bd2b9ea8f",
+     "session_id": "81a13ec7ec7c",
      "seq": 1,
-     "ts": "2026-11-18T07:52:56.837221Z",
+     "ts": "2026-11-20T00:46:03.278820Z",
      "type": "session_start",
      "stage": null,
      "tool": null,
@@ -17,52 +17,52 @@
      }
     },
     {
-     "session_id": "c90bd2b9ea8f",
+     "session_id": "81a13ec7ec7c",
      "seq": 2,
-     "ts": "2026-11-18T07:52:56.841221Z",
+     "ts": "2026-11-20T00:46:03.284817Z",
      "type": "stage_start",
      "stage": "analyze",
      "tool": null,
      "payload": {}
     },
     {
-     "session_id": "c90bd2b9ea8f",
+     "session_id": "81a13ec7ec7c",
      "seq": 3,
-     "ts": "2026-11-18T07:52:58.983106Z",
+     "ts": "2026-11-20T00:46:05.448186Z",
      "type": "llm_decision",
      "stage": "analyze",
      "tool": null,
      "payload": {
       "decision": "fact",
-      "reason": "대전에서 오늘 화성이 가장 잘 보이는 시간대를 묻는 사실 질문입니다. / fact_kind=object_visibility(LLM)",
-      "model": "gpt-6-luna"
+      "reason": "특정 행성(화성)이 언제 가장 잘 보이는지 묻는 질문이라 object_visibility 사실 질의다. / fact_kind=object_visibility(LLM)",
+      "model": "claude-haiku-5-5"
      }
     },
     {
-     "session_id": "c90bd2b9ea8f",
+     "session_id": "81a13ec7ec7c",
      "seq": 4,
-     "ts": "2026-11-18T07:52:58.988106Z",
+     "ts": "2026-11-20T00:46:05.456179Z",
      "type": "stage_end",
      "stage": "analyze",
      "tool": null,
      "payload": {
-      "duration_ms": 2143,
+      "duration_ms": 2167,
       "summary": "의도 fact"
      }
     },
     {
-     "session_id": "c90bd2b9ea8f",
+     "session_id": "81a13ec7ec7c",
      "seq": 5,
-     "ts": "2026-11-18T07:52:58.993187Z",
+     "ts": "2026-11-20T00:46:05.459267Z",
      "type": "stage_start",
      "stage": "plan",
      "tool": null,
      "payload": {}
     },
     {
-     "session_id": "c90bd2b9ea8f",
+     "session_id": "81a13ec7ec7c",
      "seq": 6,
-     "ts": "2026-11-18T07:52:58.997549Z",
+     "ts": "2026-11-20T00:46:05.463680Z",
      "type": "stage_end",
      "stage": "plan",
      "tool": null,
@@ -72,25 +72,25 @@
      }
     },
     {
-     "session_id": "c90bd2b9ea8f",
+     "session_id": "81a13ec7ec7c",
      "seq": 7,
-     "ts": "2026-11-18T07:52:59.002729Z",
+     "ts": "2026-11-20T00:46:05.467387Z",
      "type": "stage_start",
      "stage": "execute",
      "tool": null,
      "payload": {}
     },
     {
-     "session_id": "c90bd2b9ea8f",
+     "session_id": "81a13ec7ec7c",
      "seq": 8,
-     "ts": "2026-11-18T07:52:59.006728Z",
+     "ts": "2026-11-20T00:46:05.470388Z",
      "type": "tool_call",
      "stage": "execute",
      "tool": "lookup_sky_object",
      "payload": {
       "args": {
        "name": "화성",
-       "date": "2026-11-18",
+       "date": "2026-11-20",
        "lat": 36.3504,
        "lon": 127.3845
       },
@@ -98,29 +98,29 @@
      }
     },
     {
-     "session_id": "c90bd2b9ea8f",
+     "session_id": "81a13ec7ec7c",
      "seq": 9,
-     "ts": "2026-11-18T07:52:59.013727Z",
+     "ts": "2026-11-20T00:46:05.477922Z",
      "type": "tool_result",
      "stage": "execute",
      "tool": "lookup_sky_object",
      "payload": {
       "ok": true,
       "note": "행성 위치는 저정밀 궤도 요소로 계산(오차 수 분각)",
-      "data": "{\"data\":{\"object\":{\"id\":\"mars\",\"name_ko\":\"화성\",\"name_en\":\"Mars\",\"kind\":\"planet\",\"ra_deg\":149.5994,\"dec_deg\":14.5053,\"mag\":0.5,\"naked_eye\":true,\"constellation_ko\":null},\"date\":\"2026-11-18\",\"min_alt\":20.0,\"visible_windows\":[{\"start\":1540,\"end\":2140}],\"transit_minute\":1837,\"transit_alt\":68.2,\"transit_az\":179.9,\"never_rises\":false}}",
+      "data": "{\"data\":{\"object\":{\"id\":\"mars\",\"name_ko\":\"화성\",\"name_en\":\"Mars\",\"kind\":\"planet\",\"ra_deg\":150.4472,\"dec_deg\":14.2557,\"mag\":0.5,\"naked_eye\":true,\"constellation_ko\":null},\"date\":\"2026-11-20\",\"min_alt\":20.0,\"visible_windows\":[{\"start\":1540,\"end\":2140}],\"transit_minute\":1833,\"transit_alt\":67.9,\"transit_az\":180.3,\"never_rises\":false}}",
       "duration_ms": 3
      }
     },
     {
-     "session_id": "c90bd2b9ea8f",
+     "session_id": "81a13ec7ec7c",
      "seq": 10,
-     "ts": "2026-11-18T07:52:59.017728Z",
+     "ts": "2026-11-20T00:46:05.481735Z",
      "type": "tool_call",
      "stage": "execute",
      "tool": "get_night_window",
      "payload": {
       "args": {
-       "date": "2026-11-18",
+       "date": "2026-11-20",
        "lat": 36.3504,
        "lon": 127.3845
       },
@@ -128,43 +128,43 @@
      }
     },
     {
-     "session_id": "c90bd2b9ea8f",
+     "session_id": "81a13ec7ec7c",
      "seq": 11,
-     "ts": "2026-11-18T07:52:59.774038Z",
+     "ts": "2026-11-20T00:46:06.432579Z",
      "type": "tool_result",
      "stage": "execute",
      "tool": "get_night_window",
      "payload": {
       "ok": true,
-      "data": "{\"data\":{\"date\":\"2026-11-18\",\"sunset\":\"17:21\",\"astro_dusk_end\":\"18:50\",\"astro_dawn_start\":\"05:42\",\"sunrise_next\":\"07:11\",\"moonrise\":\"13:32\",\"moonset\":\"00:02\",\"moonrise_next\":\"13:56\",\"moonset_next\":\"01:02\",\"lun_age\":9.2,\"dark_minutes\":652}}",
-      "duration_ms": 751
+      "data": "{\"data\":{\"date\":\"2026-11-20\",\"sunset\":\"17:19\",\"astro_dusk_end\":\"18:49\",\"astro_dawn_start\":\"05:43\",\"sunrise_next\":\"07:13\",\"moonrise\":\"14:21\",\"moonset\":\"02:04\",\"moonrise_next\":\"14:48\",\"moonset_next\":\"03:08\",\"lun_age\":11.2,\"dark_minutes\":654}}",
+      "duration_ms": 945
      }
     },
     {
-     "session_id": "c90bd2b9ea8f",
+     "session_id": "81a13ec7ec7c",
      "seq": 12,
-     "ts": "2026-11-18T07:52:59.778109Z",
+     "ts": "2026-11-20T00:46:06.438077Z",
      "type": "stage_end",
      "stage": "execute",
      "tool": null,
      "payload": {
-      "duration_ms": 771,
+      "duration_ms": 967,
       "summary": "Tool 호출 2회(실패 0) · 캐시 재사용 0회 · 후보 0개"
      }
     },
     {
-     "session_id": "c90bd2b9ea8f",
+     "session_id": "81a13ec7ec7c",
      "seq": 13,
-     "ts": "2026-11-18T07:52:59.782109Z",
+     "ts": "2026-11-20T00:46:06.441745Z",
      "type": "stage_start",
      "stage": "judge",
      "tool": null,
      "payload": {}
     },
     {
-     "session_id": "c90bd2b9ea8f",
+     "session_id": "81a13ec7ec7c",
      "seq": 14,
-     "ts": "2026-11-18T07:52:59.786110Z",
+     "ts": "2026-11-20T00:46:06.446607Z",
      "type": "stage_end",
      "stage": "judge",
      "tool": null,
@@ -174,37 +174,37 @@
      }
     },
     {
-     "session_id": "c90bd2b9ea8f",
+     "session_id": "81a13ec7ec7c",
      "seq": 15,
-     "ts": "2026-11-18T07:52:59.790109Z",
+     "ts": "2026-11-20T00:46:06.450390Z",
      "type": "stage_start",
      "stage": "respond",
      "tool": null,
      "payload": {}
     },
     {
-     "session_id": "c90bd2b9ea8f",
+     "session_id": "81a13ec7ec7c",
      "seq": 16,
-     "ts": "2026-11-18T07:53:01.959984Z",
+     "ts": "2026-11-20T00:46:09.502621Z",
      "type": "stage_end",
      "stage": "respond",
      "tool": null,
      "payload": {
-      "duration_ms": 2166,
-      "summary": "fact 응답 221자"
+      "duration_ms": 3048,
+      "summary": "fact 응답 356자"
      }
     },
     {
-     "session_id": "c90bd2b9ea8f",
+     "session_id": "81a13ec7ec7c",
      "seq": 17,
-     "ts": "2026-11-18T07:53:01.981321Z",
+     "ts": "2026-11-20T00:46:09.520081Z",
      "type": "session_end",
      "stage": null,
      "tool": null,
      "payload": {
       "intent": "fact",
       "replan_count": 0,
-      "duration_ms": 5144
+      "duration_ms": 6242
      }
     }
    ]

@@ -1,18 +1,18 @@
 {
  "scenario": "R2",
- "captured_at": "2026-11-18T16:51:38+09:00",
+ "captured_at": "2026-11-20T10:10:46+09:00",
  "env_overrides": {
   "CALENDAR_PROVIDER": "local",
   "WEATHER_PROVIDER": "mock"
  },
- "session_id": "11e414214f87",
+ "session_id": "46dd1417efb8",
  "turns": [
   {
    "message": "이번 주말 밤 9시~12시에 대전에서 사자자리 유성우 보고 싶어. 구름 많으면 다른 날로",
    "response": {
-    "session_id": "11e414214f87",
+    "session_id": "46dd1417efb8",
     "intent": "plan",
-    "answer": "- 요청 조건: 2026-11-21~2026-11-22, 대전, 21:00~00:00+1에 사자자리 유성우 관측.\n- 재계획 1회차: 같은 현상의 날짜 범위를 2026-11-19~2026-11-24로 넓혀 탐색.\n- 재계획 2회차: 사자자리 유성우 지정을 풀고 같은 기간의 다른 현상을 탐색.\n- 재계획 3회차: 지역을 대전에서 세종으로 바꿔 탐색했습니다. 실제 탐색 조건은 2026-11-19~2026-11-24, 세종, 21:00~00:00+1이었습니다.\n- 추천 가능한 항목은 없습니다.\n- 사자자리 유성우는 세종에서 11월 19일과 20일 모두 관측 창이 0분으로, 최소 30분 조건을 충족하지 못했습니다.\n- 다른 후보도 맑은 시간이 0분이거나 관측 창이 0분이라 충족되지 않았습니다.\n- 재계획 상한(3회)에 도달해 더 찾지 않았습니다. 날짜 범위나 지역을 넓혀 볼까요?\n- 판단 기준: 관측 창 = 어두운 시간 ∩ 내 시간 ∩ 현상 시간(천체는 고도 20° 이상인 시간), 최소 30분, 맑음(강수확률 30% 이하)만 맑은 시간으로 셉니다.\n- 근거 도구: search_sky_events, get_calendar, get_night_window, get_sky_forecast 모두 성공.\n- (검증용 모의 예보)",
+    "answer": "**요청 조건**: 11/21~22, 대전, 21:00~00:00, 사자자리 유성우\n- 대전 조건으로 같은 현상을 11/19~24로 넓혀 찾았으나 후보가 없었습니다.\n- 이후 같은 기간의 다른 현상을 찾고, 지역을 **세종**으로 바꿔 다시 탐색했습니다. 아래 결과는 세종 기준입니다.\n\n**추천: 0개**\n- 재계획을 3회 시도했고 상한(3회)에 도달해 더 찾지 않았습니다.\n- 날짜 범위나 지역을 넓혀 볼까요?\n\n**제외 항목**\n- 사자자리 유성우 극대기(11/19·11/20, 세종): 관측 창 0분 (최소 30분 미달)\n- 수성의 서방 최대이각(11/20, 세종): 맑은 시간 0분, 달빛(월령 11.2일)이 관측 창에 걸림\n- 일반 관측(별·은하수, 11/21~23, 세종): 맑은 시간 0분, 달빛(월령 12~14일)이 관측 창에 걸림\n- 달과 플레이아데스 근접·망(11/24, 세종): 맑은 시간 0분, 달빛(월령 15.2일)이 관측 창에 걸림\n\n**예보 참고**: (검증용 모의 예보)\n\n**판단 기준**: 관측 창 = 어두운 시간 ∩ 내 시간 ∩ 현상 시간. 최소 30분, 맑음(강수확률 30% 이하)인 시간만 맑은 시간으로 계산했습니다.\n\n**근거 Tool**: search_sky_events, get_calendar, get_night_window, get_sky_forecast 모두 성공",
     "conditions": {
      "date_from": "2026-11-21",
      "date_to": "2026-11-22",
@@ -683,7 +683,7 @@
       "stage": "analyze",
       "tool": null,
       "ok": null,
-      "summary": "의도 판단: plan - 이번 주말 대전에서 사자자리 유성우를 볼 관측 계획을 원하며, 구름이 많으면 날짜를 바꿔도 된다고 했습니다.",
+      "summary": "의도 판단: plan - 대전에서 사자자리 유성우를 특정 시간대에 관측하는 계획을 요청했고, 구름이 많으면 다른 날로 바꿀 수 있다고 했다.",
       "duration_ms": null,
       "replan_round": null
      },
@@ -694,7 +694,7 @@
       "tool": null,
       "ok": null,
       "summary": "의도 plan",
-      "duration_ms": 2154,
+      "duration_ms": 3493,
       "replan_round": null
      },
      {
@@ -744,7 +744,7 @@
       "tool": "search_sky_events",
       "ok": true,
       "summary": "천문현상 조회 성공",
-      "duration_ms": 262,
+      "duration_ms": 194,
       "replan_round": null
      },
      {
@@ -764,7 +764,7 @@
       "tool": "get_calendar",
       "ok": true,
       "summary": "get_calendar 성공",
-      "duration_ms": 1,
+      "duration_ms": 2,
       "replan_round": null
      },
      {
@@ -774,7 +774,7 @@
       "tool": null,
       "ok": null,
       "summary": "Tool 호출 2회(실패 0) · 캐시 재사용 0회 · 후보 0개",
-      "duration_ms": 286,
+      "duration_ms": 212,
       "replan_round": null
      },
      {
@@ -804,7 +804,7 @@
       "tool": null,
       "ok": null,
       "summary": "후보 0개 · 재계획 1회차(같은 현상 다른 날짜(±2일))",
-      "duration_ms": 5,
+      "duration_ms": 3,
       "replan_round": 1
      },
      {
@@ -854,7 +854,7 @@
       "tool": "get_calendar",
       "ok": true,
       "summary": "get_calendar 성공",
-      "duration_ms": 1,
+      "duration_ms": 0,
       "replan_round": 1
      },
      {
@@ -874,7 +874,7 @@
       "tool": "get_night_window",
       "ok": true,
       "summary": "박명·출몰 조회 성공",
-      "duration_ms": 897,
+      "duration_ms": 1091,
       "replan_round": 1
      },
      {
@@ -894,7 +894,7 @@
       "tool": "get_night_window",
       "ok": true,
       "summary": "박명·출몰 조회 성공",
-      "duration_ms": 952,
+      "duration_ms": 1020,
       "replan_round": 1
      },
      {
@@ -944,7 +944,7 @@
       "tool": null,
       "ok": null,
       "summary": "Tool 호출 5회(실패 0) · 캐시 재사용 1회 · 후보 2개",
-      "duration_ms": 1898,
+      "duration_ms": 2156,
       "replan_round": 1
      },
      {
@@ -974,7 +974,7 @@
       "tool": null,
       "ok": null,
       "summary": "불충족 2 · 재계획 2회차(같은 기간 다른 현상)",
-      "duration_ms": 4,
+      "duration_ms": 5,
       "replan_round": 2
      },
      {
@@ -1024,7 +1024,7 @@
       "tool": "search_sky_events",
       "ok": true,
       "summary": "천문현상 조회 성공",
-      "duration_ms": 247,
+      "duration_ms": 323,
       "replan_round": 2
      },
      {
@@ -1044,7 +1044,7 @@
       "tool": "get_night_window",
       "ok": true,
       "summary": "박명·출몰 조회 성공",
-      "duration_ms": 792,
+      "duration_ms": 1256,
       "replan_round": 2
      },
      {
@@ -1064,7 +1064,7 @@
       "tool": "get_night_window",
       "ok": true,
       "summary": "박명·출몰 조회 성공",
-      "duration_ms": 858,
+      "duration_ms": 1136,
       "replan_round": 2
      },
      {
@@ -1084,7 +1084,7 @@
       "tool": "get_night_window",
       "ok": true,
       "summary": "박명·출몰 조회 성공",
-      "duration_ms": 818,
+      "duration_ms": 1046,
       "replan_round": 2
      },
      {
@@ -1104,7 +1104,7 @@
       "tool": "get_night_window",
       "ok": true,
       "summary": "박명·출몰 조회 성공",
-      "duration_ms": 808,
+      "duration_ms": 969,
       "replan_round": 2
      },
      {
@@ -1194,7 +1194,7 @@
       "tool": null,
       "ok": null,
       "summary": "Tool 호출 9회(실패 0) · 캐시 재사용 5회 · 후보 8개",
-      "duration_ms": 3615,
+      "duration_ms": 4807,
       "replan_round": 2
      },
      {
@@ -1224,7 +1224,7 @@
       "tool": null,
       "ok": null,
       "summary": "불충족 8 · 재계획 3회차(인접 지역)",
-      "duration_ms": 5,
+      "duration_ms": 3,
       "replan_round": 3
      },
      {
@@ -1274,7 +1274,7 @@
       "tool": "get_night_window",
       "ok": true,
       "summary": "박명·출몰 조회 성공",
-      "duration_ms": 891,
+      "duration_ms": 1080,
       "replan_round": 3
      },
      {
@@ -1294,7 +1294,7 @@
       "tool": "get_night_window",
       "ok": true,
       "summary": "박명·출몰 조회 성공",
-      "duration_ms": 818,
+      "duration_ms": 962,
       "replan_round": 3
      },
      {
@@ -1314,7 +1314,7 @@
       "tool": "get_night_window",
       "ok": true,
       "summary": "박명·출몰 조회 성공",
-      "duration_ms": 976,
+      "duration_ms": 1218,
       "replan_round": 3
      },
      {
@@ -1334,7 +1334,7 @@
       "tool": "get_night_window",
       "ok": true,
       "summary": "박명·출몰 조회 성공",
-      "duration_ms": 1002,
+      "duration_ms": 919,
       "replan_round": 3
      },
      {
@@ -1354,7 +1354,7 @@
       "tool": "get_night_window",
       "ok": true,
       "summary": "박명·출몰 조회 성공",
-      "duration_ms": 851,
+      "duration_ms": 1112,
       "replan_round": 3
      },
      {
@@ -1374,7 +1374,7 @@
       "tool": "get_night_window",
       "ok": true,
       "summary": "박명·출몰 조회 성공",
-      "duration_ms": 869,
+      "duration_ms": 1235,
       "replan_round": 3
      },
      {
@@ -1504,7 +1504,7 @@
       "tool": null,
       "ok": null,
       "summary": "Tool 호출 12회(실패 0) · 캐시 재사용 2회 · 후보 8개",
-      "duration_ms": 5530,
+      "duration_ms": 6622,
       "replan_round": 3
      },
      {
@@ -1543,15 +1543,15 @@
       "stage": "respond",
       "tool": null,
       "ok": null,
-      "summary": "plan 응답 631자",
-      "duration_ms": 3426,
+      "summary": "plan 응답 679자",
+      "duration_ms": 13429,
       "replan_round": 3
      }
     ],
     "warnings": [],
     "safety_note": "야간 관측 시 이동 안전과 방한에 유의하세요."
    },
-   "elapsed_s": 17.09
+   "elapsed_s": 30.9
   }
  ]
 }

@@ -1,0 +1,207 @@
+{
+  "status": 200,
+  "response": [
+    {
+      "session_id": "recheck-f4014c7bfa854190800247e47223d86f",
+      "seq": 1,
+      "ts": "2026-11-20T00:59:57.020870Z",
+      "type": "session_start",
+      "stage": null,
+      "tool": null,
+      "payload": {
+        "message": "2030년 12월 14일 서울에서 밤 10시부터 다음 날 새벽 2시까지 유성우 관측 계획을 짜줘. 날짜는 고정이야."
+      }
+    },
+    {
+      "session_id": "recheck-f4014c7bfa854190800247e47223d86f",
+      "seq": 2,
+      "ts": "2026-11-20T00:59:57.027052Z",
+      "type": "stage_start",
+      "stage": "analyze",
+      "tool": null,
+      "payload": {}
+    },
+    {
+      "session_id": "recheck-f4014c7bfa854190800247e47223d86f",
+      "seq": 3,
+      "ts": "2026-11-20T00:59:59.319443Z",
+      "type": "llm_decision",
+      "stage": "analyze",
+      "tool": null,
+      "payload": {
+        "decision": "plan",
+        "reason": "서울에서 특정 밤(2030-12-14 22:00~다음날 02:00) 유성우 관측 계획을 요청했고 날짜 고정을 명시함.",
+        "model": "claude-haiku-5-5"
+      }
+    },
+    {
+      "session_id": "recheck-f4014c7bfa854190800247e47223d86f",
+      "seq": 4,
+      "ts": "2026-11-20T00:59:59.324444Z",
+      "type": "stage_end",
+      "stage": "analyze",
+      "tool": null,
+      "payload": {
+        "duration_ms": 2293,
+        "summary": "의도 plan"
+      }
+    },
+    {
+      "session_id": "recheck-f4014c7bfa854190800247e47223d86f",
+      "seq": 5,
+      "ts": "2026-11-20T00:59:59.328450Z",
+      "type": "stage_start",
+      "stage": "plan",
+      "tool": null,
+      "payload": {}
+    },
+    {
+      "session_id": "recheck-f4014c7bfa854190800247e47223d86f",
+      "seq": 6,
+      "ts": "2026-11-20T00:59:59.332508Z",
+      "type": "stage_end",
+      "stage": "plan",
+      "tool": null,
+      "payload": {
+        "duration_ms": 0,
+        "summary": "4단계 계획: 현상 → 내 일정 → 출몰·월령 → 날씨 (search_sky_events → get_calendar → get_night_window → get_sky_forecast)"
+      }
+    },
+    {
+      "session_id": "recheck-f4014c7bfa854190800247e47223d86f",
+      "seq": 7,
+      "ts": "2026-11-20T00:59:59.337566Z",
+      "type": "stage_start",
+      "stage": "execute",
+      "tool": null,
+      "payload": {}
+    },
+    {
+      "session_id": "recheck-f4014c7bfa854190800247e47223d86f",
+      "seq": 8,
+      "ts": "2026-11-20T00:59:59.342959Z",
+      "type": "tool_call",
+      "stage": "execute",
+      "tool": "search_sky_events",
+      "payload": {
+        "args": {
+          "year": 2030,
+          "month": 12,
+          "kind": "meteor"
+        },
+        "reason": "2030-12 meteor 날짜·시각 확인"
+      }
+    },
+    {
+      "session_id": "recheck-f4014c7bfa854190800247e47223d86f",
+      "seq": 9,
+      "ts": "2026-11-20T00:59:59.558460Z",
+      "type": "tool_result",
+      "stage": "execute",
+      "tool": "search_sky_events",
+      "payload": {
+        "ok": false,
+        "error": {
+          "code": "NO_RESULT",
+          "message": "2030년 12월 천문현상 (meteor) 없음"
+        },
+        "duration_ms": 212
+      }
+    },
+    {
+      "session_id": "recheck-f4014c7bfa854190800247e47223d86f",
+      "seq": 10,
+      "ts": "2026-11-20T00:59:59.563463Z",
+      "type": "tool_call",
+      "stage": "execute",
+      "tool": "get_calendar",
+      "payload": {
+        "args": {
+          "date_from": "2030-12-14",
+          "date_to": "2030-12-15"
+        },
+        "reason": "기존 일정과 겹치는 관측 시간 확인"
+      }
+    },
+    {
+      "session_id": "recheck-f4014c7bfa854190800247e47223d86f",
+      "seq": 11,
+      "ts": "2026-11-20T00:59:59.980839Z",
+      "type": "tool_result",
+      "stage": "execute",
+      "tool": "get_calendar",
+      "payload": {
+        "ok": true,
+        "data": "{\"data\":{\"provider\":\"google\",\"date_from\":\"2030-12-14\",\"date_to\":\"2030-12-15\",\"events\":[]}}",
+        "duration_ms": 414
+      }
+    },
+    {
+      "session_id": "recheck-f4014c7bfa854190800247e47223d86f",
+      "seq": 12,
+      "ts": "2026-11-20T00:59:59.985321Z",
+      "type": "stage_end",
+      "stage": "execute",
+      "tool": null,
+      "payload": {
+        "duration_ms": 643,
+        "summary": "Tool 호출 2회(실패 1) · 캐시 재사용 0회 · 후보 0개"
+      }
+    },
+    {
+      "session_id": "recheck-f4014c7bfa854190800247e47223d86f",
+      "seq": 13,
+      "ts": "2026-11-20T00:59:59.989626Z",
+      "type": "stage_start",
+      "stage": "judge",
+      "tool": null,
+      "payload": {}
+    },
+    {
+      "session_id": "recheck-f4014c7bfa854190800247e47223d86f",
+      "seq": 14,
+      "ts": "2026-11-20T00:59:59.992767Z",
+      "type": "stage_end",
+      "stage": "judge",
+      "tool": null,
+      "payload": {
+        "duration_ms": 0,
+        "summary": "후보 0개 · 고정 조건 때문에 적용할 전략 없음 → 재계획 종료"
+      }
+    },
+    {
+      "session_id": "recheck-f4014c7bfa854190800247e47223d86f",
+      "seq": 15,
+      "ts": "2026-11-20T00:59:59.996767Z",
+      "type": "stage_start",
+      "stage": "respond",
+      "tool": null,
+      "payload": {}
+    },
+    {
+      "session_id": "recheck-f4014c7bfa854190800247e47223d86f",
+      "seq": 16,
+      "ts": "2026-11-20T01:00:02.109598Z",
+      "type": "stage_end",
+      "stage": "respond",
+      "tool": null,
+      "payload": {
+        "duration_ms": 2108,
+        "summary": "plan 응답 430자"
+      }
+    },
+    {
+      "session_id": "recheck-f4014c7bfa854190800247e47223d86f",
+      "seq": 17,
+      "ts": "2026-11-20T01:00:02.129029Z",
+      "type": "session_end",
+      "stage": null,
+      "tool": null,
+      "payload": {
+        "intent": "plan",
+        "replan_count": 0,
+        "duration_ms": 5108
+      }
+    }
+  ]
+}

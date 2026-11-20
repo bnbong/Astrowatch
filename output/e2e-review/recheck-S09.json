@@ -1,0 +1,239 @@
+{
+  "id": "S09",
+  "message": "2026년 11월 18일 대전 근처 천문대를 20km 이내에서 찾아줘.",
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/api/chat",
+    "headers": {
+      "X-Requested-With": "Astrowatch",
+      "Origin": "http://127.0.0.1:8000"
+    },
+    "json": {
+      "session_id": "recheck-de93b871d22942068e653a6b77ff64b2",
+      "message": "2026년 11월 18일 대전 근처 천문대를 20km 이내에서 찾아줘."
+    }
+  },
+  "started_at": "2026-11-20T10:00:11+0900",
+  "status": 200,
+  "seconds": 3.97,
+  "response": {
+    "session_id": "recheck-de93b871d22942068e653a6b77ff64b2",
+    "intent": "fact",
+    "answer": "2026년 11월 18일 대전 근처 20km 이내 천문대 검색 결과, 7곳이 확인되었습니다. 가까운 순서는 다음과 같습니다.\n\n1. 대전시민천문대 (약 4.4km) - 대전 유성구 과학로 213-48\n2. 대덕전파천문대 (약 5.3km) - 대전 유성구 대덕대로 776\n3. 한국천문연구원 천문대 (약 5.3km) - 대전 유성구 대덕대로 776\n4. 대전어린이천문대 주차장 (약 8.6km) - 대전 유성구 현충원로 165\n5. 대전어린이천문대 (약 8.6km) - 대전 유성구 현충원로 165\n\n나머지 2곳의 정보는 이번 응답에서 확인되지 않았습니다. 천문대 운영 시간과 관측 가능 여부는 날씨와 행사 일정에 따라 달라질 수 있으니 방문 전 확인이 필요합니다.",
+    "conditions": {
+      "date_from": "2026-11-18",
+      "date_to": "2026-11-18",
+      "start_minute": null,
+      "region": "대전 근처",
+      "event_kind": null,
+      "event_query": null,
+      "place_query": "천문대",
+      "end_minute": null,
+      "max_distance_km": 20.0,
+      "allow_partly_cloudy": false,
+      "avoid_moon": true,
+      "fixed": [
+        "date_from"
+      ]
+    },
+    "needs_clarification": [],
+    "recommended": [],
+    "excluded": [],
+    "places": [
+      {
+        "place_id": "8263441",
+        "name": "대전시민천문대",
+        "address": "대전 유성구 과학로 213-48",
+        "url": "http://place.map.kakao.com/8263441",
+        "distance_m": 4431,
+        "category": "관광명소"
+      },
+      {
+        "place_id": "1231832531",
+        "name": "대덕전파천문대",
+        "address": "대전 유성구 대덕대로 776",
+        "url": "http://place.map.kakao.com/1231832531",
+        "distance_m": 5300,
+        "category": "관광명소"
+      },
+      {
+        "place_id": "1696348207",
+        "name": "한국천문연구원 천문대",
+        "address": "대전 유성구 대덕대로 776",
+        "url": "http://place.map.kakao.com/1696348207",
+        "distance_m": 5304,
+        "category": null
+      },
+      {
+        "place_id": "1003273121",
+        "name": "대전어린이천문대 주차장",
+        "address": "대전 유성구 현충원로 165",
+        "url": "http://place.map.kakao.com/1003273121",
+        "distance_m": 8573,
+        "category": "주차장"
+      },
+      {
+        "place_id": "1835584605",
+        "name": "대전어린이천문대",
+        "address": "대전 유성구 현충원로 165",
+        "url": "http://place.map.kakao.com/1835584605",
+        "distance_m": 8576,
+        "category": "관광명소"
+      },
+      {
+        "place_id": "1364625622",
+        "name": "세종어린이천문대",
+        "address": "세종특별자치시 장군면 금송로 293",
+        "url": "http://place.map.kakao.com/1364625622",
+        "distance_m": 17787,
+        "category": null
+      },
+      {
+        "place_id": "226451234",
+        "name": "타슈스테이션 천문대입구",
+        "address": "대전 유성구 신성동 458",
+        "url": "http://place.map.kakao.com/226451234",
+        "distance_m": 4464,
+        "category": null
+      }
+    ],
+    "replan_count": 0,
+    "replan_limit": 3,
+    "replan_limit_reached": false,
+    "stop_reason": null,
+    "steps": [
+      {
+        "seq": 2,
+        "type": "stage_start",
+        "stage": "analyze",
+        "tool": null,
+        "ok": null,
+        "summary": "요청 분석 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 3,
+        "type": "llm_decision",
+        "stage": "analyze",
+        "tool": null,
+        "ok": null,
+        "summary": "의도 판단: fact - 현상·대상·관측 시간 없이 장소(천문대)만 찾아 달라는 요청이므로 fact의 places 질문이다. / fact_kind=places(LLM)",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 4,
+        "type": "stage_end",
+        "stage": "analyze",
+        "tool": null,
+        "ok": null,
+        "summary": "의도 fact",
+        "duration_ms": 1998,
+        "replan_round": null
+      },
+      {
+        "seq": 5,
+        "type": "stage_start",
+        "stage": "plan",
+        "tool": null,
+        "ok": null,
+        "summary": "작업 계획 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 6,
+        "type": "stage_end",
+        "stage": "plan",
+        "tool": null,
+        "ok": null,
+        "summary": "1단계 계획: 사실 조회(places): search_observatory",
+        "duration_ms": 0,
+        "replan_round": null
+      },
+      {
+        "seq": 7,
+        "type": "stage_start",
+        "stage": "execute",
+        "tool": null,
+        "ok": null,
+        "summary": "Tool 실행 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 8,
+        "type": "tool_call",
+        "stage": "execute",
+        "tool": "search_observatory",
+        "ok": null,
+        "summary": "관측지 검색 호출 (query=천문대, radius_km=20.0)",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 9,
+        "type": "tool_result",
+        "stage": "execute",
+        "tool": "search_observatory",
+        "ok": true,
+        "summary": "관측지 검색 성공",
+        "duration_ms": 213,
+        "replan_round": null
+      },
+      {
+        "seq": 10,
+        "type": "stage_end",
+        "stage": "execute",
+        "tool": null,
+        "ok": null,
+        "summary": "Tool 호출 1회(실패 0) · 캐시 재사용 0회 · 후보 0개",
+        "duration_ms": 225,
+        "replan_round": null
+      },
+      {
+        "seq": 11,
+        "type": "stage_start",
+        "stage": "judge",
+        "tool": null,
+        "ok": null,
+        "summary": "판정 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 12,
+        "type": "stage_end",
+        "stage": "judge",
+        "tool": null,
+        "ok": null,
+        "summary": "판정 생략 (계획 요청 아님)",
+        "duration_ms": 0,
+        "replan_round": null
+      },
+      {
+        "seq": 13,
+        "type": "stage_start",
+        "stage": "respond",
+        "tool": null,
+        "ok": null,
+        "summary": "응답 작성 시작",
+        "duration_ms": null,
+        "replan_round": null
+      },
+      {
+        "seq": 14,
+        "type": "stage_end",
+        "stage": "respond",
+        "tool": null,
+        "ok": null,
+        "summary": "fact 응답 371자",
+        "duration_ms": 1677,
+        "replan_round": null
+      }
+    ],
+    "warnings": [],
+    "safety_note": "야간 관측 시 이동 안전과 방한에 유의하세요."
+  }
+}
