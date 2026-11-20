@@ -192,10 +192,10 @@ output/e2e-review/    Codex 실제 E2E 리뷰 기록
 
 | 단계 | 할 일 |
 |---|---|
-| 1 | GitHub 저장소(`github` 리모트, `master` 브랜치)에 푸시한다. `data/space_docs.json` 이 함께 올라가야 빌드 때 색인을 만든다 |
+| 1 | GitHub 저장소(`github` 리모트)의 render.yaml 에 적은 브랜치(`main`)에 푸시한다. `data/space_docs.json` 이 함께 올라가야 빌드 때 색인을 만든다 |
 | 2 | Render 대시보드에서 New > Blueprint > 이 저장소 선택. render.yaml 대로 `astrowatch` 서비스가 만들어진다 |
 | 3 | Environment 에서 `sync: false` 로 둔 키를 넣는다: `DATA_GO_KR_KEY`, `KAKAO_REST_KEY`, 필요하면 `GMS_KEY`, `OPENWEATHER_KEY`. 없는 키의 기능은 안내 문구로 대체된다 |
-| 4 | `APP_ACCESS_TOKEN` 은 자동 생성된다. 화면을 처음 열면 토큰 입력 폼이 뜨므로 Environment 에서 값을 복사해 넣는다 |
+| 4 | `APP_ACCESS_TOKEN` 은 발급받는 값이 아니라 직접 정하는 비밀 문자열이다. render.yaml 의 `generateValue: true` 로 Render 가 무작위 값을 만들어 주며, 서비스의 Environment 탭에서 확인한다. 화면을 처음 열면 토큰 입력 폼이 뜨므로 그 값을 붙여 넣는다(탭의 sessionStorage 에만 보관) |
 | 5 | 배포가 끝나면 `https://<서비스 이름>.onrender.com` 으로 접속한다. 휴대폰에서는 같은 주소의 `/plans.html` 에서 "하늘에서 찾기" 를 누른다 |
 
 동작 방식과 제한
