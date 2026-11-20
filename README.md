@@ -21,7 +21,7 @@
 > **"오늘 밤, 어디서 몇 시에 별을 볼 수 있을까?"**  
 > 하늘이 어둡고, 달빛 방해가 적으며, 구름 없는 맑은 시간을 계산해 주는 **천문 관측 플래너**입니다.
 
-- **라이브 서비스 접속(2026/11/20 이후 링크 사용 불가)**: [https://astrowatch-jqtv.onrender.com/](https://astrowatch-jqtv.onrender.com/)
+- ~~**라이브 서비스 접속(2026/11/20 이후 링크 사용 불가)**: [https://astrowatch-jqtv.onrender.com/](https://astrowatch-jqtv.onrender.com/)~~
 
 ### 프로젝트 핵심 요약
 
@@ -29,7 +29,7 @@
 |---|---|
 | **프로젝트** | SSAFY AI 코어 3회차 "Agent 기반 도메인 플래너 서비스" (개인 / 3일) |
 | **도메인** | 천문 관측 ([VastHorizon](https://github.com/bnbong/VastHorizon) 우주 도메인 계승 및 발전) |
-| **라이브 배포** | Render 클라우드 HTTPS 서비스 운영 중(2026/11/20 이후 링크 사용 불가) ([서비스 접속](https://astrowatch-jqtv.onrender.com/)) |
+| **라이브 배포** | ~~Render 클라우드 HTTPS 서비스 운영 중(2026/11/20 이후 링크 사용 불가) ([서비스 접속](https://astrowatch-jqtv.onrender.com/))~~ |
 | **핵심 성과** | 5종 공공 API 및 8개 도구 연동 / Planner와 Worker 계층 분리형 LangGraph 에이전트 구축 / 심화 요구사항 4종 완수 / 자동화 테스트 440건 전원 통과 |
 
 ---
