@@ -362,7 +362,7 @@ def search_space_docs(args: DocsInput) -> ToolResult[DocsOutput]:
     return ok(DocsOutput(...), note=None)
 ```
 
-3. **로드**: `tools/registry.py` `load_builtin_tools()` 의 모듈 목록에 추가 (심화 모듈은 없으면 건너뜀). 이름 중복은 `ValueError`.
+3. **로드**: `tools/registry.py` `load_builtin_tools()` 의 import 목록에 추가 (내장 모듈이므로 import 오류는 숨기지 않고 그대로 올린다). 이름 중복은 `ValueError`.
 4. **흐름 연결**: `agent/nodes.py` 의 `build_plan`, `execute`, `summarize_result` 에 단계 추가.
 5. **테스트 패턴**: 네트워크 없이:
    - `conftest.py` 가 키를 지우고 임시 DB, `WEATHER_PROVIDER=mock` 으로 격리

@@ -18,7 +18,9 @@ class Task(BaseModel):
     args: dict[str, Any] = Field(default_factory=dict)
     fixed_args: list[str] = Field(default_factory=list, description="사용자 조건으로 고정한 인자. Worker 가 바꾸지 않는다")
     purpose: str = Field(default="", max_length=200)
-    depends_on: list[str] = Field(default_factory=list)
+    # 로그용 메타데이터: 데이터 흐름(박명 ← 현상, 예보 ← 박명)을 실행 로그에 보여 줄 뿐, Worker 는 이 값으로
+    # 순서를 정하지 않는다 (작업 목록 순서대로 실행). DAG 스케줄러 없음.
+    depends_on: list[str] = Field(default_factory=list, description="로그용. Worker 스케줄링에 쓰지 않는다")
 
 
 class TaskList(BaseModel):

@@ -20,7 +20,9 @@
 
 > ⚠️ E2E 리뷰(`output/e2e-review/`)는 **8절의 수정 이전** 코드, `gpt-6-luna` 로 실행했다. `samples/run_*.json` 과 화면은 수정, 보안 강화, LLM 전환 **이후** 코드로 다시 캡처했다. 수정 후 브라우저 E2E 재실행은 8절 참고.
 
-**자동 테스트**: 28개 파일, 442건 수집, **440 통과, 2 건너뜀**(POSIX 전용 권한, 심볼릭 링크 검사, Windows 에서 skip) (`cd backend && ..\.venv\Scripts\python.exe -X utf8 -m pytest -q -o addopts=""`, 2026-11-20 오후). 오전 제출 직전은 298 통과, 리뷰 시점은 181개였다(`output/e2e-review/pytest.txt`).
+**자동 테스트 (최종, 2026-11-20 14:55)**: 32개 파일, 512건 수집, **510 통과, 0 실패, 2 건너뜀**. 명령 `.venv/Scripts/python -m pytest backend/tests -o addopts='' -q -p no:cacheprovider --tb=short --junitxml=samples/pytest-final-20261120.xml`, 증빙 `samples/pytest-final-20261120.xml`. 건너뜀 2건은 `test_security.py` 의 POSIX 전용 검사(파일 권한 0600, 심볼릭 링크 거부)로 Windows 에서는 실행하지 않는다.
+
+과거 실행 기록(참고): 리뷰 시점 181건, 오전 제출본 298 통과, 심화 구현 직후 440 통과, Codex 리뷰 수정 후 497 통과, 셀프 체크리스트 1차 점검 때 496 통과 2 실패(세션 테스트가 구형 객체를 넘긴 계약 불일치, 14:30 수정), YAGNI 정리 후 510 통과.
 
 ---
 
@@ -137,7 +139,7 @@
 | 로컬 저장소 구현체로 조회, 등록 | `test_local_add_then_query`, `test_register_then_query_local`, `test_duplicate_registration_is_blocked` | ✅ 자동 테스트 |
 | Google 로 바꿔도 Tool 입출력 동일 | `test_switching_provider_keeps_tool_io`, `test_google_insert_args`, `test_google_list_args_and_parsing` (Google 클라이언트 가짜 객체) | ✅ 자동 테스트 |
 | 조회 일정이 판정에 반영 | `test_calendar_conflict_shrinks_window`, `test_calendar_full_overlap_unfit`, `test_calendar_auth_failure_continues` | ✅ 자동 테스트 |
-| 실제 Google 계정 | `scripts/google_auth.py` 로 토큰 발급, `events.list` 조회 확인 (11-18) | 조회 ✅, 등록(`events.insert`)은 개인 일정이 생기지 않도록 **의도적으로 미실행** (가짜 클라이언트 테스트만) |
+| 실제 Google 계정 | `scripts/google_auth.py` 로 토큰 발급, `events.list` 조회 확인 (11-18). **실제 등록 (11-20 15:07, 사용자 본인 계정)**: 계획 #10(안드로메다 은하, 대전, 11-29 18:47~22:19)을 화면의 캘린더 등록 버튼으로 등록 → Google 캘린더 앱에 제목 "[Astrowatch] 안드로메다 은하 관측", 시각, 설명(계획 번호와 판단 근거)이 그대로 생성됨. 화면 [26](screenshots/26_saved_calendar.png) (계정 주소는 가림), 앱의 등록 상태와 일정 열기 링크는 화면 [27](screenshots/27_plan_calendar_status.png) | 조회 ✅, 등록 ✅ (자동 테스트는 가짜 클라이언트, 실제 등록은 수동 1회) |
 
 ---
 
@@ -247,11 +249,11 @@ E2E 응답 시간 (S01~S19 성공 17건, 수정 전, `gpt-6-luna`): 중앙값 6.
 
 | 번호 | 확인 | 근거 | 결과 |
 |---|---|---|---|
-| NF3001 | 소스, 제출물에 키 없음 | `.gitignore` 의 `.env`, `secrets/` (`git check-ignore`), 추적 파일에 없음, 키는 `config.py` 가 환경변수로만 읽음. **보안 강화**: 로그 키 마스킹(`redact.py`: `test_redact_filter_masks_values`, `test_install_redaction_uses_settings`), 외부 API 예외 체인 차단(`test_http_exception_chain_cut`), 토큰 파일 0600 원자 저장, 심볼릭 링크 거부, 갱신 직렬화(`test_write_private_atomic`, `test_check_private_tightens_mode`, `test_symlink_rejected`(POSIX), `test_google_token_refresh_saved_privately`), 설정 경로 검증(`test_config_rejects_traversal`, `test_config_absolute_path_needs_flag`, `test_config_secret_path_rules`) | ✅ (Git 전체 이력 감사는 미검증) |
+| NF3001 | 소스, 제출물에 키 없음 | `.gitignore` 의 `.env`, `secrets/` (`git check-ignore`), 추적 파일에 없음, 키는 `config.py` 가 환경변수로만 읽음. **보안 강화**: 로그 키 마스킹(`redact.py`: `test_redact_filter_masks_values`, `test_install_redaction_uses_settings`), 외부 API 예외 체인 차단(`test_http_exception_chain_cut`), 토큰 파일 0600 원자 저장, 심볼릭 링크 거부, 갱신 직렬화(`test_write_private_atomic`, `test_check_private_tightens_mode`, `test_symlink_rejected`(POSIX), `test_google_token_refresh_saved_privately`), 설정 경로 검증(`test_config_rejects_traversal`, `test_config_absolute_path_needs_flag`, `test_config_secret_path_rules`) | ✅ 14:55 제출 묶음 전체 검색: 키 4종 값, Google client_secret 값, refresh_token/토큰 문자열 0건, `.env`, `secrets/`, `*.db` 미추적 (Git 전체 이력 감사는 미검증) |
 | NF3002 | 화면에 키, 오류 상세 없음 | E2E S20 경고 문구, `test_chat_exception_hides_details`, `test_calendar_auth_failure_continues` (토큰 문구 숨김). **보안 강화** (`tests/test_security.py`): CORS 허용 출처 한정(`test_cors_preflight_allowed_origin`, `test_cors_preflight_evil_origin`), CSRF 가드(`test_csrf_evil_origin_forbidden`, `test_csrf_cross_site_fetch_forbidden`, `test_csrf_custom_header_required`, `test_form_content_type_rejected`, `test_large_body_rejected`, `test_large_chunked_body_rejected`), 보안 헤더, CSP(`test_security_headers_html`, `test_security_headers_api`, `test_frontend_has_no_inline_scripts`), 접근 토큰, Host 제한(`test_access_token_required_when_set`, `test_untrusted_host_rejected`), 자원 한도(`test_chat_rate_limit`, `test_list_limit_offset`, `test_http_get_caps_response_size`), 입력 검증, 오류 축소(`test_session_id_pattern`, `test_plan_id_must_be_positive`, `test_validation_error_does_not_echo_input`, `test_update_plan_rejects_unknown_column`), 캘린더 멱등성(`test_add_twice_second_already_registered`, `test_concurrent_add_creates_one_event`, `test_google_409_is_already_registered`), 프론트 이스케이프(`test_timeline_escapes_unknown_type`) | ✅ |
-| NF3003 | Tool 실패에도 서비스 계속 | E2E S20, `test_tool_auth_failure_continues`, `test_exception_still_returns_response` | ✅ |
+| NF3003 | Tool 실패에도 서비스 계속 | E2E S20, `test_tool_auth_failure_continues`, `test_exception_still_returns_response`. **DB 쓰기 장애 E2E (15:05, `backend/scripts/db_fault_e2e.py`)**: 임시 DB 서버에서 DB 파일을 읽기 전용으로 바꾼 뒤 Tool 없는 요청과 Tool 있는 요청 모두 HTTP 200 과 정상 답변, 장애 중 이벤트 미기록과 판정 없음, 서버 로그에는 "실행 로그 저장 실패", "세션 저장 실패", "대화 턴 저장 실패" 경고만(처리되지 않은 Traceback 없음), 권한 복구 후 턴은 다시 기록(이벤트 8 → 74). 결과 `samples/db_fault_e2e.json`, 화면 [28](screenshots/28_db_fault_chat.png) | ✅ |
 | NF3004 | 재계획 상한 | E2E S08, `test_replan_limit`, `recursion_limit=60` | ✅ |
-| NF3005 | 처리 시간 | E2E 중앙값 6.30초, 최대 34.84초 (수정 전), 실측 2026-11-20: R1 7.5초 (classic, 09:44) / 10.4초 (planner_worker, 11:35), knowledge 12.2초, R4 6.9초, R7 2.1초, R3(mock, Tool 46회) 32.9초, andromeda 2턴(Tool 33회) 35.7초, R2(mock, Tool 28회) 30.9초 | 관측값만 (SLA 미정, 부하 시험 미검증) |
+| NF3005 | 처리 시간 | **합격 기준과 실측 (15:03, `backend/scripts/perf_check.py`, 실제 키와 LLM, 임시 DB, 세션마다 새로)**: R1(Tool 5회, LLM 2회) 5회 중앙값 9.49초, p95 12.3초, 최대 13.25초 (기준 중앙값 15초, 최대 40초 이하). R5(Tool 없음) 중앙값 3.52초 (기준 5초 이하). R7(되묻기) 중앙값 2.26초. 동시 3클라이언트 x 3회 R1: 9건 모두 성공(오류율 0%), 중앙값 11.11초, 최대 12.29초, 순차 대비 1.17배 (기준 2배 이내). 결과 `samples/perf_20261120.json`. 과거 기록: E2E 중앙값 6.30초, 최대 34.84초 (수정 전), 실측 2026-11-20: R1 7.5초 (classic, 09:44) / 10.4초 (planner_worker, 11:35), knowledge 12.2초, R4 6.9초, R7 2.1초, R3(mock, Tool 46회) 32.9초, andromeda 2턴(Tool 33회) 35.7초, R2(mock, Tool 28회) 30.9초 | ✅ 기준 5건 모두 충족 (부하는 동시 3명 수준까지만) |
 | NF3006 | 모듈 분리 | `frontend/` ↔ `backend/`, `agent/`, `tools/`, `clients/`, `events/`, `logging_agent/`, `storage/` | ✅ |
 | NF3007 | 출처, 이용 조건 기록 | [README 부록 B](../README.md#부록-b-외부-api-출처와-이용-조건), 계획엔 카카오 ID, 링크만 | ✅ 기록 (약관 준수 전반은 미검증) |
 
@@ -261,11 +263,11 @@ E2E 응답 시간 (S01~S19 성공 17건, 수정 전, `gpt-6-luna`): 중앙값 6.
 
 | 항목 | 상태 |
 |---|---|
-| 필수 F3001~F3019 동작 | ✅ 자동 테스트 440 통과(2 건너뜀), 실측 샘플 12종(오전 체크 20건 OK), 화면 25장, E2E + Codex HTTP 재검증 11건(FIXED 9, PARTIAL 2 → 수정) |
-| 선택 심화 동작, 필수 결과와 비교 | ✅ F3020 이상 판정 5세션 기대 일치, F3021 구조 전후 비교 표(`structure_compare.json`, 6 시나리오 x 3 구성), F3022 실측 knowledge 1건, F3023 자동 테스트 + 실제 Google 조회 (등록 미실행). 6절 |
+| 필수 F3001~F3019 동작 | ✅ 자동 테스트 510 통과(0 실패, 2 건너뜀, 14:55 `pytest-final.xml`), 실측 샘플 12종(오전 체크 20건 OK), 화면 25장, E2E + Codex HTTP 재검증 11건(FIXED 9, PARTIAL 2 → 수정) |
+| 선택 심화 동작, 필수 결과와 비교 | ✅ F3020 이상 판정 5세션 기대 일치, F3021 구조 전후 비교 표(`structure_compare.json`, 6 시나리오 x 3 구성), F3022 실측 knowledge 1건, F3023 자동 테스트 + 실제 Google 조회와 등록(화면 26, 27). 6절 |
 | 스크린샷, 실행 로그 첨부 | ✅ `docs/screenshots/` 25장, `docs/demo/` 영상, `samples/logs_*.json` 12개, [RUN_LOG_SAMPLE.md](RUN_LOG_SAMPLE.md) |
 | 문서 7종 + README | ✅ (`docs/` 6종 + 기획안 + README, 설치는 `docs/SETUP.md`) |
-| 셀프 체크리스트 | ⏳ 제공되면 12절에 반영 |
+| 셀프 체크리스트 | ✅ 32항목 점검 완료: 통과 31, 미확인 0, 해당없음 1, 실패 0. 12절 |
 
 ---
 
@@ -307,16 +309,27 @@ flowchart LR
 | 23 | [23_pointer_mobile.png](screenshots/23_pointer_mobile.png) | 하늘 가리키기, 모바일 화면 | 명세 외, F3018 |
 | 24 | [24_logs_audit_panel.png](screenshots/24_logs_audit_panel.png) | 실행 로그 판정 배지(정상, 이상, 판정 불가)와 "로깅 Agent 판정" 패널: demo-audit-replan, 재계획 과다 근거 #8 #13 #18, 실제 LLM 진단(원인 쪽 Planner) | 4.6 F3020 |
 | 25 | [25_knowledge_rag_sources.png](screenshots/25_knowledge_rag_sources.png) | 배경 지식 질문 답변과 끝의 출처 줄 | 4.6 F3022 |
+| 26 | [26_saved_calendar.png](screenshots/26_saved_calendar.png) | Google 캘린더 앱에 등록된 관측 일정 (제목, 시각, 설명). 계정 주소는 가림 | 4.6 F3023 |
+| 27 | [27_plan_calendar_status.png](screenshots/27_plan_calendar_status.png) | 계획 화면의 "캘린더에 등록됨 (google)" 상태와 일정 열기 링크 | 4.6 F3023 |
+| 28 | [28_db_fault_chat.png](screenshots/28_db_fault_chat.png) | DB 쓰기 장애 중에도 정상 답변, 실행 패널은 그대로 표시되고 로깅 Agent 판정만 비어 있음 | 4.8 NF3003 |
 | 없음 | [graph_structure.txt](graph_structure.txt) | `GET /api/graph` 그래프 구조 (mermaid) | 4.2 |
 
 미첨부: `/api/tools` 응답 원문, 겹침 알림, 캘린더 등록(로컬, Google), 기존 일정으로 창이 줄어든 판정, Worker LLM 이 retry 를 고른 실제 실행(가짜 LLM 테스트만), 색인 없음(`NO_INDEX`) 화면 (테스트만), 휴대폰 실기기 센서 동작 영상.
 
 ---
 
-## 12. 셀프 체크리스트 (미제공)
+## 12. 셀프 체크리스트
 
-3일차 오후 제공 예정. 받으면 항목, 결과, 근거를 이 절에 표로 옮긴다.
+파일: 저장소 루트의 `셀프체크리스트_이준혁_재작성.xlsx`. 점검 유형 셀프, 점검자 이준혁, 점검 일시 2026-11-20. 원본 양식의 드롭다운, 병합, 집계 수식, 인쇄 설정을 그대로 두고 G:I 열만 기입했다.
 
-| 항목 | 결과 | 근거 |
-|---|---|---|
-| (미제공) | | |
+| 집계 | 수 |
+|---|---|
+| 통과 | 31 |
+| 실패 | 0 |
+| 미확인 | 0 |
+| 해당없음 | 1 |
+| 전체 | 32 |
+
+1차 점검(14:24)에서는 27번 "제출 전 점검"이 실패였다. 세션 저장 계약이 추천 제목 목록(`list[str]`)으로 바뀌었는데 `test_sessions.py` 두 건이 구형 `JudgedCandidate` 객체를 넘겨 직렬화에 실패했고(496 통과, 2 실패), 테스트를 계약에 맞춰 고친 뒤 14:55 재실행에서 510 통과, 0 실패로 해소했다. 27번은 필수 동작(자동 테스트, 실측 샘플 12종), 심화 비교(6절), 제출물(요구사항 정의서, Agent 설계, Tool 정의서, API 명세, 소스, 실행 로그 샘플, README, 검증 결과, 화면 25장, 로그 12건)을 모두 확인한 뒤 통과로 바꿨다. 25번(비밀정보)은 1차 점검 때 "제출 묶음 전체 검사 미실시"로 미확인이었고, 14:55 전체 검색(9절 NF3001)으로 통과로 바꿨다. 17번(로그 저장 실패 시 정상)과 23번(응답 시간)은 사용자와 합의한 계획대로 15:03~15:10 에 실제 DB 쓰기 장애 E2E 와 응답 시간/동시 부하 측정을 실행해(9절 NF3003, NF3005) 통과로 바꿨다. 32번(캘린더)은 사용자가 15:07 실제 Google 계정에 등록한 화면 26, 27을 받아 통과로 바꿨다.
+
+남은 미확인 항목: 없음. 해당없음 1건은 13번(위험 도메인 면책 문구)으로, 천문 관측 도메인이라 의료/금융 조언에 해당하지 않는다.

@@ -85,14 +85,20 @@ registry = ToolRegistry()
 
 
 def load_builtin_tools() -> ToolRegistry:
-    """필수 Tool 4개(+심화)를 import 해 등록한다. 앱 시작과 테스트에서 한 번 호출."""
-    import importlib
+    """내장 Tool 8개를 import 해 등록한다. 앱 시작과 테스트에서 한 번 호출.
 
-    for mod in ("sky_events", "night_window", "sky_forecast", "observatory"):
-        importlib.import_module(f"astrowatch.tools.{mod}")
-    for mod in ("space_docs", "calendar", "sky_object"):  # 심화 — 없으면 건너뜀
-        try:
-            importlib.import_module(f"astrowatch.tools.{mod}")
-        except ModuleNotFoundError:
-            pass
+    모두 완성된 내장 모듈이라 import 오류는 그대로 올린다 (코드 오류를 "기능 없음"으로 숨기지 않는다).
+    키, 색인, Google 인증, chromadb 같은 실행 환경 문제는 import 시점이 아니라 Tool 호출 때
+    Tool 오류 계약(AUTH, NO_INDEX 등)으로 돌려준다. 무거운 선택 의존성은 각 Tool 함수 안에서 지연 import.
+    """
+    from astrowatch.tools import (  # noqa: F401 (import 시 registry 에 등록)
+        calendar,
+        night_window,
+        observatory,
+        sky_events,
+        sky_forecast,
+        sky_object,
+        space_docs,
+    )
+
     return registry

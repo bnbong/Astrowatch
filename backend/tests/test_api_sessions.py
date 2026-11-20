@@ -70,3 +70,19 @@ def test_delete_keeps_run_logs(client, seeded):
 def test_delete_session_row_only(client):
     sessions.save_session("sess-002", conditions=Conditions(), memory_summary=None, last_recommended=[], history=[])
     assert client.delete("/api/sessions/sess-002").status_code == 204
+
+
+def test_delete_clears_session_state_and_tool_cache(client, seeded):
+    """회귀: 삭제 뒤 같은 id 로 이어 말해도 옛 조건과 Tool 캐시를 쓰지 않는다."""
+    from astrowatch.agent import memory
+    from astrowatch.tools.base import ok
+
+    memory.reset_memory()
+    sessions.save_session("sess-001", conditions=Conditions(region="강원"), memory_summary="요약",
+                          last_recommended=["유성우"], history=[{"role": "user", "content": "강원"}])
+    memory.remember_tool_results("sess-001", {"search_sky_events|k": ok({"n": 1})})
+    assert memory.load("sess-001").conditions.region == "강원"
+    assert client.delete("/api/sessions/sess-001").status_code == 204
+    assert memory.load("sess-001").conditions == Conditions()
+    assert memory.load("sess-001").last_recommended == []
+    assert memory.cached_tool_results("sess-001") == {}

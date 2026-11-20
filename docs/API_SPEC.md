@@ -299,7 +299,7 @@ X-Requested-With: Astrowatch
 
 ### `DELETE /api/sessions/{session_id}` → 204
 
-해당 세션의 `turns` 행과 `sessions` 행(LLM 맥락)만 지운다. **실행 로그(`run_logs`)는 남는다**: 지우려면 `DELETE /api/logs/{id}`.
+해당 세션의 `turns` 행과 `sessions` 행(LLM 맥락), 그 세션의 프로세스 내 Tool 결과 캐시만 지운다. 같은 id 로 다시 말하면 이전 조건 없이 시작한다. **실행 로그(`run_logs`)는 남는다**: 지우려면 `DELETE /api/logs/{id}`.
 
 | 상태 | 경우 |
 |---|---|

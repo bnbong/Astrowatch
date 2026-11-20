@@ -1,0 +1,308 @@
+{
+  "captured_at": "2026-11-20T15:03:57+0900",
+  "criteria": {
+    "R1_median_s": 15.0,
+    "R1_max_s": 40.0,
+    "R5_median_s": 5.0,
+    "concurrent_error_rate": 0.0,
+    "concurrent_median_ratio": 2.0
+  },
+  "llm": "claude-haiku-5-5 (GMS)",
+  "sequential": {
+    "R1": {
+      "message": "12월 14일 쌍둥이자리 유성우, 서울에서 밤 10시부터 새벽 2시까지 볼 수 있어?",
+      "n": 5,
+      "ok": 5,
+      "median_s": 9.49,
+      "p95_s": 12.3,
+      "max_s": 13.25,
+      "min_s": 8.81,
+      "runs": [
+        {
+          "session_id": "7ff7975fa0de",
+          "ok": true,
+          "http": 200,
+          "wall_s": 13.25,
+          "server_ms": 12888,
+          "intent": "plan",
+          "tool_calls": 4,
+          "llm_calls": 1
+        },
+        {
+          "session_id": "8d63499ecfc2",
+          "ok": true,
+          "http": 200,
+          "wall_s": 8.81,
+          "server_ms": 8796,
+          "intent": "plan",
+          "tool_calls": 4,
+          "llm_calls": 1
+        },
+        {
+          "session_id": "e7f4abf7570a",
+          "ok": true,
+          "http": 200,
+          "wall_s": 12.3,
+          "server_ms": 12281,
+          "intent": "plan",
+          "tool_calls": 4,
+          "llm_calls": 1
+        },
+        {
+          "session_id": "e79f0434ae9d",
+          "ok": true,
+          "http": 200,
+          "wall_s": 9.49,
+          "server_ms": 9459,
+          "intent": "plan",
+          "tool_calls": 4,
+          "llm_calls": 1
+        },
+        {
+          "session_id": "52557911d3ed",
+          "ok": true,
+          "http": 200,
+          "wall_s": 9.38,
+          "server_ms": 9343,
+          "intent": "plan",
+          "tool_calls": 4,
+          "llm_calls": 1
+        }
+      ]
+    },
+    "R5": {
+      "message": "안녕, 이거 어떻게 써?",
+      "n": 5,
+      "ok": 5,
+      "median_s": 3.52,
+      "p95_s": 3.53,
+      "max_s": 3.54,
+      "min_s": 3.34,
+      "runs": [
+        {
+          "session_id": "e9e94cd14351",
+          "ok": true,
+          "http": 200,
+          "wall_s": 3.45,
+          "server_ms": 3439,
+          "intent": "chat",
+          "tool_calls": 0,
+          "llm_calls": 1
+        },
+        {
+          "session_id": "8f35125fd1c3",
+          "ok": true,
+          "http": 200,
+          "wall_s": 3.52,
+          "server_ms": 3490,
+          "intent": "chat",
+          "tool_calls": 0,
+          "llm_calls": 1
+        },
+        {
+          "session_id": "37676e647526",
+          "ok": true,
+          "http": 200,
+          "wall_s": 3.54,
+          "server_ms": 3506,
+          "intent": "chat",
+          "tool_calls": 0,
+          "llm_calls": 1
+        },
+        {
+          "session_id": "09bae927b409",
+          "ok": true,
+          "http": 200,
+          "wall_s": 3.53,
+          "server_ms": 3501,
+          "intent": "chat",
+          "tool_calls": 0,
+          "llm_calls": 1
+        },
+        {
+          "session_id": "c4b11f12b4b0",
+          "ok": true,
+          "http": 200,
+          "wall_s": 3.34,
+          "server_ms": 3321,
+          "intent": "chat",
+          "tool_calls": 0,
+          "llm_calls": 1
+        }
+      ]
+    },
+    "R7": {
+      "message": "밤 11시 전엔 들어와야 해",
+      "n": 5,
+      "ok": 5,
+      "median_s": 2.26,
+      "p95_s": 2.27,
+      "max_s": 2.51,
+      "min_s": 2.14,
+      "runs": [
+        {
+          "session_id": "babde3db1d69",
+          "ok": true,
+          "http": 200,
+          "wall_s": 2.16,
+          "server_ms": 2131,
+          "intent": "clarify",
+          "tool_calls": 0,
+          "llm_calls": 1
+        },
+        {
+          "session_id": "e2411bb94359",
+          "ok": true,
+          "http": 200,
+          "wall_s": 2.26,
+          "server_ms": 2233,
+          "intent": "clarify",
+          "tool_calls": 0,
+          "llm_calls": 1
+        },
+        {
+          "session_id": "f7e026ea1cd5",
+          "ok": true,
+          "http": 200,
+          "wall_s": 2.51,
+          "server_ms": 2499,
+          "intent": "clarify",
+          "tool_calls": 0,
+          "llm_calls": 1
+        },
+        {
+          "session_id": "5b5aa75ecfec",
+          "ok": true,
+          "http": 200,
+          "wall_s": 2.14,
+          "server_ms": 2115,
+          "intent": "clarify",
+          "tool_calls": 0,
+          "llm_calls": 1
+        },
+        {
+          "session_id": "7ca4bee9a61c",
+          "ok": true,
+          "http": 200,
+          "wall_s": 2.27,
+          "server_ms": 2246,
+          "intent": "clarify",
+          "tool_calls": 0,
+          "llm_calls": 1
+        }
+      ]
+    }
+  },
+  "concurrent": {
+    "clients": 3,
+    "each": 3,
+    "total_wall_s": 34.3,
+    "n": 9,
+    "ok": 9,
+    "median_s": 11.11,
+    "p95_s": 12.15,
+    "max_s": 12.29,
+    "min_s": 8.83,
+    "runs": [
+      {
+        "session_id": "5a6c549b28c7",
+        "ok": true,
+        "http": 200,
+        "wall_s": 9.31,
+        "server_ms": 9295,
+        "intent": "plan",
+        "tool_calls": 4,
+        "llm_calls": 1
+      },
+      {
+        "session_id": "ed0f85f9aea1",
+        "ok": true,
+        "http": 200,
+        "wall_s": 12.29,
+        "server_ms": 12274,
+        "intent": "plan",
+        "tool_calls": 4,
+        "llm_calls": 1
+      },
+      {
+        "session_id": "69133ab42d1f",
+        "ok": true,
+        "http": 200,
+        "wall_s": 12.15,
+        "server_ms": 12130,
+        "intent": "plan",
+        "tool_calls": 4,
+        "llm_calls": 1
+      },
+      {
+        "session_id": "da966b2701fe",
+        "ok": true,
+        "http": 200,
+        "wall_s": 9.59,
+        "server_ms": 9557,
+        "intent": "plan",
+        "tool_calls": 4,
+        "llm_calls": 1
+      },
+      {
+        "session_id": "72a7aea1ba54",
+        "ok": true,
+        "http": 200,
+        "wall_s": 9.31,
+        "server_ms": 9267,
+        "intent": "plan",
+        "tool_calls": 4,
+        "llm_calls": 1
+      },
+      {
+        "session_id": "441ff4dee8bb",
+        "ok": true,
+        "http": 200,
+        "wall_s": 8.83,
+        "server_ms": 8814,
+        "intent": "plan",
+        "tool_calls": 4,
+        "llm_calls": 1
+      },
+      {
+        "session_id": "ef10e5db8bc1",
+        "ok": true,
+        "http": 200,
+        "wall_s": 11.47,
+        "server_ms": 11454,
+        "intent": "plan",
+        "tool_calls": 4,
+        "llm_calls": 1
+      },
+      {
+        "session_id": "814f0d005852",
+        "ok": true,
+        "http": 200,
+        "wall_s": 11.11,
+        "server_ms": 11080,
+        "intent": "plan",
+        "tool_calls": 4,
+        "llm_calls": 1
+      },
+      {
+        "session_id": "337dbbc24026",
+        "ok": true,
+        "http": 200,
+        "wall_s": 11.62,
+        "server_ms": 11588,
+        "intent": "plan",
+        "tool_calls": 4,
+        "llm_calls": 1
+      }
+    ]
+  },
+  "concurrent_median_ratio": 1.17,
+  "concurrent_error_rate": 0.0,
+  "checks": {
+    "R1 중앙값 15초 이하": true,
+    "R1 최대 40초 이하": true,
+    "R5 중앙값 5초 이하": true,
+    "동시 요청 오류율 0%": true,
+    "동시 요청 중앙값 2배 이내": true
+  }
+}

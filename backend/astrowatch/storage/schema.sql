@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS sessions (
     session_id      TEXT PRIMARY KEY,
     conditions_json TEXT    NOT NULL DEFAULT '{}',
     memory_summary  TEXT,
-    last_recommended_json TEXT,                 -- 확정(confirm) 때 쓸 직전 추천 후보 요약
+    last_recommended_json TEXT,                 -- 직전 추천 제목 JSON 목록 (옛 행은 후보 전체 JSON, 제목만 읽음)
     history_json    TEXT    NOT NULL DEFAULT '[]',
     created_at      TEXT    NOT NULL,
     updated_at      TEXT    NOT NULL

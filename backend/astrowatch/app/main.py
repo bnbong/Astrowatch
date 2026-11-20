@@ -35,12 +35,10 @@ FRONTEND_DIR = ROOT_DIR / "frontend"
 
 
 def _load_tools() -> None:
-    try:
-        from astrowatch.tools.registry import load_builtin_tools
+    """내장 Tool 등록. import 오류는 코드 오류이므로 숨기지 않고 시작을 멈춘다 (키 없음 등은 Tool 호출 때 오류 계약으로)."""
+    from astrowatch.tools.registry import load_builtin_tools
 
-        load_builtin_tools()
-    except Exception as exc:  # noqa: BLE001 — Tool 일부가 없어도 서버는 뜬다
-        logger.warning("Tool 로드 실패(일부 기능 제한): %s", type(exc).__name__)
+    load_builtin_tools()
 
 
 def _start_logging_agent() -> None:

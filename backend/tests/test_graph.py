@@ -322,7 +322,9 @@ def test_exception_still_returns_response(world, llm, monkeypatch):
     assert "secret" not in res.answer and all("secret" not in w for w in res.warnings)
 
 
-def test_single_fixed_date_skips_other_dates(world, llm, events):
+@pytest.mark.parametrize("structure", ["planner_worker", "classic"])
+def test_single_fixed_date_skips_other_dates(world, llm, events, monkeypatch, structure):
+    _use_structure(monkeypatch, structure)
     world.forecast = "cloudy"
     res = run_turn(None, R1_MSG)          # 날짜 하나 + 유연하다는 말 없음 → date_from 고정
     assert "date_from" in res.conditions.fixed
@@ -444,7 +446,17 @@ def with_object_tool(world, fresh_registry):
     return world
 
 
-def test_deep_sky_uses_object_altitude(with_object_tool, events, fixed_today):
+def _use_structure(monkeypatch, structure: str) -> None:
+    """classic execute 와 Worker 가 같은 변환(nodes.object_lookup 등)을 쓰는지 두 구조 모두에서 본다."""
+    from astrowatch.config import reset_settings_cache
+
+    monkeypatch.setenv("AGENT_STRUCTURE", structure)
+    reset_settings_cache()
+
+
+@pytest.mark.parametrize("structure", ["planner_worker", "classic"])
+def test_deep_sky_uses_object_altitude(with_object_tool, events, fixed_today, monkeypatch, structure):
+    _use_structure(monkeypatch, structure)
     world = with_object_tool
     set_chat_model_override(_TextFails())
     try:
@@ -463,9 +475,12 @@ def test_deep_sky_uses_object_altitude(with_object_tool, events, fixed_today):
         assert j.target_alt is not None and j.target_alt > 80
 
 
-def test_object_not_found_is_unjudged(with_object_tool, events, fixed_today, monkeypatch):
+@pytest.mark.parametrize("structure", ["planner_worker", "classic"])
+def test_object_not_found_is_unjudged(with_object_tool, events, fixed_today, monkeypatch, structure):
     """R1: 지목한 천체가 현상 목록·카탈로그 모두에 없으면 어두운 창 전체로 추천하지 않는다 (이전: 충족 추천)."""
     from astrowatch.astro import catalog
+
+    _use_structure(monkeypatch, structure)
 
     monkeypatch.setattr(catalog, "catalog", lambda: [])
     set_chat_model_override(_TextFails())
@@ -1186,3 +1201,19 @@ def test_analyze_prompt_mentions_docs_rule_only_when_registered(with_docs_tool, 
     finally:
         N._structured_invoke = orig
     assert P.KNOWLEDGE_RULE_ON in seen[0] and P.KNOWLEDGE_RULE_OFF in seen[1]
+
+
+def test_follow_up_after_delete_starts_fresh(world, llm):
+    """회귀: 대화를 지우면 같은 id 의 다음 턴은 이전 조건, Tool 캐시 없이 시작한다 (메모리 사본에서 되살리지 않음)."""
+    from astrowatch.app.api.sessions import delete_session
+    from astrowatch.storage import sessions as session_store
+
+    first = run_turn(None, R1_MSG)
+    assert session_store.load_session(first.session_id).conditions.event_query == "쌍둥이자리 유성우"
+    assert memory.cached_tool_results(first.session_id)
+    delete_session(first.session_id)
+    assert session_store.load_session(first.session_id) is None
+    assert memory.load(first.session_id).conditions.event_query is None
+    assert memory.cached_tool_results(first.session_id) == {}
+    second = run_turn(first.session_id, "같은 날 장소만 강원도로")
+    assert second.conditions.event_query != "쌍둥이자리 유성우"

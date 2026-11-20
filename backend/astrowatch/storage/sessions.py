@@ -1,4 +1,4 @@
-"""대화 맥락 저장소 (F3010). 조건 객체 · 메모리 요약 · 직전 추천 · 대화 이력만 저장한다."""
+"""대화 맥락 저장소 (F3010). 조건 객체, 메모리 요약, 직전 추천 제목, 대화 이력만 저장한다."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
 
-from astrowatch.schemas.domain import Conditions, JudgedCandidate
+from astrowatch.schemas.domain import Conditions
 from astrowatch.storage.db import connect
 from astrowatch.storage.plans import ensure_db
 
@@ -18,7 +18,7 @@ class SessionRecord:
     session_id: str
     conditions: Conditions
     memory_summary: str | None
-    last_recommended: list[JudgedCandidate] = field(default_factory=list)
+    last_recommended: list[str] = field(default_factory=list)   # 직전 추천 제목
     history: list[dict[str, str]] = field(default_factory=list)
     created_at: datetime | None = None
     updated_at: datetime | None = None
@@ -32,18 +32,30 @@ def _now() -> str:
     return datetime.now().isoformat(timespec="seconds")
 
 
+def _titles(raw: list[object]) -> list[str]:
+    """직전 추천 제목. 옛 행은 JudgedCandidate 전체(dict)를 담고 있으므로 제목만 꺼낸다."""
+    out: list[str] = []
+    for item in raw:
+        if isinstance(item, str):
+            out.append(item)
+        elif isinstance(item, dict):
+            cand = item.get("candidate")
+            title = cand.get("title") if isinstance(cand, dict) else None
+            out.append(str(title or ""))
+    return out
+
+
 def load_session(session_id: str, *, db_path: Path | None = None) -> SessionRecord | None:
     path = ensure_db(db_path)
     with connect(path) as conn:
         row = conn.execute("SELECT * FROM sessions WHERE session_id = ?", (session_id,)).fetchone()
     if row is None:
         return None
-    recommended = json.loads(row["last_recommended_json"] or "[]")
     return SessionRecord(
         session_id=row["session_id"],
         conditions=Conditions.model_validate(json.loads(row["conditions_json"] or "{}")),
         memory_summary=row["memory_summary"],
-        last_recommended=[JudgedCandidate.model_validate(c) for c in recommended],
+        last_recommended=_titles(json.loads(row["last_recommended_json"] or "[]")),
         history=json.loads(row["history_json"] or "[]"),
         created_at=datetime.fromisoformat(row["created_at"]),
         updated_at=datetime.fromisoformat(row["updated_at"]),
@@ -55,7 +67,7 @@ def save_session(
     *,
     conditions: Conditions,
     memory_summary: str | None,
-    last_recommended: list[JudgedCandidate],
+    last_recommended: list[str],
     history: list[dict[str, str]],
     db_path: Path | None = None,
 ) -> None:
@@ -77,7 +89,7 @@ def save_session(
                 session_id,
                 json.dumps(conditions.model_dump(mode="json"), ensure_ascii=False),
                 memory_summary,
-                json.dumps([c.model_dump(mode="json") for c in last_recommended], ensure_ascii=False),
+                json.dumps(list(last_recommended), ensure_ascii=False),
                 json.dumps(history, ensure_ascii=False, default=str),
                 now,
                 now,

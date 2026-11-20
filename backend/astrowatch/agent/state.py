@@ -40,7 +40,6 @@ class AgentState(TypedDict, total=False):
 
     # ── analyze ──
     intent: Intent
-    intent_reason: str                  # LLM 판단 이유 — llm_decision 이벤트에 실림
     conditions: Conditions              # 이전 턴 조건과 병합된 결과
     user_conditions: Conditions         # 기본값(날짜 범위) 을 채우기 전, 사용자가 말한 그대로의 조건
     prev_conditions: Conditions         # 이번 턴 전까지의 조건 (후속 요청에서 무엇이 바뀌었는지 설명용)
@@ -48,7 +47,6 @@ class AgentState(TypedDict, total=False):
 
     # ── plan ──
     plan: list[PlannedCall]
-    plan_reason: str
 
     # ── execute ──
     calls: list[ExecutedCall]           # 이번 턴에 부른 모든 Tool (재계획 포함, 순서대로)

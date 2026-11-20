@@ -77,8 +77,8 @@ flowchart TD
 
 | 단계 | 읽는 상태 | 쓰는 상태 | 하는 일 | LLM |
 |---|---|---|---|---|
-| analyze | `message`, `history`, 이전 `conditions`, `memory_summary` | `intent`, `intent_reason`, `conditions`, `user_conditions`, `prev_conditions`, `missing`, `fact_kind`, `date_defaulted`, `assumptions`, `date_issue`, `calendar_plan_id` | 의도, 조건 추출 → 이전 조건과 병합 → 되묻기 판단 → 날짜 기본 범위 | ✅ |
-| plan | `intent`, `conditions`, `fact_kind`, `calendar_plan_id` | `plan` (PlannedCall 목록), `plan_reason` | Tool 순서 결정 (규칙) | ❌ |
+| analyze | `message`, `history`, 이전 `conditions`, `memory_summary` | `intent`, `conditions`, `user_conditions`, `prev_conditions`, `missing`, `fact_kind`, `date_defaulted`, `assumptions`, `date_issue`, `calendar_plan_id` | 의도, 조건 추출 → 이전 조건과 병합 → 되묻기 판단 → 날짜 기본 범위 | ✅ |
+| plan | `intent`, `conditions`, `fact_kind`, `calendar_plan_id` | `plan` (PlannedCall 목록) | Tool 순서 결정 (규칙) | ❌ |
 | execute | `plan`, `cache`, `conditions` | `calls`, `cache`, `candidates`, `object_windows`, `object_meta` | 후보 날짜별 펼침 호출, 캐시 재사용, 후보 생성 | ❌ |
 | judge | `candidates`, `cache`, `object_*`, `replan_*` | `judged`, `replan_count`, `replan_strategy`, `replan_pending`, `replan_history`, `stop_reason`, `replan_limit_reached`, (재계획 시) `conditions` | 창 계산, 판정, 재계획 결정 | ❌ |
 | respond | 위 전부 | `answer`, `warnings`, `memory_summary` | 문장 생성 (되묻기, 대상 미확인, 캘린더는 템플릿) | ✅ (일부) |
@@ -425,7 +425,7 @@ flowchart TD
 
 | 형식 | 필드 | 비고 |
 |---|---|---|
-| `Task` | `task_id`("r{회차}-t{순번}"), `tool`, `args`, `fixed_args`, `purpose`, `depends_on` | `args` 의 `@candidate_dates`, `@from_night_window` 는 Worker 가 후보 날짜별로 펼친다. `depends_on`: 박명 ← 현상, 예보 ← 박명 |
+| `Task` | `task_id`("r{회차}-t{순번}"), `tool`, `args`, `fixed_args`, `purpose`, `depends_on` | `args` 의 `@candidate_dates`, `@from_night_window` 는 Worker 가 후보 날짜별로 펼친다. `depends_on`: 박명 ← 현상, 예보 ← 박명. 로그용 메타데이터일 뿐 Worker 는 이 값으로 순서를 정하지 않는다 (목록 순서대로 실행) |
 | `TaskList` | `round`, `tasks`, `reason`, `trigger` | trigger: `user`, `judge_replan`, `worker_request`, `audit_anomaly`. 만들 때마다 `planner_tasks` 이벤트 |
 | `WorkerResult` | `task_id`, `tool`, `args_used`, `ok`, `error_code`, `attempts`, `from_cache`, `duration_ms`, `decision`, `replan_request` | 작업마다 `worker_result` 이벤트 |
 | `WorkerDecision` | `kind`(retry, skip, replan_request), `reason`, `new_args`, `source`(rule, llm) | `worker_decision` 이벤트 payload: `task_id, tool, decision, reason, model, new_args, source, error_code, args, fixed_args, llm_attempted, retry` |
@@ -515,16 +515,16 @@ Worker LLM 출력 `{decision, new_args_json, reason}` 검증: 재시도는 같�
 
 | 항목 | 내용 |
 |---|---|
-| 저장소 | `sessions` 테이블 (`storage/sessions.py`). 실패 시 프로세스 메모리 |
-| 보관 | 조건 객체(`user_conditions`), 메모리 요약, 직전 추천, **최근 6턴** |
+| 저장소 | `sessions` 테이블 (`storage/sessions.py`) 하나가 기준. 메모리 사본 없음. 읽기, 쓰기 실패는 경고 로그 후 빈 맥락으로 진행 (응답은 정상) |
+| 보관 | 조건 객체(`user_conditions`), 메모리 요약, 직전 추천 제목(캘린더 "먼저 저장" 안내용, 옛 행의 후보 전체 JSON 도 읽음), **최근 6턴** |
 | 보관 안 함 | Tool 원본 응답 (DB) |
-| 프로세스 캐시 | `search_sky_events` 성공 결과만 메모리에 최대 24개 (DB 미저장) |
+| 프로세스 캐시 | `search_sky_events` 성공 결과만 메모리에 최대 24개 (DB 미저장). 후속 턴, 재계획이 재사용하고 대화 삭제 시 지운다 |
 | 갱신 | `Conditions.merged()`: 이번에 말한 값만 덮어씀, `fixed` 는 합집합. `reset_conditions` 면 새로 시작 |
 | 재계획 조건 | 세션엔 사용자가 말한 조건을 저장 (재계획으로 바뀐 조건 아님) |
 | 되묻기 반복 방지 | 직전 턴에 물은 시작 시각을 또 못 받으면 천문박명 종료부터 계산하고 밝힘 |
 | LLM 에 넘기는 것 | 이전 조건 JSON, 메모리 요약, 최근 12메시지(6턴) |
 | 후속 변경 설명 | analyze 가 이전 턴 조건(`prev_conditions`)을 state 에 남기고, respond 의 `plan_context.changes_from_previous`(예: "종료 시각 02:00+1 → 23:00")로 바뀐 항목을 답변 첫머리에 말함 (Codex 재검증 S15 수정) |
-| 화면 복원 | LLM 맥락과 별개로 `turns` 표에 턴마다 사용자 메시지 + `ChatResponse` 저장 (`run_turn` 반환 직전, 실패는 경고 로그만) → `/api/sessions` 목록, 상세, 삭제. 대화 삭제 시 `sessions` 행도 지우고 `run_logs` 는 남김 |
+| 화면 복원 | LLM 맥락과 별개로 `turns` 표에 턴마다 사용자 메시지 + `ChatResponse` 저장 (`run_turn` 반환 직전, 실패는 경고 로그만) → `/api/sessions` 목록, 상세, 삭제. 대화 삭제 시 `sessions` 행과 프로세스 캐시도 지우고 `run_logs` 는 남김 |
 
 ---
 

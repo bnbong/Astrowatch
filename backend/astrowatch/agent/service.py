@@ -29,8 +29,8 @@ def _ensure_tools() -> None:
     if not registry.names():
         try:
             load_builtin_tools()
-        except Exception:  # noqa: BLE001 — Tool 모듈 문제는 실행 시 BAD_INPUT 으로 드러난다
-            pass
+        except Exception:  # noqa: BLE001 (응답은 돌려주되 코드 오류는 traceback 과 함께 ERROR 로 남긴다)
+            logger.exception("내장 Tool 로드 실패: Tool 모듈 코드 오류")
 
 CALENDAR_WARNING = "캘린더를 확인하지 못했습니다."
 GENERIC_ERROR_ANSWER = "요청을 처리하는 중 문제가 생겼어요. 잠시 후 다시 시도해 주세요."
@@ -326,7 +326,7 @@ def _persist(session: memory.Session, state: dict[str, Any], message: str, answe
     session.memory_summary = state.get("memory_summary") or session.memory_summary
     rec = [j for j in state.get("judged") or [] if j.verdict in (Verdict.FIT, Verdict.CONDITIONAL)]
     if state.get("intent") == Intent.PLAN:
-        session.last_recommended = rec
+        session.last_recommended = [j.candidate.title for j in rec]   # 제목만 (카드 복원은 turns.response_json)
     session.history = memory.trim_history(
         [*session.history, {"role": "user", "content": message}, {"role": "assistant", "content": answer}]
     )

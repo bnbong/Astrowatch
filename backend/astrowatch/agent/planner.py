@@ -19,7 +19,7 @@ worker_request 중 규칙으로 매핑할 수 없는 요청이 왔고 LLM 을 �
 from __future__ import annotations
 
 import json
-from typing import Any, Literal
+from typing import Any
 
 from pydantic import BaseModel, Field
 
@@ -138,8 +138,6 @@ class PlannerRun:
         self.s = get_settings()
         self.sid = state.get("session_id", "-")
         self.update: dict[str, Any] = {"replan_pending": False, "worker_requests": [], "planner_next": "worker"}
-        self.lists: list[dict[str, Any]] = list(state.get("task_lists") or [])
-        self.llm_calls = 0
 
     # ── 공통 ──
     def build(self, c: Conditions) -> tuple[list[PlannedCall], str]:
@@ -151,8 +149,7 @@ class PlannerRun:
         tl = TaskList(round=round_, tasks=tasks, reason=reason[:300], trigger=trigger)
         dumped = tl.model_dump(mode="json")
         bus.publish(self.sid, EventType.PLANNER_TASKS, stage="plan", payload=dumped)
-        self.lists.append(dumped)
-        self.update.update(task_list=dumped, task_lists=self.lists, plan=to_plan(tasks))
+        self.update.update(task_list=dumped, plan=to_plan(tasks))
         return tl
 
     def apply_strategy(self, name: str, c: Conditions, new_c: Conditions, why: str) -> None:
@@ -173,7 +170,6 @@ class PlannerRun:
         calls, reason = self.build(c)
         tasks = to_tasks(calls, 0, c)
         tl = self.publish(tasks, 0, "user", reason)
-        self.update["plan_reason"] = reason
         summary = f"{len(calls)}단계 계획: {reason}"
         prev = self.state.get("audit")
         if _is_anomaly(prev) and tasks and not self.state.get("audit_recomposed"):
@@ -190,7 +186,6 @@ class PlannerRun:
         hist = self.state.get("replan_history") or []
         why = hist[-1]["reason"] if hist else "judge 재계획"
         self.publish(to_tasks(calls, round_, c), round_, "judge_replan", why)
-        self.update["plan_reason"] = reason
         return f"[재계획 {round_}회차] {len(calls)}단계 계획: {reason}"
 
     def audit_anomaly(self) -> str:
@@ -239,10 +234,9 @@ class PlannerRun:
             return "[Worker 요청] 적용할 전략 없음 → 지금 결과로 판정"
         self.apply_strategy(name, c, new_c, f"Worker 요청({why})")
         round_ = count + 1
-        calls, reason = self.build(new_c)
+        calls, _ = self.build(new_c)
         self.publish(to_tasks(calls, round_, new_c), round_, "worker_request",
                      f"Worker 요청 반영: {STRATEGY_LABEL[name]} ({why})")
-        self.update["plan_reason"] = reason
         return f"[재계획 {round_}회차, Worker 요청] {STRATEGY_LABEL[name]}, {len(calls)}단계 계획"
 
     def llm_choose(self, c: Conditions, requests: list[dict[str, Any]]) -> tuple[str | None, Conditions | None]:
@@ -254,7 +248,6 @@ class PlannerRun:
             return None, None
         payload = {"requests": requests, "strategies": {n: STRATEGY_LABEL[n] for n in options},
                    "fixed": c.fixed, "conditions": json.loads(c.model_dump_json(exclude_defaults=True))}
-        self.llm_calls += 1
         try:
             out = N._structured_invoke(PlannerChoice, [("system", PLANNER_SYSTEM),
                                                        ("human", json.dumps(payload, ensure_ascii=False, default=str))])
@@ -280,7 +273,6 @@ def planner(state: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
         text = run.audit_anomaly()
     else:
         text = run.first()
-    run.update["turn_llm_calls"] = int(state.get("turn_llm_calls") or 0) + run.llm_calls
     tl = run.update.get("task_list") or state.get("task_list") or {}
     tools = [t.get("tool") for t in tl.get("tasks") or []]
     return run.update, {"summary": f"[Planner] {text}", "planned_tools": tools,

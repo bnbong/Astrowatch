@@ -143,3 +143,36 @@ def test_builtin_tools_registered():
     for name in expected:
         assert described[name]["kind"] == ToolKind.EXTERNAL.value
         assert described[name]["description"] and described[name]["input_schema"]["properties"]
+
+
+BUILTIN_MODULES = ("sky_events", "night_window", "sky_forecast", "observatory", "space_docs", "calendar", "sky_object")
+
+
+def test_all_eight_builtin_tools_registered():
+    """심화 모듈도 선택 플러그인이 아니라 내장 Tool: 정상 환경(키, 색인 없음 포함)에서 8개 모두 등록."""
+    reg_mod = importlib.import_module("astrowatch.tools.registry")
+
+    reg_mod.registry.clear()
+    try:
+        for mod in BUILTIN_MODULES:
+            name = f"astrowatch.tools.{mod}"
+            if name in sys.modules:
+                importlib.reload(sys.modules[name])
+        names = set(reg_mod.load_builtin_tools().names())
+        assert names == {"search_sky_events", "get_night_window", "get_sky_forecast", "search_observatory",
+                         "search_space_docs", "get_calendar", "add_plan_to_calendar", "lookup_sky_object"}
+    finally:
+        reg_mod.registry.clear()
+
+
+def test_builtin_module_import_error_is_not_swallowed(monkeypatch):
+    """내장 Tool 모듈의 import 오류는 '기능 없음'으로 숨기지 않고 그대로 올라온다."""
+    import pytest
+
+    reg_mod = importlib.import_module("astrowatch.tools.registry")
+    import astrowatch.tools as pkg
+
+    monkeypatch.delattr(pkg, "space_docs", raising=False)
+    monkeypatch.setitem(sys.modules, "astrowatch.tools.space_docs", None)
+    with pytest.raises(ImportError):
+        reg_mod.load_builtin_tools()

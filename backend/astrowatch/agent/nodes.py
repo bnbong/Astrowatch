@@ -412,7 +412,7 @@ def analyze(state: RunState) -> tuple[dict[str, Any], str]:
 
     if not llm_available():
         warnings.append(P.NO_LLM_WARNING)
-        return {**base, "intent": Intent.CHAT, "intent_reason": "LLM 키 없음", "conditions": prev,
+        return {**base, "intent": Intent.CHAT, "conditions": prev,
                 "missing": [], "warnings": warnings, "user_conditions": prev}, "LLM 키 없음 → 사용법 안내로 진행"
 
     try:
@@ -420,7 +420,7 @@ def analyze(state: RunState) -> tuple[dict[str, Any], str]:
     except Exception:  # noqa: BLE001 — 상세 오류는 사용자에게 보이지 않는다
         warnings.append(P.LLM_FAIL_WARNING)
         bus.publish(sid, EventType.ERROR, stage="analyze", payload={"message": "LLM 요청 해석 실패"})
-        return {**base, "intent": Intent.CHAT, "intent_reason": "LLM 호출 실패", "conditions": prev,
+        return {**base, "intent": Intent.CHAT, "conditions": prev,
                 "missing": [], "warnings": warnings, "user_conditions": prev}, "LLM 호출 실패 → 사용법 안내로 진행"
 
     update = to_conditions_update(out)
@@ -509,7 +509,7 @@ def analyze(state: RunState) -> tuple[dict[str, Any], str]:
         summary += f" · 부족한 조건 {', '.join(missing)}"
     if date_defaulted:
         summary += f" · 날짜 기본 범위 {conditions.date_from}~{conditions.date_to}"
-    return {**base, "intent": intent, "intent_reason": reason, "conditions": conditions, "missing": missing,
+    return {**base, "intent": intent, "conditions": conditions, "missing": missing,
             "warnings": warnings, "fact_kind": fact_kind, "user_conditions": user_conditions,
             "prev_conditions": prev,
             "date_defaulted": date_defaulted, "assumptions": assumptions, "date_issue": date_issue,
@@ -673,7 +673,7 @@ def plan(state: RunState) -> tuple[dict[str, Any], str]:
     round_ = state.get("replan_count", 0)
     prefix = f"[재계획 {round_}회차] " if round_ else ""
     summary = {"summary": f"{prefix}{len(calls)}단계 계획: {reason}", "planned_tools": [p["tool"] for p in calls]}
-    return {"plan": calls, "plan_reason": reason, "replan_pending": False}, summary  # type: ignore[return-value]
+    return {"plan": calls, "replan_pending": False}, summary  # type: ignore[return-value]
 
 
 # ── execute ──────────────────────────────────────────────────
@@ -757,6 +757,51 @@ def build_candidates(events: list[SkyEvent], c: Conditions, region_name: str, la
     return out
 
 
+# ── classic execute 와 Worker 가 함께 쓰는 변환 (Tool 을 부르는 방식은 각자 다르다) ──
+
+def judgeable_candidates(cands: list[Candidate], obj_meta: dict[tuple[str, dt.date], dict[str, Any]]) -> list[Candidate]:
+    """박명, 예보를 볼 후보. 지목한 대상을 확인 못 한 후보(R1)는 판단하지 않으므로 외부 조회도 하지 않는다."""
+    return [x for x in cands if not obj_meta.get((x.event_id, x.date), {}).get("unresolved")]
+
+
+def night_dates(cands: list[Candidate]) -> list[dt.date]:
+    """박명을 조회할 날짜 (계절 현상만 있는 날은 제외)."""
+    return sorted({x.date for x in cands if x.kind != EventKind.SEASON})
+
+
+def forecast_requests(c: Conditions, cands: list[Candidate],
+                      nights: dict[dt.date, NightWindowOutput | None]) -> list[tuple[dt.date, list[int]]]:
+    """예보를 조회할 (날짜, 시각들). 관측 창을 모르거나 볼 시각이 없으면 그 날짜는 건너뛴다."""
+    out: list[tuple[dt.date, list[int]]] = []
+    for d in sorted({x.date for x in cands}):
+        night = nights.get(d)
+        if night is None:
+            continue
+        hours = J.forecast_hours(c, night)
+        if hours:
+            out.append((d, hours))
+    return out
+
+
+def object_lookup(x: Candidate, query: str,
+                  res: ToolResult[Any]) -> tuple[dict[str, Any], list[Window] | None, Candidate | None]:
+    """lookup_sky_object 결과 → (메타, 고도 구간, kind 와 제목을 갱신한 후보).
+
+    찾지 못하면 (미확인 메타, None, None): 현상 목록에도 카탈로그에도 없는 대상은 판단하지 않는다 (R1). 일시 오류와 구분.
+    """
+    out = _as(SkyObjectOutput, res.data) if res.ok else None
+    if out is None:
+        temporary = res.ok or res.code in _TEMP_CODES
+        return ({"found": False, "query": query, "unresolved": "temporary" if temporary else "not_found",
+                 "similar": [] if temporary else similar_from_error(res)}, None, None)
+    windows = [Window(start=w.start, end=max(w.start, w.end)) for w in out.visible_windows]
+    meta = {"found": True, "name": out.object.name_ko, "min_alt": out.min_alt,
+            "transit_minute": out.transit_minute, "transit_alt": out.transit_alt,
+            "transit_az": out.transit_az, "never_rises": out.never_rises}
+    kind = EventKind.OTHER if out.object.kind in ("star", "constellation", "planet") else EventKind.DEEP_SKY
+    return meta, windows, x.model_copy(update={"kind": kind, "title": out.object.name_ko})
+
+
 @stage("execute")
 def execute(state: RunState) -> tuple[dict[str, Any], str]:
     sid = state.get("session_id", "-")
@@ -801,8 +846,7 @@ def execute(state: RunState) -> tuple[dict[str, Any], str]:
         return candidates
 
     def judgeable(step: PlannedCall) -> list[Candidate]:
-        """박명·예보를 볼 후보 — 지목한 대상을 확인 못 한 후보(R1)는 판단하지 않으므로 외부 조회도 하지 않는다."""
-        return [x for x in ensure_candidates(step) if not obj_meta.get((x.event_id, x.date), {}).get("unresolved")]
+        return judgeable_candidates(ensure_candidates(step), obj_meta)
 
     for step in state.get("plan") or []:
         tool, args = step["tool"], step["args"]
@@ -819,34 +863,18 @@ def execute(state: RunState) -> tuple[dict[str, Any], str]:
                 res = run(tool, object_args(args["name"], x.date, args["lat"], args["lon"]),
                           f"{x.date} '{args['name']}' 고도 구간")
                 key = (x.event_id, x.date)
-                out = _as(SkyObjectOutput, res.data) if res.ok else None
-                if out is None:
-                    # 지목한 대상이 현상 목록에도 카탈로그에도 없다 → 판단하지 않는다 (R1). 일시 오류와 구분
-                    temporary = res.ok or res.code in _TEMP_CODES
-                    obj_meta[key] = {"found": False, "query": args["name"],
-                                     "unresolved": "temporary" if temporary else "not_found",
-                                     "similar": [] if temporary else similar_from_error(res)}
-                    continue
-                obj_windows[key] = [Window(start=w.start, end=max(w.start, w.end)) for w in out.visible_windows]
-                obj_meta[key] = {"found": True, "name": out.object.name_ko, "min_alt": out.min_alt,
-                                 "transit_minute": out.transit_minute, "transit_alt": out.transit_alt,
-                                 "transit_az": out.transit_az, "never_rises": out.never_rises}
-                kind = EventKind.OTHER if out.object.kind in ("star", "constellation", "planet") else EventKind.DEEP_SKY
-                updated[x.event_id] = x.model_copy(update={"kind": kind, "title": out.object.name_ko})
+                obj_meta[key], windows, refreshed = object_lookup(x, args["name"], res)
+                if refreshed is not None and windows is not None:
+                    obj_windows[key] = windows
+                    updated[x.event_id] = refreshed
             if updated:
                 candidates = [updated.get(x.event_id, x) for x in cands]
         elif tool == T_NIGHT and args.get("date") == EACH_DATE:
-            for d in sorted({x.date for x in judgeable(step) if x.kind != EventKind.SEASON}):
+            for d in night_dates(judgeable(step)):
                 res = run(tool, night_args(d, args["lat"], args["lon"]), f"{d} 후보의 어두운 시간·월령")
                 nights[d] = _as(NightWindowOutput, res.data) if res.ok else None
         elif tool == T_FORECAST and args.get("hours") == FROM_NIGHT:
-            for d in sorted({x.date for x in judgeable(step)}):
-                night = nights.get(d)
-                if night is None:
-                    continue                    # 관측 창을 모르면 예보도 의미 없음
-                hours = J.forecast_hours(c, night)
-                if not hours:
-                    continue
+            for d, hours in forecast_requests(c, judgeable(step), nights):
                 run(tool, forecast_args(d, args["lat"], args["lon"], hours), f"{d} 관측 창 시각의 하늘 상태")
         else:
             run(tool, args, step["reason"])

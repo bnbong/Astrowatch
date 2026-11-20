@@ -6,6 +6,7 @@ from types import ModuleType
 
 from fastapi import APIRouter, HTTPException, Response, status
 
+from astrowatch.agent import memory
 from astrowatch.app.api import DEFAULT_LIMIT, Limit, Offset, SessionId, page
 from astrowatch.schemas.api import SessionDetailOut, SessionSummaryOut
 
@@ -44,6 +45,7 @@ def get_session(session_id: SessionId) -> SessionDetailOut:
 def delete_session(session_id: SessionId) -> Response:
     removed_turns = _turns().delete_session_turns(session_id)
     removed_session = _sessions().delete_session(session_id)
+    memory.forget(session_id)       # 이 대화의 Tool 결과 캐시도 지운다 (세션 상태는 DB 에만 있다)
     if not removed_turns and not removed_session:
         raise HTTPException(status_code=404, detail=NOT_FOUND)
     return Response(status_code=status.HTTP_204_NO_CONTENT)

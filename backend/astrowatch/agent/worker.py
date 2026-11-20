@@ -42,7 +42,6 @@ from typing import Any, Callable, Literal
 
 from pydantic import BaseModel, Field
 
-from astrowatch.agent import judge as J
 from astrowatch.agent import nodes as N
 from astrowatch.agent.llm import llm_available, model_name
 from astrowatch.agent.state import ExecutedCall, cache_key
@@ -52,7 +51,7 @@ from astrowatch.events.bus import EventType, bus
 from astrowatch.schemas.domain import Candidate, Conditions, Window
 from astrowatch.schemas.tasks import Task, TaskList, WorkerDecision, WorkerDecisionKind, WorkerResult
 from astrowatch.tools.base import ErrorCode, ToolResult, fail
-from astrowatch.tools.contracts import EventKind, NightWindowOutput, SkyEvent, SkyEventsOutput, SkyObjectOutput
+from astrowatch.tools.contracts import NightWindowOutput, SkyEvent, SkyEventsOutput
 from astrowatch.tools.registry import registry
 
 # 인자를 고치면 결과가 달라질 수 있는 실패 (LLM 판단 대상)
@@ -352,8 +351,7 @@ class WorkerRun:
         return self.candidates
 
     def _judgeable(self, task: Task) -> list[Candidate]:
-        return [x for x in self._ensure_candidates(task)
-                if not self.obj_meta.get((x.event_id, x.date), {}).get("unresolved")]
+        return N.judgeable_candidates(self._ensure_candidates(task), self.obj_meta)
 
     def _event_missing(self) -> tuple[str, str] | None:
         """지목한 현상(이름)이 받은 현상 목록에 없으면 NO_RESULT (Tool 응답은 성공)."""
@@ -383,33 +381,18 @@ class WorkerRun:
                 res = self.attempt(run, tool, N.object_args(args["name"], x.date, args["lat"], args["lon"]),
                                    f"{x.date} '{args['name']}' 고도 구간")
                 key = (x.event_id, x.date)
-                out = N._as(SkyObjectOutput, res.data) if res.ok else None
-                if out is None:
-                    temporary = res.ok or res.code in N._TEMP_CODES
-                    self.obj_meta[key] = {"found": False, "query": args["name"],
-                                          "unresolved": "temporary" if temporary else "not_found",
-                                          "similar": [] if temporary else N.similar_from_error(res)}
-                    continue
-                self.obj_windows[key] = [Window(start=w.start, end=max(w.start, w.end)) for w in out.visible_windows]
-                self.obj_meta[key] = {"found": True, "name": out.object.name_ko, "min_alt": out.min_alt,
-                                      "transit_minute": out.transit_minute, "transit_alt": out.transit_alt,
-                                      "transit_az": out.transit_az, "never_rises": out.never_rises}
-                kind = EventKind.OTHER if out.object.kind in ("star", "constellation", "planet") else EventKind.DEEP_SKY
-                updated[x.event_id] = x.model_copy(update={"kind": kind, "title": out.object.name_ko})
+                self.obj_meta[key], windows, refreshed = N.object_lookup(x, args["name"], res)
+                if refreshed is not None and windows is not None:
+                    self.obj_windows[key] = windows
+                    updated[x.event_id] = refreshed
             if updated:
                 self.candidates = [updated.get(x.event_id, x) for x in cands]
         elif tool == N.T_NIGHT and args.get("date") == N.EACH_DATE:
-            for d in sorted({x.date for x in self._judgeable(task) if x.kind != EventKind.SEASON}):
+            for d in N.night_dates(self._judgeable(task)):
                 res = self.attempt(run, tool, N.night_args(d, args["lat"], args["lon"]), f"{d} 후보의 어두운 시간, 월령")
                 self.nights[d] = N._as(NightWindowOutput, res.data) if res.ok else None
         elif tool == N.T_FORECAST and args.get("hours") == N.FROM_NIGHT:
-            for d in sorted({x.date for x in self._judgeable(task)}):
-                night = self.nights.get(d)
-                if night is None:
-                    continue
-                hours = J.forecast_hours(self.c, night)
-                if not hours:
-                    continue
+            for d, hours in N.forecast_requests(self.c, self._judgeable(task), self.nights):
                 self.attempt(run, tool, N.forecast_args(d, args["lat"], args["lon"], hours), f"{d} 관측 창 시각의 하늘 상태")
         else:
             self.attempt(run, tool, args, task.purpose)
@@ -429,9 +412,7 @@ class WorkerRun:
     def update(self) -> dict[str, Any]:
         return {"cache": self.cache, "calls": self.calls, "candidates": self.candidates or [],
                 "object_windows": self.obj_windows, "object_meta": self.obj_meta,
-                "worker_results": [r.model_dump(mode="json") for r in self.results],
-                "worker_requests": self.requests,
-                "turn_llm_calls": int(self.state.get("turn_llm_calls") or 0) + self.counters["llm"]}
+                "worker_requests": self.requests}
 
     def summary(self) -> str:
         cands = self.candidates or []
