@@ -2,7 +2,7 @@
   <img src="docs/images/brand/astrowatch-logo.svg" width="120" alt="Astrowatch 로고: 점선 궤도 안의 어두운 원과 호박색 별" />
 </p>
 <p align="center">
-<em><b>Astrowatch (Astro + Overwatch):</b> 에이전트 기반 천문 관측 플래너 결과 보고서</em>
+<em><b>Astrowatch (Astro + Overwatch):</b> 에이전트 기반 천문 관측 플래너</em>
 </p>
 <p align="center">
 <img src="https://img.shields.io/badge/Python_3.12-%233776AB?style=flat&logo=python&logoColor=white" alt="Python 3.12"/>
@@ -10,7 +10,6 @@
 <img src="https://img.shields.io/badge/LangGraph-%231C3C3C?style=flat&logo=langchain&logoColor=white" alt="LangGraph"/>
 <img src="https://img.shields.io/badge/Claude-%23D97757?style=flat&logo=claude&logoColor=white" alt="Claude"/>
 <img src="https://img.shields.io/badge/SQLite-%23003B57?style=flat&logo=sqlite&logoColor=white" alt="SQLite"/>
-<img src="https://img.shields.io/badge/Render_Deploy-Live-success?style=flat&logo=render&logoColor=white" alt="Render Deploy"/>
 </p>
 
 ---
@@ -22,8 +21,7 @@
 > **"오늘 밤, 어디서 몇 시에 별을 볼 수 있을까?"**  
 > 하늘이 어둡고, 달빛 방해가 적으며, 구름 없는 맑은 시간을 계산해 주는 **천문 관측 플래너**입니다.
 
-- **라이브 서비스 접속**: [https://astrowatch-jqtv.onrender.com/](https://astrowatch-jqtv.onrender.com/)  
-  *(Render 클라우드 환경에 배포되어 별도 설치 없이 브라우저에서 즉시 체험할 수 있습니다.)*
+- **라이브 서비스 접속(2026/11/20 이후 링크 사용 불가)**: [https://astrowatch-jqtv.onrender.com/](https://astrowatch-jqtv.onrender.com/)
 
 ### 프로젝트 핵심 요약
 
@@ -31,7 +29,7 @@
 |---|---|
 | **프로젝트** | SSAFY AI 코어 3회차 "Agent 기반 도메인 플래너 서비스" (개인 / 3일) |
 | **도메인** | 천문 관측 ([VastHorizon](https://github.com/bnbong/VastHorizon) 우주 도메인 계승 및 발전) |
-| **라이브 배포** | Render 클라우드 HTTPS 서비스 운영 중 ([서비스 접속](https://astrowatch-jqtv.onrender.com/)) |
+| **라이브 배포** | Render 클라우드 HTTPS 서비스 운영 중(2026/11/20 이후 링크 사용 불가) ([서비스 접속](https://astrowatch-jqtv.onrender.com/)) |
 | **핵심 성과** | 5종 공공 API 및 8개 도구 연동 / Planner와 Worker 계층 분리형 LangGraph 에이전트 구축 / 심화 요구사항 4종 완수 / 자동화 테스트 440건 전원 통과 |
 
 ---
